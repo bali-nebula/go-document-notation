@@ -15,7 +15,6 @@ import (
 	doc "github.com/bali-nebula/go-document-notation/v3"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	ass "github.com/stretchr/testify/assert"
-	osx "os"
 	sts "strings"
 	tes "testing"
 )
@@ -23,13 +22,8 @@ import (
 const testDirectory = "./test/"
 
 func TestParsingRoundtrips(t *tes.T) {
-	var files, err = osx.ReadDir(testDirectory)
-	if err != nil {
-		panic("Could not find the ./test directory.")
-	}
-
-	for _, file := range files {
-		var filename = testDirectory + file.Name()
+	var filenames = uti.ReadDirectory(testDirectory)
+	for _, filename := range filenames {
 		if sts.HasSuffix(filename, ".bali") {
 			fmt.Println(filename)
 			var source = uti.ReadFile(filename)
