@@ -378,7 +378,7 @@ const (
 	moment_         = "(?:<(?:" + sign_ + ")?(?:" + year_ + ")(-(?:" + month_ + ")(-(?:" + day_ + ")(T(?:" + hour_ + ")(:(?:" + minute_ + ")(:(?:" + second_ + ")(?:" + fraction_ + ")?)?)?)?)?)?>)"
 	month_          = "(?:(0[1-9])|(1[0-2]))"
 	months_         = "(?:(?:" + timespan_ + ")M)"
-	name_           = "(?:(/(?:" + identifier_ + "))+)"
+	name_           = "(?:(/(?:" + identifier_ + "))+(@(?:" + version_ + "))?)"
 	narrative_      = "(?:\">" + eol_ + "(" + any_ + "|" + eol_ + ")+?" + eol_ + "(?:" + space_ + ")*<\")"
 	newline_        = "(?:" + eol_ + ")"
 	note_           = "(?:! [^" + control_ + "]*)"

@@ -41,7 +41,7 @@
     <'
     /bali-nebula
     /bali-nebula/abstractions
-    /bali-nebula/abstractions/Sequential
+    /bali-nebula/abstractions/Sequential@v1.2.3
     ">
           This is a multiline
         narrative with " marks
