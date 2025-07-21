@@ -37,17 +37,17 @@ func TestParsingRoundtrips(t *tes.T) {
 
 func TestEntityAccess(t *tes.T) {
 	var document doc.DocumentLike = nil
-	var entity = doc.GetItem(document, []any{1})
+	var entity = doc.GetItem(document, 1)
 	ass.Equal(t, document, entity)
 
 	var source = `[ ]`
 	document = doc.ParseSource(source)
-	entity = doc.GetItem(document, []any{})
+	entity = doc.GetItem(document)
 	ass.Equal(t, document, entity)
 
 	source = `[ ]`
 	document = doc.ParseSource(source)
-	entity = doc.GetItem(document, []any{1})
+	entity = doc.GetItem(document, 1)
 	ass.Equal(t, nil, entity)
 
 	source = `[
@@ -56,11 +56,11 @@ func TestEntityAccess(t *tes.T) {
     $gamma
 ]`
 	document = doc.ParseSource(source)
-	entity = doc.GetItem(document, []any{1})
+	entity = doc.GetItem(document, 1)
 	ass.Equal(t, "$alpha\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, []any{2})
+	entity = doc.GetItem(document, 2)
 	ass.Equal(t, "$beta\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, []any{3})
+	entity = doc.GetItem(document, 3)
 	ass.Equal(t, "$gamma\n", doc.FormatDocument(entity))
 
 	source = `[
@@ -69,11 +69,11 @@ func TestEntityAccess(t *tes.T) {
     $gamma: "3"
 ]`
 	document = doc.ParseSource(source)
-	entity = doc.GetItem(document, []any{"$alpha"})
+	entity = doc.GetItem(document, "$alpha")
 	ass.Equal(t, "\"1\"\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, []any{"$beta"})
+	entity = doc.GetItem(document, "$beta")
 	ass.Equal(t, "\"2\"\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, []any{"$gamma"})
+	entity = doc.GetItem(document, "$gamma")
 	ass.Equal(t, "\"3\"\n", doc.FormatDocument(entity))
 
 	source = `[
@@ -89,9 +89,9 @@ func TestEntityAccess(t *tes.T) {
     ]
 ]`
 	document = doc.ParseSource(source)
-	entity = doc.GetItem(document, []any{"$items", 2})
+	entity = doc.GetItem(document, "$items", 2)
 	ass.Equal(t, "2\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, []any{"$attributes", "$gamma"})
+	entity = doc.GetItem(document, "$attributes", "$gamma")
 	ass.Equal(t, "\"3\"\n", doc.FormatDocument(entity))
 
 	source = `[
@@ -114,16 +114,16 @@ func TestEntityAccess(t *tes.T) {
     ]
 ]`
 	document = doc.ParseSource(source)
-	entity = doc.GetItem(document, []any{1, 2})
+	entity = doc.GetItem(document, 1, 2)
 	ass.Equal(t, "2\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, []any{2, "$beta"})
+	entity = doc.GetItem(document, 2, "$beta")
 	ass.Equal(t, "\"2\"\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, []any{1, 3, "~tau"})
+	entity = doc.GetItem(document, 1, 3, "~tau")
 	ass.Equal(t, "6.28\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, []any{2, "$alpha", -1})
+	entity = doc.GetItem(document, 2, "$alpha", -1)
 	ass.Equal(t, "'c'\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, []any{3})
+	entity = doc.GetItem(document, 3)
 	ass.Equal(t, nil, entity)
-	entity = doc.GetItem(document, []any{2, "$delta"})
+	entity = doc.GetItem(document, 2, "$delta")
 	ass.Equal(t, nil, entity)
 }

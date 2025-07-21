@@ -1585,7 +1585,7 @@ func ParseSource(
 
 func GetItem(
 	document DocumentLike,
-	indices []any,
+	indices ...any,
 ) DocumentLike {
 	if uti.IsUndefined(document) || len(indices) == 0 {
 		return document
@@ -1605,10 +1605,10 @@ func GetItem(
 			}
 			var entity = entities.GetValue(index)
 			document = entity.GetDocument()
-			return GetItem(document, indices[1:])
+			return GetItem(document, indices[1:]...)
 		case AttributesLike:
 			var associations = collection.GetAssociations()
-			return GetAttribute(associations, indices)
+			return GetAttribute(associations, indices...)
 		default:
 			return nil
 		}
@@ -1619,7 +1619,7 @@ func GetItem(
 
 func GetAttribute(
 	associations fra.ListLike[AssociationLike],
-	indices []any,
+	indices ...any,
 ) DocumentLike {
 	var iterator = associations.GetIterator()
 	for iterator.HasNext() {
@@ -1633,7 +1633,7 @@ func GetAttribute(
 		}
 		if key == indices[0].(string) {
 			var document = association.GetDocument()
-			return GetItem(document, indices[1:])
+			return GetItem(document, indices[1:]...)
 		}
 	}
 	return nil
