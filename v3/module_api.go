@@ -34,6 +34,7 @@ import (
 	ast "github.com/bali-nebula/go-document-notation/v3/ast"
 	gra "github.com/bali-nebula/go-document-notation/v3/grammar"
 	fra "github.com/craterdog/go-component-framework/v7"
+	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
 // TYPE ALIASES
@@ -1580,4 +1581,60 @@ func ParseSource(
 ) DocumentLike {
 	var parser = Parser()
 	return parser.ParseSource(source)
+}
+
+func GetItem(
+	document DocumentLike,
+	indices []any,
+) DocumentLike {
+	if uti.IsUndefined(document) || len(indices) == 0 {
+		return document
+	}
+	switch component := document.GetComponent().GetAny().(type) {
+	case CollectionLike:
+		switch collection := component.GetAny().(type) {
+		case ItemsLike:
+			var entities = collection.GetEntities()
+			var size = uti.Index(entities.GetSize())
+			var index = uti.Index(indices[0].(int))
+			if index < 0 {
+				index = size + index + 1
+			}
+			if index > size {
+				return nil
+			}
+			var entity = entities.GetValue(index)
+			document = entity.GetDocument()
+			return GetItem(document, indices[1:])
+		case AttributesLike:
+			var associations = collection.GetAssociations()
+			return GetAttribute(associations, indices)
+		default:
+			return nil
+		}
+	default:
+		return nil
+	}
+}
+
+func GetAttribute(
+	associations fra.ListLike[AssociationLike],
+	indices []any,
+) DocumentLike {
+	var iterator = associations.GetIterator()
+	for iterator.HasNext() {
+		var key string
+		var association = iterator.GetNext()
+		switch primitive := association.GetPrimitive().GetAny().(type) {
+		case ElementLike:
+			key = primitive.GetAny().(string)
+		case StringLike:
+			key = primitive.GetAny().(string)
+		}
+		if key == indices[0].(string) {
+			var document = association.GetDocument()
+			return GetItem(document, indices[1:])
+		}
+	}
+	return nil
 }

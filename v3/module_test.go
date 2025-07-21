@@ -34,3 +34,96 @@ func TestParsingRoundtrips(t *tes.T) {
 		}
 	}
 }
+
+func TestEntityAccess(t *tes.T) {
+	var document doc.DocumentLike = nil
+	var entity = doc.GetItem(document, []any{1})
+	ass.Equal(t, document, entity)
+
+	var source = `[ ]`
+	document = doc.ParseSource(source)
+	entity = doc.GetItem(document, []any{})
+	ass.Equal(t, document, entity)
+
+	source = `[ ]`
+	document = doc.ParseSource(source)
+	entity = doc.GetItem(document, []any{1})
+	ass.Equal(t, nil, entity)
+
+	source = `[
+    $alpha
+    $beta
+    $gamma
+]`
+	document = doc.ParseSource(source)
+	entity = doc.GetItem(document, []any{1})
+	ass.Equal(t, "$alpha\n", doc.FormatDocument(entity))
+	entity = doc.GetItem(document, []any{2})
+	ass.Equal(t, "$beta\n", doc.FormatDocument(entity))
+	entity = doc.GetItem(document, []any{3})
+	ass.Equal(t, "$gamma\n", doc.FormatDocument(entity))
+
+	source = `[
+    $alpha: "1"
+    $beta: "2"
+    $gamma: "3"
+]`
+	document = doc.ParseSource(source)
+	entity = doc.GetItem(document, []any{"$alpha"})
+	ass.Equal(t, "\"1\"\n", doc.FormatDocument(entity))
+	entity = doc.GetItem(document, []any{"$beta"})
+	ass.Equal(t, "\"2\"\n", doc.FormatDocument(entity))
+	entity = doc.GetItem(document, []any{"$gamma"})
+	ass.Equal(t, "\"3\"\n", doc.FormatDocument(entity))
+
+	source = `[
+    $items: [
+        1
+        2
+        3
+    ]
+    $attributes: [
+        $alpha: "1"
+        $beta: "2"
+        $gamma: "3"
+    ]
+]`
+	document = doc.ParseSource(source)
+	entity = doc.GetItem(document, []any{"$items", 2})
+	ass.Equal(t, "2\n", doc.FormatDocument(entity))
+	entity = doc.GetItem(document, []any{"$attributes", "$gamma"})
+	ass.Equal(t, "\"3\"\n", doc.FormatDocument(entity))
+
+	source = `[
+    [
+        1
+        2
+        [
+            ~pi: 3.14
+            ~tau: 6.28
+        ]
+    ]
+    [
+        $alpha: [
+            'a'
+            'b'
+            'c'
+        ]
+        $beta: "2"
+        $gamma: "3"
+    ]
+]`
+	document = doc.ParseSource(source)
+	entity = doc.GetItem(document, []any{1, 2})
+	ass.Equal(t, "2\n", doc.FormatDocument(entity))
+	entity = doc.GetItem(document, []any{2, "$beta"})
+	ass.Equal(t, "\"2\"\n", doc.FormatDocument(entity))
+	entity = doc.GetItem(document, []any{1, 3, "~tau"})
+	ass.Equal(t, "6.28\n", doc.FormatDocument(entity))
+	entity = doc.GetItem(document, []any{2, "$alpha", -1})
+	ass.Equal(t, "'c'\n", doc.FormatDocument(entity))
+	entity = doc.GetItem(document, []any{3})
+	ass.Equal(t, nil, entity)
+	entity = doc.GetItem(document, []any{2, "$delta"})
+	ass.Equal(t, nil, entity)
+}
