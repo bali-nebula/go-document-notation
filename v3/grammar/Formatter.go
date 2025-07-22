@@ -44,7 +44,6 @@ func (c *formatterClass_) Formatter() FormatterLike {
 		// Initialize the inherited aspects.
 		Methodical: ProcessorClass().Processor(),
 	}
-	instance.visitor_ = VisitorClass().Visitor(instance)
 	return instance
 }
 
@@ -57,7 +56,7 @@ func (v *formatter_) GetClass() FormatterClassLike {
 }
 
 func (v *formatter_) FormatDocument(document ast.DocumentLike) string {
-	v.visitor_.VisitDocument(document)
+	VisitorClass().Visitor(v).VisitDocument(document)
 	return v.getResult()
 }
 
@@ -740,9 +739,8 @@ func (v *formatter_) getResult() string {
 
 type formatter_ struct {
 	// Declare the instance attributes.
-	visitor_ VisitorLike
-	depth_   uint
-	result_  sts.Builder
+	depth_  uint
+	result_ sts.Builder
 
 	// Declare the inherited aspects.
 	Methodical

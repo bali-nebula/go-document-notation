@@ -3239,7 +3239,7 @@ associationsLoop:
 		association, token, ok = v.parseAssociation()
 		if !ok {
 			switch {
-			case count_ >= 0:
+			case count_ >= 1:
 				break associationsLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple Association rules.
@@ -3248,7 +3248,7 @@ associationsLoop:
 			default:
 				// Found a syntax error.
 				var message = v.formatError("$Parameters", token)
-				message += "0 or more Association rules are required."
+				message += "1 or more Association rules are required."
 				panic(message)
 			}
 		}
@@ -5247,7 +5247,7 @@ var parserClassReference_ = &parserClass_{
     String
     Collection
     Procedure`,
-			"$Parameters":  `"(" Association* ")"`,
+			"$Parameters":  `"(" Association+ ")"`,
 			"$Association": `Primitive ":" Document`,
 			"$Primitive": `
     Element

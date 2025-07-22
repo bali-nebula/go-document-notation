@@ -30,7 +30,7 @@ $Component:
     Collection
     Procedure
 
-$Parameters: "(" Association* ")"
+$Parameters: "(" Association+ ")"
 
 $Association: Primitive ":" Document
 
