@@ -1,12 +1,14 @@
-/*******************************************************************************
- *   Copyright (c) 2009-2023 Crater Dog Technologies™.  All Rights Reserved.   *
- *******************************************************************************
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.               *
- *                                                                             *
- * This code is free software; you can redistribute it and/or modify it under  *
- * the terms of The MIT License (MIT), as published by the Open Source         *
- * Initiative. (See http://opensource.org/licenses/MIT)                        *
- *******************************************************************************/
+/*
+................................................................................
+.    Copyright (c) 2009-2025 Crater Dog Technologies.  All Rights Reserved.    .
+................................................................................
+.  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.               .
+.                                                                              .
+.  This code is free software; you can redistribute it and/or modify it under  .
+.  the terms of The MIT License (MIT), as published by the Open Source         .
+.  Initiative. (See https://opensource.org/license/MIT)                        .
+................................................................................
+*/
 
 package module_test
 
@@ -37,28 +39,31 @@ func TestParsingRoundtrips(t *tes.T) {
 
 func TestParameterAccess(t *tes.T) {
 	var document doc.DocumentLike
-	var parameter = doc.GetParameter(document, "$type")
+	var key = doc.Primitive(doc.Element("$type"))
+	var parameter = doc.GetParameter(document, key)
 	ass.Equal(t, nil, parameter)
 
 	var source = `[ ]`
 	document = doc.ParseSource(source)
-	parameter = doc.GetParameter(document, "$type")
+	parameter = doc.GetParameter(document, key)
 	ass.Equal(t, nil, parameter)
 
 	source = `[ ]($type: "foo")`
 	document = doc.ParseSource(source)
-	parameter = doc.GetParameter(document, "$type")
+	parameter = doc.GetParameter(document, key)
 	ass.Equal(t, "\"foo\"\n", doc.FormatDocument(parameter))
 
 	source = `[ ]($type: "foo" $hype: /bar)`
 	document = doc.ParseSource(source)
-	parameter = doc.GetParameter(document, "$hype")
+	key = doc.Primitive(doc.Element("$hype"))
+	parameter = doc.GetParameter(document, key)
 	ass.Equal(t, "/bar\n", doc.FormatDocument(parameter))
 }
 
 func TestAttributeAccess(t *tes.T) {
 	var document doc.DocumentLike
-	var attribute = doc.GetAttribute(document, 1)
+	var index uti.Index = 1
+	var attribute = doc.GetAttribute(document, index)
 	ass.Equal(t, document, attribute)
 
 	var source = `[ ]`
@@ -68,7 +73,7 @@ func TestAttributeAccess(t *tes.T) {
 
 	source = `[ ]`
 	document = doc.ParseSource(source)
-	attribute = doc.GetAttribute(document, 1)
+	attribute = doc.GetAttribute(document, index)
 	ass.Equal(t, nil, attribute)
 
 	source = `[
@@ -77,12 +82,19 @@ func TestAttributeAccess(t *tes.T) {
     $gamma
 ]`
 	document = doc.ParseSource(source)
-	attribute = doc.GetAttribute(document, 1)
+	index = 1
+	attribute = doc.GetAttribute(document, index)
 	ass.Equal(t, "$alpha\n", doc.FormatDocument(attribute))
-	attribute = doc.GetAttribute(document, 2)
+	index = 2
+	attribute = doc.GetAttribute(document, index)
 	ass.Equal(t, "$beta\n", doc.FormatDocument(attribute))
-	attribute = doc.GetAttribute(document, 3)
+	index = 3
+	attribute = doc.GetAttribute(document, index)
 	ass.Equal(t, "$gamma\n", doc.FormatDocument(attribute))
+	attribute = doc.ParseSource("$delta")
+	ass.True(t, doc.SetAttribute(document, attribute, index))
+	attribute = doc.GetAttribute(document, index)
+	ass.Equal(t, "$delta\n", doc.FormatDocument(attribute))
 
 	source = `[
     $alpha: "1"
@@ -90,12 +102,19 @@ func TestAttributeAccess(t *tes.T) {
     $gamma: "3"
 ]`
 	document = doc.ParseSource(source)
-	attribute = doc.GetAttribute(document, "$alpha")
+	var key = doc.Primitive(doc.Element("$alpha"))
+	attribute = doc.GetAttribute(document, key)
 	ass.Equal(t, "\"1\"\n", doc.FormatDocument(attribute))
-	attribute = doc.GetAttribute(document, "$beta")
+	key = doc.Primitive(doc.Element("$beta"))
+	attribute = doc.GetAttribute(document, key)
 	ass.Equal(t, "\"2\"\n", doc.FormatDocument(attribute))
-	attribute = doc.GetAttribute(document, "$gamma")
+	key = doc.Primitive(doc.Element("$gamma"))
+	attribute = doc.GetAttribute(document, key)
 	ass.Equal(t, "\"3\"\n", doc.FormatDocument(attribute))
+	attribute = doc.ParseSource("\"5\"")
+	ass.True(t, doc.SetAttribute(document, attribute, key))
+	attribute = doc.GetAttribute(document, key)
+	ass.Equal(t, "\"5\"\n", doc.FormatDocument(attribute))
 
 	source = `[
     $items: [
@@ -110,10 +129,18 @@ func TestAttributeAccess(t *tes.T) {
     ]
 ]`
 	document = doc.ParseSource(source)
-	attribute = doc.GetAttribute(document, "$items", 2)
+	key = doc.Primitive(doc.Element("$items"))
+	index = 2
+	attribute = doc.GetAttribute(document, key, index)
 	ass.Equal(t, "2\n", doc.FormatDocument(attribute))
-	attribute = doc.GetAttribute(document, "$attributes", "$gamma")
+	key = doc.Primitive(doc.Element("$attributes"))
+	var key2 = doc.Primitive(doc.Element("$gamma"))
+	attribute = doc.GetAttribute(document, key, key2)
 	ass.Equal(t, "\"3\"\n", doc.FormatDocument(attribute))
+	attribute = doc.ParseSource("\"5\"")
+	ass.True(t, doc.SetAttribute(document, attribute, key, key2))
+	attribute = doc.GetAttribute(document, key, key2)
+	ass.Equal(t, "\"5\"\n", doc.FormatDocument(attribute))
 
 	source = `[
     [
@@ -135,16 +162,33 @@ func TestAttributeAccess(t *tes.T) {
     ]
 ]`
 	document = doc.ParseSource(source)
-	attribute = doc.GetAttribute(document, 1, 2)
+	index = 1
+	var index2 uti.Index = 2
+	attribute = doc.GetAttribute(document, index, index2)
 	ass.Equal(t, "2\n", doc.FormatDocument(attribute))
-	attribute = doc.GetAttribute(document, 2, "$beta")
+	index = 2
+	key2 = doc.Primitive(doc.Element("$beta"))
+	attribute = doc.GetAttribute(document, index, key2)
 	ass.Equal(t, "\"2\"\n", doc.FormatDocument(attribute))
-	attribute = doc.GetAttribute(document, 1, 3, "~tau")
+	index = 1
+	index2 = 3
+	var key3 = doc.Primitive(doc.Element("~tau"))
+	attribute = doc.GetAttribute(document, index, index2, key3)
 	ass.Equal(t, "6.28\n", doc.FormatDocument(attribute))
-	attribute = doc.GetAttribute(document, 2, "$alpha", -1)
+	attribute = doc.ParseSource("~τ")
+	ass.True(t, doc.SetAttribute(document, attribute, index, index2, key3))
+	attribute = doc.GetAttribute(document, index, index2, key3)
+	ass.Equal(t, "~τ\n", doc.FormatDocument(attribute))
+	index = 2
+	key2 = doc.Primitive(doc.Element("$alpha"))
+	var index3 uti.Index = -1
+	attribute = doc.GetAttribute(document, index, key2, index3)
 	ass.Equal(t, "'c'\n", doc.FormatDocument(attribute))
-	attribute = doc.GetAttribute(document, 3)
+	index = 3
+	attribute = doc.GetAttribute(document, index)
 	ass.Equal(t, nil, attribute)
-	attribute = doc.GetAttribute(document, 2, "$delta")
+	index = 2
+	key2 = doc.Primitive(doc.Element("$delta"))
+	attribute = doc.GetAttribute(document, index, key2)
 	ass.Equal(t, nil, attribute)
 }

@@ -1585,7 +1585,7 @@ func ParseSource(
 
 func GetParameter(
 	document DocumentLike,
-	key string,
+	key PrimitiveLike,
 ) DocumentLike {
 	if uti.IsUndefined(document) {
 		return nil
@@ -1610,11 +1610,11 @@ func GetAttribute(
 		switch collection := component.GetAny().(type) {
 		case ItemsLike:
 			var entities = collection.GetEntities()
-			var index = indices[0].(int)
+			var index = indices[0].(uti.Index)
 			return getItem(entities, index, indices[1:]...)
 		case AttributesLike:
 			var associations = collection.GetAssociations()
-			var key = indices[0].(string)
+			var key = indices[0].(PrimitiveLike)
 			return getValue(associations, key, indices[1:]...)
 		default:
 			return nil
@@ -1624,12 +1624,39 @@ func GetAttribute(
 	}
 }
 
+func SetAttribute(
+	document DocumentLike,
+	attribute DocumentLike,
+	indices ...any,
+) bool {
+	if uti.IsUndefined(document) || uti.IsUndefined(attribute) || len(indices) == 0 {
+		return false
+	}
+	switch component := document.GetComponent().GetAny().(type) {
+	case CollectionLike:
+		switch collection := component.GetAny().(type) {
+		case ItemsLike:
+			var entities = collection.GetEntities()
+			var index = indices[0].(uti.Index)
+			return setItem(entities, index, attribute, indices[1:]...)
+		case AttributesLike:
+			var associations = collection.GetAssociations()
+			var key = indices[0].(PrimitiveLike)
+			return setValue(associations, key, attribute, indices[1:]...)
+		default:
+			return false
+		}
+	default:
+		return false
+	}
+}
+
 func getItem(
 	entities fra.ListLike[EntityLike],
-	index int,
+	index uti.Index,
 	indices ...any,
 ) DocumentLike {
-	var size = int(entities.GetSize())
+	var size = uti.Index(entities.GetSize())
 	if size == 0 {
 		// The list of entities is empty.
 		return nil
@@ -1642,7 +1669,7 @@ func getItem(
 		// The index is out of bounds.
 		return nil
 	}
-	var entity = entities.GetValue(uti.Index(index))
+	var entity = entities.GetValue(index)
 	var document = entity.GetDocument()
 	if len(indices) > 0 {
 		document = GetAttribute(document, indices...)
@@ -1650,22 +1677,56 @@ func getItem(
 	return document
 }
 
+func setItem(
+	entities fra.ListLike[EntityLike],
+	index uti.Index,
+	attribute DocumentLike,
+	indices ...any,
+) bool {
+	var size = uti.Index(entities.GetSize())
+	if size == 0 {
+		// The list of entities is empty.
+		return false
+	}
+	if index < 0 {
+		// Negative indices start from the end of the list.
+		index = size + index + 1
+	}
+	if index > size {
+		// The index is out of bounds.
+		return false
+	}
+	if len(indices) > 0 {
+		var document = entities.GetValue(index).GetDocument()
+		return SetAttribute(document, attribute, indices...)
+	}
+	var entity = Entity(attribute)
+	entities.SetValue(uti.Index(index), entity)
+	return true
+}
+
 func getValue(
 	associations fra.ListLike[AssociationLike],
-	key string,
+	key PrimitiveLike,
 	indices ...any,
 ) DocumentLike {
 	var iterator = associations.GetIterator()
 	for iterator.HasNext() {
-		var string_ string
+		var first, second string
 		var association = iterator.GetNext()
 		switch primitive := association.GetPrimitive().GetAny().(type) {
 		case ElementLike:
-			string_ = primitive.GetAny().(string)
+			first = primitive.GetAny().(string)
 		case StringLike:
-			string_ = primitive.GetAny().(string)
+			first = primitive.GetAny().(string)
 		}
-		if string_ == key {
+		switch primitive := key.GetAny().(type) {
+		case ElementLike:
+			second = primitive.GetAny().(string)
+		case StringLike:
+			second = primitive.GetAny().(string)
+		}
+		if first == second {
 			var document = association.GetDocument()
 			if len(indices) > 0 {
 				document = GetAttribute(document, indices...)
@@ -1674,4 +1735,40 @@ func getValue(
 		}
 	}
 	return nil
+}
+
+func setValue(
+	associations fra.ListLike[AssociationLike],
+	key PrimitiveLike,
+	attribute DocumentLike,
+	indices ...any,
+) bool {
+	var index uti.Index
+	var iterator = associations.GetIterator()
+	for index = 1; iterator.HasNext(); index++ {
+		var first, second string
+		var association = iterator.GetNext()
+		switch primitive := association.GetPrimitive().GetAny().(type) {
+		case ElementLike:
+			first = primitive.GetAny().(string)
+		case StringLike:
+			first = primitive.GetAny().(string)
+		}
+		switch primitive := key.GetAny().(type) {
+		case ElementLike:
+			second = primitive.GetAny().(string)
+		case StringLike:
+			second = primitive.GetAny().(string)
+		}
+		if first == second {
+			if len(indices) > 0 {
+				var document = associations.GetValue(index).GetDocument()
+				return SetAttribute(document, attribute, indices...)
+			}
+			var association = Association(key, ":", attribute)
+			associations.SetValue(index, association)
+			return true
+		}
+	}
+	return false
 }
