@@ -1583,32 +1583,39 @@ func ParseSource(
 	return parser.ParseSource(source)
 }
 
-func GetItem(
+func GetParameter(
+	document DocumentLike,
+	key string,
+) DocumentLike {
+	if uti.IsUndefined(document) {
+		return nil
+	}
+	var parameters = document.GetOptionalParameters()
+	if uti.IsUndefined(parameters) {
+		return nil
+	}
+	var associations = parameters.GetAssociations()
+	return getValue(associations, key)
+}
+
+func GetAttribute(
 	document DocumentLike,
 	indices ...any,
 ) DocumentLike {
 	if uti.IsUndefined(document) || len(indices) == 0 {
-		return document
+		return nil
 	}
 	switch component := document.GetComponent().GetAny().(type) {
 	case CollectionLike:
 		switch collection := component.GetAny().(type) {
 		case ItemsLike:
 			var entities = collection.GetEntities()
-			var size = uti.Index(entities.GetSize())
-			var index = uti.Index(indices[0].(int))
-			if index < 0 {
-				index = size + index + 1
-			}
-			if index > size {
-				return nil
-			}
-			var entity = entities.GetValue(index)
-			document = entity.GetDocument()
-			return GetItem(document, indices[1:]...)
+			var index = indices[0].(int)
+			return getItem(entities, index, indices[1:]...)
 		case AttributesLike:
 			var associations = collection.GetAssociations()
-			return GetAttribute(associations, indices...)
+			var key = indices[0].(string)
+			return getValue(associations, key, indices[1:]...)
 		default:
 			return nil
 		}
@@ -1617,23 +1624,53 @@ func GetItem(
 	}
 }
 
-func GetAttribute(
+func getItem(
+	entities fra.ListLike[EntityLike],
+	index int,
+	indices ...any,
+) DocumentLike {
+	var size = int(entities.GetSize())
+	if size == 0 {
+		// The list of entities is empty.
+		return nil
+	}
+	if index < 0 {
+		// Negative indices start from the end of the list.
+		index = size + index + 1
+	}
+	if index > size {
+		// The index is out of bounds.
+		return nil
+	}
+	var entity = entities.GetValue(uti.Index(index))
+	var document = entity.GetDocument()
+	if len(indices) > 0 {
+		document = GetAttribute(document, indices...)
+	}
+	return document
+}
+
+func getValue(
 	associations fra.ListLike[AssociationLike],
+	key string,
 	indices ...any,
 ) DocumentLike {
 	var iterator = associations.GetIterator()
 	for iterator.HasNext() {
-		var key string
+		var string_ string
 		var association = iterator.GetNext()
 		switch primitive := association.GetPrimitive().GetAny().(type) {
 		case ElementLike:
-			key = primitive.GetAny().(string)
+			string_ = primitive.GetAny().(string)
 		case StringLike:
-			key = primitive.GetAny().(string)
+			string_ = primitive.GetAny().(string)
 		}
-		if key == indices[0].(string) {
+		if string_ == key {
 			var document = association.GetDocument()
-			return GetItem(document, indices[1:]...)
+			if len(indices) > 0 {
+				document = GetAttribute(document, indices...)
+			}
+			return document
 		}
 	}
 	return nil

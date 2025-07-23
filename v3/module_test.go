@@ -35,20 +35,41 @@ func TestParsingRoundtrips(t *tes.T) {
 	}
 }
 
-func TestEntityAccess(t *tes.T) {
-	var document doc.DocumentLike = nil
-	var entity = doc.GetItem(document, 1)
-	ass.Equal(t, document, entity)
+func TestParameterAccess(t *tes.T) {
+	var document doc.DocumentLike
+	var parameter = doc.GetParameter(document, "$type")
+	ass.Equal(t, nil, parameter)
 
 	var source = `[ ]`
 	document = doc.ParseSource(source)
-	entity = doc.GetItem(document)
-	ass.Equal(t, document, entity)
+	parameter = doc.GetParameter(document, "$type")
+	ass.Equal(t, nil, parameter)
+
+	source = `[ ]($type: "foo")`
+	document = doc.ParseSource(source)
+	parameter = doc.GetParameter(document, "$type")
+	ass.Equal(t, "\"foo\"\n", doc.FormatDocument(parameter))
+
+	source = `[ ]($type: "foo" $hype: /bar)`
+	document = doc.ParseSource(source)
+	parameter = doc.GetParameter(document, "$hype")
+	ass.Equal(t, "/bar\n", doc.FormatDocument(parameter))
+}
+
+func TestAttributeAccess(t *tes.T) {
+	var document doc.DocumentLike
+	var attribute = doc.GetAttribute(document, 1)
+	ass.Equal(t, document, attribute)
+
+	var source = `[ ]`
+	document = doc.ParseSource(source)
+	attribute = doc.GetAttribute(document)
+	ass.Equal(t, nil, attribute)
 
 	source = `[ ]`
 	document = doc.ParseSource(source)
-	entity = doc.GetItem(document, 1)
-	ass.Equal(t, nil, entity)
+	attribute = doc.GetAttribute(document, 1)
+	ass.Equal(t, nil, attribute)
 
 	source = `[
     $alpha
@@ -56,12 +77,12 @@ func TestEntityAccess(t *tes.T) {
     $gamma
 ]`
 	document = doc.ParseSource(source)
-	entity = doc.GetItem(document, 1)
-	ass.Equal(t, "$alpha\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, 2)
-	ass.Equal(t, "$beta\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, 3)
-	ass.Equal(t, "$gamma\n", doc.FormatDocument(entity))
+	attribute = doc.GetAttribute(document, 1)
+	ass.Equal(t, "$alpha\n", doc.FormatDocument(attribute))
+	attribute = doc.GetAttribute(document, 2)
+	ass.Equal(t, "$beta\n", doc.FormatDocument(attribute))
+	attribute = doc.GetAttribute(document, 3)
+	ass.Equal(t, "$gamma\n", doc.FormatDocument(attribute))
 
 	source = `[
     $alpha: "1"
@@ -69,12 +90,12 @@ func TestEntityAccess(t *tes.T) {
     $gamma: "3"
 ]`
 	document = doc.ParseSource(source)
-	entity = doc.GetItem(document, "$alpha")
-	ass.Equal(t, "\"1\"\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, "$beta")
-	ass.Equal(t, "\"2\"\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, "$gamma")
-	ass.Equal(t, "\"3\"\n", doc.FormatDocument(entity))
+	attribute = doc.GetAttribute(document, "$alpha")
+	ass.Equal(t, "\"1\"\n", doc.FormatDocument(attribute))
+	attribute = doc.GetAttribute(document, "$beta")
+	ass.Equal(t, "\"2\"\n", doc.FormatDocument(attribute))
+	attribute = doc.GetAttribute(document, "$gamma")
+	ass.Equal(t, "\"3\"\n", doc.FormatDocument(attribute))
 
 	source = `[
     $items: [
@@ -89,10 +110,10 @@ func TestEntityAccess(t *tes.T) {
     ]
 ]`
 	document = doc.ParseSource(source)
-	entity = doc.GetItem(document, "$items", 2)
-	ass.Equal(t, "2\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, "$attributes", "$gamma")
-	ass.Equal(t, "\"3\"\n", doc.FormatDocument(entity))
+	attribute = doc.GetAttribute(document, "$items", 2)
+	ass.Equal(t, "2\n", doc.FormatDocument(attribute))
+	attribute = doc.GetAttribute(document, "$attributes", "$gamma")
+	ass.Equal(t, "\"3\"\n", doc.FormatDocument(attribute))
 
 	source = `[
     [
@@ -114,16 +135,16 @@ func TestEntityAccess(t *tes.T) {
     ]
 ]`
 	document = doc.ParseSource(source)
-	entity = doc.GetItem(document, 1, 2)
-	ass.Equal(t, "2\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, 2, "$beta")
-	ass.Equal(t, "\"2\"\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, 1, 3, "~tau")
-	ass.Equal(t, "6.28\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, 2, "$alpha", -1)
-	ass.Equal(t, "'c'\n", doc.FormatDocument(entity))
-	entity = doc.GetItem(document, 3)
-	ass.Equal(t, nil, entity)
-	entity = doc.GetItem(document, 2, "$delta")
-	ass.Equal(t, nil, entity)
+	attribute = doc.GetAttribute(document, 1, 2)
+	ass.Equal(t, "2\n", doc.FormatDocument(attribute))
+	attribute = doc.GetAttribute(document, 2, "$beta")
+	ass.Equal(t, "\"2\"\n", doc.FormatDocument(attribute))
+	attribute = doc.GetAttribute(document, 1, 3, "~tau")
+	ass.Equal(t, "6.28\n", doc.FormatDocument(attribute))
+	attribute = doc.GetAttribute(document, 2, "$alpha", -1)
+	ass.Equal(t, "'c'\n", doc.FormatDocument(attribute))
+	attribute = doc.GetAttribute(document, 3)
+	ass.Equal(t, nil, attribute)
+	attribute = doc.GetAttribute(document, 2, "$delta")
+	ass.Equal(t, nil, attribute)
 }
