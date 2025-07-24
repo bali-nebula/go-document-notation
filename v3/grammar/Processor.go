@@ -672,26 +672,6 @@ func (v *processor_) ProcessElementSlot(
 ) {
 }
 
-func (v *processor_) PreprocessEmpty(
-	empty ast.EmptyLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessEmpty(
-	empty ast.EmptyLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessEmptySlot(
-	empty ast.EmptyLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessEntity(
 	entity ast.EntityLike,
 	index_ uint,

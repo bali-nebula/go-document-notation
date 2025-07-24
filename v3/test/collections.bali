@@ -1,8 +1,6 @@
 [
     [ ]
-    [:]
     [[ ]]
-    [[:]]
     [~0..~τ]
     [~P0W..~P3Y)
     [<2000>..<2023>]
@@ -55,7 +53,6 @@
         $b: [$foo: "bar"]
     ]
     [ ]($type: <bali:/nebula/collections/Set:v1>)
-    [:]($type: <bali:/nebula/collections/Catalog:v1>)
     [$foobar]($type: <bali:/nebula/collections/List:v1>)
     [
         $foo

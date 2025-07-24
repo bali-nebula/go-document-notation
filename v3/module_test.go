@@ -75,6 +75,12 @@ func TestAttributeAccess(t *tes.T) {
 	document = doc.ParseSource(source)
 	attribute = doc.GetAttribute(document, index)
 	ass.Equal(t, nil, attribute)
+	attribute = doc.ParseSource("$new")
+	index = 0 // Append a new attribute.
+	ass.True(t, doc.SetAttribute(document, attribute, index))
+	index = 1
+	attribute = doc.GetAttribute(document, index)
+	ass.Equal(t, "$new\n", doc.FormatDocument(attribute))
 
 	source = `[
     $alpha
@@ -93,6 +99,11 @@ func TestAttributeAccess(t *tes.T) {
 	ass.Equal(t, "$gamma\n", doc.FormatDocument(attribute))
 	attribute = doc.ParseSource("$delta")
 	ass.True(t, doc.SetAttribute(document, attribute, index))
+	attribute = doc.GetAttribute(document, index)
+	ass.Equal(t, "$delta\n", doc.FormatDocument(attribute))
+	index = 0
+	ass.True(t, doc.SetAttribute(document, attribute, index))
+	index = 4
 	attribute = doc.GetAttribute(document, index)
 	ass.Equal(t, "$delta\n", doc.FormatDocument(attribute))
 

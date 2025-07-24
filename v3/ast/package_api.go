@@ -366,20 +366,6 @@ type ElementClassLike interface {
 }
 
 /*
-EmptyClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete empty-like class.
-*/
-type EmptyClassLike interface {
-	// Constructor Methods
-	Empty(
-		delimiter1 string,
-		optionalDelimiter string,
-		delimiter2 string,
-	) EmptyLike
-}
-
-/*
 EntityClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete entity-like class.
@@ -1510,21 +1496,6 @@ type ElementLike interface {
 
 	// Attribute Methods
 	GetAny() any
-}
-
-/*
-EmptyLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete empty-like class.
-*/
-type EmptyLike interface {
-	// Principal Methods
-	GetClass() EmptyClassLike
-
-	// Attribute Methods
-	GetDelimiter1() string
-	GetOptionalDelimiter() string
-	GetDelimiter2() string
 }
 
 /*

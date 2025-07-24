@@ -67,7 +67,6 @@ type (
 	DocumentClassLike           = ast.DocumentClassLike
 	DraftClassLike              = ast.DraftClassLike
 	ElementClassLike            = ast.ElementClassLike
-	EmptyClassLike              = ast.EmptyClassLike
 	EntityClassLike             = ast.EntityClassLike
 	EventClassLike              = ast.EventClassLike
 	ExceptionClassLike          = ast.ExceptionClassLike
@@ -156,7 +155,6 @@ type (
 	DocumentLike           = ast.DocumentLike
 	DraftLike              = ast.DraftLike
 	ElementLike            = ast.ElementLike
-	EmptyLike              = ast.EmptyLike
 	EntityLike             = ast.EntityLike
 	EventLike              = ast.EventLike
 	ExceptionLike          = ast.ExceptionLike
@@ -614,22 +612,6 @@ func Element(
 ) ElementLike {
 	return ElementClass().Element(
 		any_,
-	)
-}
-
-func EmptyClass() EmptyClassLike {
-	return ast.EmptyClass()
-}
-
-func Empty(
-	delimiter1 string,
-	optionalDelimiter string,
-	delimiter2 string,
-) EmptyLike {
-	return EmptyClass().Empty(
-		delimiter1,
-		optionalDelimiter,
-		delimiter2,
 	)
 }
 
@@ -1683,9 +1665,15 @@ func setItem(
 	attribute DocumentLike,
 	indices ...any,
 ) bool {
+	if index == 0 && len(indices) == 0 {
+		// Append the attribute to the end of the list.
+		var entity = Entity(attribute)
+		entities.AppendValue(entity)
+		return true
+	}
 	var size = uti.Index(entities.GetSize())
 	if size == 0 {
-		// The list of entities is empty.
+		// The list is empty.
 		return false
 	}
 	if index < 0 {
@@ -1765,10 +1753,16 @@ func setValue(
 				var document = associations.GetValue(index).GetDocument()
 				return SetAttribute(document, attribute, indices...)
 			}
-			var association = Association(key, ":", attribute)
+			association = Association(key, ":", attribute)
 			associations.SetValue(index, association)
 			return true
 		}
+	}
+	if len(indices) == 0 {
+		// Append the key-value pair to the end of the list.
+		var association = Association(key, ":", attribute)
+		associations.AppendValue(association)
+		return true
 	}
 	return false
 }

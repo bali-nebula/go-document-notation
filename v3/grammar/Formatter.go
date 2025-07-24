@@ -430,16 +430,6 @@ func (v *formatter_) PostprocessDocument(
 	}
 }
 
-func (v *formatter_) ProcessEmptySlot(
-	empty ast.EmptyLike,
-	slot_ uint,
-) {
-	var colon = empty.GetOptionalDelimiter()
-	if uti.IsUndefined(colon) && slot_ == 1 {
-		v.appendString(" ")
-	}
-}
-
 func (v *formatter_) PreprocessEntity(
 	entity ast.EntityLike,
 	index_ uint,
@@ -479,11 +469,15 @@ func (v *formatter_) ProcessItemsSlot(
 	case 2:
 		v.depth_--
 		var entities = items.GetEntities()
-		var entity = entities.GetIterator().GetNext()
-		var document = entity.GetDocument()
-		var isParameterized = uti.IsDefined(document.GetOptionalParameters())
-		if entities.GetSize() > 1 || isParameterized {
-			v.appendNewline()
+		if entities.IsEmpty() {
+			v.appendString(" ")
+		} else {
+			var entity = entities.GetIterator().GetNext()
+			var document = entity.GetDocument()
+			var isParameterized = uti.IsDefined(document.GetOptionalParameters())
+			if entities.GetSize() > 1 || isParameterized {
+				v.appendNewline()
+			}
 		}
 	}
 }

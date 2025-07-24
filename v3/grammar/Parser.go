@@ -797,15 +797,6 @@ func (v *parser_) parseCollection() (
 	token TokenLike,
 	ok bool,
 ) {
-	// Attempt to parse a single Empty Collection.
-	var empty ast.EmptyLike
-	empty, token, ok = v.parseEmpty()
-	if ok {
-		// Found a single Empty Collection.
-		collection = ast.CollectionClass().Collection(empty)
-		return
-	}
-
 	// Attempt to parse a single Range Collection.
 	var range_ ast.RangeLike
 	range_, token, ok = v.parseRange()
@@ -1354,71 +1345,6 @@ func (v *parser_) parseElement() (
 	}
 
 	// This is not a single Element rule.
-	return
-}
-
-func (v *parser_) parseEmpty() (
-	empty ast.EmptyLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single "[" literal.
-	var delimiter1 string
-	delimiter1, token, ok = v.parseDelimiter("[")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single Empty rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Empty", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse an optional ":" literal.
-	var optionalDelimiter string
-	optionalDelimiter, token, ok = v.parseDelimiter(":")
-	if ok {
-		if uti.IsDefined(tokens) {
-			tokens.AppendValue(token)
-		}
-	} else {
-		optionalDelimiter = "" // Reset this to undefined.
-	}
-
-	// Attempt to parse a single "]" literal.
-	var delimiter2 string
-	delimiter2, token, ok = v.parseDelimiter("]")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single Empty rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Empty", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Found a single Empty rule.
-	ok = true
-	v.remove(tokens)
-	empty = ast.EmptyClass().Empty(
-		delimiter1,
-		optionalDelimiter,
-		delimiter2,
-	)
 	return
 }
 
@@ -2141,7 +2067,7 @@ entitiesLoop:
 		entity, token, ok = v.parseEntity()
 		if !ok {
 			switch {
-			case count_ >= 1:
+			case count_ >= 0:
 				break entitiesLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple Entity rules.
@@ -2150,7 +2076,7 @@ entitiesLoop:
 			default:
 				// Found a syntax error.
 				var message = v.formatError("$Items", token)
-				message += "1 or more Entity rules are required."
+				message += "0 or more Entity rules are required."
 				panic(message)
 			}
 		}
@@ -5273,11 +5199,9 @@ var parserClassReference_ = &parserClass_{
     tag
     version`,
 			"$Collection": `
-    Empty
     Range
     Attributes
     Items  ! Must be after range and attributes.`,
-			"$Empty": `"[" ":"? "]"`,
 			"$Range": `Bra Primitive ".." Primitive Ket`,
 			"$Bra": `
     "["
@@ -5286,7 +5210,7 @@ var parserClassReference_ = &parserClass_{
     "]"
     ")"`,
 			"$Attributes": `"[" Association+ "]"`,
-			"$Items":      `"[" Entity+ "]"`,
+			"$Items":      `"[" Entity* "]"`,
 			"$Entity":     `Document`,
 			"$Procedure":  `"{" Line* "}"`,
 			"$Line": `

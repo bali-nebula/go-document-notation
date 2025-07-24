@@ -61,12 +61,9 @@ $String:
     version
 
 $Collection:
-    Empty
     Range
     Attributes
     Items  ! Must be after range and attributes.
-
-$Empty: "[" ":"? "]"
 
 $Range: Bra Primitive ".." Primitive Ket
 
@@ -80,7 +77,7 @@ $Ket:
 
 $Attributes: "[" Association+ "]"
 
-$Items: "[" Entity+ "]"
+$Items: "[" Entity* "]"
 
 $Entity: Document
 
