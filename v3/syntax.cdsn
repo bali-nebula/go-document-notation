@@ -27,6 +27,7 @@ $Document: Component Parameters? note?
 $Component:
     Element
     String
+    Range
     Collection
     Procedure
 
@@ -60,11 +61,6 @@ $String:
     tag
     version
 
-$Collection:
-    Range
-    Attributes
-    Items  ! Must be after range and attributes.
-
 $Range: Bra Primitive ".." Primitive Ket
 
 $Bra:
@@ -74,6 +70,10 @@ $Bra:
 $Ket:
     "]"
     ")"
+
+$Collection:
+    Attributes
+    Items  ! Must be after range and attributes.
 
 $Attributes: "[" Association+ "]"
 

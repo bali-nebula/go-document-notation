@@ -474,18 +474,6 @@ func (v *visitor_) visitCollection(
 ) {
 	// Visit the possible collection rule types.
 	switch actual := collection.GetAny().(type) {
-	case ast.RangeLike:
-		v.processor_.PreprocessRange(
-			actual,
-			1,
-			1,
-		)
-		v.visitRange(actual)
-		v.processor_.PostprocessRange(
-			actual,
-			1,
-			1,
-		)
 	case ast.AttributesLike:
 		v.processor_.PreprocessAttributes(
 			actual,
@@ -582,6 +570,18 @@ func (v *visitor_) visitComponent(
 		)
 		v.visitString(actual)
 		v.processor_.PostprocessString(
+			actual,
+			1,
+			1,
+		)
+	case ast.RangeLike:
+		v.processor_.PreprocessRange(
+			actual,
+			1,
+			1,
+		)
+		v.visitRange(actual)
+		v.processor_.PostprocessRange(
 			actual,
 			1,
 			1,

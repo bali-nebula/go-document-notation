@@ -797,15 +797,6 @@ func (v *parser_) parseCollection() (
 	token TokenLike,
 	ok bool,
 ) {
-	// Attempt to parse a single Range Collection.
-	var range_ ast.RangeLike
-	range_, token, ok = v.parseRange()
-	if ok {
-		// Found a single Range Collection.
-		collection = ast.CollectionClass().Collection(range_)
-		return
-	}
-
 	// Attempt to parse a single Attributes Collection.
 	var attributes ast.AttributesLike
 	attributes, token, ok = v.parseAttributes()
@@ -951,6 +942,15 @@ func (v *parser_) parseComponent() (
 	if ok {
 		// Found a single String Component.
 		component = ast.ComponentClass().Component(string_)
+		return
+	}
+
+	// Attempt to parse a single Range Component.
+	var range_ ast.RangeLike
+	range_, token, ok = v.parseRange()
+	if ok {
+		// Found a single Range Component.
+		component = ast.ComponentClass().Component(range_)
 		return
 	}
 
@@ -5171,6 +5171,7 @@ var parserClassReference_ = &parserClass_{
 			"$Component": `
     Element
     String
+    Range
     Collection
     Procedure`,
 			"$Parameters":  `"(" Association+ ")"`,
@@ -5198,10 +5199,6 @@ var parserClassReference_ = &parserClass_{
     quote
     tag
     version`,
-			"$Collection": `
-    Range
-    Attributes
-    Items  ! Must be after range and attributes.`,
 			"$Range": `Bra Primitive ".." Primitive Ket`,
 			"$Bra": `
     "["
@@ -5209,6 +5206,9 @@ var parserClassReference_ = &parserClass_{
 			"$Ket": `
     "]"
     ")"`,
+			"$Collection": `
+    Attributes
+    Items  ! Must be after range and attributes.`,
 			"$Attributes": `"[" Association+ "]"`,
 			"$Items":      `"[" Entity* "]"`,
 			"$Entity":     `Document`,
