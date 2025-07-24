@@ -58,6 +58,15 @@ func TestParameterAccess(t *tes.T) {
 	key = doc.Primitive(doc.Element("$hype"))
 	parameter = doc.GetParameter(document, key)
 	ass.Equal(t, "/bar\n", doc.FormatDocument(parameter))
+	parameter = doc.ParseSource("'A'")
+	ass.True(t, doc.SetParameter(document, key, parameter))
+	parameter = doc.GetParameter(document, key)
+	ass.Equal(t, "'A'\n", doc.FormatDocument(parameter))
+	key = doc.Primitive(doc.Element("$new"))
+	parameter = doc.ParseSource("none")
+	ass.True(t, doc.SetParameter(document, key, parameter))
+	parameter = doc.GetParameter(document, key)
+	ass.Equal(t, "none\n", doc.FormatDocument(parameter))
 }
 
 func TestAttributeAccess(t *tes.T) {
@@ -81,6 +90,9 @@ func TestAttributeAccess(t *tes.T) {
 	index = 1
 	attribute = doc.GetAttribute(document, index)
 	ass.Equal(t, "$new\n", doc.FormatDocument(attribute))
+	doc.RemoveAttribute(document, index)
+	attribute = doc.GetAttribute(document, index)
+	ass.Equal(t, nil, attribute)
 
 	source = `[
     $alpha
@@ -102,8 +114,13 @@ func TestAttributeAccess(t *tes.T) {
 	attribute = doc.GetAttribute(document, index)
 	ass.Equal(t, "$delta\n", doc.FormatDocument(attribute))
 	index = 0
+	attribute = doc.ParseSource("$epsilon")
 	ass.True(t, doc.SetAttribute(document, attribute, index))
 	index = 4
+	attribute = doc.GetAttribute(document, index)
+	ass.Equal(t, "$epsilon\n", doc.FormatDocument(attribute))
+	doc.RemoveAttribute(document, index)
+	index = -1
 	attribute = doc.GetAttribute(document, index)
 	ass.Equal(t, "$delta\n", doc.FormatDocument(attribute))
 
@@ -126,6 +143,10 @@ func TestAttributeAccess(t *tes.T) {
 	ass.True(t, doc.SetAttribute(document, attribute, key))
 	attribute = doc.GetAttribute(document, key)
 	ass.Equal(t, "\"5\"\n", doc.FormatDocument(attribute))
+	doc.RemoveAttribute(document, key)
+	key = doc.Primitive(doc.Element("$beta"))
+	attribute = doc.GetAttribute(document, key)
+	ass.Equal(t, "\"2\"\n", doc.FormatDocument(attribute))
 
 	source = `[
     $items: [
@@ -152,6 +173,10 @@ func TestAttributeAccess(t *tes.T) {
 	ass.True(t, doc.SetAttribute(document, attribute, key, key2))
 	attribute = doc.GetAttribute(document, key, key2)
 	ass.Equal(t, "\"5\"\n", doc.FormatDocument(attribute))
+	doc.RemoveAttribute(document, key, key2)
+	key2 = doc.Primitive(doc.Element("$beta"))
+	attribute = doc.GetAttribute(document, key, key2)
+	ass.Equal(t, "\"2\"\n", doc.FormatDocument(attribute))
 
 	source = `[
     [
@@ -193,8 +218,9 @@ func TestAttributeAccess(t *tes.T) {
 	index = 2
 	key2 = doc.Primitive(doc.Element("$alpha"))
 	var index3 uti.Index = -1
+	doc.RemoveAttribute(document, index, key2, index3)
 	attribute = doc.GetAttribute(document, index, key2, index3)
-	ass.Equal(t, "'c'\n", doc.FormatDocument(attribute))
+	ass.Equal(t, "'b'\n", doc.FormatDocument(attribute))
 	index = 3
 	attribute = doc.GetAttribute(document, index)
 	ass.Equal(t, nil, attribute)

@@ -1580,6 +1580,22 @@ func GetParameter(
 	return getValue(associations, key)
 }
 
+func SetParameter(
+	document DocumentLike,
+	key PrimitiveLike,
+	parameter DocumentLike,
+) bool {
+	if uti.IsUndefined(document) {
+		return false
+	}
+	var parameters = document.GetOptionalParameters()
+	if uti.IsUndefined(parameters) {
+		return false
+	}
+	var associations = parameters.GetAssociations()
+	return setValue(associations, key, parameter)
+}
+
 func GetAttribute(
 	document DocumentLike,
 	indices ...any,
@@ -1598,12 +1614,9 @@ func GetAttribute(
 			var associations = collection.GetAssociations()
 			var key = indices[0].(PrimitiveLike)
 			return getValue(associations, key, indices[1:]...)
-		default:
-			return nil
 		}
-	default:
-		return nil
 	}
+	return nil
 }
 
 func SetAttribute(
@@ -1625,11 +1638,30 @@ func SetAttribute(
 			var associations = collection.GetAssociations()
 			var key = indices[0].(PrimitiveLike)
 			return setValue(associations, key, attribute, indices[1:]...)
-		default:
-			return false
 		}
-	default:
-		return false
+	}
+	return false
+}
+
+func RemoveAttribute(
+	document DocumentLike,
+	indices ...any,
+) {
+	if uti.IsUndefined(document) || len(indices) == 0 {
+		return
+	}
+	switch component := document.GetComponent().GetAny().(type) {
+	case CollectionLike:
+		switch collection := component.GetAny().(type) {
+		case ItemsLike:
+			var entities = collection.GetEntities()
+			var index = indices[0].(uti.Index)
+			removeItem(entities, index, indices[1:]...)
+		case AttributesLike:
+			var associations = collection.GetAssociations()
+			var key = indices[0].(PrimitiveLike)
+			removeValue(associations, key, indices[1:]...)
+		}
 	}
 }
 
@@ -1691,6 +1723,33 @@ func setItem(
 	var entity = Entity(attribute)
 	entities.SetValue(uti.Index(index), entity)
 	return true
+}
+
+func removeItem(
+	entities fra.ListLike[EntityLike],
+	index uti.Index,
+	indices ...any,
+) {
+	var size = uti.Index(entities.GetSize())
+	if size == 0 {
+		// The list of entities is empty.
+		return
+	}
+	if index < 0 {
+		// Negative indices start from the end of the list.
+		index = size + index + 1
+	}
+	if index > size {
+		// The index is out of bounds.
+		return
+	}
+	if len(indices) == 0 {
+		entities.RemoveValue(index)
+		return
+	}
+	var entity = entities.GetValue(index)
+	var document = entity.GetDocument()
+	RemoveAttribute(document, indices...)
 }
 
 func getValue(
@@ -1765,4 +1824,37 @@ func setValue(
 		return true
 	}
 	return false
+}
+
+func removeValue(
+	associations fra.ListLike[AssociationLike],
+	key PrimitiveLike,
+	indices ...any,
+) {
+	var index uti.Index
+	var iterator = associations.GetIterator()
+	for index = 1; iterator.HasNext(); index++ {
+		var first, second string
+		var association = iterator.GetNext()
+		switch primitive := association.GetPrimitive().GetAny().(type) {
+		case ElementLike:
+			first = primitive.GetAny().(string)
+		case StringLike:
+			first = primitive.GetAny().(string)
+		}
+		switch primitive := key.GetAny().(type) {
+		case ElementLike:
+			second = primitive.GetAny().(string)
+		case StringLike:
+			second = primitive.GetAny().(string)
+		}
+		if first == second {
+			var document = association.GetDocument()
+			if len(indices) > 0 {
+				RemoveAttribute(document, indices...)
+			} else {
+				associations.RemoveValue(index)
+			}
+		}
+	}
 }

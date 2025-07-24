@@ -73,7 +73,7 @@ $Ket:
 
 $Collection:
     Attributes
-    Items  ! Must be after range and attributes.
+    Items  ! Must be after attributes.
 
 $Attributes: "[" Association+ "]"
 
