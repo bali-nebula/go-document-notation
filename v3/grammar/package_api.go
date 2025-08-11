@@ -503,20 +503,6 @@ type Methodical interface {
 		bag ast.BagLike,
 		slot_ uint,
 	)
-	PreprocessBra(
-		bra ast.BraLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessBra(
-		bra ast.BraLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessBraSlot(
-		bra ast.BraLike,
-		slot_ uint,
-	)
 	PreprocessBreakClause(
 		breakClause ast.BreakClauseLike,
 		index_ uint,
@@ -713,18 +699,18 @@ type Methodical interface {
 		element ast.ElementLike,
 		slot_ uint,
 	)
-	PreprocessEntity(
-		entity ast.EntityLike,
+	PreprocessEntities(
+		entities ast.EntitiesLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessEntity(
-		entity ast.EntityLike,
+	PostprocessEntities(
+		entities ast.EntitiesLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessEntitySlot(
-		entity ast.EntityLike,
+	ProcessEntitiesSlot(
+		entities ast.EntitiesLike,
 		slot_ uint,
 	)
 	PreprocessEvent(
@@ -839,20 +825,6 @@ type Methodical interface {
 		index ast.IndexLike,
 		slot_ uint,
 	)
-	PreprocessIndirect(
-		indirect ast.IndirectLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessIndirect(
-		indirect ast.IndirectLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessIndirectSlot(
-		indirect ast.IndirectLike,
-		slot_ uint,
-	)
 	PreprocessInverse(
 		inverse ast.InverseLike,
 		index_ uint,
@@ -881,20 +853,6 @@ type Methodical interface {
 		inversion ast.InversionLike,
 		slot_ uint,
 	)
-	PreprocessInvocation(
-		invocation ast.InvocationLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessInvocation(
-		invocation ast.InvocationLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessInvocationSlot(
-		invocation ast.InvocationLike,
-		slot_ uint,
-	)
 	PreprocessInvoke(
 		invoke ast.InvokeLike,
 		index_ uint,
@@ -909,32 +867,32 @@ type Methodical interface {
 		invoke ast.InvokeLike,
 		slot_ uint,
 	)
-	PreprocessItems(
-		items ast.ItemsLike,
+	PreprocessItem(
+		item ast.ItemLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessItems(
-		items ast.ItemsLike,
+	PostprocessItem(
+		item ast.ItemLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessItemsSlot(
-		items ast.ItemsLike,
+	ProcessItemSlot(
+		item ast.ItemLike,
 		slot_ uint,
 	)
-	PreprocessKet(
-		ket ast.KetLike,
+	PreprocessLeft(
+		left ast.LeftLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessKet(
-		ket ast.KetLike,
+	PostprocessLeft(
+		left ast.LeftLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessKetSlot(
-		ket ast.KetLike,
+	ProcessLeftSlot(
+		left ast.LeftLike,
 		slot_ uint,
 	)
 	PreprocessLetClause(
@@ -1133,18 +1091,18 @@ type Methodical interface {
 		onClause ast.OnClauseLike,
 		slot_ uint,
 	)
-	PreprocessOperation(
-		operation ast.OperationLike,
+	PreprocessOperator(
+		operator ast.OperatorLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessOperation(
-		operation ast.OperationLike,
+	PostprocessOperator(
+		operator ast.OperatorLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessOperationSlot(
-		operation ast.OperationLike,
+	ProcessOperatorSlot(
+		operator ast.OperatorLike,
 		slot_ uint,
 	)
 	PreprocessParameters(
@@ -1273,6 +1231,20 @@ type Methodical interface {
 		recipient ast.RecipientLike,
 		slot_ uint,
 	)
+	PreprocessReference(
+		reference ast.ReferenceLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessReference(
+		reference ast.ReferenceLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessReferenceSlot(
+		reference ast.ReferenceLike,
+		slot_ uint,
+	)
 	PreprocessReferent(
 		referent ast.ReferentLike,
 		index_ uint,
@@ -1355,6 +1327,20 @@ type Methodical interface {
 	)
 	ProcessReturnClauseSlot(
 		returnClause ast.ReturnClauseLike,
+		slot_ uint,
+	)
+	PreprocessRight(
+		right ast.RightLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessRight(
+		right ast.RightLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessRightSlot(
+		right ast.RightLike,
 		slot_ uint,
 	)
 	PreprocessSaveClause(
@@ -1453,20 +1439,6 @@ type Methodical interface {
 	)
 	ProcessSubjectSlot(
 		subject ast.SubjectLike,
-		slot_ uint,
-	)
-	PreprocessTarget(
-		target ast.TargetLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessTarget(
-		target ast.TargetLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessTargetSlot(
-		target ast.TargetLike,
 		slot_ uint,
 	)
 	PreprocessTemplate(

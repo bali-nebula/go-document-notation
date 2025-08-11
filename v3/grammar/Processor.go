@@ -372,26 +372,6 @@ func (v *processor_) ProcessBagSlot(
 ) {
 }
 
-func (v *processor_) PreprocessBra(
-	bra ast.BraLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessBra(
-	bra ast.BraLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessBraSlot(
-	bra ast.BraLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessBreakClause(
 	breakClause ast.BreakClauseLike,
 	index_ uint,
@@ -672,22 +652,22 @@ func (v *processor_) ProcessElementSlot(
 ) {
 }
 
-func (v *processor_) PreprocessEntity(
-	entity ast.EntityLike,
+func (v *processor_) PreprocessEntities(
+	entities ast.EntitiesLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessEntity(
-	entity ast.EntityLike,
+func (v *processor_) PostprocessEntities(
+	entities ast.EntitiesLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessEntitySlot(
-	entity ast.EntityLike,
+func (v *processor_) ProcessEntitiesSlot(
+	entities ast.EntitiesLike,
 	slot_ uint,
 ) {
 }
@@ -852,26 +832,6 @@ func (v *processor_) ProcessIndexSlot(
 ) {
 }
 
-func (v *processor_) PreprocessIndirect(
-	indirect ast.IndirectLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessIndirect(
-	indirect ast.IndirectLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessIndirectSlot(
-	indirect ast.IndirectLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessInverse(
 	inverse ast.InverseLike,
 	index_ uint,
@@ -912,26 +872,6 @@ func (v *processor_) ProcessInversionSlot(
 ) {
 }
 
-func (v *processor_) PreprocessInvocation(
-	invocation ast.InvocationLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessInvocation(
-	invocation ast.InvocationLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessInvocationSlot(
-	invocation ast.InvocationLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessInvoke(
 	invoke ast.InvokeLike,
 	index_ uint,
@@ -952,42 +892,42 @@ func (v *processor_) ProcessInvokeSlot(
 ) {
 }
 
-func (v *processor_) PreprocessItems(
-	items ast.ItemsLike,
+func (v *processor_) PreprocessItem(
+	item ast.ItemLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessItems(
-	items ast.ItemsLike,
+func (v *processor_) PostprocessItem(
+	item ast.ItemLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessItemsSlot(
-	items ast.ItemsLike,
+func (v *processor_) ProcessItemSlot(
+	item ast.ItemLike,
 	slot_ uint,
 ) {
 }
 
-func (v *processor_) PreprocessKet(
-	ket ast.KetLike,
+func (v *processor_) PreprocessLeft(
+	left ast.LeftLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessKet(
-	ket ast.KetLike,
+func (v *processor_) PostprocessLeft(
+	left ast.LeftLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessKetSlot(
-	ket ast.KetLike,
+func (v *processor_) ProcessLeftSlot(
+	left ast.LeftLike,
 	slot_ uint,
 ) {
 }
@@ -1272,22 +1212,22 @@ func (v *processor_) ProcessOnClauseSlot(
 ) {
 }
 
-func (v *processor_) PreprocessOperation(
-	operation ast.OperationLike,
+func (v *processor_) PreprocessOperator(
+	operator ast.OperatorLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessOperation(
-	operation ast.OperationLike,
+func (v *processor_) PostprocessOperator(
+	operator ast.OperatorLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessOperationSlot(
-	operation ast.OperationLike,
+func (v *processor_) ProcessOperatorSlot(
+	operator ast.OperatorLike,
 	slot_ uint,
 ) {
 }
@@ -1472,6 +1412,26 @@ func (v *processor_) ProcessRecipientSlot(
 ) {
 }
 
+func (v *processor_) PreprocessReference(
+	reference ast.ReferenceLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessReference(
+	reference ast.ReferenceLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessReferenceSlot(
+	reference ast.ReferenceLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessReferent(
 	referent ast.ReferentLike,
 	index_ uint,
@@ -1588,6 +1548,26 @@ func (v *processor_) PostprocessReturnClause(
 
 func (v *processor_) ProcessReturnClauseSlot(
 	returnClause ast.ReturnClauseLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessRight(
+	right ast.RightLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessRight(
+	right ast.RightLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessRightSlot(
+	right ast.RightLike,
 	slot_ uint,
 ) {
 }
@@ -1728,26 +1708,6 @@ func (v *processor_) PostprocessSubject(
 
 func (v *processor_) ProcessSubjectSlot(
 	subject ast.SubjectLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessTarget(
-	target ast.TargetLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessTarget(
-	target ast.TargetLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessTargetSlot(
-	target ast.TargetLike,
 	slot_ uint,
 ) {
 }

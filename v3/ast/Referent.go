@@ -37,18 +37,18 @@ func ReferentClass() ReferentClassLike {
 
 func (c *referentClass_) Referent(
 	delimiter string,
-	indirect IndirectLike,
+	reference ReferenceLike,
 ) ReferentLike {
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(indirect) {
-		panic("The \"indirect\" attribute is required by this class.")
+	if uti.IsUndefined(reference) {
+		panic("The \"reference\" attribute is required by this class.")
 	}
 	var instance = &referent_{
 		// Initialize the instance attributes.
 		delimiter_: delimiter,
-		indirect_:  indirect,
+		reference_: reference,
 	}
 	return instance
 }
@@ -67,8 +67,8 @@ func (v *referent_) GetDelimiter() string {
 	return v.delimiter_
 }
 
-func (v *referent_) GetIndirect() IndirectLike {
-	return v.indirect_
+func (v *referent_) GetReference() ReferenceLike {
+	return v.reference_
 }
 
 // PROTECTED INTERFACE
@@ -78,7 +78,7 @@ func (v *referent_) GetIndirect() IndirectLike {
 type referent_ struct {
 	// Declare the instance attributes.
 	delimiter_ string
-	indirect_  IndirectLike
+	reference_ ReferenceLike
 }
 
 // Class Structure

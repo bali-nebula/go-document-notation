@@ -39,7 +39,7 @@ func SubcomponentClass() SubcomponentClassLike {
 func (c *subcomponentClass_) Subcomponent(
 	identifier string,
 	delimiter1 string,
-	indexes fra.ListLike[IndexLike],
+	indexes fra.Sequential[IndexLike],
 	delimiter2 string,
 ) SubcomponentLike {
 	if uti.IsUndefined(identifier) {
@@ -82,7 +82,7 @@ func (v *subcomponent_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *subcomponent_) GetIndexes() fra.ListLike[IndexLike] {
+func (v *subcomponent_) GetIndexes() fra.Sequential[IndexLike] {
 	return v.indexes_
 }
 
@@ -98,7 +98,7 @@ type subcomponent_ struct {
 	// Declare the instance attributes.
 	identifier_ string
 	delimiter1_ string
-	indexes_    fra.ListLike[IndexLike]
+	indexes_    fra.Sequential[IndexLike]
 	delimiter2_ string
 }
 

@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func KetClass() KetClassLike {
-	return ketClass()
+func RightClass() RightClassLike {
+	return rightClass()
 }
 
 // Constructor Methods
 
-func (c *ketClass_) Ket(
+func (c *rightClass_) Right(
 	any_ any,
-) KetLike {
+) RightLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &ket_{
+	var instance = &right_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *ketClass_) Ket(
 
 // Principal Methods
 
-func (v *ket_) GetClass() KetClassLike {
-	return ketClass()
+func (v *right_) GetClass() RightClassLike {
+	return rightClass()
 }
 
 // Attribute Methods
 
-func (v *ket_) GetAny() any {
+func (v *right_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *ket_) GetAny() any {
 
 // Instance Structure
 
-type ket_ struct {
+type right_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type ketClass_ struct {
+type rightClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func ketClass() *ketClass_ {
-	return ketClassReference_
+func rightClass() *rightClass_ {
+	return rightClassReference_
 }
 
-var ketClassReference_ = &ketClass_{
+var rightClassReference_ = &rightClass_{
 	// Initialize the class constants.
 }

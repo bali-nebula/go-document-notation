@@ -157,7 +157,7 @@ type AttributesClassLike interface {
 	// Constructor Methods
 	Attributes(
 		delimiter1 string,
-		associations fra.ListLike[AssociationLike],
+		associations fra.Sequential[AssociationLike],
 		delimiter2 string,
 	) AttributesLike
 }
@@ -172,18 +172,6 @@ type BagClassLike interface {
 	Bag(
 		expression ExpressionLike,
 	) BagLike
-}
-
-/*
-BraClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete bra-like class.
-*/
-type BraClassLike interface {
-	// Constructor Methods
-	Bra(
-		any_ any,
-	) BraLike
 }
 
 /*
@@ -323,7 +311,7 @@ type DoClauseClassLike interface {
 	// Constructor Methods
 	DoClause(
 		delimiter string,
-		invocation InvocationLike,
+		method MethodLike,
 	) DoClauseLike
 }
 
@@ -366,15 +354,17 @@ type ElementClassLike interface {
 }
 
 /*
-EntityClassLike is a class interface that declares the
+EntitiesClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete entity-like class.
+supported by each concrete entities-like class.
 */
-type EntityClassLike interface {
+type EntitiesClassLike interface {
 	// Constructor Methods
-	Entity(
-		document DocumentLike,
-	) EntityLike
+	Entities(
+		delimiter1 string,
+		items fra.Sequential[ItemLike],
+		delimiter2 string,
+	) EntitiesLike
 }
 
 /*
@@ -410,7 +400,7 @@ type ExpressionClassLike interface {
 	// Constructor Methods
 	Expression(
 		subject SubjectLike,
-		predicates fra.ListLike[PredicateLike],
+		predicates fra.Sequential[PredicateLike],
 	) ExpressionLike
 }
 
@@ -448,7 +438,7 @@ type FunctionClassLike interface {
 	Function(
 		identifier string,
 		delimiter1 string,
-		arguments fra.ListLike[ArgumentLike],
+		arguments fra.Sequential[ArgumentLike],
 		delimiter2 string,
 	) FunctionLike
 }
@@ -481,18 +471,6 @@ type IndexClassLike interface {
 }
 
 /*
-IndirectClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete indirect-like class.
-*/
-type IndirectClassLike interface {
-	// Constructor Methods
-	Indirect(
-		any_ any,
-	) IndirectLike
-}
-
-/*
 InverseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete inverse-like class.
@@ -518,18 +496,6 @@ type InversionClassLike interface {
 }
 
 /*
-InvocationClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete invocation-like class.
-*/
-type InvocationClassLike interface {
-	// Constructor Methods
-	Invocation(
-		any_ any,
-	) InvocationLike
-}
-
-/*
 InvokeClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete invoke-like class.
@@ -542,29 +508,27 @@ type InvokeClassLike interface {
 }
 
 /*
-ItemsClassLike is a class interface that declares the
+ItemClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete items-like class.
+supported by each concrete item-like class.
 */
-type ItemsClassLike interface {
+type ItemClassLike interface {
 	// Constructor Methods
-	Items(
-		delimiter1 string,
-		entities fra.ListLike[EntityLike],
-		delimiter2 string,
-	) ItemsLike
+	Item(
+		document DocumentLike,
+	) ItemLike
 }
 
 /*
-KetClassLike is a class interface that declares the
+LeftClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete ket-like class.
+supported by each concrete left-like class.
 */
-type KetClassLike interface {
+type LeftClassLike interface {
 	// Constructor Methods
-	Ket(
+	Left(
 		any_ any,
-	) KetLike
+	) LeftLike
 }
 
 /*
@@ -707,7 +671,7 @@ type MethodClassLike interface {
 		invoke InvokeLike,
 		identifier2 string,
 		delimiter1 string,
-		arguments fra.ListLike[ArgumentLike],
+		arguments fra.Sequential[ArgumentLike],
 		delimiter2 string,
 	) MethodLike
 }
@@ -749,20 +713,20 @@ type OnClauseClassLike interface {
 	OnClause(
 		delimiter string,
 		failure FailureLike,
-		matchingClauses fra.ListLike[MatchingClauseLike],
+		matchingClauses fra.Sequential[MatchingClauseLike],
 	) OnClauseLike
 }
 
 /*
-OperationClassLike is a class interface that declares the
+OperatorClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete operation-like class.
+supported by each concrete operator-like class.
 */
-type OperationClassLike interface {
+type OperatorClassLike interface {
 	// Constructor Methods
-	Operation(
+	Operator(
 		any_ any,
-	) OperationLike
+	) OperatorLike
 }
 
 /*
@@ -774,7 +738,7 @@ type ParametersClassLike interface {
 	// Constructor Methods
 	Parameters(
 		delimiter1 string,
-		associations fra.ListLike[AssociationLike],
+		associations fra.Sequential[AssociationLike],
 		delimiter2 string,
 	) ParametersLike
 }
@@ -816,7 +780,7 @@ supported by each concrete predicate-like class.
 type PredicateClassLike interface {
 	// Constructor Methods
 	Predicate(
-		operation OperationLike,
+		operator OperatorLike,
 		expression ExpressionLike,
 	) PredicateLike
 }
@@ -842,7 +806,7 @@ type ProcedureClassLike interface {
 	// Constructor Methods
 	Procedure(
 		delimiter1 string,
-		lines fra.ListLike[LineLike],
+		lines fra.Sequential[LineLike],
 		delimiter2 string,
 	) ProcedureLike
 }
@@ -868,11 +832,11 @@ supported by each concrete range-like class.
 type RangeClassLike interface {
 	// Constructor Methods
 	Range(
-		bra BraLike,
+		left LeftLike,
 		primitive1 PrimitiveLike,
 		delimiter string,
 		primitive2 PrimitiveLike,
-		ket KetLike,
+		right RightLike,
 	) RangeLike
 }
 
@@ -889,6 +853,18 @@ type RecipientClassLike interface {
 }
 
 /*
+ReferenceClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete reference-like class.
+*/
+type ReferenceClassLike interface {
+	// Constructor Methods
+	Reference(
+		any_ any,
+	) ReferenceLike
+}
+
+/*
 ReferentClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete referent-like class.
@@ -897,7 +873,7 @@ type ReferentClassLike interface {
 	// Constructor Methods
 	Referent(
 		delimiter string,
-		indirect IndirectLike,
+		reference ReferenceLike,
 	) ReferentLike
 }
 
@@ -967,6 +943,18 @@ type ReturnClauseClassLike interface {
 }
 
 /*
+RightClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete right-like class.
+*/
+type RightClassLike interface {
+	// Constructor Methods
+	Right(
+		any_ any,
+	) RightLike
+}
+
+/*
 SaveClauseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete save-clause-like class.
@@ -990,8 +978,8 @@ type SelectClauseClassLike interface {
 	// Constructor Methods
 	SelectClause(
 		delimiter string,
-		target TargetLike,
-		matchingClauses fra.ListLike[MatchingClauseLike],
+		expression ExpressionLike,
+		matchingClauses fra.Sequential[MatchingClauseLike],
 	) SelectClauseLike
 }
 
@@ -1042,7 +1030,7 @@ type SubcomponentClassLike interface {
 	Subcomponent(
 		identifier string,
 		delimiter1 string,
-		indexes fra.ListLike[IndexLike],
+		indexes fra.Sequential[IndexLike],
 		delimiter2 string,
 	) SubcomponentLike
 }
@@ -1057,18 +1045,6 @@ type SubjectClassLike interface {
 	Subject(
 		any_ any,
 	) SubjectLike
-}
-
-/*
-TargetClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete target-like class.
-*/
-type TargetClassLike interface {
-	// Constructor Methods
-	Target(
-		any_ any,
-	) TargetLike
 }
 
 /*
@@ -1275,7 +1251,7 @@ type AttributesLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetAssociations() fra.ListLike[AssociationLike]
+	GetAssociations() fra.Sequential[AssociationLike]
 	GetDelimiter2() string
 }
 
@@ -1290,19 +1266,6 @@ type BagLike interface {
 
 	// Attribute Methods
 	GetExpression() ExpressionLike
-}
-
-/*
-BraLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete bra-like class.
-*/
-type BraLike interface {
-	// Principal Methods
-	GetClass() BraClassLike
-
-	// Attribute Methods
-	GetAny() any
 }
 
 /*
@@ -1454,7 +1417,7 @@ type DoClauseLike interface {
 
 	// Attribute Methods
 	GetDelimiter() string
-	GetInvocation() InvocationLike
+	GetMethod() MethodLike
 }
 
 /*
@@ -1499,16 +1462,18 @@ type ElementLike interface {
 }
 
 /*
-EntityLike is an instance interface that declares the
+EntitiesLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete entity-like class.
+by each instance of a concrete entities-like class.
 */
-type EntityLike interface {
+type EntitiesLike interface {
 	// Principal Methods
-	GetClass() EntityClassLike
+	GetClass() EntitiesClassLike
 
 	// Attribute Methods
-	GetDocument() DocumentLike
+	GetDelimiter1() string
+	GetItems() fra.Sequential[ItemLike]
+	GetDelimiter2() string
 }
 
 /*
@@ -1548,7 +1513,7 @@ type ExpressionLike interface {
 
 	// Attribute Methods
 	GetSubject() SubjectLike
-	GetPredicates() fra.ListLike[PredicateLike]
+	GetPredicates() fra.Sequential[PredicateLike]
 }
 
 /*
@@ -1589,7 +1554,7 @@ type FunctionLike interface {
 	// Attribute Methods
 	GetIdentifier() string
 	GetDelimiter1() string
-	GetArguments() fra.ListLike[ArgumentLike]
+	GetArguments() fra.Sequential[ArgumentLike]
 	GetDelimiter2() string
 }
 
@@ -1623,19 +1588,6 @@ type IndexLike interface {
 }
 
 /*
-IndirectLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete indirect-like class.
-*/
-type IndirectLike interface {
-	// Principal Methods
-	GetClass() IndirectClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
 InverseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete inverse-like class.
@@ -1663,19 +1615,6 @@ type InversionLike interface {
 }
 
 /*
-InvocationLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete invocation-like class.
-*/
-type InvocationLike interface {
-	// Principal Methods
-	GetClass() InvocationClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
 InvokeLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete invoke-like class.
@@ -1689,28 +1628,26 @@ type InvokeLike interface {
 }
 
 /*
-ItemsLike is an instance interface that declares the
+ItemLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete items-like class.
+by each instance of a concrete item-like class.
 */
-type ItemsLike interface {
+type ItemLike interface {
 	// Principal Methods
-	GetClass() ItemsClassLike
+	GetClass() ItemClassLike
 
 	// Attribute Methods
-	GetDelimiter1() string
-	GetEntities() fra.ListLike[EntityLike]
-	GetDelimiter2() string
+	GetDocument() DocumentLike
 }
 
 /*
-KetLike is an instance interface that declares the
+LeftLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete ket-like class.
+by each instance of a concrete left-like class.
 */
-type KetLike interface {
+type LeftLike interface {
 	// Principal Methods
-	GetClass() KetClassLike
+	GetClass() LeftClassLike
 
 	// Attribute Methods
 	GetAny() any
@@ -1868,7 +1805,7 @@ type MethodLike interface {
 	GetInvoke() InvokeLike
 	GetIdentifier2() string
 	GetDelimiter1() string
-	GetArguments() fra.ListLike[ArgumentLike]
+	GetArguments() fra.Sequential[ArgumentLike]
 	GetDelimiter2() string
 }
 
@@ -1913,17 +1850,17 @@ type OnClauseLike interface {
 	// Attribute Methods
 	GetDelimiter() string
 	GetFailure() FailureLike
-	GetMatchingClauses() fra.ListLike[MatchingClauseLike]
+	GetMatchingClauses() fra.Sequential[MatchingClauseLike]
 }
 
 /*
-OperationLike is an instance interface that declares the
+OperatorLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete operation-like class.
+by each instance of a concrete operator-like class.
 */
-type OperationLike interface {
+type OperatorLike interface {
 	// Principal Methods
-	GetClass() OperationClassLike
+	GetClass() OperatorClassLike
 
 	// Attribute Methods
 	GetAny() any
@@ -1940,7 +1877,7 @@ type ParametersLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetAssociations() fra.ListLike[AssociationLike]
+	GetAssociations() fra.Sequential[AssociationLike]
 	GetDelimiter2() string
 }
 
@@ -1985,7 +1922,7 @@ type PredicateLike interface {
 	GetClass() PredicateClassLike
 
 	// Attribute Methods
-	GetOperation() OperationLike
+	GetOperator() OperatorLike
 	GetExpression() ExpressionLike
 }
 
@@ -2013,7 +1950,7 @@ type ProcedureLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetLines() fra.ListLike[LineLike]
+	GetLines() fra.Sequential[LineLike]
 	GetDelimiter2() string
 }
 
@@ -2041,11 +1978,11 @@ type RangeLike interface {
 	GetClass() RangeClassLike
 
 	// Attribute Methods
-	GetBra() BraLike
+	GetLeft() LeftLike
 	GetPrimitive1() PrimitiveLike
 	GetDelimiter() string
 	GetPrimitive2() PrimitiveLike
-	GetKet() KetLike
+	GetRight() RightLike
 }
 
 /*
@@ -2062,6 +1999,19 @@ type RecipientLike interface {
 }
 
 /*
+ReferenceLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete reference-like class.
+*/
+type ReferenceLike interface {
+	// Principal Methods
+	GetClass() ReferenceClassLike
+
+	// Attribute Methods
+	GetAny() any
+}
+
+/*
 ReferentLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete referent-like class.
@@ -2072,7 +2022,7 @@ type ReferentLike interface {
 
 	// Attribute Methods
 	GetDelimiter() string
-	GetIndirect() IndirectLike
+	GetReference() ReferenceLike
 }
 
 /*
@@ -2146,6 +2096,19 @@ type ReturnClauseLike interface {
 }
 
 /*
+RightLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete right-like class.
+*/
+type RightLike interface {
+	// Principal Methods
+	GetClass() RightClassLike
+
+	// Attribute Methods
+	GetAny() any
+}
+
+/*
 SaveClauseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete save-clause-like class.
@@ -2172,8 +2135,8 @@ type SelectClauseLike interface {
 
 	// Attribute Methods
 	GetDelimiter() string
-	GetTarget() TargetLike
-	GetMatchingClauses() fra.ListLike[MatchingClauseLike]
+	GetExpression() ExpressionLike
+	GetMatchingClauses() fra.Sequential[MatchingClauseLike]
 }
 
 /*
@@ -2228,7 +2191,7 @@ type SubcomponentLike interface {
 	// Attribute Methods
 	GetIdentifier() string
 	GetDelimiter1() string
-	GetIndexes() fra.ListLike[IndexLike]
+	GetIndexes() fra.Sequential[IndexLike]
 	GetDelimiter2() string
 }
 
@@ -2240,19 +2203,6 @@ by each instance of a concrete subject-like class.
 type SubjectLike interface {
 	// Principal Methods
 	GetClass() SubjectClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
-TargetLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete target-like class.
-*/
-type TargetLike interface {
-	// Principal Methods
-	GetClass() TargetClassLike
 
 	// Attribute Methods
 	GetAny() any

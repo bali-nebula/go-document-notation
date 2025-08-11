@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func InvocationClass() InvocationClassLike {
-	return invocationClass()
+func ReferenceClass() ReferenceClassLike {
+	return referenceClass()
 }
 
 // Constructor Methods
 
-func (c *invocationClass_) Invocation(
+func (c *referenceClass_) Reference(
 	any_ any,
-) InvocationLike {
+) ReferenceLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &invocation_{
+	var instance = &reference_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *invocationClass_) Invocation(
 
 // Principal Methods
 
-func (v *invocation_) GetClass() InvocationClassLike {
-	return invocationClass()
+func (v *reference_) GetClass() ReferenceClassLike {
+	return referenceClass()
 }
 
 // Attribute Methods
 
-func (v *invocation_) GetAny() any {
+func (v *reference_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *invocation_) GetAny() any {
 
 // Instance Structure
 
-type invocation_ struct {
+type reference_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type invocationClass_ struct {
+type referenceClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func invocationClass() *invocationClass_ {
-	return invocationClassReference_
+func referenceClass() *referenceClass_ {
+	return referenceClassReference_
 }
 
-var invocationClassReference_ = &invocationClass_{
+var referenceClassReference_ = &referenceClass_{
 	// Initialize the class constants.
 }

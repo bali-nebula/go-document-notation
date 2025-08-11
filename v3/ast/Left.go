@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func BraClass() BraClassLike {
-	return braClass()
+func LeftClass() LeftClassLike {
+	return leftClass()
 }
 
 // Constructor Methods
 
-func (c *braClass_) Bra(
+func (c *leftClass_) Left(
 	any_ any,
-) BraLike {
+) LeftLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &bra_{
+	var instance = &left_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *braClass_) Bra(
 
 // Principal Methods
 
-func (v *bra_) GetClass() BraClassLike {
-	return braClass()
+func (v *left_) GetClass() LeftClassLike {
+	return leftClass()
 }
 
 // Attribute Methods
 
-func (v *bra_) GetAny() any {
+func (v *left_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *bra_) GetAny() any {
 
 // Instance Structure
 
-type bra_ struct {
+type left_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type braClass_ struct {
+type leftClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func braClass() *braClass_ {
-	return braClassReference_
+func leftClass() *leftClass_ {
+	return leftClassReference_
 }
 
-var braClassReference_ = &braClass_{
+var leftClassReference_ = &leftClass_{
 	// Initialize the class constants.
 }

@@ -353,19 +353,6 @@ func (v *visitor_) visitBag(
 	)
 }
 
-func (v *visitor_) visitBra(
-	bra ast.BraLike,
-) {
-	// Visit the possible bra literal values.
-	var actual = bra.GetAny().(string)
-	switch actual {
-	case "[":
-		v.processor_.ProcessDelimiter("[")
-	case "(":
-		v.processor_.ProcessDelimiter("(")
-	}
-}
-
 func (v *visitor_) visitBreakClause(
 	breakClause ast.BreakClauseLike,
 ) {
@@ -486,14 +473,14 @@ func (v *visitor_) visitCollection(
 			1,
 			1,
 		)
-	case ast.ItemsLike:
-		v.processor_.PreprocessItems(
+	case ast.EntitiesLike:
+		v.processor_.PreprocessEntities(
 			actual,
 			1,
 			1,
 		)
-		v.visitItems(actual)
-		v.processor_.PostprocessItems(
+		v.visitEntities(actual)
+		v.processor_.PostprocessEntities(
 			actual,
 			1,
 			1,
@@ -681,15 +668,15 @@ func (v *visitor_) visitDoClause(
 		1,
 	)
 
-	var invocation = doClause.GetInvocation()
-	v.processor_.PreprocessInvocation(
-		invocation,
+	var method = doClause.GetMethod()
+	v.processor_.PreprocessMethod(
+		method,
 		1,
 		1,
 	)
-	v.visitInvocation(invocation)
-	v.processor_.PostprocessInvocation(
-		invocation,
+	v.visitMethod(method)
+	v.processor_.PostprocessMethod(
+		method,
 		1,
 		1,
 	)
@@ -788,21 +775,43 @@ func (v *visitor_) visitElement(
 	}
 }
 
-func (v *visitor_) visitEntity(
-	entity ast.EntityLike,
+func (v *visitor_) visitEntities(
+	entities ast.EntitiesLike,
 ) {
-	var document = entity.GetDocument()
-	v.processor_.PreprocessDocument(
-		document,
-		1,
-		1,
-	)
-	v.visitDocument(document)
-	v.processor_.PostprocessDocument(
-		document,
-		1,
+	var delimiter1 = entities.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessEntitiesSlot(
+		entities,
 		1,
 	)
+
+	var itemsIndex uint
+	var items = entities.GetItems().GetIterator()
+	var itemsCount = uint(items.GetSize())
+	for items.HasNext() {
+		itemsIndex++
+		var rule = items.GetNext()
+		v.processor_.PreprocessItem(
+			rule,
+			itemsIndex,
+			itemsCount,
+		)
+		v.visitItem(rule)
+		v.processor_.PostprocessItem(
+			rule,
+			itemsIndex,
+			itemsCount,
+		)
+	}
+	// Visit slot 2 between terms.
+	v.processor_.ProcessEntitiesSlot(
+		entities,
+		2,
+	)
+
+	var delimiter2 = entities.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
 }
 
 func (v *visitor_) visitEvent(
@@ -1121,86 +1130,6 @@ func (v *visitor_) visitIndex(
 	}
 }
 
-func (v *visitor_) visitIndirect(
-	indirect ast.IndirectLike,
-) {
-	// Visit the possible indirect rule types.
-	switch actual := indirect.GetAny().(type) {
-	case ast.DocumentLike:
-		v.processor_.PreprocessDocument(
-			actual,
-			1,
-			1,
-		)
-		v.visitDocument(actual)
-		v.processor_.PostprocessDocument(
-			actual,
-			1,
-			1,
-		)
-	case ast.SubcomponentLike:
-		v.processor_.PreprocessSubcomponent(
-			actual,
-			1,
-			1,
-		)
-		v.visitSubcomponent(actual)
-		v.processor_.PostprocessSubcomponent(
-			actual,
-			1,
-			1,
-		)
-	case ast.ReferentLike:
-		v.processor_.PreprocessReferent(
-			actual,
-			1,
-			1,
-		)
-		v.visitReferent(actual)
-		v.processor_.PostprocessReferent(
-			actual,
-			1,
-			1,
-		)
-	case ast.FunctionLike:
-		v.processor_.PreprocessFunction(
-			actual,
-			1,
-			1,
-		)
-		v.visitFunction(actual)
-		v.processor_.PostprocessFunction(
-			actual,
-			1,
-			1,
-		)
-	case ast.MethodLike:
-		v.processor_.PreprocessMethod(
-			actual,
-			1,
-			1,
-		)
-		v.visitMethod(actual)
-		v.processor_.PostprocessMethod(
-			actual,
-			1,
-			1,
-		)
-	case ast.ValueLike:
-		v.processor_.PreprocessValue(
-			actual,
-			1,
-			1,
-		)
-		v.visitValue(actual)
-		v.processor_.PostprocessValue(
-			actual,
-			1,
-			1,
-		)
-	}
-}
-
 func (v *visitor_) visitInverse(
 	inverse ast.InverseLike,
 ) {
@@ -1251,38 +1180,6 @@ func (v *visitor_) visitInversion(
 	)
 }
 
-func (v *visitor_) visitInvocation(
-	invocation ast.InvocationLike,
-) {
-	// Visit the possible invocation rule types.
-	switch actual := invocation.GetAny().(type) {
-	case ast.FunctionLike:
-		v.processor_.PreprocessFunction(
-			actual,
-			1,
-			1,
-		)
-		v.visitFunction(actual)
-		v.processor_.PostprocessFunction(
-			actual,
-			1,
-			1,
-		)
-	case ast.MethodLike:
-		v.processor_.PreprocessMethod(
-			actual,
-			1,
-			1,
-		)
-		v.visitMethod(actual)
-		v.processor_.PostprocessMethod(
-			actual,
-			1,
-			1,
-		)
-	}
-}
-
 func (v *visitor_) visitInvoke(
 	invoke ast.InvokeLike,
 ) {
@@ -1296,55 +1193,33 @@ func (v *visitor_) visitInvoke(
 	}
 }
 
-func (v *visitor_) visitItems(
-	items ast.ItemsLike,
+func (v *visitor_) visitItem(
+	item ast.ItemLike,
 ) {
-	var delimiter1 = items.GetDelimiter1()
-	v.processor_.ProcessDelimiter(delimiter1)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessItemsSlot(
-		items,
+	var document = item.GetDocument()
+	v.processor_.PreprocessDocument(
+		document,
+		1,
 		1,
 	)
-
-	var entitiesIndex uint
-	var entities = items.GetEntities().GetIterator()
-	var entitiesCount = uint(entities.GetSize())
-	for entities.HasNext() {
-		entitiesIndex++
-		var rule = entities.GetNext()
-		v.processor_.PreprocessEntity(
-			rule,
-			entitiesIndex,
-			entitiesCount,
-		)
-		v.visitEntity(rule)
-		v.processor_.PostprocessEntity(
-			rule,
-			entitiesIndex,
-			entitiesCount,
-		)
-	}
-	// Visit slot 2 between terms.
-	v.processor_.ProcessItemsSlot(
-		items,
-		2,
+	v.visitDocument(document)
+	v.processor_.PostprocessDocument(
+		document,
+		1,
+		1,
 	)
-
-	var delimiter2 = items.GetDelimiter2()
-	v.processor_.ProcessDelimiter(delimiter2)
 }
 
-func (v *visitor_) visitKet(
-	ket ast.KetLike,
+func (v *visitor_) visitLeft(
+	left ast.LeftLike,
 ) {
-	// Visit the possible ket literal values.
-	var actual = ket.GetAny().(string)
+	// Visit the possible left literal values.
+	var actual = left.GetAny().(string)
 	switch actual {
-	case "]":
-		v.processor_.ProcessDelimiter("]")
-	case ")":
-		v.processor_.ProcessDelimiter(")")
+	case "[":
+		v.processor_.ProcessDelimiter("[")
+	case "(":
+		v.processor_.ProcessDelimiter("(")
 	}
 }
 
@@ -2087,11 +1962,11 @@ func (v *visitor_) visitOnClause(
 	}
 }
 
-func (v *visitor_) visitOperation(
-	operation ast.OperationLike,
+func (v *visitor_) visitOperator(
+	operator ast.OperatorLike,
 ) {
-	// Visit the possible operation rule types.
-	switch actual := operation.GetAny().(type) {
+	// Visit the possible operator rule types.
+	switch actual := operator.GetAny().(type) {
 	case ast.LexicalOperatorLike:
 		v.processor_.PreprocessLexicalOperator(
 			actual,
@@ -2269,15 +2144,15 @@ func (v *visitor_) visitPrecedence(
 func (v *visitor_) visitPredicate(
 	predicate ast.PredicateLike,
 ) {
-	var operation = predicate.GetOperation()
-	v.processor_.PreprocessOperation(
-		operation,
+	var operator = predicate.GetOperator()
+	v.processor_.PreprocessOperator(
+		operator,
 		1,
 		1,
 	)
-	v.visitOperation(operation)
-	v.processor_.PostprocessOperation(
-		operation,
+	v.visitOperator(operator)
+	v.processor_.PostprocessOperator(
+		operator,
 		1,
 		1,
 	)
@@ -2400,15 +2275,15 @@ func (v *visitor_) visitPublishClause(
 func (v *visitor_) visitRange(
 	range_ ast.RangeLike,
 ) {
-	var bra = range_.GetBra()
-	v.processor_.PreprocessBra(
-		bra,
+	var left = range_.GetLeft()
+	v.processor_.PreprocessLeft(
+		left,
 		1,
 		1,
 	)
-	v.visitBra(bra)
-	v.processor_.PostprocessBra(
-		bra,
+	v.visitLeft(left)
+	v.processor_.PostprocessLeft(
+		left,
 		1,
 		1,
 	)
@@ -2462,15 +2337,15 @@ func (v *visitor_) visitRange(
 		4,
 	)
 
-	var ket = range_.GetKet()
-	v.processor_.PreprocessKet(
-		ket,
+	var right = range_.GetRight()
+	v.processor_.PreprocessRight(
+		right,
 		1,
 		1,
 	)
-	v.visitKet(ket)
-	v.processor_.PostprocessKet(
-		ket,
+	v.visitRight(right)
+	v.processor_.PostprocessRight(
+		right,
 		1,
 		1,
 	)
@@ -2508,6 +2383,86 @@ func (v *visitor_) visitRecipient(
 	}
 }
 
+func (v *visitor_) visitReference(
+	reference ast.ReferenceLike,
+) {
+	// Visit the possible reference rule types.
+	switch actual := reference.GetAny().(type) {
+	case ast.DocumentLike:
+		v.processor_.PreprocessDocument(
+			actual,
+			1,
+			1,
+		)
+		v.visitDocument(actual)
+		v.processor_.PostprocessDocument(
+			actual,
+			1,
+			1,
+		)
+	case ast.SubcomponentLike:
+		v.processor_.PreprocessSubcomponent(
+			actual,
+			1,
+			1,
+		)
+		v.visitSubcomponent(actual)
+		v.processor_.PostprocessSubcomponent(
+			actual,
+			1,
+			1,
+		)
+	case ast.ReferentLike:
+		v.processor_.PreprocessReferent(
+			actual,
+			1,
+			1,
+		)
+		v.visitReferent(actual)
+		v.processor_.PostprocessReferent(
+			actual,
+			1,
+			1,
+		)
+	case ast.FunctionLike:
+		v.processor_.PreprocessFunction(
+			actual,
+			1,
+			1,
+		)
+		v.visitFunction(actual)
+		v.processor_.PostprocessFunction(
+			actual,
+			1,
+			1,
+		)
+	case ast.MethodLike:
+		v.processor_.PreprocessMethod(
+			actual,
+			1,
+			1,
+		)
+		v.visitMethod(actual)
+		v.processor_.PostprocessMethod(
+			actual,
+			1,
+			1,
+		)
+	case ast.ValueLike:
+		v.processor_.PreprocessValue(
+			actual,
+			1,
+			1,
+		)
+		v.visitValue(actual)
+		v.processor_.PostprocessValue(
+			actual,
+			1,
+			1,
+		)
+	}
+}
+
 func (v *visitor_) visitReferent(
 	referent ast.ReferentLike,
 ) {
@@ -2519,15 +2474,15 @@ func (v *visitor_) visitReferent(
 		1,
 	)
 
-	var indirect = referent.GetIndirect()
-	v.processor_.PreprocessIndirect(
-		indirect,
+	var reference = referent.GetReference()
+	v.processor_.PreprocessReference(
+		reference,
 		1,
 		1,
 	)
-	v.visitIndirect(indirect)
-	v.processor_.PostprocessIndirect(
-		indirect,
+	v.visitReference(reference)
+	v.processor_.PostprocessReference(
+		reference,
 		1,
 		1,
 	)
@@ -2707,6 +2662,19 @@ func (v *visitor_) visitReturnClause(
 	)
 }
 
+func (v *visitor_) visitRight(
+	right ast.RightLike,
+) {
+	// Visit the possible right literal values.
+	var actual = right.GetAny().(string)
+	switch actual {
+	case "]":
+		v.processor_.ProcessDelimiter("]")
+	case ")":
+		v.processor_.ProcessDelimiter(")")
+	}
+}
+
 func (v *visitor_) visitSaveClause(
 	saveClause ast.SaveClauseLike,
 ) {
@@ -2769,15 +2737,15 @@ func (v *visitor_) visitSelectClause(
 		1,
 	)
 
-	var target = selectClause.GetTarget()
-	v.processor_.PreprocessTarget(
-		target,
+	var expression = selectClause.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
 		1,
 		1,
 	)
-	v.visitTarget(target)
-	v.processor_.PostprocessTarget(
-		target,
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
 		1,
 		1,
 	)
@@ -3042,62 +3010,6 @@ func (v *visitor_) visitSubject(
 		)
 		v.visitMethod(actual)
 		v.processor_.PostprocessMethod(
-			actual,
-			1,
-			1,
-		)
-	case ast.ValueLike:
-		v.processor_.PreprocessValue(
-			actual,
-			1,
-			1,
-		)
-		v.visitValue(actual)
-		v.processor_.PostprocessValue(
-			actual,
-			1,
-			1,
-		)
-	}
-}
-
-func (v *visitor_) visitTarget(
-	target ast.TargetLike,
-) {
-	// Visit the possible target rule types.
-	switch actual := target.GetAny().(type) {
-	case ast.FunctionLike:
-		v.processor_.PreprocessFunction(
-			actual,
-			1,
-			1,
-		)
-		v.visitFunction(actual)
-		v.processor_.PostprocessFunction(
-			actual,
-			1,
-			1,
-		)
-	case ast.MethodLike:
-		v.processor_.PreprocessMethod(
-			actual,
-			1,
-			1,
-		)
-		v.visitMethod(actual)
-		v.processor_.PostprocessMethod(
-			actual,
-			1,
-			1,
-		)
-	case ast.SubcomponentLike:
-		v.processor_.PreprocessSubcomponent(
-			actual,
-			1,
-			1,
-		)
-		v.visitSubcomponent(actual)
-		v.processor_.PostprocessSubcomponent(
 			actual,
 			1,
 			1,

@@ -22,6 +22,7 @@
 package ast
 
 import (
+	fra "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -29,21 +30,31 @@ import (
 
 // Access Function
 
-func IndirectClass() IndirectClassLike {
-	return indirectClass()
+func EntitiesClass() EntitiesClassLike {
+	return entitiesClass()
 }
 
 // Constructor Methods
 
-func (c *indirectClass_) Indirect(
-	any_ any,
-) IndirectLike {
-	if uti.IsUndefined(any_) {
-		panic("The \"any\" attribute is required by this class.")
+func (c *entitiesClass_) Entities(
+	delimiter1 string,
+	items fra.Sequential[ItemLike],
+	delimiter2 string,
+) EntitiesLike {
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	var instance = &indirect_{
+	if uti.IsUndefined(items) {
+		panic("The \"items\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
+	}
+	var instance = &entities_{
 		// Initialize the instance attributes.
-		any_: any_,
+		delimiter1_: delimiter1,
+		items_:      items,
+		delimiter2_: delimiter2,
 	}
 	return instance
 }
@@ -52,37 +63,47 @@ func (c *indirectClass_) Indirect(
 
 // Principal Methods
 
-func (v *indirect_) GetClass() IndirectClassLike {
-	return indirectClass()
+func (v *entities_) GetClass() EntitiesClassLike {
+	return entitiesClass()
 }
 
 // Attribute Methods
 
-func (v *indirect_) GetAny() any {
-	return v.any_
+func (v *entities_) GetDelimiter1() string {
+	return v.delimiter1_
+}
+
+func (v *entities_) GetItems() fra.Sequential[ItemLike] {
+	return v.items_
+}
+
+func (v *entities_) GetDelimiter2() string {
+	return v.delimiter2_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type indirect_ struct {
+type entities_ struct {
 	// Declare the instance attributes.
-	any_ any
+	delimiter1_ string
+	items_      fra.Sequential[ItemLike]
+	delimiter2_ string
 }
 
 // Class Structure
 
-type indirectClass_ struct {
+type entitiesClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func indirectClass() *indirectClass_ {
-	return indirectClassReference_
+func entitiesClass() *entitiesClass_ {
+	return entitiesClassReference_
 }
 
-var indirectClassReference_ = &indirectClass_{
+var entitiesClassReference_ = &entitiesClass_{
 	// Initialize the class constants.
 }

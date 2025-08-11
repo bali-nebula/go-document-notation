@@ -36,14 +36,14 @@ func RangeClass() RangeClassLike {
 // Constructor Methods
 
 func (c *rangeClass_) Range(
-	bra BraLike,
+	left LeftLike,
 	primitive1 PrimitiveLike,
 	delimiter string,
 	primitive2 PrimitiveLike,
-	ket KetLike,
+	right RightLike,
 ) RangeLike {
-	if uti.IsUndefined(bra) {
-		panic("The \"bra\" attribute is required by this class.")
+	if uti.IsUndefined(left) {
+		panic("The \"left\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(primitive1) {
 		panic("The \"primitive1\" attribute is required by this class.")
@@ -54,16 +54,16 @@ func (c *rangeClass_) Range(
 	if uti.IsUndefined(primitive2) {
 		panic("The \"primitive2\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(ket) {
-		panic("The \"ket\" attribute is required by this class.")
+	if uti.IsUndefined(right) {
+		panic("The \"right\" attribute is required by this class.")
 	}
 	var instance = &range_{
 		// Initialize the instance attributes.
-		bra_:        bra,
+		left_:       left,
 		primitive1_: primitive1,
 		delimiter_:  delimiter,
 		primitive2_: primitive2,
-		ket_:        ket,
+		right_:      right,
 	}
 	return instance
 }
@@ -78,8 +78,8 @@ func (v *range_) GetClass() RangeClassLike {
 
 // Attribute Methods
 
-func (v *range_) GetBra() BraLike {
-	return v.bra_
+func (v *range_) GetLeft() LeftLike {
+	return v.left_
 }
 
 func (v *range_) GetPrimitive1() PrimitiveLike {
@@ -94,8 +94,8 @@ func (v *range_) GetPrimitive2() PrimitiveLike {
 	return v.primitive2_
 }
 
-func (v *range_) GetKet() KetLike {
-	return v.ket_
+func (v *range_) GetRight() RightLike {
+	return v.right_
 }
 
 // PROTECTED INTERFACE
@@ -104,11 +104,11 @@ func (v *range_) GetKet() KetLike {
 
 type range_ struct {
 	// Declare the instance attributes.
-	bra_        BraLike
+	left_       LeftLike
 	primitive1_ PrimitiveLike
 	delimiter_  string
 	primitive2_ PrimitiveLike
-	ket_        KetLike
+	right_      RightLike
 }
 
 // Class Structure

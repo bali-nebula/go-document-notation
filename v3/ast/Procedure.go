@@ -38,7 +38,7 @@ func ProcedureClass() ProcedureClassLike {
 
 func (c *procedureClass_) Procedure(
 	delimiter1 string,
-	lines fra.ListLike[LineLike],
+	lines fra.Sequential[LineLike],
 	delimiter2 string,
 ) ProcedureLike {
 	if uti.IsUndefined(delimiter1) {
@@ -73,7 +73,7 @@ func (v *procedure_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *procedure_) GetLines() fra.ListLike[LineLike] {
+func (v *procedure_) GetLines() fra.Sequential[LineLike] {
 	return v.lines_
 }
 
@@ -88,7 +88,7 @@ func (v *procedure_) GetDelimiter2() string {
 type procedure_ struct {
 	// Declare the instance attributes.
 	delimiter1_ string
-	lines_      fra.ListLike[LineLike]
+	lines_      fra.Sequential[LineLike]
 	delimiter2_ string
 }
 

@@ -39,7 +39,7 @@ func FunctionClass() FunctionClassLike {
 func (c *functionClass_) Function(
 	identifier string,
 	delimiter1 string,
-	arguments fra.ListLike[ArgumentLike],
+	arguments fra.Sequential[ArgumentLike],
 	delimiter2 string,
 ) FunctionLike {
 	if uti.IsUndefined(identifier) {
@@ -82,7 +82,7 @@ func (v *function_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *function_) GetArguments() fra.ListLike[ArgumentLike] {
+func (v *function_) GetArguments() fra.Sequential[ArgumentLike] {
 	return v.arguments_
 }
 
@@ -98,7 +98,7 @@ type function_ struct {
 	// Declare the instance attributes.
 	identifier_ string
 	delimiter1_ string
-	arguments_  fra.ListLike[ArgumentLike]
+	arguments_  fra.Sequential[ArgumentLike]
 	delimiter2_ string
 }
 

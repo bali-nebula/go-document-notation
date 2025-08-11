@@ -583,33 +583,6 @@ func (v *parser_) parseBag() (
 	return
 }
 
-func (v *parser_) parseBra() (
-	bra ast.BraLike,
-	token TokenLike,
-	ok bool,
-) {
-	var delimiter string
-
-	// Attempt to parse a single "[" delimiter.
-	delimiter, token, ok = v.parseDelimiter("[")
-	if ok {
-		// Found a single "[" delimiter.
-		bra = ast.BraClass().Bra(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "(" delimiter.
-	delimiter, token, ok = v.parseDelimiter("(")
-	if ok {
-		// Found a single "(" delimiter.
-		bra = ast.BraClass().Bra(delimiter)
-		return
-	}
-
-	// This is not a single Bra rule.
-	return
-}
-
 func (v *parser_) parseBreakClause() (
 	breakClause ast.BreakClauseLike,
 	token TokenLike,
@@ -806,12 +779,12 @@ func (v *parser_) parseCollection() (
 		return
 	}
 
-	// Attempt to parse a single Items Collection.
-	var items ast.ItemsLike
-	items, token, ok = v.parseItems()
+	// Attempt to parse a single Entities Collection.
+	var entities ast.EntitiesLike
+	entities, token, ok = v.parseEntities()
 	if ok {
-		// Found a single Items Collection.
-		collection = ast.CollectionClass().Collection(items)
+		// Found a single Entities Collection.
+		collection = ast.CollectionClass().Collection(entities)
 		return
 	}
 
@@ -1137,15 +1110,15 @@ func (v *parser_) parseDoClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Invocation rule.
-	var invocation ast.InvocationLike
-	invocation, token, ok = v.parseInvocation()
+	// Attempt to parse a single Method rule.
+	var method ast.MethodLike
+	method, token, ok = v.parseMethod()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Invocation rule.
+		// This is not a single Method rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -1159,7 +1132,7 @@ func (v *parser_) parseDoClause() (
 	v.remove(tokens)
 	doClause = ast.DoClauseClass().DoClause(
 		delimiter,
-		invocation,
+		method,
 	)
 	return
 }
@@ -1348,34 +1321,83 @@ func (v *parser_) parseElement() (
 	return
 }
 
-func (v *parser_) parseEntity() (
-	entity ast.EntityLike,
+func (v *parser_) parseEntities() (
+	entities ast.EntitiesLike,
 	token TokenLike,
 	ok bool,
 ) {
 	var tokens = fra.List[TokenLike]()
 
-	// Attempt to parse a single Document rule.
-	var document ast.DocumentLike
-	document, token, ok = v.parseDocument()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Document rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Entity", token)
-		panic(message)
+	// Attempt to parse a single "[" literal.
+	var delimiter1 string
+	delimiter1, token, ok = v.parseDelimiter("[")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single Entities rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Entities", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
 	}
 
-	// Found a single Entity rule.
+	// Attempt to parse multiple Item rules.
+	var items = fra.List[ast.ItemLike]()
+itemsLoop:
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
+		var item ast.ItemLike
+		item, token, ok = v.parseItem()
+		if !ok {
+			switch {
+			case count_ >= 0:
+				break itemsLoop
+			case uti.IsDefined(tokens):
+				// This is not multiple Item rules.
+				v.putBack(tokens)
+				return
+			default:
+				// Found a syntax error.
+				var message = v.formatError("$Entities", token)
+				message += "0 or more Item rules are required."
+				panic(message)
+			}
+		}
+		// No additional put backs allowed at this point.
+		tokens = nil
+		items.AppendValue(item)
+	}
+
+	// Attempt to parse a single "]" literal.
+	var delimiter2 string
+	delimiter2, token, ok = v.parseDelimiter("]")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single Entities rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Entities", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Found a single Entities rule.
 	ok = true
 	v.remove(tokens)
-	entity = ast.EntityClass().Entity(document)
+	entities = ast.EntitiesClass().Entities(
+		delimiter1,
+		items,
+		delimiter2,
+	)
 	return
 }
 
@@ -1829,69 +1851,6 @@ func (v *parser_) parseIndex() (
 	return
 }
 
-func (v *parser_) parseIndirect() (
-	indirect ast.IndirectLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single Document Indirect.
-	var document ast.DocumentLike
-	document, token, ok = v.parseDocument()
-	if ok {
-		// Found a single Document Indirect.
-		indirect = ast.IndirectClass().Indirect(document)
-		return
-	}
-
-	// Attempt to parse a single Subcomponent Indirect.
-	var subcomponent ast.SubcomponentLike
-	subcomponent, token, ok = v.parseSubcomponent()
-	if ok {
-		// Found a single Subcomponent Indirect.
-		indirect = ast.IndirectClass().Indirect(subcomponent)
-		return
-	}
-
-	// Attempt to parse a single Referent Indirect.
-	var referent ast.ReferentLike
-	referent, token, ok = v.parseReferent()
-	if ok {
-		// Found a single Referent Indirect.
-		indirect = ast.IndirectClass().Indirect(referent)
-		return
-	}
-
-	// Attempt to parse a single Function Indirect.
-	var function ast.FunctionLike
-	function, token, ok = v.parseFunction()
-	if ok {
-		// Found a single Function Indirect.
-		indirect = ast.IndirectClass().Indirect(function)
-		return
-	}
-
-	// Attempt to parse a single Method Indirect.
-	var method ast.MethodLike
-	method, token, ok = v.parseMethod()
-	if ok {
-		// Found a single Method Indirect.
-		indirect = ast.IndirectClass().Indirect(method)
-		return
-	}
-
-	// Attempt to parse a single Value Indirect.
-	var value ast.ValueLike
-	value, token, ok = v.parseValue()
-	if ok {
-		// Found a single Value Indirect.
-		indirect = ast.IndirectClass().Indirect(value)
-		return
-	}
-
-	// This is not a single Indirect rule.
-	return
-}
-
 func (v *parser_) parseInverse() (
 	inverse ast.InverseLike,
 	token TokenLike,
@@ -1980,33 +1939,6 @@ func (v *parser_) parseInversion() (
 	return
 }
 
-func (v *parser_) parseInvocation() (
-	invocation ast.InvocationLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single Function Invocation.
-	var function ast.FunctionLike
-	function, token, ok = v.parseFunction()
-	if ok {
-		// Found a single Function Invocation.
-		invocation = ast.InvocationClass().Invocation(function)
-		return
-	}
-
-	// Attempt to parse a single Method Invocation.
-	var method ast.MethodLike
-	method, token, ok = v.parseMethod()
-	if ok {
-		// Found a single Method Invocation.
-		invocation = ast.InvocationClass().Invocation(method)
-		return
-	}
-
-	// This is not a single Invocation rule.
-	return
-}
-
 func (v *parser_) parseInvoke() (
 	invoke ast.InvokeLike,
 	token TokenLike,
@@ -2034,110 +1966,61 @@ func (v *parser_) parseInvoke() (
 	return
 }
 
-func (v *parser_) parseItems() (
-	items ast.ItemsLike,
+func (v *parser_) parseItem() (
+	item ast.ItemLike,
 	token TokenLike,
 	ok bool,
 ) {
 	var tokens = fra.List[TokenLike]()
 
-	// Attempt to parse a single "[" literal.
-	var delimiter1 string
-	delimiter1, token, ok = v.parseDelimiter("[")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single Items rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Items", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse multiple Entity rules.
-	var entities = fra.List[ast.EntityLike]()
-entitiesLoop:
-	for count_ := 0; count_ < mat.MaxInt; count_++ {
-		var entity ast.EntityLike
-		entity, token, ok = v.parseEntity()
-		if !ok {
-			switch {
-			case count_ >= 0:
-				break entitiesLoop
-			case uti.IsDefined(tokens):
-				// This is not multiple Entity rules.
-				v.putBack(tokens)
-				return
-			default:
-				// Found a syntax error.
-				var message = v.formatError("$Items", token)
-				message += "0 or more Entity rules are required."
-				panic(message)
-			}
-		}
+	// Attempt to parse a single Document rule.
+	var document ast.DocumentLike
+	document, token, ok = v.parseDocument()
+	switch {
+	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
-		entities.AppendValue(entity)
+	case uti.IsDefined(tokens):
+		// This is not a single Document rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$Item", token)
+		panic(message)
 	}
 
-	// Attempt to parse a single "]" literal.
-	var delimiter2 string
-	delimiter2, token, ok = v.parseDelimiter("]")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single Items rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Items", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Found a single Items rule.
+	// Found a single Item rule.
 	ok = true
 	v.remove(tokens)
-	items = ast.ItemsClass().Items(
-		delimiter1,
-		entities,
-		delimiter2,
-	)
+	item = ast.ItemClass().Item(document)
 	return
 }
 
-func (v *parser_) parseKet() (
-	ket ast.KetLike,
+func (v *parser_) parseLeft() (
+	left ast.LeftLike,
 	token TokenLike,
 	ok bool,
 ) {
 	var delimiter string
 
-	// Attempt to parse a single "]" delimiter.
-	delimiter, token, ok = v.parseDelimiter("]")
+	// Attempt to parse a single "[" delimiter.
+	delimiter, token, ok = v.parseDelimiter("[")
 	if ok {
-		// Found a single "]" delimiter.
-		ket = ast.KetClass().Ket(delimiter)
+		// Found a single "[" delimiter.
+		left = ast.LeftClass().Left(delimiter)
 		return
 	}
 
-	// Attempt to parse a single ")" delimiter.
-	delimiter, token, ok = v.parseDelimiter(")")
+	// Attempt to parse a single "(" delimiter.
+	delimiter, token, ok = v.parseDelimiter("(")
 	if ok {
-		// Found a single ")" delimiter.
-		ket = ast.KetClass().Ket(delimiter)
+		// Found a single "(" delimiter.
+		left = ast.LeftClass().Left(delimiter)
 		return
 	}
 
-	// This is not a single Ket rule.
+	// This is not a single Left rule.
 	return
 }
 
@@ -3087,48 +2970,48 @@ matchingClausesLoop:
 	return
 }
 
-func (v *parser_) parseOperation() (
-	operation ast.OperationLike,
+func (v *parser_) parseOperator() (
+	operator ast.OperatorLike,
 	token TokenLike,
 	ok bool,
 ) {
-	// Attempt to parse a single LexicalOperator Operation.
+	// Attempt to parse a single LexicalOperator Operator.
 	var lexicalOperator ast.LexicalOperatorLike
 	lexicalOperator, token, ok = v.parseLexicalOperator()
 	if ok {
-		// Found a single LexicalOperator Operation.
-		operation = ast.OperationClass().Operation(lexicalOperator)
+		// Found a single LexicalOperator Operator.
+		operator = ast.OperatorClass().Operator(lexicalOperator)
 		return
 	}
 
-	// Attempt to parse a single LogicalOperator Operation.
+	// Attempt to parse a single LogicalOperator Operator.
 	var logicalOperator ast.LogicalOperatorLike
 	logicalOperator, token, ok = v.parseLogicalOperator()
 	if ok {
-		// Found a single LogicalOperator Operation.
-		operation = ast.OperationClass().Operation(logicalOperator)
+		// Found a single LogicalOperator Operator.
+		operator = ast.OperatorClass().Operator(logicalOperator)
 		return
 	}
 
-	// Attempt to parse a single ArithmeticOperator Operation.
+	// Attempt to parse a single ArithmeticOperator Operator.
 	var arithmeticOperator ast.ArithmeticOperatorLike
 	arithmeticOperator, token, ok = v.parseArithmeticOperator()
 	if ok {
-		// Found a single ArithmeticOperator Operation.
-		operation = ast.OperationClass().Operation(arithmeticOperator)
+		// Found a single ArithmeticOperator Operator.
+		operator = ast.OperatorClass().Operator(arithmeticOperator)
 		return
 	}
 
-	// Attempt to parse a single ComparisonOperator Operation.
+	// Attempt to parse a single ComparisonOperator Operator.
 	var comparisonOperator ast.ComparisonOperatorLike
 	comparisonOperator, token, ok = v.parseComparisonOperator()
 	if ok {
-		// Found a single ComparisonOperator Operation.
-		operation = ast.OperationClass().Operation(comparisonOperator)
+		// Found a single ComparisonOperator Operator.
+		operator = ast.OperatorClass().Operator(comparisonOperator)
 		return
 	}
 
-	// This is not a single Operation rule.
+	// This is not a single Operator rule.
 	return
 }
 
@@ -3379,9 +3262,9 @@ func (v *parser_) parsePredicate() (
 ) {
 	var tokens = fra.List[TokenLike]()
 
-	// Attempt to parse a single Operation rule.
-	var operation ast.OperationLike
-	operation, token, ok = v.parseOperation()
+	// Attempt to parse a single Operator rule.
+	var operator ast.OperatorLike
+	operator, token, ok = v.parseOperator()
 	switch {
 	case ok:
 		// Found a multiexpression token.
@@ -3389,7 +3272,7 @@ func (v *parser_) parsePredicate() (
 			tokens.AppendValue(token)
 		}
 	case uti.IsDefined(tokens):
-		// This is not a single Operation rule.
+		// This is not a single Operator rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -3419,7 +3302,7 @@ func (v *parser_) parsePredicate() (
 	ok = true
 	v.remove(tokens)
 	predicate = ast.PredicateClass().Predicate(
-		operation,
+		operator,
 		expression,
 	)
 	return
@@ -3591,9 +3474,9 @@ func (v *parser_) parseRange() (
 ) {
 	var tokens = fra.List[TokenLike]()
 
-	// Attempt to parse a single Bra rule.
-	var bra ast.BraLike
-	bra, token, ok = v.parseBra()
+	// Attempt to parse a single Left rule.
+	var left ast.LeftLike
+	left, token, ok = v.parseLeft()
 	switch {
 	case ok:
 		// Found a multiexpression token.
@@ -3601,7 +3484,7 @@ func (v *parser_) parseRange() (
 			tokens.AppendValue(token)
 		}
 	case uti.IsDefined(tokens):
-		// This is not a single Bra rule.
+		// This is not a single Left rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -3666,9 +3549,9 @@ func (v *parser_) parseRange() (
 		panic(message)
 	}
 
-	// Attempt to parse a single Ket rule.
-	var ket ast.KetLike
-	ket, token, ok = v.parseKet()
+	// Attempt to parse a single Right rule.
+	var right ast.RightLike
+	right, token, ok = v.parseRight()
 	switch {
 	case ok:
 		// Found a multiexpression token.
@@ -3676,7 +3559,7 @@ func (v *parser_) parseRange() (
 			tokens.AppendValue(token)
 		}
 	case uti.IsDefined(tokens):
-		// This is not a single Ket rule.
+		// This is not a single Right rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -3689,11 +3572,11 @@ func (v *parser_) parseRange() (
 	ok = true
 	v.remove(tokens)
 	range_ = ast.RangeClass().Range(
-		bra,
+		left,
 		primitive1,
 		delimiter,
 		primitive2,
-		ket,
+		right,
 	)
 	return
 }
@@ -3725,6 +3608,69 @@ func (v *parser_) parseRecipient() (
 	return
 }
 
+func (v *parser_) parseReference() (
+	reference ast.ReferenceLike,
+	token TokenLike,
+	ok bool,
+) {
+	// Attempt to parse a single Document Reference.
+	var document ast.DocumentLike
+	document, token, ok = v.parseDocument()
+	if ok {
+		// Found a single Document Reference.
+		reference = ast.ReferenceClass().Reference(document)
+		return
+	}
+
+	// Attempt to parse a single Subcomponent Reference.
+	var subcomponent ast.SubcomponentLike
+	subcomponent, token, ok = v.parseSubcomponent()
+	if ok {
+		// Found a single Subcomponent Reference.
+		reference = ast.ReferenceClass().Reference(subcomponent)
+		return
+	}
+
+	// Attempt to parse a single Referent Reference.
+	var referent ast.ReferentLike
+	referent, token, ok = v.parseReferent()
+	if ok {
+		// Found a single Referent Reference.
+		reference = ast.ReferenceClass().Reference(referent)
+		return
+	}
+
+	// Attempt to parse a single Function Reference.
+	var function ast.FunctionLike
+	function, token, ok = v.parseFunction()
+	if ok {
+		// Found a single Function Reference.
+		reference = ast.ReferenceClass().Reference(function)
+		return
+	}
+
+	// Attempt to parse a single Method Reference.
+	var method ast.MethodLike
+	method, token, ok = v.parseMethod()
+	if ok {
+		// Found a single Method Reference.
+		reference = ast.ReferenceClass().Reference(method)
+		return
+	}
+
+	// Attempt to parse a single Value Reference.
+	var value ast.ValueLike
+	value, token, ok = v.parseValue()
+	if ok {
+		// Found a single Value Reference.
+		reference = ast.ReferenceClass().Reference(value)
+		return
+	}
+
+	// This is not a single Reference rule.
+	return
+}
+
 func (v *parser_) parseReferent() (
 	referent ast.ReferentLike,
 	token TokenLike,
@@ -3750,15 +3696,15 @@ func (v *parser_) parseReferent() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Indirect rule.
-	var indirect ast.IndirectLike
-	indirect, token, ok = v.parseIndirect()
+	// Attempt to parse a single Reference rule.
+	var reference ast.ReferenceLike
+	reference, token, ok = v.parseReference()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Indirect rule.
+		// This is not a single Reference rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -3772,7 +3718,7 @@ func (v *parser_) parseReferent() (
 	v.remove(tokens)
 	referent = ast.ReferentClass().Referent(
 		delimiter,
-		indirect,
+		reference,
 	)
 	return
 }
@@ -4046,6 +3992,33 @@ func (v *parser_) parseReturnClause() (
 	return
 }
 
+func (v *parser_) parseRight() (
+	right ast.RightLike,
+	token TokenLike,
+	ok bool,
+) {
+	var delimiter string
+
+	// Attempt to parse a single "]" delimiter.
+	delimiter, token, ok = v.parseDelimiter("]")
+	if ok {
+		// Found a single "]" delimiter.
+		right = ast.RightClass().Right(delimiter)
+		return
+	}
+
+	// Attempt to parse a single ")" delimiter.
+	delimiter, token, ok = v.parseDelimiter(")")
+	if ok {
+		// Found a single ")" delimiter.
+		right = ast.RightClass().Right(delimiter)
+		return
+	}
+
+	// This is not a single Right rule.
+	return
+}
+
 func (v *parser_) parseSaveClause() (
 	saveClause ast.SaveClauseLike,
 	token TokenLike,
@@ -4160,15 +4133,15 @@ func (v *parser_) parseSelectClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Target rule.
-	var target ast.TargetLike
-	target, token, ok = v.parseTarget()
+	// Attempt to parse a single Expression rule.
+	var expression ast.ExpressionLike
+	expression, token, ok = v.parseExpression()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Target rule.
+		// This is not a single Expression rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -4208,7 +4181,7 @@ matchingClausesLoop:
 	v.remove(tokens)
 	selectClause = ast.SelectClauseClass().SelectClause(
 		delimiter,
-		target,
+		expression,
 		matchingClauses,
 	)
 	return
@@ -4563,51 +4536,6 @@ func (v *parser_) parseSubject() (
 	}
 
 	// This is not a single Subject rule.
-	return
-}
-
-func (v *parser_) parseTarget() (
-	target ast.TargetLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single Function Target.
-	var function ast.FunctionLike
-	function, token, ok = v.parseFunction()
-	if ok {
-		// Found a single Function Target.
-		target = ast.TargetClass().Target(function)
-		return
-	}
-
-	// Attempt to parse a single Method Target.
-	var method ast.MethodLike
-	method, token, ok = v.parseMethod()
-	if ok {
-		// Found a single Method Target.
-		target = ast.TargetClass().Target(method)
-		return
-	}
-
-	// Attempt to parse a single Subcomponent Target.
-	var subcomponent ast.SubcomponentLike
-	subcomponent, token, ok = v.parseSubcomponent()
-	if ok {
-		// Found a single Subcomponent Target.
-		target = ast.TargetClass().Target(subcomponent)
-		return
-	}
-
-	// Attempt to parse a single Value Target.
-	var value ast.ValueLike
-	value, token, ok = v.parseValue()
-	if ok {
-		// Found a single Value Target.
-		target = ast.TargetClass().Target(value)
-		return
-	}
-
-	// This is not a single Target rule.
 	return
 }
 
@@ -5199,19 +5127,19 @@ var parserClassReference_ = &parserClass_{
     quote
     tag
     version`,
-			"$Range": `Bra Primitive ".." Primitive Ket`,
-			"$Bra": `
+			"$Range": `Left Primitive ".." Primitive Right`,
+			"$Left": `
     "["
     "("`,
-			"$Ket": `
+			"$Right": `
     "]"
     ")"`,
 			"$Collection": `
     Attributes
-    Items  ! Must be after range and attributes.`,
+    Entities  ! Must be after attributes.`,
 			"$Attributes": `"[" Association+ "]"`,
-			"$Items":      `"[" Entity* "]"`,
-			"$Entity":     `Document`,
+			"$Entities":   `"[" Item* "]"`,
+			"$Item":       `Document`,
 			"$Procedure":  `"{" Line* "}"`,
 			"$Line": `
     Annotation
@@ -5254,17 +5182,12 @@ var parserClassReference_ = &parserClass_{
     NotarizeClause`,
 			"$IfClause":     `"if" Condition "do" Procedure`,
 			"$Condition":    `Expression`,
-			"$SelectClause": `"select" Target MatchingClause+`,
-			"$Target": `
-    Function
-    Method
-    Subcomponent
-    Value  ! This must be last since others also begin with an identifier.`,
-			"$Function": `identifier "(" Argument* ")"`,
-			"$Method":   `identifier Invoke identifier "(" Argument* ")"`,
+			"$SelectClause": `"select" Expression MatchingClause+`,
+			"$Function":     `identifier "(" Argument* ")"`,
+			"$Method":       `identifier Invoke identifier "(" Argument* ")"`,
 			"$Invoke": `
-    "<-"
-    "<~"`,
+    "<-"  ! The method is invoked synchronously.
+    "<~"  ! The method is invoked asynchronously.`,
 			"$Argument": `
     Value
     Primitive`,
@@ -5283,11 +5206,8 @@ var parserClassReference_ = &parserClass_{
 			"$Result":         `Expression`,
 			"$ThrowClause":    `"throw" Exception`,
 			"$Exception":      `Expression`,
-			"$DoClause":       `"do" Invocation`,
-			"$Invocation": `
-    Function
-    Method`,
-			"$LetClause": `"let" Recipient Assignment Expression`,
+			"$DoClause":       `"do" Method`,
+			"$LetClause":      `"let" Recipient Assignment Expression`,
 			"$Assignment": `
     ":="
     "?="
@@ -5325,8 +5245,8 @@ var parserClassReference_ = &parserClass_{
     Function
     Method
     Value  ! This must be last since others also begin with an identifier.`,
-			"$Predicate": `Operation Expression`,
-			"$Operation": `
+			"$Predicate": `Operator Expression`,
+			"$Operator": `
     LexicalOperator
     LogicalOperator
     ArithmeticOperator
@@ -5352,8 +5272,8 @@ var parserClassReference_ = &parserClass_{
     "is"
     "matches"`,
 			"$Precedence": `"(" Expression ")"`,
-			"$Referent":   `"@" Indirect`,
-			"$Indirect": `
+			"$Referent":   `"@" Reference`,
+			"$Reference": `
     Document
     Subcomponent
     Referent

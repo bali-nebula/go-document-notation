@@ -37,18 +37,18 @@ func DoClauseClass() DoClauseClassLike {
 
 func (c *doClauseClass_) DoClause(
 	delimiter string,
-	invocation InvocationLike,
+	method MethodLike,
 ) DoClauseLike {
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(invocation) {
-		panic("The \"invocation\" attribute is required by this class.")
+	if uti.IsUndefined(method) {
+		panic("The \"method\" attribute is required by this class.")
 	}
 	var instance = &doClause_{
 		// Initialize the instance attributes.
-		delimiter_:  delimiter,
-		invocation_: invocation,
+		delimiter_: delimiter,
+		method_:    method,
 	}
 	return instance
 }
@@ -67,8 +67,8 @@ func (v *doClause_) GetDelimiter() string {
 	return v.delimiter_
 }
 
-func (v *doClause_) GetInvocation() InvocationLike {
-	return v.invocation_
+func (v *doClause_) GetMethod() MethodLike {
+	return v.method_
 }
 
 // PROTECTED INTERFACE
@@ -77,8 +77,8 @@ func (v *doClause_) GetInvocation() InvocationLike {
 
 type doClause_ struct {
 	// Declare the instance attributes.
-	delimiter_  string
-	invocation_ InvocationLike
+	delimiter_ string
+	method_    MethodLike
 }
 
 // Class Structure

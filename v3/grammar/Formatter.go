@@ -430,12 +430,12 @@ func (v *formatter_) PostprocessDocument(
 	}
 }
 
-func (v *formatter_) PreprocessEntity(
-	entity ast.EntityLike,
+func (v *formatter_) PreprocessItem(
+	item ast.ItemLike,
 	index_ uint,
 	count_ uint,
 ) {
-	var parameters = entity.GetDocument().GetOptionalParameters()
+	var parameters = item.GetDocument().GetOptionalParameters()
 	var isParameterized = uti.IsDefined(parameters)
 	if count_ > 1 || isParameterized {
 		v.appendNewline()
@@ -459,8 +459,8 @@ func (v *formatter_) PreprocessIndex(
 	}
 }
 
-func (v *formatter_) ProcessItemsSlot(
-	items ast.ItemsLike,
+func (v *formatter_) ProcessEntitiesSlot(
+	entities ast.EntitiesLike,
 	slot_ uint,
 ) {
 	switch slot_ {
@@ -468,14 +468,14 @@ func (v *formatter_) ProcessItemsSlot(
 		v.depth_++
 	case 2:
 		v.depth_--
-		var entities = items.GetEntities()
-		if entities.IsEmpty() {
+		var items = entities.GetItems()
+		if items.IsEmpty() {
 			v.appendString(" ")
 		} else {
-			var entity = entities.GetIterator().GetNext()
-			var document = entity.GetDocument()
+			var item = items.GetIterator().GetNext()
+			var document = item.GetDocument()
 			var isParameterized = uti.IsDefined(document.GetOptionalParameters())
-			if entities.GetSize() > 1 || isParameterized {
+			if items.GetSize() > 1 || isParameterized {
 				v.appendNewline()
 			}
 		}

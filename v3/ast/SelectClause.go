@@ -38,14 +38,14 @@ func SelectClauseClass() SelectClauseClassLike {
 
 func (c *selectClauseClass_) SelectClause(
 	delimiter string,
-	target TargetLike,
-	matchingClauses fra.ListLike[MatchingClauseLike],
+	expression ExpressionLike,
+	matchingClauses fra.Sequential[MatchingClauseLike],
 ) SelectClauseLike {
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(target) {
-		panic("The \"target\" attribute is required by this class.")
+	if uti.IsUndefined(expression) {
+		panic("The \"expression\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(matchingClauses) {
 		panic("The \"matchingClauses\" attribute is required by this class.")
@@ -53,7 +53,7 @@ func (c *selectClauseClass_) SelectClause(
 	var instance = &selectClause_{
 		// Initialize the instance attributes.
 		delimiter_:       delimiter,
-		target_:          target,
+		expression_:      expression,
 		matchingClauses_: matchingClauses,
 	}
 	return instance
@@ -73,11 +73,11 @@ func (v *selectClause_) GetDelimiter() string {
 	return v.delimiter_
 }
 
-func (v *selectClause_) GetTarget() TargetLike {
-	return v.target_
+func (v *selectClause_) GetExpression() ExpressionLike {
+	return v.expression_
 }
 
-func (v *selectClause_) GetMatchingClauses() fra.ListLike[MatchingClauseLike] {
+func (v *selectClause_) GetMatchingClauses() fra.Sequential[MatchingClauseLike] {
 	return v.matchingClauses_
 }
 
@@ -88,8 +88,8 @@ func (v *selectClause_) GetMatchingClauses() fra.ListLike[MatchingClauseLike] {
 type selectClause_ struct {
 	// Declare the instance attributes.
 	delimiter_       string
-	target_          TargetLike
-	matchingClauses_ fra.ListLike[MatchingClauseLike]
+	expression_      ExpressionLike
+	matchingClauses_ fra.Sequential[MatchingClauseLike]
 }
 
 // Class Structure

@@ -29,21 +29,21 @@ import (
 
 // Access Function
 
-func TargetClass() TargetClassLike {
-	return targetClass()
+func ItemClass() ItemClassLike {
+	return itemClass()
 }
 
 // Constructor Methods
 
-func (c *targetClass_) Target(
-	any_ any,
-) TargetLike {
-	if uti.IsUndefined(any_) {
-		panic("The \"any\" attribute is required by this class.")
+func (c *itemClass_) Item(
+	document DocumentLike,
+) ItemLike {
+	if uti.IsUndefined(document) {
+		panic("The \"document\" attribute is required by this class.")
 	}
-	var instance = &target_{
+	var instance = &item_{
 		// Initialize the instance attributes.
-		any_: any_,
+		document_: document,
 	}
 	return instance
 }
@@ -52,37 +52,37 @@ func (c *targetClass_) Target(
 
 // Principal Methods
 
-func (v *target_) GetClass() TargetClassLike {
-	return targetClass()
+func (v *item_) GetClass() ItemClassLike {
+	return itemClass()
 }
 
 // Attribute Methods
 
-func (v *target_) GetAny() any {
-	return v.any_
+func (v *item_) GetDocument() DocumentLike {
+	return v.document_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type target_ struct {
+type item_ struct {
 	// Declare the instance attributes.
-	any_ any
+	document_ DocumentLike
 }
 
 // Class Structure
 
-type targetClass_ struct {
+type itemClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func targetClass() *targetClass_ {
-	return targetClassReference_
+func itemClass() *itemClass_ {
+	return itemClassReference_
 }
 
-var targetClassReference_ = &targetClass_{
+var itemClassReference_ = &itemClass_{
 	// Initialize the class constants.
 }

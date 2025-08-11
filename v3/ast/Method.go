@@ -41,7 +41,7 @@ func (c *methodClass_) Method(
 	invoke InvokeLike,
 	identifier2 string,
 	delimiter1 string,
-	arguments fra.ListLike[ArgumentLike],
+	arguments fra.Sequential[ArgumentLike],
 	delimiter2 string,
 ) MethodLike {
 	if uti.IsUndefined(identifier1) {
@@ -100,7 +100,7 @@ func (v *method_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *method_) GetArguments() fra.ListLike[ArgumentLike] {
+func (v *method_) GetArguments() fra.Sequential[ArgumentLike] {
 	return v.arguments_
 }
 
@@ -118,7 +118,7 @@ type method_ struct {
 	invoke_      InvokeLike
 	identifier2_ string
 	delimiter1_  string
-	arguments_   fra.ListLike[ArgumentLike]
+	arguments_   fra.Sequential[ArgumentLike]
 	delimiter2_  string
 }
 

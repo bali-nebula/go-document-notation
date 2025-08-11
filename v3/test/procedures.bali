@@ -64,7 +64,7 @@
     }
     if foo do {
         if bar do {
-            do foobar()
+            do foo<~bar()
         }
     } on $failure matching $bad do {
     } matching $worse do {
