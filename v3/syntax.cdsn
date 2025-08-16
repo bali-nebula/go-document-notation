@@ -45,8 +45,8 @@ $Element:
     duration
     glyph
     moment
-    number
     percentage
+    number
     probability
     resource
     symbol

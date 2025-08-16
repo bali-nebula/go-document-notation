@@ -762,10 +762,10 @@ func (v *visitor_) visitElement(
 		v.processor_.ProcessGlyph(actual)
 	case ScannerClass().MatchesType(actual, MomentToken):
 		v.processor_.ProcessMoment(actual)
-	case ScannerClass().MatchesType(actual, NumberToken):
-		v.processor_.ProcessNumber(actual)
 	case ScannerClass().MatchesType(actual, PercentageToken):
 		v.processor_.ProcessPercentage(actual)
+	case ScannerClass().MatchesType(actual, NumberToken):
+		v.processor_.ProcessNumber(actual)
 	case ScannerClass().MatchesType(actual, ProbabilityToken):
 		v.processor_.ProcessProbability(actual)
 	case ScannerClass().MatchesType(actual, ResourceToken):

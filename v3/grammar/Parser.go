@@ -1272,21 +1272,21 @@ func (v *parser_) parseElement() (
 		return
 	}
 
-	// Attempt to parse a single number Element.
-	var number string
-	number, token, ok = v.parseToken(NumberToken)
-	if ok {
-		// Found a single number Element.
-		element = ast.ElementClass().Element(number)
-		return
-	}
-
 	// Attempt to parse a single percentage Element.
 	var percentage string
 	percentage, token, ok = v.parseToken(PercentageToken)
 	if ok {
 		// Found a single percentage Element.
 		element = ast.ElementClass().Element(percentage)
+		return
+	}
+
+	// Attempt to parse a single number Element.
+	var number string
+	number, token, ok = v.parseToken(NumberToken)
+	if ok {
+		// Found a single number Element.
+		element = ast.ElementClass().Element(number)
 		return
 	}
 
@@ -5113,8 +5113,8 @@ var parserClassReference_ = &parserClass_{
     duration
     glyph
     moment
-    number
     percentage
+    number
     probability
     resource
     symbol`,
