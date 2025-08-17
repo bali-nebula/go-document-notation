@@ -344,7 +344,7 @@ const (
 	// Define the regular expressions for each expression type.
 	alpha_          = "(?:[A-Za-z])"
 	alphanumeric_   = "(?:(?:" + alpha_ + ")|(?:" + base10_ + "))"
-	amplitude_      = "(?:(0(?:" + fraction_ + ")|(?:" + ordinal_ + ")(?:" + fraction_ + ")?|(?:" + transcendental_ + "))(?:" + exponent_ + ")?)"
+	amplitude_      = "(?:(0(?:" + fraction_ + ")|(?:" + ordinal_ + ")(?:" + fraction_ + ")?)(?:" + exponent_ + ")?|(?:" + transcendental_ + "))"
 	angle_          = "(?:~(0|(?:" + amplitude_ + ")))"
 	authority_      = "(?:[^/" + control_ + "]+)"
 	base10_         = "(?:[0-9])"
@@ -387,7 +387,7 @@ const (
 	path_           = "(?:[^\\?#>" + control_ + "]*)"
 	pattern_        = "(?:none|(?:" + regex_ + ")|any)"
 	percentage_     = "(?:(?:" + real_ + ")%)"
-	polar_          = "(?:(?:" + amplitude_ + ")e\\^(~(0|(?:" + amplitude_ + ")))?i)"
+	polar_          = "(?:(?:" + amplitude_ + ")e\\^~(?:" + amplitude_ + ")i)"
 	probability_    = "(?:p(0(?:" + fraction_ + ")?|1))"
 	query_          = "(?:[^#>" + control_ + "]*)"
 	quote_          = "(?:\"(?:" + character_ + ")*\")"
