@@ -130,8 +130,7 @@ type AssociationClassLike interface {
 	Association(
 		primitive PrimitiveLike,
 		delimiter string,
-		component ComponentLike,
-		optionalNote string,
+		member MemberLike,
 	) AssociationLike
 }
 
@@ -286,7 +285,8 @@ supported by each concrete constraint-like class.
 type ConstraintClassLike interface {
 	// Constructor Methods
 	Constraint(
-		any_ any,
+		type_ TypeLike,
+		optionalParameterization ParameterizationLike,
 	) ConstraintLike
 }
 
@@ -765,7 +765,6 @@ type ParameterClassLike interface {
 		symbol string,
 		delimiter string,
 		constraint ConstraintLike,
-		optionalParameterization ParameterizationLike,
 	) ParameterLike
 }
 
@@ -1113,6 +1112,18 @@ type ThrowClauseClassLike interface {
 }
 
 /*
+TypeClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete type-like class.
+*/
+type TypeClassLike interface {
+	// Constructor Methods
+	Type(
+		any_ any,
+	) TypeLike
+}
+
+/*
 ValueClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete value-like class.
@@ -1262,8 +1273,7 @@ type AssociationLike interface {
 	// Attribute Methods
 	GetPrimitive() PrimitiveLike
 	GetDelimiter() string
-	GetComponent() ComponentLike
-	GetOptionalNote() string
+	GetMember() MemberLike
 }
 
 /*
@@ -1430,7 +1440,8 @@ type ConstraintLike interface {
 	GetClass() ConstraintClassLike
 
 	// Attribute Methods
-	GetAny() any
+	GetType() TypeLike
+	GetOptionalParameterization() ParameterizationLike
 }
 
 /*
@@ -1946,7 +1957,6 @@ type ParameterLike interface {
 	GetSymbol() string
 	GetDelimiter() string
 	GetConstraint() ConstraintLike
-	GetOptionalParameterization() ParameterizationLike
 }
 
 /*
@@ -2316,6 +2326,19 @@ type ThrowClauseLike interface {
 	// Attribute Methods
 	GetDelimiter() string
 	GetException() ExceptionLike
+}
+
+/*
+TypeLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete type-like class.
+*/
+type TypeLike interface {
+	// Principal Methods
+	GetClass() TypeClassLike
+
+	// Attribute Methods
+	GetAny() any
 }
 
 /*

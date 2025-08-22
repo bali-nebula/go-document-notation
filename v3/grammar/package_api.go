@@ -1511,6 +1511,20 @@ type Methodical interface {
 		throwClause ast.ThrowClauseLike,
 		slot_ uint,
 	)
+	PreprocessType(
+		type_ ast.TypeLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessType(
+		type_ ast.TypeLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessTypeSlot(
+		type_ ast.TypeLike,
+		slot_ uint,
+	)
 	PreprocessValue(
 		value ast.ValueLike,
 		index_ uint,

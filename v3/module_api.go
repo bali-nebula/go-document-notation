@@ -123,6 +123,7 @@ type (
 	SubjectClassLike            = ast.SubjectClassLike
 	TemplateClassLike           = ast.TemplateClassLike
 	ThrowClauseClassLike        = ast.ThrowClauseClassLike
+	TypeClassLike               = ast.TypeClassLike
 	ValueClassLike              = ast.ValueClassLike
 	VariableClassLike           = ast.VariableClassLike
 	WhileClauseClassLike        = ast.WhileClauseClassLike
@@ -212,6 +213,7 @@ type (
 	SubjectLike            = ast.SubjectLike
 	TemplateLike           = ast.TemplateLike
 	ThrowClauseLike        = ast.ThrowClauseLike
+	TypeLike               = ast.TypeLike
 	ValueLike              = ast.ValueLike
 	VariableLike           = ast.VariableLike
 	WhileClauseLike        = ast.WhileClauseLike
@@ -361,14 +363,12 @@ func AssociationClass() AssociationClassLike {
 func Association(
 	primitive ast.PrimitiveLike,
 	delimiter string,
-	component ast.ComponentLike,
-	optionalNote string,
+	member ast.MemberLike,
 ) AssociationLike {
 	return AssociationClass().Association(
 		primitive,
 		delimiter,
-		component,
-		optionalNote,
+		member,
 	)
 }
 
@@ -531,10 +531,12 @@ func ConstraintClass() ConstraintClassLike {
 }
 
 func Constraint(
-	any_ any,
+	type_ ast.TypeLike,
+	optionalParameterization ast.ParameterizationLike,
 ) ConstraintLike {
 	return ConstraintClass().Constraint(
-		any_,
+		type_,
+		optionalParameterization,
 	)
 }
 
@@ -1042,13 +1044,11 @@ func Parameter(
 	symbol string,
 	delimiter string,
 	constraint ast.ConstraintLike,
-	optionalParameterization ast.ParameterizationLike,
 ) ParameterLike {
 	return ParameterClass().Parameter(
 		symbol,
 		delimiter,
 		constraint,
-		optionalParameterization,
 	)
 }
 
@@ -1423,6 +1423,18 @@ func ThrowClause(
 	return ThrowClauseClass().ThrowClause(
 		delimiter,
 		exception,
+	)
+}
+
+func TypeClass() TypeClassLike {
+	return ast.TypeClass()
+}
+
+func Type(
+	any_ any,
+) TypeLike {
+	return TypeClass().Type(
+		any_,
 	)
 }
 

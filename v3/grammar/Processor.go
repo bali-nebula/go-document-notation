@@ -1812,6 +1812,26 @@ func (v *processor_) ProcessThrowClauseSlot(
 ) {
 }
 
+func (v *processor_) PreprocessType(
+	type_ ast.TypeLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessType(
+	type_ ast.TypeLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessTypeSlot(
+	type_ ast.TypeLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessValue(
 	value ast.ValueLike,
 	index_ uint,

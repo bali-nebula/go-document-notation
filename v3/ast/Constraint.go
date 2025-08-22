@@ -36,14 +36,16 @@ func ConstraintClass() ConstraintClassLike {
 // Constructor Methods
 
 func (c *constraintClass_) Constraint(
-	any_ any,
+	type_ TypeLike,
+	optionalParameterization ParameterizationLike,
 ) ConstraintLike {
-	if uti.IsUndefined(any_) {
-		panic("The \"any\" attribute is required by this class.")
+	if uti.IsUndefined(type_) {
+		panic("The \"type\" attribute is required by this class.")
 	}
 	var instance = &constraint_{
 		// Initialize the instance attributes.
-		any_: any_,
+		type_:                     type_,
+		optionalParameterization_: optionalParameterization,
 	}
 	return instance
 }
@@ -58,8 +60,12 @@ func (v *constraint_) GetClass() ConstraintClassLike {
 
 // Attribute Methods
 
-func (v *constraint_) GetAny() any {
-	return v.any_
+func (v *constraint_) GetType() TypeLike {
+	return v.type_
+}
+
+func (v *constraint_) GetOptionalParameterization() ParameterizationLike {
+	return v.optionalParameterization_
 }
 
 // PROTECTED INTERFACE
@@ -68,7 +74,8 @@ func (v *constraint_) GetAny() any {
 
 type constraint_ struct {
 	// Declare the instance attributes.
-	any_ any
+	type_                     TypeLike
+	optionalParameterization_ ParameterizationLike
 }
 
 // Class Structure

@@ -35,9 +35,11 @@ $Entity:
 
 $Parameterization: "(" Parameter+ ")"
 
-$Parameter: symbol ":" Constraint Parameterization?
+$Parameter: symbol ":" Constraint
 
-$Constraint:
+$Constraint: Type Parameterization?
+
+$Type:
     Element
     String
     Range
@@ -84,7 +86,7 @@ $Collection:
 
 $Attributes: "[" Association+ "]"
 
-$Association: Primitive ":" Component note?
+$Association: Primitive ":" Member
 
 $Items: "[" Member* "]"
 

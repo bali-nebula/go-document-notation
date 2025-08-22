@@ -373,15 +373,15 @@ func (v *parser_) parseAssociation() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Component rule.
-	var component ast.ComponentLike
-	component, token, ok = v.parseComponent()
+	// Attempt to parse a single Member rule.
+	var member ast.MemberLike
+	member, token, ok = v.parseMember()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Component rule.
+		// This is not a single Member rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -390,25 +390,13 @@ func (v *parser_) parseAssociation() (
 		panic(message)
 	}
 
-	// Attempt to parse an optional note token.
-	var optionalNote string
-	optionalNote, token, ok = v.parseToken(NoteToken)
-	if ok {
-		if uti.IsDefined(tokens) {
-			tokens.AppendValue(token)
-		}
-	} else {
-		optionalNote = "" // Reset this to undefined.
-	}
-
 	// Found a single Association rule.
 	ok = true
 	v.remove(tokens)
 	association = ast.AssociationClass().Association(
 		primitive,
 		delimiter,
-		component,
-		optionalNote,
+		member,
 	)
 	return
 }
@@ -985,34 +973,40 @@ func (v *parser_) parseConstraint() (
 	token TokenLike,
 	ok bool,
 ) {
-	// Attempt to parse a single Element Constraint.
-	var element ast.ElementLike
-	element, token, ok = v.parseElement()
-	if ok {
-		// Found a single Element Constraint.
-		constraint = ast.ConstraintClass().Constraint(element)
+	var tokens = fra.List[TokenLike]()
+
+	// Attempt to parse a single Type rule.
+	var type_ ast.TypeLike
+	type_, token, ok = v.parseType()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single Type rule.
+		v.putBack(tokens)
 		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$Constraint", token)
+		panic(message)
 	}
 
-	// Attempt to parse a single String Constraint.
-	var string_ ast.StringLike
-	string_, token, ok = v.parseString()
+	// Attempt to parse an optional Parameterization rule.
+	var optionalParameterization ast.ParameterizationLike
+	optionalParameterization, _, ok = v.parseParameterization()
 	if ok {
-		// Found a single String Constraint.
-		constraint = ast.ConstraintClass().Constraint(string_)
-		return
+		// No additional put backs allowed at this point.
+		tokens = nil
 	}
 
-	// Attempt to parse a single Range Constraint.
-	var range_ ast.RangeLike
-	range_, token, ok = v.parseRange()
-	if ok {
-		// Found a single Range Constraint.
-		constraint = ast.ConstraintClass().Constraint(range_)
-		return
-	}
-
-	// This is not a single Constraint rule.
+	// Found a single Constraint rule.
+	ok = true
+	v.remove(tokens)
+	constraint = ast.ConstraintClass().Constraint(
+		type_,
+		optionalParameterization,
+	)
 	return
 }
 
@@ -3156,14 +3150,6 @@ func (v *parser_) parseParameter() (
 		panic(message)
 	}
 
-	// Attempt to parse an optional Parameterization rule.
-	var optionalParameterization ast.ParameterizationLike
-	optionalParameterization, _, ok = v.parseParameterization()
-	if ok {
-		// No additional put backs allowed at this point.
-		tokens = nil
-	}
-
 	// Found a single Parameter rule.
 	ok = true
 	v.remove(tokens)
@@ -3171,7 +3157,6 @@ func (v *parser_) parseParameter() (
 		symbol,
 		delimiter,
 		constraint,
-		optionalParameterization,
 	)
 	return
 }
@@ -4783,6 +4768,42 @@ func (v *parser_) parseThrowClause() (
 	return
 }
 
+func (v *parser_) parseType() (
+	type_ ast.TypeLike,
+	token TokenLike,
+	ok bool,
+) {
+	// Attempt to parse a single Element Type.
+	var element ast.ElementLike
+	element, token, ok = v.parseElement()
+	if ok {
+		// Found a single Element Type.
+		type_ = ast.TypeClass().Type(element)
+		return
+	}
+
+	// Attempt to parse a single String Type.
+	var string_ ast.StringLike
+	string_, token, ok = v.parseString()
+	if ok {
+		// Found a single String Type.
+		type_ = ast.TypeClass().Type(string_)
+		return
+	}
+
+	// Attempt to parse a single Range Type.
+	var range_ ast.RangeLike
+	range_, token, ok = v.parseRange()
+	if ok {
+		// Found a single Range Type.
+		type_ = ast.TypeClass().Type(range_)
+		return
+	}
+
+	// This is not a single Type rule.
+	return
+}
+
 func (v *parser_) parseValue() (
 	value ast.ValueLike,
 	token TokenLike,
@@ -5265,8 +5286,9 @@ var parserClassReference_ = &parserClass_{
     Collection
     Procedure`,
 			"$Parameterization": `"(" Parameter+ ")"`,
-			"$Parameter":        `symbol ":" Constraint Parameterization?`,
-			"$Constraint": `
+			"$Parameter":        `symbol ":" Constraint`,
+			"$Constraint":       `Type Parameterization?`,
+			"$Type": `
     Element
     String
     Range`,
@@ -5304,7 +5326,7 @@ var parserClassReference_ = &parserClass_{
     Attributes
     Items  ! Must be after attributes.`,
 			"$Attributes":  `"[" Association+ "]"`,
-			"$Association": `Primitive ":" Component note?`,
+			"$Association": `Primitive ":" Member`,
 			"$Items":       `"[" Member* "]"`,
 			"$Member":      `Component note?`,
 			"$Procedure":   `"{" Line* "}"`,

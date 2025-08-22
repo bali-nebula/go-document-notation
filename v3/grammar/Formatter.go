@@ -305,10 +305,11 @@ func (v *formatter_) PreprocessAssociation(
 	index_ uint,
 	count_ uint,
 ) {
-	var component = association.GetComponent()
+	var member = association.GetMember()
+	var component = member.GetComponent()
 	var parameterized = component.GetOptionalParameterization()
 	var isParameterized = uti.IsDefined(parameterized)
-	var note = association.GetOptionalNote()
+	var note = member.GetOptionalNote()
 	var hasNote = uti.IsDefined(note)
 	if count_ > 1 || isParameterized || hasNote {
 		v.appendNewline()
@@ -322,10 +323,6 @@ func (v *formatter_) ProcessAssociationSlot(
 	switch slot_ {
 	case 2:
 		v.appendString(" ")
-	case 3:
-		if uti.IsDefined(association.GetOptionalNote()) {
-			v.appendString("  ")
-		}
 	}
 }
 
@@ -355,10 +352,11 @@ func (v *formatter_) ProcessAttributesSlot(
 		v.depth_--
 		var associations = attributes.GetAssociations() // Will be at least one.
 		var association = associations.GetIterator().GetNext()
-		var component = association.GetComponent()
+		var member = association.GetMember()
+		var component = member.GetComponent()
 		var parameterized = component.GetOptionalParameterization()
 		var isParameterized = uti.IsDefined(parameterized)
-		var note = association.GetOptionalNote()
+		var note = member.GetOptionalNote()
 		var hasNote = uti.IsDefined(note)
 		if associations.GetSize() > 1 || isParameterized || hasNote {
 			v.appendNewline()
@@ -503,13 +501,15 @@ func (v *formatter_) PreprocessMember(
 	index_ uint,
 	count_ uint,
 ) {
-	var component = member.GetComponent()
-	var parameterized = component.GetOptionalParameterization()
-	var isParameterized = uti.IsDefined(parameterized)
-	var note = member.GetOptionalNote()
-	var hasNote = uti.IsDefined(note)
-	if count_ > 1 || isParameterized || hasNote {
-		v.appendNewline()
+	if count_ > 0 {
+		var component = member.GetComponent()
+		var parameterized = component.GetOptionalParameterization()
+		var isParameterized = uti.IsDefined(parameterized)
+		var note = member.GetOptionalNote()
+		var hasNote = uti.IsDefined(note)
+		if count_ > 1 || isParameterized || hasNote {
+			v.appendNewline()
+		}
 	}
 }
 
@@ -555,7 +555,8 @@ func (v *formatter_) PreprocessParameter(
 	index_ uint,
 	count_ uint,
 ) {
-	var parameterized = parameter.GetOptionalParameterization()
+	var constraint = parameter.GetConstraint()
+	var parameterized = constraint.GetOptionalParameterization()
 	var isParameterized = uti.IsDefined(parameterized)
 	if count_ > 1 || isParameterized {
 		v.appendNewline()
@@ -582,7 +583,8 @@ func (v *formatter_) ProcessParameterizationSlot(
 		v.depth_--
 		var parameters = parameterization.GetParameters() // Will be at least one.
 		var parameter = parameters.GetIterator().GetNext()
-		var parameterized = parameter.GetOptionalParameterization()
+		var constraint = parameter.GetConstraint()
+		var parameterized = constraint.GetOptionalParameterization()
 		var isParameterized = uti.IsDefined(parameterized)
 		if parameters.GetSize() > 1 || isParameterized {
 			v.appendNewline()

@@ -29,31 +29,21 @@ import (
 
 // Access Function
 
-func ParameterClass() ParameterClassLike {
-	return parameterClass()
+func TypeClass() TypeClassLike {
+	return typeClass()
 }
 
 // Constructor Methods
 
-func (c *parameterClass_) Parameter(
-	symbol string,
-	delimiter string,
-	constraint ConstraintLike,
-) ParameterLike {
-	if uti.IsUndefined(symbol) {
-		panic("The \"symbol\" attribute is required by this class.")
+func (c *typeClass_) Type(
+	any_ any,
+) TypeLike {
+	if uti.IsUndefined(any_) {
+		panic("The \"any\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(delimiter) {
-		panic("The \"delimiter\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(constraint) {
-		panic("The \"constraint\" attribute is required by this class.")
-	}
-	var instance = &parameter_{
+	var instance = &type_{
 		// Initialize the instance attributes.
-		symbol_:     symbol,
-		delimiter_:  delimiter,
-		constraint_: constraint,
+		any_: any_,
 	}
 	return instance
 }
@@ -62,47 +52,37 @@ func (c *parameterClass_) Parameter(
 
 // Principal Methods
 
-func (v *parameter_) GetClass() ParameterClassLike {
-	return parameterClass()
+func (v *type_) GetClass() TypeClassLike {
+	return typeClass()
 }
 
 // Attribute Methods
 
-func (v *parameter_) GetSymbol() string {
-	return v.symbol_
-}
-
-func (v *parameter_) GetDelimiter() string {
-	return v.delimiter_
-}
-
-func (v *parameter_) GetConstraint() ConstraintLike {
-	return v.constraint_
+func (v *type_) GetAny() any {
+	return v.any_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type parameter_ struct {
+type type_ struct {
 	// Declare the instance attributes.
-	symbol_     string
-	delimiter_  string
-	constraint_ ConstraintLike
+	any_ any
 }
 
 // Class Structure
 
-type parameterClass_ struct {
+type typeClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func parameterClass() *parameterClass_ {
-	return parameterClassReference_
+func typeClass() *typeClass_ {
+	return typeClassReference_
 }
 
-var parameterClassReference_ = &parameterClass_{
+var typeClassReference_ = &typeClass_{
 	// Initialize the class constants.
 }
