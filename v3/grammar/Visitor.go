@@ -250,18 +250,28 @@ func (v *visitor_) visitAssociation(
 		2,
 	)
 
-	var document = association.GetDocument()
-	v.processor_.PreprocessDocument(
-		document,
+	var component = association.GetComponent()
+	v.processor_.PreprocessComponent(
+		component,
 		1,
 		1,
 	)
-	v.visitDocument(document)
-	v.processor_.PostprocessDocument(
-		document,
+	v.visitComponent(component)
+	v.processor_.PostprocessComponent(
+		component,
 		1,
 		1,
 	)
+	// Visit slot 3 between terms.
+	v.processor_.ProcessAssociationSlot(
+		association,
+		3,
+	)
+
+	var optionalNote = association.GetOptionalNote()
+	if uti.IsDefined(optionalNote) {
+		v.processor_.ProcessNote(optionalNote)
+	}
 }
 
 func (v *visitor_) visitAtLevel(
@@ -473,14 +483,14 @@ func (v *visitor_) visitCollection(
 			1,
 			1,
 		)
-	case ast.EntitiesLike:
-		v.processor_.PreprocessEntities(
+	case ast.ItemsLike:
+		v.processor_.PreprocessItems(
 			actual,
 			1,
 			1,
 		)
-		v.visitEntities(actual)
-		v.processor_.PostprocessEntities(
+		v.visitItems(actual)
+		v.processor_.PostprocessItems(
 			actual,
 			1,
 			1,
@@ -535,8 +545,62 @@ func (v *visitor_) visitComplement(
 func (v *visitor_) visitComponent(
 	component ast.ComponentLike,
 ) {
-	// Visit the possible component rule types.
-	switch actual := component.GetAny().(type) {
+	var entity = component.GetEntity()
+	v.processor_.PreprocessEntity(
+		entity,
+		1,
+		1,
+	)
+	v.visitEntity(entity)
+	v.processor_.PostprocessEntity(
+		entity,
+		1,
+		1,
+	)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessComponentSlot(
+		component,
+		1,
+	)
+
+	var optionalParameterization = component.GetOptionalParameterization()
+	if uti.IsDefined(optionalParameterization) {
+		v.processor_.PreprocessParameterization(
+			optionalParameterization,
+			1,
+			1,
+		)
+		v.visitParameterization(optionalParameterization)
+		v.processor_.PostprocessParameterization(
+			optionalParameterization,
+			1,
+			1,
+		)
+	}
+}
+
+func (v *visitor_) visitCondition(
+	condition ast.ConditionLike,
+) {
+	var expression = condition.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
+		1,
+		1,
+	)
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
+		1,
+		1,
+	)
+}
+
+func (v *visitor_) visitConstraint(
+	constraint ast.ConstraintLike,
+) {
+	// Visit the possible constraint rule types.
+	switch actual := constraint.GetAny().(type) {
 	case ast.ElementLike:
 		v.processor_.PreprocessElement(
 			actual,
@@ -573,48 +637,7 @@ func (v *visitor_) visitComponent(
 			1,
 			1,
 		)
-	case ast.CollectionLike:
-		v.processor_.PreprocessCollection(
-			actual,
-			1,
-			1,
-		)
-		v.visitCollection(actual)
-		v.processor_.PostprocessCollection(
-			actual,
-			1,
-			1,
-		)
-	case ast.ProcedureLike:
-		v.processor_.PreprocessProcedure(
-			actual,
-			1,
-			1,
-		)
-		v.visitProcedure(actual)
-		v.processor_.PostprocessProcedure(
-			actual,
-			1,
-			1,
-		)
 	}
-}
-
-func (v *visitor_) visitCondition(
-	condition ast.ConditionLike,
-) {
-	var expression = condition.GetExpression()
-	v.processor_.PreprocessExpression(
-		expression,
-		1,
-		1,
-	)
-	v.visitExpression(expression)
-	v.processor_.PostprocessExpression(
-		expression,
-		1,
-		1,
-	)
 }
 
 func (v *visitor_) visitContinueClause(
@@ -697,36 +720,6 @@ func (v *visitor_) visitDocument(
 		1,
 		1,
 	)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessDocumentSlot(
-		document,
-		1,
-	)
-
-	var optionalParameters = document.GetOptionalParameters()
-	if uti.IsDefined(optionalParameters) {
-		v.processor_.PreprocessParameters(
-			optionalParameters,
-			1,
-			1,
-		)
-		v.visitParameters(optionalParameters)
-		v.processor_.PostprocessParameters(
-			optionalParameters,
-			1,
-			1,
-		)
-	}
-	// Visit slot 2 between terms.
-	v.processor_.ProcessDocumentSlot(
-		document,
-		2,
-	)
-
-	var optionalNote = document.GetOptionalNote()
-	if uti.IsDefined(optionalNote) {
-		v.processor_.ProcessNote(optionalNote)
-	}
 }
 
 func (v *visitor_) visitDraft(
@@ -775,43 +768,72 @@ func (v *visitor_) visitElement(
 	}
 }
 
-func (v *visitor_) visitEntities(
-	entities ast.EntitiesLike,
+func (v *visitor_) visitEntity(
+	entity ast.EntityLike,
 ) {
-	var delimiter1 = entities.GetDelimiter1()
-	v.processor_.ProcessDelimiter(delimiter1)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessEntitiesSlot(
-		entities,
-		1,
-	)
-
-	var itemsIndex uint
-	var items = entities.GetItems().GetIterator()
-	var itemsCount = uint(items.GetSize())
-	for items.HasNext() {
-		itemsIndex++
-		var rule = items.GetNext()
-		v.processor_.PreprocessItem(
-			rule,
-			itemsIndex,
-			itemsCount,
+	// Visit the possible entity rule types.
+	switch actual := entity.GetAny().(type) {
+	case ast.ElementLike:
+		v.processor_.PreprocessElement(
+			actual,
+			1,
+			1,
 		)
-		v.visitItem(rule)
-		v.processor_.PostprocessItem(
-			rule,
-			itemsIndex,
-			itemsCount,
+		v.visitElement(actual)
+		v.processor_.PostprocessElement(
+			actual,
+			1,
+			1,
+		)
+	case ast.StringLike:
+		v.processor_.PreprocessString(
+			actual,
+			1,
+			1,
+		)
+		v.visitString(actual)
+		v.processor_.PostprocessString(
+			actual,
+			1,
+			1,
+		)
+	case ast.RangeLike:
+		v.processor_.PreprocessRange(
+			actual,
+			1,
+			1,
+		)
+		v.visitRange(actual)
+		v.processor_.PostprocessRange(
+			actual,
+			1,
+			1,
+		)
+	case ast.CollectionLike:
+		v.processor_.PreprocessCollection(
+			actual,
+			1,
+			1,
+		)
+		v.visitCollection(actual)
+		v.processor_.PostprocessCollection(
+			actual,
+			1,
+			1,
+		)
+	case ast.ProcedureLike:
+		v.processor_.PreprocessProcedure(
+			actual,
+			1,
+			1,
+		)
+		v.visitProcedure(actual)
+		v.processor_.PostprocessProcedure(
+			actual,
+			1,
+			1,
 		)
 	}
-	// Visit slot 2 between terms.
-	v.processor_.ProcessEntitiesSlot(
-		entities,
-		2,
-	)
-
-	var delimiter2 = entities.GetDelimiter2()
-	v.processor_.ProcessDelimiter(delimiter2)
 }
 
 func (v *visitor_) visitEvent(
@@ -1193,21 +1215,43 @@ func (v *visitor_) visitInvoke(
 	}
 }
 
-func (v *visitor_) visitItem(
-	item ast.ItemLike,
+func (v *visitor_) visitItems(
+	items ast.ItemsLike,
 ) {
-	var document = item.GetDocument()
-	v.processor_.PreprocessDocument(
-		document,
-		1,
-		1,
-	)
-	v.visitDocument(document)
-	v.processor_.PostprocessDocument(
-		document,
-		1,
+	var delimiter1 = items.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessItemsSlot(
+		items,
 		1,
 	)
+
+	var membersIndex uint
+	var members = items.GetMembers().GetIterator()
+	var membersCount = uint(members.GetSize())
+	for members.HasNext() {
+		membersIndex++
+		var rule = members.GetNext()
+		v.processor_.PreprocessMember(
+			rule,
+			membersIndex,
+			membersCount,
+		)
+		v.visitMember(rule)
+		v.processor_.PostprocessMember(
+			rule,
+			membersIndex,
+			membersCount,
+		)
+	}
+	// Visit slot 2 between terms.
+	v.processor_.ProcessItemsSlot(
+		items,
+		2,
+	)
+
+	var delimiter2 = items.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
 }
 
 func (v *visitor_) visitLeft(
@@ -1332,14 +1376,14 @@ func (v *visitor_) visitLogical(
 ) {
 	// Visit the possible logical rule types.
 	switch actual := logical.GetAny().(type) {
-	case ast.DocumentLike:
-		v.processor_.PreprocessDocument(
+	case ast.ComponentLike:
+		v.processor_.PreprocessComponent(
 			actual,
 			1,
 			1,
 		)
-		v.visitDocument(actual)
-		v.processor_.PostprocessDocument(
+		v.visitComponent(actual)
+		v.processor_.PostprocessComponent(
 			actual,
 			1,
 			1,
@@ -1588,6 +1632,33 @@ func (v *visitor_) visitMatchingClause(
 	)
 }
 
+func (v *visitor_) visitMember(
+	member ast.MemberLike,
+) {
+	var component = member.GetComponent()
+	v.processor_.PreprocessComponent(
+		component,
+		1,
+		1,
+	)
+	v.visitComponent(component)
+	v.processor_.PostprocessComponent(
+		component,
+		1,
+		1,
+	)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessMemberSlot(
+		member,
+		1,
+	)
+
+	var optionalNote = member.GetOptionalNote()
+	if uti.IsDefined(optionalNote) {
+		v.processor_.ProcessNote(optionalNote)
+	}
+}
+
 func (v *visitor_) visitMessage(
 	message ast.MessageLike,
 ) {
@@ -1802,14 +1873,14 @@ func (v *visitor_) visitNumerical(
 ) {
 	// Visit the possible numerical rule types.
 	switch actual := numerical.GetAny().(type) {
-	case ast.DocumentLike:
-		v.processor_.PreprocessDocument(
+	case ast.ComponentLike:
+		v.processor_.PreprocessComponent(
 			actual,
 			1,
 			1,
 		)
-		v.visitDocument(actual)
-		v.processor_.PostprocessDocument(
+		v.visitComponent(actual)
+		v.processor_.PostprocessComponent(
 			actual,
 			1,
 			1,
@@ -2018,42 +2089,95 @@ func (v *visitor_) visitOperator(
 	}
 }
 
-func (v *visitor_) visitParameters(
-	parameters ast.ParametersLike,
+func (v *visitor_) visitParameter(
+	parameter ast.ParameterLike,
 ) {
-	var delimiter1 = parameters.GetDelimiter1()
-	v.processor_.ProcessDelimiter(delimiter1)
+	var symbol = parameter.GetSymbol()
+	v.processor_.ProcessSymbol(symbol)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessParametersSlot(
-		parameters,
+	v.processor_.ProcessParameterSlot(
+		parameter,
 		1,
 	)
 
-	var associationsIndex uint
-	var associations = parameters.GetAssociations().GetIterator()
-	var associationsCount = uint(associations.GetSize())
-	for associations.HasNext() {
-		associationsIndex++
-		var rule = associations.GetNext()
-		v.processor_.PreprocessAssociation(
-			rule,
-			associationsIndex,
-			associationsCount,
-		)
-		v.visitAssociation(rule)
-		v.processor_.PostprocessAssociation(
-			rule,
-			associationsIndex,
-			associationsCount,
-		)
-	}
+	var delimiter = parameter.GetDelimiter()
+	v.processor_.ProcessDelimiter(delimiter)
 	// Visit slot 2 between terms.
-	v.processor_.ProcessParametersSlot(
-		parameters,
+	v.processor_.ProcessParameterSlot(
+		parameter,
 		2,
 	)
 
-	var delimiter2 = parameters.GetDelimiter2()
+	var constraint = parameter.GetConstraint()
+	v.processor_.PreprocessConstraint(
+		constraint,
+		1,
+		1,
+	)
+	v.visitConstraint(constraint)
+	v.processor_.PostprocessConstraint(
+		constraint,
+		1,
+		1,
+	)
+	// Visit slot 3 between terms.
+	v.processor_.ProcessParameterSlot(
+		parameter,
+		3,
+	)
+
+	var optionalParameterization = parameter.GetOptionalParameterization()
+	if uti.IsDefined(optionalParameterization) {
+		v.processor_.PreprocessParameterization(
+			optionalParameterization,
+			1,
+			1,
+		)
+		v.visitParameterization(optionalParameterization)
+		v.processor_.PostprocessParameterization(
+			optionalParameterization,
+			1,
+			1,
+		)
+	}
+}
+
+func (v *visitor_) visitParameterization(
+	parameterization ast.ParameterizationLike,
+) {
+	var delimiter1 = parameterization.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessParameterizationSlot(
+		parameterization,
+		1,
+	)
+
+	var parametersIndex uint
+	var parameters = parameterization.GetParameters().GetIterator()
+	var parametersCount = uint(parameters.GetSize())
+	for parameters.HasNext() {
+		parametersIndex++
+		var rule = parameters.GetNext()
+		v.processor_.PreprocessParameter(
+			rule,
+			parametersIndex,
+			parametersCount,
+		)
+		v.visitParameter(rule)
+		v.processor_.PostprocessParameter(
+			rule,
+			parametersIndex,
+			parametersCount,
+		)
+	}
+	// Visit slot 2 between terms.
+	v.processor_.ProcessParameterizationSlot(
+		parameterization,
+		2,
+	)
+
+	var delimiter2 = parameterization.GetDelimiter2()
 	v.processor_.ProcessDelimiter(delimiter2)
 }
 
@@ -2388,14 +2512,14 @@ func (v *visitor_) visitReference(
 ) {
 	// Visit the possible reference rule types.
 	switch actual := reference.GetAny().(type) {
-	case ast.DocumentLike:
-		v.processor_.PreprocessDocument(
+	case ast.ComponentLike:
+		v.processor_.PreprocessComponent(
 			actual,
 			1,
 			1,
 		)
-		v.visitDocument(actual)
-		v.processor_.PostprocessDocument(
+		v.visitComponent(actual)
+		v.processor_.PostprocessComponent(
 			actual,
 			1,
 			1,
@@ -2906,14 +3030,14 @@ func (v *visitor_) visitSubject(
 ) {
 	// Visit the possible subject rule types.
 	switch actual := subject.GetAny().(type) {
-	case ast.DocumentLike:
-		v.processor_.PreprocessDocument(
+	case ast.ComponentLike:
+		v.processor_.PreprocessComponent(
 			actual,
 			1,
 			1,
 		)
-		v.visitDocument(actual)
-		v.processor_.PostprocessDocument(
+		v.visitComponent(actual)
+		v.processor_.PostprocessComponent(
 			actual,
 			1,
 			1,

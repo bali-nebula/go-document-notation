@@ -36,14 +36,16 @@ func ComponentClass() ComponentClassLike {
 // Constructor Methods
 
 func (c *componentClass_) Component(
-	any_ any,
+	entity EntityLike,
+	optionalParameterization ParameterizationLike,
 ) ComponentLike {
-	if uti.IsUndefined(any_) {
-		panic("The \"any\" attribute is required by this class.")
+	if uti.IsUndefined(entity) {
+		panic("The \"entity\" attribute is required by this class.")
 	}
 	var instance = &component_{
 		// Initialize the instance attributes.
-		any_: any_,
+		entity_:                   entity,
+		optionalParameterization_: optionalParameterization,
 	}
 	return instance
 }
@@ -58,8 +60,12 @@ func (v *component_) GetClass() ComponentClassLike {
 
 // Attribute Methods
 
-func (v *component_) GetAny() any {
-	return v.any_
+func (v *component_) GetEntity() EntityLike {
+	return v.entity_
+}
+
+func (v *component_) GetOptionalParameterization() ParameterizationLike {
+	return v.optionalParameterization_
 }
 
 // PROTECTED INTERFACE
@@ -68,7 +74,8 @@ func (v *component_) GetAny() any {
 
 type component_ struct {
 	// Declare the instance attributes.
-	any_ any
+	entity_                   EntityLike
+	optionalParameterization_ ParameterizationLike
 }
 
 // Class Structure

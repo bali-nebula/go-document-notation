@@ -37,17 +37,13 @@ func DocumentClass() DocumentClassLike {
 
 func (c *documentClass_) Document(
 	component ComponentLike,
-	optionalParameters ParametersLike,
-	optionalNote string,
 ) DocumentLike {
 	if uti.IsUndefined(component) {
 		panic("The \"component\" attribute is required by this class.")
 	}
 	var instance = &document_{
 		// Initialize the instance attributes.
-		component_:          component,
-		optionalParameters_: optionalParameters,
-		optionalNote_:       optionalNote,
+		component_: component,
 	}
 	return instance
 }
@@ -66,23 +62,13 @@ func (v *document_) GetComponent() ComponentLike {
 	return v.component_
 }
 
-func (v *document_) GetOptionalParameters() ParametersLike {
-	return v.optionalParameters_
-}
-
-func (v *document_) GetOptionalNote() string {
-	return v.optionalNote_
-}
-
 // PROTECTED INTERFACE
 
 // Instance Structure
 
 type document_ struct {
 	// Declare the instance attributes.
-	component_          ComponentLike
-	optionalParameters_ ParametersLike
-	optionalNote_       string
+	component_ ComponentLike
 }
 
 // Class Structure

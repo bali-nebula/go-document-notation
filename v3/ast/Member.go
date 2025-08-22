@@ -22,7 +22,6 @@
 package ast
 
 import (
-	fra "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -30,31 +29,23 @@ import (
 
 // Access Function
 
-func EntitiesClass() EntitiesClassLike {
-	return entitiesClass()
+func MemberClass() MemberClassLike {
+	return memberClass()
 }
 
 // Constructor Methods
 
-func (c *entitiesClass_) Entities(
-	delimiter1 string,
-	items fra.Sequential[ItemLike],
-	delimiter2 string,
-) EntitiesLike {
-	if uti.IsUndefined(delimiter1) {
-		panic("The \"delimiter1\" attribute is required by this class.")
+func (c *memberClass_) Member(
+	component ComponentLike,
+	optionalNote string,
+) MemberLike {
+	if uti.IsUndefined(component) {
+		panic("The \"component\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(items) {
-		panic("The \"items\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(delimiter2) {
-		panic("The \"delimiter2\" attribute is required by this class.")
-	}
-	var instance = &entities_{
+	var instance = &member_{
 		// Initialize the instance attributes.
-		delimiter1_: delimiter1,
-		items_:      items,
-		delimiter2_: delimiter2,
+		component_:    component,
+		optionalNote_: optionalNote,
 	}
 	return instance
 }
@@ -63,47 +54,42 @@ func (c *entitiesClass_) Entities(
 
 // Principal Methods
 
-func (v *entities_) GetClass() EntitiesClassLike {
-	return entitiesClass()
+func (v *member_) GetClass() MemberClassLike {
+	return memberClass()
 }
 
 // Attribute Methods
 
-func (v *entities_) GetDelimiter1() string {
-	return v.delimiter1_
+func (v *member_) GetComponent() ComponentLike {
+	return v.component_
 }
 
-func (v *entities_) GetItems() fra.Sequential[ItemLike] {
-	return v.items_
-}
-
-func (v *entities_) GetDelimiter2() string {
-	return v.delimiter2_
+func (v *member_) GetOptionalNote() string {
+	return v.optionalNote_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type entities_ struct {
+type member_ struct {
 	// Declare the instance attributes.
-	delimiter1_ string
-	items_      fra.Sequential[ItemLike]
-	delimiter2_ string
+	component_    ComponentLike
+	optionalNote_ string
 }
 
 // Class Structure
 
-type entitiesClass_ struct {
+type memberClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func entitiesClass() *entitiesClass_ {
-	return entitiesClassReference_
+func memberClass() *memberClass_ {
+	return memberClassReference_
 }
 
-var entitiesClassReference_ = &entitiesClass_{
+var memberClassReference_ = &memberClass_{
 	// Initialize the class constants.
 }

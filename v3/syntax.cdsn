@@ -22,22 +22,25 @@ For more information on CDSN see the wiki at:
 │                               RULE DEFINITIONS                               │
 └──────────────────────────────────────────────────────────────────────────────┘
 <!
-$Document: Component Parameters? note?
+$Document: Component
 
-$Component:
+$Component: Entity Parameterization?
+
+$Entity:
     Element
     String
     Range
     Collection
     Procedure
 
-$Parameters: "(" Association+ ")"
+$Parameterization: "(" Parameter+ ")"
 
-$Association: Primitive ":" Document
+$Parameter: symbol ":" Constraint Parameterization?
 
-$Primitive:
+$Constraint:
     Element
     String
+    Range
 
 $Element:
     angle
@@ -71,15 +74,21 @@ $Right:
     "]"
     ")"
 
+$Primitive:
+    Element
+    String
+
 $Collection:
     Attributes
-    Entities  ! Must be after attributes.
+    Items  ! Must be after attributes.
 
 $Attributes: "[" Association+ "]"
 
-$Entities: "[" Item* "]"
+$Association: Primitive ":" Component note?
 
-$Item: Document
+$Items: "[" Member* "]"
+
+$Member: Component note?
 
 $Procedure: "{" Line* "}"
 
@@ -229,7 +238,7 @@ $NotarizeClause: "notarize" Draft "as" Cited
 $Expression: Subject Predicate*
 
 $Subject:
-    Document
+    Component
     Subcomponent
     Precedence
     Referent
@@ -277,7 +286,7 @@ $Precedence: "(" Expression ")"
 $Referent: "@" Reference
 
 $Reference:
-    Document
+    Component
     Subcomponent
     Referent
     Function
@@ -287,7 +296,7 @@ $Reference:
 $Complement: "not" Logical
 
 $Logical:
-    Document
+    Component
     Subcomponent
     Precedence
     Referent
@@ -304,7 +313,7 @@ $Inverse:
     "*"
 
 $Numerical:
-    Document
+    Component
     Subcomponent
     Precedence
     Referent

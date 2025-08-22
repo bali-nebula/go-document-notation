@@ -29,33 +29,21 @@ import (
 
 // Access Function
 
-func AssociationClass() AssociationClassLike {
-	return associationClass()
+func ConstraintClass() ConstraintClassLike {
+	return constraintClass()
 }
 
 // Constructor Methods
 
-func (c *associationClass_) Association(
-	primitive PrimitiveLike,
-	delimiter string,
-	component ComponentLike,
-	optionalNote string,
-) AssociationLike {
-	if uti.IsUndefined(primitive) {
-		panic("The \"primitive\" attribute is required by this class.")
+func (c *constraintClass_) Constraint(
+	any_ any,
+) ConstraintLike {
+	if uti.IsUndefined(any_) {
+		panic("The \"any\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(delimiter) {
-		panic("The \"delimiter\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(component) {
-		panic("The \"component\" attribute is required by this class.")
-	}
-	var instance = &association_{
+	var instance = &constraint_{
 		// Initialize the instance attributes.
-		primitive_:    primitive,
-		delimiter_:    delimiter,
-		component_:    component,
-		optionalNote_: optionalNote,
+		any_: any_,
 	}
 	return instance
 }
@@ -64,52 +52,37 @@ func (c *associationClass_) Association(
 
 // Principal Methods
 
-func (v *association_) GetClass() AssociationClassLike {
-	return associationClass()
+func (v *constraint_) GetClass() ConstraintClassLike {
+	return constraintClass()
 }
 
 // Attribute Methods
 
-func (v *association_) GetPrimitive() PrimitiveLike {
-	return v.primitive_
-}
-
-func (v *association_) GetDelimiter() string {
-	return v.delimiter_
-}
-
-func (v *association_) GetComponent() ComponentLike {
-	return v.component_
-}
-
-func (v *association_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *constraint_) GetAny() any {
+	return v.any_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type association_ struct {
+type constraint_ struct {
 	// Declare the instance attributes.
-	primitive_    PrimitiveLike
-	delimiter_    string
-	component_    ComponentLike
-	optionalNote_ string
+	any_ any
 }
 
 // Class Structure
 
-type associationClass_ struct {
+type constraintClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func associationClass() *associationClass_ {
-	return associationClassReference_
+func constraintClass() *constraintClass_ {
+	return constraintClassReference_
 }
 
-var associationClassReference_ = &associationClass_{
+var constraintClassReference_ = &constraintClass_{
 	// Initialize the class constants.
 }

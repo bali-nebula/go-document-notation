@@ -130,7 +130,8 @@ type AssociationClassLike interface {
 	Association(
 		primitive PrimitiveLike,
 		delimiter string,
-		document DocumentLike,
+		component ComponentLike,
+		optionalNote string,
 	) AssociationLike
 }
 
@@ -260,7 +261,8 @@ supported by each concrete component-like class.
 type ComponentClassLike interface {
 	// Constructor Methods
 	Component(
-		any_ any,
+		entity EntityLike,
+		optionalParameterization ParameterizationLike,
 	) ComponentLike
 }
 
@@ -274,6 +276,18 @@ type ConditionClassLike interface {
 	Condition(
 		expression ExpressionLike,
 	) ConditionLike
+}
+
+/*
+ConstraintClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete constraint-like class.
+*/
+type ConstraintClassLike interface {
+	// Constructor Methods
+	Constraint(
+		any_ any,
+	) ConstraintLike
 }
 
 /*
@@ -324,8 +338,6 @@ type DocumentClassLike interface {
 	// Constructor Methods
 	Document(
 		component ComponentLike,
-		optionalParameters ParametersLike,
-		optionalNote string,
 	) DocumentLike
 }
 
@@ -354,17 +366,15 @@ type ElementClassLike interface {
 }
 
 /*
-EntitiesClassLike is a class interface that declares the
+EntityClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete entities-like class.
+supported by each concrete entity-like class.
 */
-type EntitiesClassLike interface {
+type EntityClassLike interface {
 	// Constructor Methods
-	Entities(
-		delimiter1 string,
-		items fra.Sequential[ItemLike],
-		delimiter2 string,
-	) EntitiesLike
+	Entity(
+		any_ any,
+	) EntityLike
 }
 
 /*
@@ -508,15 +518,17 @@ type InvokeClassLike interface {
 }
 
 /*
-ItemClassLike is a class interface that declares the
+ItemsClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete item-like class.
+supported by each concrete items-like class.
 */
-type ItemClassLike interface {
+type ItemsClassLike interface {
 	// Constructor Methods
-	Item(
-		document DocumentLike,
-	) ItemLike
+	Items(
+		delimiter1 string,
+		members fra.Sequential[MemberLike],
+		delimiter2 string,
+	) ItemsLike
 }
 
 /*
@@ -636,6 +648,19 @@ type MatchingClauseClassLike interface {
 }
 
 /*
+MemberClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete member-like class.
+*/
+type MemberClassLike interface {
+	// Constructor Methods
+	Member(
+		component ComponentLike,
+		optionalNote string,
+	) MemberLike
+}
+
+/*
 MessageClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete message-like class.
@@ -730,17 +755,32 @@ type OperatorClassLike interface {
 }
 
 /*
-ParametersClassLike is a class interface that declares the
+ParameterClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete parameters-like class.
+supported by each concrete parameter-like class.
 */
-type ParametersClassLike interface {
+type ParameterClassLike interface {
 	// Constructor Methods
-	Parameters(
+	Parameter(
+		symbol string,
+		delimiter string,
+		constraint ConstraintLike,
+		optionalParameterization ParameterizationLike,
+	) ParameterLike
+}
+
+/*
+ParameterizationClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete parameterization-like class.
+*/
+type ParameterizationClassLike interface {
+	// Constructor Methods
+	Parameterization(
 		delimiter1 string,
-		associations fra.Sequential[AssociationLike],
+		parameters fra.Sequential[ParameterLike],
 		delimiter2 string,
-	) ParametersLike
+	) ParameterizationLike
 }
 
 /*
@@ -1222,7 +1262,8 @@ type AssociationLike interface {
 	// Attribute Methods
 	GetPrimitive() PrimitiveLike
 	GetDelimiter() string
-	GetDocument() DocumentLike
+	GetComponent() ComponentLike
+	GetOptionalNote() string
 }
 
 /*
@@ -1362,7 +1403,8 @@ type ComponentLike interface {
 	GetClass() ComponentClassLike
 
 	// Attribute Methods
-	GetAny() any
+	GetEntity() EntityLike
+	GetOptionalParameterization() ParameterizationLike
 }
 
 /*
@@ -1376,6 +1418,19 @@ type ConditionLike interface {
 
 	// Attribute Methods
 	GetExpression() ExpressionLike
+}
+
+/*
+ConstraintLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete constraint-like class.
+*/
+type ConstraintLike interface {
+	// Principal Methods
+	GetClass() ConstraintClassLike
+
+	// Attribute Methods
+	GetAny() any
 }
 
 /*
@@ -1431,8 +1486,6 @@ type DocumentLike interface {
 
 	// Attribute Methods
 	GetComponent() ComponentLike
-	GetOptionalParameters() ParametersLike
-	GetOptionalNote() string
 }
 
 /*
@@ -1462,18 +1515,16 @@ type ElementLike interface {
 }
 
 /*
-EntitiesLike is an instance interface that declares the
+EntityLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete entities-like class.
+by each instance of a concrete entity-like class.
 */
-type EntitiesLike interface {
+type EntityLike interface {
 	// Principal Methods
-	GetClass() EntitiesClassLike
+	GetClass() EntityClassLike
 
 	// Attribute Methods
-	GetDelimiter1() string
-	GetItems() fra.Sequential[ItemLike]
-	GetDelimiter2() string
+	GetAny() any
 }
 
 /*
@@ -1628,16 +1679,18 @@ type InvokeLike interface {
 }
 
 /*
-ItemLike is an instance interface that declares the
+ItemsLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete item-like class.
+by each instance of a concrete items-like class.
 */
-type ItemLike interface {
+type ItemsLike interface {
 	// Principal Methods
-	GetClass() ItemClassLike
+	GetClass() ItemsClassLike
 
 	// Attribute Methods
-	GetDocument() DocumentLike
+	GetDelimiter1() string
+	GetMembers() fra.Sequential[MemberLike]
+	GetDelimiter2() string
 }
 
 /*
@@ -1766,6 +1819,20 @@ type MatchingClauseLike interface {
 }
 
 /*
+MemberLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete member-like class.
+*/
+type MemberLike interface {
+	// Principal Methods
+	GetClass() MemberClassLike
+
+	// Attribute Methods
+	GetComponent() ComponentLike
+	GetOptionalNote() string
+}
+
+/*
 MessageLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete message-like class.
@@ -1867,17 +1934,33 @@ type OperatorLike interface {
 }
 
 /*
-ParametersLike is an instance interface that declares the
+ParameterLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete parameters-like class.
+by each instance of a concrete parameter-like class.
 */
-type ParametersLike interface {
+type ParameterLike interface {
 	// Principal Methods
-	GetClass() ParametersClassLike
+	GetClass() ParameterClassLike
+
+	// Attribute Methods
+	GetSymbol() string
+	GetDelimiter() string
+	GetConstraint() ConstraintLike
+	GetOptionalParameterization() ParameterizationLike
+}
+
+/*
+ParameterizationLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete parameterization-like class.
+*/
+type ParameterizationLike interface {
+	// Principal Methods
+	GetClass() ParameterizationClassLike
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetAssociations() fra.Sequential[AssociationLike]
+	GetParameters() fra.Sequential[ParameterLike]
 	GetDelimiter2() string
 }
 

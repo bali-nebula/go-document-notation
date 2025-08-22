@@ -615,6 +615,20 @@ type Methodical interface {
 		condition ast.ConditionLike,
 		slot_ uint,
 	)
+	PreprocessConstraint(
+		constraint ast.ConstraintLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessConstraint(
+		constraint ast.ConstraintLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessConstraintSlot(
+		constraint ast.ConstraintLike,
+		slot_ uint,
+	)
 	PreprocessContinueClause(
 		continueClause ast.ContinueClauseLike,
 		index_ uint,
@@ -699,18 +713,18 @@ type Methodical interface {
 		element ast.ElementLike,
 		slot_ uint,
 	)
-	PreprocessEntities(
-		entities ast.EntitiesLike,
+	PreprocessEntity(
+		entity ast.EntityLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessEntities(
-		entities ast.EntitiesLike,
+	PostprocessEntity(
+		entity ast.EntityLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessEntitiesSlot(
-		entities ast.EntitiesLike,
+	ProcessEntitySlot(
+		entity ast.EntityLike,
 		slot_ uint,
 	)
 	PreprocessEvent(
@@ -867,18 +881,18 @@ type Methodical interface {
 		invoke ast.InvokeLike,
 		slot_ uint,
 	)
-	PreprocessItem(
-		item ast.ItemLike,
+	PreprocessItems(
+		items ast.ItemsLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessItem(
-		item ast.ItemLike,
+	PostprocessItems(
+		items ast.ItemsLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessItemSlot(
-		item ast.ItemLike,
+	ProcessItemsSlot(
+		items ast.ItemsLike,
 		slot_ uint,
 	)
 	PreprocessLeft(
@@ -1007,6 +1021,20 @@ type Methodical interface {
 		matchingClause ast.MatchingClauseLike,
 		slot_ uint,
 	)
+	PreprocessMember(
+		member ast.MemberLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessMember(
+		member ast.MemberLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessMemberSlot(
+		member ast.MemberLike,
+		slot_ uint,
+	)
 	PreprocessMessage(
 		message ast.MessageLike,
 		index_ uint,
@@ -1105,18 +1133,32 @@ type Methodical interface {
 		operator ast.OperatorLike,
 		slot_ uint,
 	)
-	PreprocessParameters(
-		parameters ast.ParametersLike,
+	PreprocessParameter(
+		parameter ast.ParameterLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessParameters(
-		parameters ast.ParametersLike,
+	PostprocessParameter(
+		parameter ast.ParameterLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessParametersSlot(
-		parameters ast.ParametersLike,
+	ProcessParameterSlot(
+		parameter ast.ParameterLike,
+		slot_ uint,
+	)
+	PreprocessParameterization(
+		parameterization ast.ParameterizationLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessParameterization(
+		parameterization ast.ParameterizationLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessParameterizationSlot(
+		parameterization ast.ParameterizationLike,
 		slot_ uint,
 	)
 	PreprocessPostClause(

@@ -22,6 +22,7 @@
 package ast
 
 import (
+	fra "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -29,33 +30,31 @@ import (
 
 // Access Function
 
-func AssociationClass() AssociationClassLike {
-	return associationClass()
+func ParameterizationClass() ParameterizationClassLike {
+	return parameterizationClass()
 }
 
 // Constructor Methods
 
-func (c *associationClass_) Association(
-	primitive PrimitiveLike,
-	delimiter string,
-	component ComponentLike,
-	optionalNote string,
-) AssociationLike {
-	if uti.IsUndefined(primitive) {
-		panic("The \"primitive\" attribute is required by this class.")
+func (c *parameterizationClass_) Parameterization(
+	delimiter1 string,
+	parameters fra.Sequential[ParameterLike],
+	delimiter2 string,
+) ParameterizationLike {
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(delimiter) {
-		panic("The \"delimiter\" attribute is required by this class.")
+	if uti.IsUndefined(parameters) {
+		panic("The \"parameters\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(component) {
-		panic("The \"component\" attribute is required by this class.")
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
 	}
-	var instance = &association_{
+	var instance = &parameterization_{
 		// Initialize the instance attributes.
-		primitive_:    primitive,
-		delimiter_:    delimiter,
-		component_:    component,
-		optionalNote_: optionalNote,
+		delimiter1_: delimiter1,
+		parameters_: parameters,
+		delimiter2_: delimiter2,
 	}
 	return instance
 }
@@ -64,52 +63,47 @@ func (c *associationClass_) Association(
 
 // Principal Methods
 
-func (v *association_) GetClass() AssociationClassLike {
-	return associationClass()
+func (v *parameterization_) GetClass() ParameterizationClassLike {
+	return parameterizationClass()
 }
 
 // Attribute Methods
 
-func (v *association_) GetPrimitive() PrimitiveLike {
-	return v.primitive_
+func (v *parameterization_) GetDelimiter1() string {
+	return v.delimiter1_
 }
 
-func (v *association_) GetDelimiter() string {
-	return v.delimiter_
+func (v *parameterization_) GetParameters() fra.Sequential[ParameterLike] {
+	return v.parameters_
 }
 
-func (v *association_) GetComponent() ComponentLike {
-	return v.component_
-}
-
-func (v *association_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *parameterization_) GetDelimiter2() string {
+	return v.delimiter2_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type association_ struct {
+type parameterization_ struct {
 	// Declare the instance attributes.
-	primitive_    PrimitiveLike
-	delimiter_    string
-	component_    ComponentLike
-	optionalNote_ string
+	delimiter1_ string
+	parameters_ fra.Sequential[ParameterLike]
+	delimiter2_ string
 }
 
 // Class Structure
 
-type associationClass_ struct {
+type parameterizationClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func associationClass() *associationClass_ {
-	return associationClassReference_
+func parameterizationClass() *parameterizationClass_ {
+	return parameterizationClassReference_
 }
 
-var associationClassReference_ = &associationClass_{
+var parameterizationClassReference_ = &parameterizationClass_{
 	// Initialize the class constants.
 }

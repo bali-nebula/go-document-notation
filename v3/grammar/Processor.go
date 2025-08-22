@@ -532,6 +532,26 @@ func (v *processor_) ProcessConditionSlot(
 ) {
 }
 
+func (v *processor_) PreprocessConstraint(
+	constraint ast.ConstraintLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessConstraint(
+	constraint ast.ConstraintLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessConstraintSlot(
+	constraint ast.ConstraintLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessContinueClause(
 	continueClause ast.ContinueClauseLike,
 	index_ uint,
@@ -652,22 +672,22 @@ func (v *processor_) ProcessElementSlot(
 ) {
 }
 
-func (v *processor_) PreprocessEntities(
-	entities ast.EntitiesLike,
+func (v *processor_) PreprocessEntity(
+	entity ast.EntityLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessEntities(
-	entities ast.EntitiesLike,
+func (v *processor_) PostprocessEntity(
+	entity ast.EntityLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessEntitiesSlot(
-	entities ast.EntitiesLike,
+func (v *processor_) ProcessEntitySlot(
+	entity ast.EntityLike,
 	slot_ uint,
 ) {
 }
@@ -892,22 +912,22 @@ func (v *processor_) ProcessInvokeSlot(
 ) {
 }
 
-func (v *processor_) PreprocessItem(
-	item ast.ItemLike,
+func (v *processor_) PreprocessItems(
+	items ast.ItemsLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessItem(
-	item ast.ItemLike,
+func (v *processor_) PostprocessItems(
+	items ast.ItemsLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessItemSlot(
-	item ast.ItemLike,
+func (v *processor_) ProcessItemsSlot(
+	items ast.ItemsLike,
 	slot_ uint,
 ) {
 }
@@ -1092,6 +1112,26 @@ func (v *processor_) ProcessMatchingClauseSlot(
 ) {
 }
 
+func (v *processor_) PreprocessMember(
+	member ast.MemberLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessMember(
+	member ast.MemberLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessMemberSlot(
+	member ast.MemberLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessMessage(
 	message ast.MessageLike,
 	index_ uint,
@@ -1232,22 +1272,42 @@ func (v *processor_) ProcessOperatorSlot(
 ) {
 }
 
-func (v *processor_) PreprocessParameters(
-	parameters ast.ParametersLike,
+func (v *processor_) PreprocessParameter(
+	parameter ast.ParameterLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessParameters(
-	parameters ast.ParametersLike,
+func (v *processor_) PostprocessParameter(
+	parameter ast.ParameterLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessParametersSlot(
-	parameters ast.ParametersLike,
+func (v *processor_) ProcessParameterSlot(
+	parameter ast.ParameterLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessParameterization(
+	parameterization ast.ParameterizationLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessParameterization(
+	parameterization ast.ParameterizationLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessParameterizationSlot(
+	parameterization ast.ParameterizationLike,
 	slot_ uint,
 ) {
 }

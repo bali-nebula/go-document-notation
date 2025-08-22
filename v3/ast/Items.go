@@ -30,31 +30,31 @@ import (
 
 // Access Function
 
-func ParametersClass() ParametersClassLike {
-	return parametersClass()
+func ItemsClass() ItemsClassLike {
+	return itemsClass()
 }
 
 // Constructor Methods
 
-func (c *parametersClass_) Parameters(
+func (c *itemsClass_) Items(
 	delimiter1 string,
-	associations fra.Sequential[AssociationLike],
+	members fra.Sequential[MemberLike],
 	delimiter2 string,
-) ParametersLike {
+) ItemsLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(associations) {
-		panic("The \"associations\" attribute is required by this class.")
+	if uti.IsUndefined(members) {
+		panic("The \"members\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
 	}
-	var instance = &parameters_{
+	var instance = &items_{
 		// Initialize the instance attributes.
-		delimiter1_:   delimiter1,
-		associations_: associations,
-		delimiter2_:   delimiter2,
+		delimiter1_: delimiter1,
+		members_:    members,
+		delimiter2_: delimiter2,
 	}
 	return instance
 }
@@ -63,21 +63,21 @@ func (c *parametersClass_) Parameters(
 
 // Principal Methods
 
-func (v *parameters_) GetClass() ParametersClassLike {
-	return parametersClass()
+func (v *items_) GetClass() ItemsClassLike {
+	return itemsClass()
 }
 
 // Attribute Methods
 
-func (v *parameters_) GetDelimiter1() string {
+func (v *items_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *parameters_) GetAssociations() fra.Sequential[AssociationLike] {
-	return v.associations_
+func (v *items_) GetMembers() fra.Sequential[MemberLike] {
+	return v.members_
 }
 
-func (v *parameters_) GetDelimiter2() string {
+func (v *items_) GetDelimiter2() string {
 	return v.delimiter2_
 }
 
@@ -85,25 +85,25 @@ func (v *parameters_) GetDelimiter2() string {
 
 // Instance Structure
 
-type parameters_ struct {
+type items_ struct {
 	// Declare the instance attributes.
-	delimiter1_   string
-	associations_ fra.Sequential[AssociationLike]
-	delimiter2_   string
+	delimiter1_ string
+	members_    fra.Sequential[MemberLike]
+	delimiter2_ string
 }
 
 // Class Structure
 
-type parametersClass_ struct {
+type itemsClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func parametersClass() *parametersClass_ {
-	return parametersClassReference_
+func itemsClass() *itemsClass_ {
+	return itemsClassReference_
 }
 
-var parametersClassReference_ = &parametersClass_{
+var itemsClassReference_ = &itemsClass_{
 	// Initialize the class constants.
 }

@@ -29,33 +29,33 @@ import (
 
 // Access Function
 
-func AssociationClass() AssociationClassLike {
-	return associationClass()
+func ParameterClass() ParameterClassLike {
+	return parameterClass()
 }
 
 // Constructor Methods
 
-func (c *associationClass_) Association(
-	primitive PrimitiveLike,
+func (c *parameterClass_) Parameter(
+	symbol string,
 	delimiter string,
-	component ComponentLike,
-	optionalNote string,
-) AssociationLike {
-	if uti.IsUndefined(primitive) {
-		panic("The \"primitive\" attribute is required by this class.")
+	constraint ConstraintLike,
+	optionalParameterization ParameterizationLike,
+) ParameterLike {
+	if uti.IsUndefined(symbol) {
+		panic("The \"symbol\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(component) {
-		panic("The \"component\" attribute is required by this class.")
+	if uti.IsUndefined(constraint) {
+		panic("The \"constraint\" attribute is required by this class.")
 	}
-	var instance = &association_{
+	var instance = &parameter_{
 		// Initialize the instance attributes.
-		primitive_:    primitive,
-		delimiter_:    delimiter,
-		component_:    component,
-		optionalNote_: optionalNote,
+		symbol_:                   symbol,
+		delimiter_:                delimiter,
+		constraint_:               constraint,
+		optionalParameterization_: optionalParameterization,
 	}
 	return instance
 }
@@ -64,52 +64,52 @@ func (c *associationClass_) Association(
 
 // Principal Methods
 
-func (v *association_) GetClass() AssociationClassLike {
-	return associationClass()
+func (v *parameter_) GetClass() ParameterClassLike {
+	return parameterClass()
 }
 
 // Attribute Methods
 
-func (v *association_) GetPrimitive() PrimitiveLike {
-	return v.primitive_
+func (v *parameter_) GetSymbol() string {
+	return v.symbol_
 }
 
-func (v *association_) GetDelimiter() string {
+func (v *parameter_) GetDelimiter() string {
 	return v.delimiter_
 }
 
-func (v *association_) GetComponent() ComponentLike {
-	return v.component_
+func (v *parameter_) GetConstraint() ConstraintLike {
+	return v.constraint_
 }
 
-func (v *association_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *parameter_) GetOptionalParameterization() ParameterizationLike {
+	return v.optionalParameterization_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type association_ struct {
+type parameter_ struct {
 	// Declare the instance attributes.
-	primitive_    PrimitiveLike
-	delimiter_    string
-	component_    ComponentLike
-	optionalNote_ string
+	symbol_                   string
+	delimiter_                string
+	constraint_               ConstraintLike
+	optionalParameterization_ ParameterizationLike
 }
 
 // Class Structure
 
-type associationClass_ struct {
+type parameterClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func associationClass() *associationClass_ {
-	return associationClassReference_
+func parameterClass() *parameterClass_ {
+	return parameterClassReference_
 }
 
-var associationClassReference_ = &associationClass_{
+var parameterClassReference_ = &parameterClass_{
 	// Initialize the class constants.
 }

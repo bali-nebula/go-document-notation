@@ -29,21 +29,21 @@ import (
 
 // Access Function
 
-func ItemClass() ItemClassLike {
-	return itemClass()
+func EntityClass() EntityClassLike {
+	return entityClass()
 }
 
 // Constructor Methods
 
-func (c *itemClass_) Item(
-	document DocumentLike,
-) ItemLike {
-	if uti.IsUndefined(document) {
-		panic("The \"document\" attribute is required by this class.")
+func (c *entityClass_) Entity(
+	any_ any,
+) EntityLike {
+	if uti.IsUndefined(any_) {
+		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &item_{
+	var instance = &entity_{
 		// Initialize the instance attributes.
-		document_: document,
+		any_: any_,
 	}
 	return instance
 }
@@ -52,37 +52,37 @@ func (c *itemClass_) Item(
 
 // Principal Methods
 
-func (v *item_) GetClass() ItemClassLike {
-	return itemClass()
+func (v *entity_) GetClass() EntityClassLike {
+	return entityClass()
 }
 
 // Attribute Methods
 
-func (v *item_) GetDocument() DocumentLike {
-	return v.document_
+func (v *entity_) GetAny() any {
+	return v.any_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type item_ struct {
+type entity_ struct {
 	// Declare the instance attributes.
-	document_ DocumentLike
+	any_ any
 }
 
 // Class Structure
 
-type itemClass_ struct {
+type entityClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func itemClass() *itemClass_ {
-	return itemClassReference_
+func entityClass() *entityClass_ {
+	return entityClassReference_
 }
 
-var itemClassReference_ = &itemClass_{
+var entityClassReference_ = &entityClass_{
 	// Initialize the class constants.
 }
