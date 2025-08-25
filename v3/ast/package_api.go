@@ -130,7 +130,7 @@ type AssociationClassLike interface {
 	Association(
 		primitive PrimitiveLike,
 		delimiter string,
-		member MemberLike,
+		object ObjectLike,
 	) AssociationLike
 }
 
@@ -285,7 +285,7 @@ supported by each concrete constraint-like class.
 type ConstraintClassLike interface {
 	// Constructor Methods
 	Constraint(
-		type_ TypeLike,
+		metadata MetadataLike,
 		optionalParameterization ParameterizationLike,
 	) ConstraintLike
 }
@@ -526,7 +526,7 @@ type ItemsClassLike interface {
 	// Constructor Methods
 	Items(
 		delimiter1 string,
-		members fra.Sequential[MemberLike],
+		objects fra.Sequential[ObjectLike],
 		delimiter2 string,
 	) ItemsLike
 }
@@ -648,19 +648,6 @@ type MatchingClauseClassLike interface {
 }
 
 /*
-MemberClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete member-like class.
-*/
-type MemberClassLike interface {
-	// Constructor Methods
-	Member(
-		component ComponentLike,
-		optionalNote string,
-	) MemberLike
-}
-
-/*
 MessageClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete message-like class.
@@ -682,6 +669,18 @@ type MessageHandlingClassLike interface {
 	MessageHandling(
 		any_ any,
 	) MessageHandlingLike
+}
+
+/*
+MetadataClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete metadata-like class.
+*/
+type MetadataClassLike interface {
+	// Constructor Methods
+	Metadata(
+		any_ any,
+	) MetadataLike
 }
 
 /*
@@ -726,6 +725,19 @@ type NumericalClassLike interface {
 	Numerical(
 		any_ any,
 	) NumericalLike
+}
+
+/*
+ObjectClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete object-like class.
+*/
+type ObjectClassLike interface {
+	// Constructor Methods
+	Object(
+		component ComponentLike,
+		optionalNote string,
+	) ObjectLike
 }
 
 /*
@@ -1112,18 +1124,6 @@ type ThrowClauseClassLike interface {
 }
 
 /*
-TypeClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete type-like class.
-*/
-type TypeClassLike interface {
-	// Constructor Methods
-	Type(
-		any_ any,
-	) TypeLike
-}
-
-/*
 ValueClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete value-like class.
@@ -1273,7 +1273,7 @@ type AssociationLike interface {
 	// Attribute Methods
 	GetPrimitive() PrimitiveLike
 	GetDelimiter() string
-	GetMember() MemberLike
+	GetObject() ObjectLike
 }
 
 /*
@@ -1440,7 +1440,7 @@ type ConstraintLike interface {
 	GetClass() ConstraintClassLike
 
 	// Attribute Methods
-	GetType() TypeLike
+	GetMetadata() MetadataLike
 	GetOptionalParameterization() ParameterizationLike
 }
 
@@ -1700,7 +1700,7 @@ type ItemsLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetMembers() fra.Sequential[MemberLike]
+	GetObjects() fra.Sequential[ObjectLike]
 	GetDelimiter2() string
 }
 
@@ -1830,20 +1830,6 @@ type MatchingClauseLike interface {
 }
 
 /*
-MemberLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete member-like class.
-*/
-type MemberLike interface {
-	// Principal Methods
-	GetClass() MemberClassLike
-
-	// Attribute Methods
-	GetComponent() ComponentLike
-	GetOptionalNote() string
-}
-
-/*
 MessageLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete message-like class.
@@ -1864,6 +1850,19 @@ by each instance of a concrete message-handling-like class.
 type MessageHandlingLike interface {
 	// Principal Methods
 	GetClass() MessageHandlingClassLike
+
+	// Attribute Methods
+	GetAny() any
+}
+
+/*
+MetadataLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete metadata-like class.
+*/
+type MetadataLike interface {
+	// Principal Methods
+	GetClass() MetadataClassLike
 
 	// Attribute Methods
 	GetAny() any
@@ -1914,6 +1913,20 @@ type NumericalLike interface {
 
 	// Attribute Methods
 	GetAny() any
+}
+
+/*
+ObjectLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete object-like class.
+*/
+type ObjectLike interface {
+	// Principal Methods
+	GetClass() ObjectClassLike
+
+	// Attribute Methods
+	GetComponent() ComponentLike
+	GetOptionalNote() string
 }
 
 /*
@@ -2326,19 +2339,6 @@ type ThrowClauseLike interface {
 	// Attribute Methods
 	GetDelimiter() string
 	GetException() ExceptionLike
-}
-
-/*
-TypeLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete type-like class.
-*/
-type TypeLike interface {
-	// Principal Methods
-	GetClass() TypeClassLike
-
-	// Attribute Methods
-	GetAny() any
 }
 
 /*

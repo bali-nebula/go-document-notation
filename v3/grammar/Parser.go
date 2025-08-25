@@ -373,15 +373,15 @@ func (v *parser_) parseAssociation() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Member rule.
-	var member ast.MemberLike
-	member, token, ok = v.parseMember()
+	// Attempt to parse a single Object rule.
+	var object ast.ObjectLike
+	object, token, ok = v.parseObject()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Member rule.
+		// This is not a single Object rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -396,7 +396,7 @@ func (v *parser_) parseAssociation() (
 	association = ast.AssociationClass().Association(
 		primitive,
 		delimiter,
-		member,
+		object,
 	)
 	return
 }
@@ -975,15 +975,15 @@ func (v *parser_) parseConstraint() (
 ) {
 	var tokens = fra.List[TokenLike]()
 
-	// Attempt to parse a single Type rule.
-	var type_ ast.TypeLike
-	type_, token, ok = v.parseType()
+	// Attempt to parse a single Metadata rule.
+	var metadata ast.MetadataLike
+	metadata, token, ok = v.parseMetadata()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Type rule.
+		// This is not a single Metadata rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -1004,7 +1004,7 @@ func (v *parser_) parseConstraint() (
 	ok = true
 	v.remove(tokens)
 	constraint = ast.ConstraintClass().Constraint(
-		type_,
+		metadata,
 		optionalParameterization,
 	)
 	return
@@ -1972,30 +1972,30 @@ func (v *parser_) parseItems() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse multiple Member rules.
-	var members = fra.List[ast.MemberLike]()
-membersLoop:
+	// Attempt to parse multiple Object rules.
+	var objects = fra.List[ast.ObjectLike]()
+objectsLoop:
 	for count_ := 0; count_ < mat.MaxInt; count_++ {
-		var member ast.MemberLike
-		member, token, ok = v.parseMember()
+		var object ast.ObjectLike
+		object, token, ok = v.parseObject()
 		if !ok {
 			switch {
 			case count_ >= 0:
-				break membersLoop
+				break objectsLoop
 			case uti.IsDefined(tokens):
-				// This is not multiple Member rules.
+				// This is not multiple Object rules.
 				v.putBack(tokens)
 				return
 			default:
 				// Found a syntax error.
 				var message = v.formatError("$Items", token)
-				message += "0 or more Member rules are required."
+				message += "0 or more Object rules are required."
 				panic(message)
 			}
 		}
 		// No additional put backs allowed at this point.
 		tokens = nil
-		members.AppendValue(member)
+		objects.AppendValue(object)
 	}
 
 	// Attempt to parse a single "]" literal.
@@ -2021,7 +2021,7 @@ membersLoop:
 	v.remove(tokens)
 	items = ast.ItemsClass().Items(
 		delimiter1,
-		members,
+		objects,
 		delimiter2,
 	)
 	return
@@ -2519,51 +2519,6 @@ func (v *parser_) parseMatchingClause() (
 	return
 }
 
-func (v *parser_) parseMember() (
-	member ast.MemberLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single Component rule.
-	var component ast.ComponentLike
-	component, token, ok = v.parseComponent()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Component rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Member", token)
-		panic(message)
-	}
-
-	// Attempt to parse an optional note token.
-	var optionalNote string
-	optionalNote, token, ok = v.parseToken(NoteToken)
-	if ok {
-		if uti.IsDefined(tokens) {
-			tokens.AppendValue(token)
-		}
-	} else {
-		optionalNote = "" // Reset this to undefined.
-	}
-
-	// Found a single Member rule.
-	ok = true
-	v.remove(tokens)
-	member = ast.MemberClass().Member(
-		component,
-		optionalNote,
-	)
-	return
-}
-
 func (v *parser_) parseMessage() (
 	message ast.MessageLike,
 	token TokenLike,
@@ -2646,6 +2601,42 @@ func (v *parser_) parseMessageHandling() (
 	}
 
 	// This is not a single MessageHandling rule.
+	return
+}
+
+func (v *parser_) parseMetadata() (
+	metadata ast.MetadataLike,
+	token TokenLike,
+	ok bool,
+) {
+	// Attempt to parse a single Element Metadata.
+	var element ast.ElementLike
+	element, token, ok = v.parseElement()
+	if ok {
+		// Found a single Element Metadata.
+		metadata = ast.MetadataClass().Metadata(element)
+		return
+	}
+
+	// Attempt to parse a single String Metadata.
+	var string_ ast.StringLike
+	string_, token, ok = v.parseString()
+	if ok {
+		// Found a single String Metadata.
+		metadata = ast.MetadataClass().Metadata(string_)
+		return
+	}
+
+	// Attempt to parse a single Range Metadata.
+	var range_ ast.RangeLike
+	range_, token, ok = v.parseRange()
+	if ok {
+		// Found a single Range Metadata.
+		metadata = ast.MetadataClass().Metadata(range_)
+		return
+	}
+
+	// This is not a single Metadata rule.
 	return
 }
 
@@ -2963,6 +2954,51 @@ func (v *parser_) parseNumerical() (
 	}
 
 	// This is not a single Numerical rule.
+	return
+}
+
+func (v *parser_) parseObject() (
+	object ast.ObjectLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = fra.List[TokenLike]()
+
+	// Attempt to parse a single Component rule.
+	var component ast.ComponentLike
+	component, token, ok = v.parseComponent()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single Component rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$Object", token)
+		panic(message)
+	}
+
+	// Attempt to parse an optional note token.
+	var optionalNote string
+	optionalNote, token, ok = v.parseToken(NoteToken)
+	if ok {
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	} else {
+		optionalNote = "" // Reset this to undefined.
+	}
+
+	// Found a single Object rule.
+	ok = true
+	v.remove(tokens)
+	object = ast.ObjectClass().Object(
+		component,
+		optionalNote,
+	)
 	return
 }
 
@@ -4768,42 +4804,6 @@ func (v *parser_) parseThrowClause() (
 	return
 }
 
-func (v *parser_) parseType() (
-	type_ ast.TypeLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single Element Type.
-	var element ast.ElementLike
-	element, token, ok = v.parseElement()
-	if ok {
-		// Found a single Element Type.
-		type_ = ast.TypeClass().Type(element)
-		return
-	}
-
-	// Attempt to parse a single String Type.
-	var string_ ast.StringLike
-	string_, token, ok = v.parseString()
-	if ok {
-		// Found a single String Type.
-		type_ = ast.TypeClass().Type(string_)
-		return
-	}
-
-	// Attempt to parse a single Range Type.
-	var range_ ast.RangeLike
-	range_, token, ok = v.parseRange()
-	if ok {
-		// Found a single Range Type.
-		type_ = ast.TypeClass().Type(range_)
-		return
-	}
-
-	// This is not a single Type rule.
-	return
-}
-
 func (v *parser_) parseValue() (
 	value ast.ValueLike,
 	token TokenLike,
@@ -5287,8 +5287,8 @@ var parserClassReference_ = &parserClass_{
     Procedure`,
 			"$Parameterization": `"(" Parameter+ ")"`,
 			"$Parameter":        `symbol ":" Constraint`,
-			"$Constraint":       `Type Parameterization?`,
-			"$Type": `
+			"$Constraint":       `Metadata Parameterization?`,
+			"$Metadata": `
     Element
     String
     Range`,
@@ -5326,9 +5326,9 @@ var parserClassReference_ = &parserClass_{
     Attributes
     Items  ! Must be after attributes.`,
 			"$Attributes":  `"[" Association+ "]"`,
-			"$Association": `Primitive ":" Member`,
-			"$Items":       `"[" Member* "]"`,
-			"$Member":      `Component note?`,
+			"$Association": `Primitive ":" Object`,
+			"$Items":       `"[" Object* "]"`,
+			"$Object":      `Component note?`,
 			"$Procedure":   `"{" Line* "}"`,
 			"$Line": `
     Annotation

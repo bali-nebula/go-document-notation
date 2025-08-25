@@ -1112,26 +1112,6 @@ func (v *processor_) ProcessMatchingClauseSlot(
 ) {
 }
 
-func (v *processor_) PreprocessMember(
-	member ast.MemberLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessMember(
-	member ast.MemberLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessMemberSlot(
-	member ast.MemberLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessMessage(
 	message ast.MessageLike,
 	index_ uint,
@@ -1168,6 +1148,26 @@ func (v *processor_) PostprocessMessageHandling(
 
 func (v *processor_) ProcessMessageHandlingSlot(
 	messageHandling ast.MessageHandlingLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessMetadata(
+	metadata ast.MetadataLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessMetadata(
+	metadata ast.MetadataLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessMetadataSlot(
+	metadata ast.MetadataLike,
 	slot_ uint,
 ) {
 }
@@ -1228,6 +1228,26 @@ func (v *processor_) PostprocessNumerical(
 
 func (v *processor_) ProcessNumericalSlot(
 	numerical ast.NumericalLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessObject(
+	object ast.ObjectLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessObject(
+	object ast.ObjectLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessObjectSlot(
+	object ast.ObjectLike,
 	slot_ uint,
 ) {
 }
@@ -1808,26 +1828,6 @@ func (v *processor_) PostprocessThrowClause(
 
 func (v *processor_) ProcessThrowClauseSlot(
 	throwClause ast.ThrowClauseLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessType(
-	type_ ast.TypeLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessType(
-	type_ ast.TypeLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessTypeSlot(
-	type_ ast.TypeLike,
 	slot_ uint,
 ) {
 }

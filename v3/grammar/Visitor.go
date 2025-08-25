@@ -250,15 +250,15 @@ func (v *visitor_) visitAssociation(
 		2,
 	)
 
-	var member = association.GetMember()
-	v.processor_.PreprocessMember(
-		member,
+	var object = association.GetObject()
+	v.processor_.PreprocessObject(
+		object,
 		0,
 		0,
 	)
-	v.visitMember(member)
-	v.processor_.PostprocessMember(
-		member,
+	v.visitObject(object)
+	v.processor_.PostprocessObject(
+		object,
 		0,
 		0,
 	)
@@ -589,15 +589,15 @@ func (v *visitor_) visitCondition(
 func (v *visitor_) visitConstraint(
 	constraint ast.ConstraintLike,
 ) {
-	var type_ = constraint.GetType()
-	v.processor_.PreprocessType(
-		type_,
+	var metadata = constraint.GetMetadata()
+	v.processor_.PreprocessMetadata(
+		metadata,
 		0,
 		0,
 	)
-	v.visitType(type_)
-	v.processor_.PostprocessType(
-		type_,
+	v.visitMetadata(metadata)
+	v.processor_.PostprocessMetadata(
+		metadata,
 		0,
 		0,
 	)
@@ -1209,22 +1209,22 @@ func (v *visitor_) visitItems(
 		1,
 	)
 
-	var membersIndex uint
-	var members = items.GetMembers().GetIterator()
-	var membersCount = uint(members.GetSize())
-	for members.HasNext() {
-		membersIndex++
-		var rule = members.GetNext()
-		v.processor_.PreprocessMember(
+	var objectsIndex uint
+	var objects = items.GetObjects().GetIterator()
+	var objectsCount = uint(objects.GetSize())
+	for objects.HasNext() {
+		objectsIndex++
+		var rule = objects.GetNext()
+		v.processor_.PreprocessObject(
 			rule,
-			membersIndex,
-			membersCount,
+			objectsIndex,
+			objectsCount,
 		)
-		v.visitMember(rule)
-		v.processor_.PostprocessMember(
+		v.visitObject(rule)
+		v.processor_.PostprocessObject(
 			rule,
-			membersIndex,
-			membersCount,
+			objectsIndex,
+			objectsCount,
 		)
 	}
 	// Visit slot 2 between terms.
@@ -1615,33 +1615,6 @@ func (v *visitor_) visitMatchingClause(
 	)
 }
 
-func (v *visitor_) visitMember(
-	member ast.MemberLike,
-) {
-	var component = member.GetComponent()
-	v.processor_.PreprocessComponent(
-		component,
-		0,
-		0,
-	)
-	v.visitComponent(component)
-	v.processor_.PostprocessComponent(
-		component,
-		0,
-		0,
-	)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessMemberSlot(
-		member,
-		1,
-	)
-
-	var optionalNote = member.GetOptionalNote()
-	if uti.IsDefined(optionalNote) {
-		v.processor_.ProcessNote(optionalNote)
-	}
-}
-
 func (v *visitor_) visitMessage(
 	message ast.MessageLike,
 ) {
@@ -1720,6 +1693,50 @@ func (v *visitor_) visitMessageHandling(
 		)
 		v.visitPublishClause(actual)
 		v.processor_.PostprocessPublishClause(
+			actual,
+			0,
+			0,
+		)
+	}
+}
+
+func (v *visitor_) visitMetadata(
+	metadata ast.MetadataLike,
+) {
+	// Visit the possible metadata rule types.
+	switch actual := metadata.GetAny().(type) {
+	case ast.ElementLike:
+		v.processor_.PreprocessElement(
+			actual,
+			0,
+			0,
+		)
+		v.visitElement(actual)
+		v.processor_.PostprocessElement(
+			actual,
+			0,
+			0,
+		)
+	case ast.StringLike:
+		v.processor_.PreprocessString(
+			actual,
+			0,
+			0,
+		)
+		v.visitString(actual)
+		v.processor_.PostprocessString(
+			actual,
+			0,
+			0,
+		)
+	case ast.RangeLike:
+		v.processor_.PreprocessRange(
+			actual,
+			0,
+			0,
+		)
+		v.visitRange(actual)
+		v.processor_.PostprocessRange(
 			actual,
 			0,
 			0,
@@ -1964,6 +1981,33 @@ func (v *visitor_) visitNumerical(
 			0,
 			0,
 		)
+	}
+}
+
+func (v *visitor_) visitObject(
+	object ast.ObjectLike,
+) {
+	var component = object.GetComponent()
+	v.processor_.PreprocessComponent(
+		component,
+		0,
+		0,
+	)
+	v.visitComponent(component)
+	v.processor_.PostprocessComponent(
+		component,
+		0,
+		0,
+	)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessObjectSlot(
+		object,
+		1,
+	)
+
+	var optionalNote = object.GetOptionalNote()
+	if uti.IsDefined(optionalNote) {
+		v.processor_.ProcessNote(optionalNote)
 	}
 }
 
@@ -3156,50 +3200,6 @@ func (v *visitor_) visitThrowClause(
 		0,
 		0,
 	)
-}
-
-func (v *visitor_) visitType(
-	type_ ast.TypeLike,
-) {
-	// Visit the possible type rule types.
-	switch actual := type_.GetAny().(type) {
-	case ast.ElementLike:
-		v.processor_.PreprocessElement(
-			actual,
-			0,
-			0,
-		)
-		v.visitElement(actual)
-		v.processor_.PostprocessElement(
-			actual,
-			0,
-			0,
-		)
-	case ast.StringLike:
-		v.processor_.PreprocessString(
-			actual,
-			0,
-			0,
-		)
-		v.visitString(actual)
-		v.processor_.PostprocessString(
-			actual,
-			0,
-			0,
-		)
-	case ast.RangeLike:
-		v.processor_.PreprocessRange(
-			actual,
-			0,
-			0,
-		)
-		v.visitRange(actual)
-		v.processor_.PostprocessRange(
-			actual,
-			0,
-			0,
-		)
-	}
 }
 
 func (v *visitor_) visitValue(

@@ -305,11 +305,11 @@ func (v *formatter_) PreprocessAssociation(
 	index_ uint,
 	count_ uint,
 ) {
-	var member = association.GetMember()
-	var component = member.GetComponent()
+	var object = association.GetObject()
+	var component = object.GetComponent()
 	var parameterized = component.GetOptionalParameterization()
 	var isParameterized = uti.IsDefined(parameterized)
-	var note = member.GetOptionalNote()
+	var note = object.GetOptionalNote()
 	var hasNote = uti.IsDefined(note)
 	if count_ > 1 || isParameterized || hasNote {
 		v.appendNewline()
@@ -352,11 +352,11 @@ func (v *formatter_) ProcessAttributesSlot(
 		v.depth_--
 		var associations = attributes.GetAssociations() // Will be at least one.
 		var association = associations.GetIterator().GetNext()
-		var member = association.GetMember()
-		var component = member.GetComponent()
+		var object = association.GetObject()
+		var component = object.GetComponent()
 		var parameterized = component.GetOptionalParameterization()
 		var isParameterized = uti.IsDefined(parameterized)
-		var note = member.GetOptionalNote()
+		var note = object.GetOptionalNote()
 		var hasNote = uti.IsDefined(note)
 		if associations.GetSize() > 1 || isParameterized || hasNote {
 			v.appendNewline()
@@ -443,17 +443,17 @@ func (v *formatter_) ProcessItemsSlot(
 		v.depth_++
 	case 2:
 		v.depth_--
-		var members = items.GetMembers()
-		if members.IsEmpty() {
+		var objects = items.GetObjects()
+		if objects.IsEmpty() {
 			v.appendString(" ")
 		} else {
-			var member = members.GetIterator().GetNext()
-			var component = member.GetComponent()
+			var object = objects.GetIterator().GetNext()
+			var component = object.GetComponent()
 			var parameterized = component.GetOptionalParameterization()
 			var isParameterized = uti.IsDefined(parameterized)
-			var note = member.GetOptionalNote()
+			var note = object.GetOptionalNote()
 			var hasNote = uti.IsDefined(note)
-			if members.GetSize() > 1 || isParameterized || hasNote {
+			if objects.GetSize() > 1 || isParameterized || hasNote {
 				v.appendNewline()
 			}
 		}
@@ -496,16 +496,23 @@ func (v *formatter_) ProcessMatchingClauseSlot(
 	v.appendString(" ")
 }
 
-func (v *formatter_) PreprocessMember(
-	member ast.MemberLike,
+func (v *formatter_) ProcessNotarizeClauseSlot(
+	notarizeClause ast.NotarizeClauseLike,
+	slot_ uint,
+) {
+	v.appendString(" ")
+}
+
+func (v *formatter_) PreprocessObject(
+	object ast.ObjectLike,
 	index_ uint,
 	count_ uint,
 ) {
 	if count_ > 0 {
-		var component = member.GetComponent()
+		var component = object.GetComponent()
 		var parameterized = component.GetOptionalParameterization()
 		var isParameterized = uti.IsDefined(parameterized)
-		var note = member.GetOptionalNote()
+		var note = object.GetOptionalNote()
 		var hasNote = uti.IsDefined(note)
 		if count_ > 1 || isParameterized || hasNote {
 			v.appendNewline()
@@ -513,23 +520,16 @@ func (v *formatter_) PreprocessMember(
 	}
 }
 
-func (v *formatter_) ProcessMemberSlot(
-	member ast.MemberLike,
+func (v *formatter_) ProcessObjectSlot(
+	object ast.ObjectLike,
 	slot_ uint,
 ) {
 	switch slot_ {
 	case 1:
-		if uti.IsDefined(member.GetOptionalNote()) {
+		if uti.IsDefined(object.GetOptionalNote()) {
 			v.appendString("  ")
 		}
 	}
-}
-
-func (v *formatter_) ProcessNotarizeClauseSlot(
-	notarizeClause ast.NotarizeClauseLike,
-	slot_ uint,
-) {
-	v.appendString(" ")
 }
 
 func (v *formatter_) PreprocessOnClause(

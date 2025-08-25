@@ -1021,20 +1021,6 @@ type Methodical interface {
 		matchingClause ast.MatchingClauseLike,
 		slot_ uint,
 	)
-	PreprocessMember(
-		member ast.MemberLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessMember(
-		member ast.MemberLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessMemberSlot(
-		member ast.MemberLike,
-		slot_ uint,
-	)
 	PreprocessMessage(
 		message ast.MessageLike,
 		index_ uint,
@@ -1061,6 +1047,20 @@ type Methodical interface {
 	)
 	ProcessMessageHandlingSlot(
 		messageHandling ast.MessageHandlingLike,
+		slot_ uint,
+	)
+	PreprocessMetadata(
+		metadata ast.MetadataLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessMetadata(
+		metadata ast.MetadataLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessMetadataSlot(
+		metadata ast.MetadataLike,
 		slot_ uint,
 	)
 	PreprocessMethod(
@@ -1103,6 +1103,20 @@ type Methodical interface {
 	)
 	ProcessNumericalSlot(
 		numerical ast.NumericalLike,
+		slot_ uint,
+	)
+	PreprocessObject(
+		object ast.ObjectLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessObject(
+		object ast.ObjectLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessObjectSlot(
+		object ast.ObjectLike,
 		slot_ uint,
 	)
 	PreprocessOnClause(
@@ -1509,20 +1523,6 @@ type Methodical interface {
 	)
 	ProcessThrowClauseSlot(
 		throwClause ast.ThrowClauseLike,
-		slot_ uint,
-	)
-	PreprocessType(
-		type_ ast.TypeLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessType(
-		type_ ast.TypeLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessTypeSlot(
-		type_ ast.TypeLike,
 		slot_ uint,
 	)
 	PreprocessValue(

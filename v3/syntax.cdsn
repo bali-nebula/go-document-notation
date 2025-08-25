@@ -37,9 +37,9 @@ $Parameterization: "(" Parameter+ ")"
 
 $Parameter: symbol ":" Constraint
 
-$Constraint: Type Parameterization?
+$Constraint: Metadata Parameterization?
 
-$Type:
+$Metadata:
     Element
     String
     Range
@@ -86,11 +86,11 @@ $Collection:
 
 $Attributes: "[" Association+ "]"
 
-$Association: Primitive ":" Member
+$Association: Primitive ":" Object
 
-$Items: "[" Member* "]"
+$Items: "[" Object* "]"
 
-$Member: Component note?
+$Object: Component note?
 
 $Procedure: "{" Line* "}"
 

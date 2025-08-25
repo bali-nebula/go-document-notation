@@ -88,12 +88,13 @@ type (
 	MagnitudeClassLike          = ast.MagnitudeClassLike
 	MainClauseClassLike         = ast.MainClauseClassLike
 	MatchingClauseClassLike     = ast.MatchingClauseClassLike
-	MemberClassLike             = ast.MemberClassLike
 	MessageClassLike            = ast.MessageClassLike
 	MessageHandlingClassLike    = ast.MessageHandlingClassLike
+	MetadataClassLike           = ast.MetadataClassLike
 	MethodClassLike             = ast.MethodClassLike
 	NotarizeClauseClassLike     = ast.NotarizeClauseClassLike
 	NumericalClassLike          = ast.NumericalClassLike
+	ObjectClassLike             = ast.ObjectClassLike
 	OnClauseClassLike           = ast.OnClauseClassLike
 	OperatorClassLike           = ast.OperatorClassLike
 	ParameterClassLike          = ast.ParameterClassLike
@@ -123,7 +124,6 @@ type (
 	SubjectClassLike            = ast.SubjectClassLike
 	TemplateClassLike           = ast.TemplateClassLike
 	ThrowClauseClassLike        = ast.ThrowClauseClassLike
-	TypeClassLike               = ast.TypeClassLike
 	ValueClassLike              = ast.ValueClassLike
 	VariableClassLike           = ast.VariableClassLike
 	WhileClauseClassLike        = ast.WhileClauseClassLike
@@ -178,12 +178,13 @@ type (
 	MagnitudeLike          = ast.MagnitudeLike
 	MainClauseLike         = ast.MainClauseLike
 	MatchingClauseLike     = ast.MatchingClauseLike
-	MemberLike             = ast.MemberLike
 	MessageLike            = ast.MessageLike
 	MessageHandlingLike    = ast.MessageHandlingLike
+	MetadataLike           = ast.MetadataLike
 	MethodLike             = ast.MethodLike
 	NotarizeClauseLike     = ast.NotarizeClauseLike
 	NumericalLike          = ast.NumericalLike
+	ObjectLike             = ast.ObjectLike
 	OnClauseLike           = ast.OnClauseLike
 	OperatorLike           = ast.OperatorLike
 	ParameterLike          = ast.ParameterLike
@@ -213,7 +214,6 @@ type (
 	SubjectLike            = ast.SubjectLike
 	TemplateLike           = ast.TemplateLike
 	ThrowClauseLike        = ast.ThrowClauseLike
-	TypeLike               = ast.TypeLike
 	ValueLike              = ast.ValueLike
 	VariableLike           = ast.VariableLike
 	WhileClauseLike        = ast.WhileClauseLike
@@ -363,12 +363,12 @@ func AssociationClass() AssociationClassLike {
 func Association(
 	primitive ast.PrimitiveLike,
 	delimiter string,
-	member ast.MemberLike,
+	object ast.ObjectLike,
 ) AssociationLike {
 	return AssociationClass().Association(
 		primitive,
 		delimiter,
-		member,
+		object,
 	)
 }
 
@@ -531,11 +531,11 @@ func ConstraintClass() ConstraintClassLike {
 }
 
 func Constraint(
-	type_ ast.TypeLike,
+	metadata ast.MetadataLike,
 	optionalParameterization ast.ParameterizationLike,
 ) ConstraintLike {
 	return ConstraintClass().Constraint(
-		type_,
+		metadata,
 		optionalParameterization,
 	)
 }
@@ -784,12 +784,12 @@ func ItemsClass() ItemsClassLike {
 
 func Items(
 	delimiter1 string,
-	members fra.Sequential[ast.MemberLike],
+	objects fra.Sequential[ast.ObjectLike],
 	delimiter2 string,
 ) ItemsLike {
 	return ItemsClass().Items(
 		delimiter1,
-		members,
+		objects,
 		delimiter2,
 	)
 }
@@ -918,20 +918,6 @@ func MatchingClause(
 	)
 }
 
-func MemberClass() MemberClassLike {
-	return ast.MemberClass()
-}
-
-func Member(
-	component ast.ComponentLike,
-	optionalNote string,
-) MemberLike {
-	return MemberClass().Member(
-		component,
-		optionalNote,
-	)
-}
-
 func MessageClass() MessageClassLike {
 	return ast.MessageClass()
 }
@@ -952,6 +938,18 @@ func MessageHandling(
 	any_ any,
 ) MessageHandlingLike {
 	return MessageHandlingClass().MessageHandling(
+		any_,
+	)
+}
+
+func MetadataClass() MetadataClassLike {
+	return ast.MetadataClass()
+}
+
+func Metadata(
+	any_ any,
+) MetadataLike {
+	return MetadataClass().Metadata(
 		any_,
 	)
 }
@@ -1005,6 +1003,20 @@ func Numerical(
 ) NumericalLike {
 	return NumericalClass().Numerical(
 		any_,
+	)
+}
+
+func ObjectClass() ObjectClassLike {
+	return ast.ObjectClass()
+}
+
+func Object(
+	component ast.ComponentLike,
+	optionalNote string,
+) ObjectLike {
+	return ObjectClass().Object(
+		component,
+		optionalNote,
 	)
 }
 
@@ -1423,18 +1435,6 @@ func ThrowClause(
 	return ThrowClauseClass().ThrowClause(
 		delimiter,
 		exception,
-	)
-}
-
-func TypeClass() TypeClassLike {
-	return ast.TypeClass()
-}
-
-func Type(
-	any_ any,
-) TypeLike {
-	return TypeClass().Type(
-		any_,
 	)
 }
 

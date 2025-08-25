@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func TypeClass() TypeClassLike {
-	return typeClass()
+func MetadataClass() MetadataClassLike {
+	return metadataClass()
 }
 
 // Constructor Methods
 
-func (c *typeClass_) Type(
+func (c *metadataClass_) Metadata(
 	any_ any,
-) TypeLike {
+) MetadataLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &type_{
+	var instance = &metadata_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *typeClass_) Type(
 
 // Principal Methods
 
-func (v *type_) GetClass() TypeClassLike {
-	return typeClass()
+func (v *metadata_) GetClass() MetadataClassLike {
+	return metadataClass()
 }
 
 // Attribute Methods
 
-func (v *type_) GetAny() any {
+func (v *metadata_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *type_) GetAny() any {
 
 // Instance Structure
 
-type type_ struct {
+type metadata_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type typeClass_ struct {
+type metadataClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func typeClass() *typeClass_ {
-	return typeClassReference_
+func metadataClass() *metadataClass_ {
+	return metadataClassReference_
 }
 
-var typeClassReference_ = &typeClass_{
+var metadataClassReference_ = &metadataClass_{
 	// Initialize the class constants.
 }
