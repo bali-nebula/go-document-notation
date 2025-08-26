@@ -40,7 +40,7 @@ func (c *checkoutClauseClass_) CheckoutClause(
 	recipient RecipientLike,
 	optionalAtLevel AtLevelLike,
 	delimiter2 string,
-	cited CitedLike,
+	location LocationLike,
 ) CheckoutClauseLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
@@ -51,8 +51,8 @@ func (c *checkoutClauseClass_) CheckoutClause(
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(cited) {
-		panic("The \"cited\" attribute is required by this class.")
+	if uti.IsUndefined(location) {
+		panic("The \"location\" attribute is required by this class.")
 	}
 	var instance = &checkoutClause_{
 		// Initialize the instance attributes.
@@ -60,7 +60,7 @@ func (c *checkoutClauseClass_) CheckoutClause(
 		recipient_:       recipient,
 		optionalAtLevel_: optionalAtLevel,
 		delimiter2_:      delimiter2,
-		cited_:           cited,
+		location_:        location,
 	}
 	return instance
 }
@@ -91,8 +91,8 @@ func (v *checkoutClause_) GetDelimiter2() string {
 	return v.delimiter2_
 }
 
-func (v *checkoutClause_) GetCited() CitedLike {
-	return v.cited_
+func (v *checkoutClause_) GetLocation() LocationLike {
+	return v.location_
 }
 
 // PROTECTED INTERFACE
@@ -105,7 +105,7 @@ type checkoutClause_ struct {
 	recipient_       RecipientLike
 	optionalAtLevel_ AtLevelLike
 	delimiter2_      string
-	cited_           CitedLike
+	location_        LocationLike
 }
 
 // Class Structure

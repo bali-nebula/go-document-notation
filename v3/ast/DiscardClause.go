@@ -37,18 +37,18 @@ func DiscardClauseClass() DiscardClauseClassLike {
 
 func (c *discardClauseClass_) DiscardClause(
 	delimiter string,
-	draft DraftLike,
+	location LocationLike,
 ) DiscardClauseLike {
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(draft) {
-		panic("The \"draft\" attribute is required by this class.")
+	if uti.IsUndefined(location) {
+		panic("The \"location\" attribute is required by this class.")
 	}
 	var instance = &discardClause_{
 		// Initialize the instance attributes.
 		delimiter_: delimiter,
-		draft_:     draft,
+		location_:  location,
 	}
 	return instance
 }
@@ -67,8 +67,8 @@ func (v *discardClause_) GetDelimiter() string {
 	return v.delimiter_
 }
 
-func (v *discardClause_) GetDraft() DraftLike {
-	return v.draft_
+func (v *discardClause_) GetLocation() LocationLike {
+	return v.location_
 }
 
 // PROTECTED INTERFACE
@@ -78,7 +78,7 @@ func (v *discardClause_) GetDraft() DraftLike {
 type discardClause_ struct {
 	// Declare the instance attributes.
 	delimiter_ string
-	draft_     DraftLike
+	location_  LocationLike
 }
 
 // Class Structure

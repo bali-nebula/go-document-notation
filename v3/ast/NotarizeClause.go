@@ -39,7 +39,7 @@ func (c *notarizeClauseClass_) NotarizeClause(
 	delimiter1 string,
 	draft DraftLike,
 	delimiter2 string,
-	cited CitedLike,
+	location LocationLike,
 ) NotarizeClauseLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
@@ -50,15 +50,15 @@ func (c *notarizeClauseClass_) NotarizeClause(
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(cited) {
-		panic("The \"cited\" attribute is required by this class.")
+	if uti.IsUndefined(location) {
+		panic("The \"location\" attribute is required by this class.")
 	}
 	var instance = &notarizeClause_{
 		// Initialize the instance attributes.
 		delimiter1_: delimiter1,
 		draft_:      draft,
 		delimiter2_: delimiter2,
-		cited_:      cited,
+		location_:   location,
 	}
 	return instance
 }
@@ -85,8 +85,8 @@ func (v *notarizeClause_) GetDelimiter2() string {
 	return v.delimiter2_
 }
 
-func (v *notarizeClause_) GetCited() CitedLike {
-	return v.cited_
+func (v *notarizeClause_) GetLocation() LocationLike {
+	return v.location_
 }
 
 // PROTECTED INTERFACE
@@ -98,7 +98,7 @@ type notarizeClause_ struct {
 	delimiter1_ string
 	draft_      DraftLike
 	delimiter2_ string
-	cited_      CitedLike
+	location_   LocationLike
 }
 
 // Class Structure

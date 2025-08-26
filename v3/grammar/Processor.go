@@ -412,26 +412,6 @@ func (v *processor_) ProcessCheckoutClauseSlot(
 ) {
 }
 
-func (v *processor_) PreprocessCited(
-	cited ast.CitedLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessCited(
-	cited ast.CitedLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessCitedSlot(
-	cited ast.CitedLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessCollection(
 	collection ast.CollectionLike,
 	index_ uint,
@@ -1008,6 +988,26 @@ func (v *processor_) PostprocessLine(
 
 func (v *processor_) ProcessLineSlot(
 	line ast.LineLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessLocation(
+	location ast.LocationLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessLocation(
+	location ast.LocationLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessLocationSlot(
+	location ast.LocationLike,
 	slot_ uint,
 ) {
 }

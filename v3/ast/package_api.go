@@ -199,20 +199,8 @@ type CheckoutClauseClassLike interface {
 		recipient RecipientLike,
 		optionalAtLevel AtLevelLike,
 		delimiter2 string,
-		cited CitedLike,
+		location LocationLike,
 	) CheckoutClauseLike
-}
-
-/*
-CitedClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete cited-like class.
-*/
-type CitedClassLike interface {
-	// Constructor Methods
-	Cited(
-		expression ExpressionLike,
-	) CitedLike
 }
 
 /*
@@ -312,7 +300,7 @@ type DiscardClauseClassLike interface {
 	// Constructor Methods
 	DiscardClause(
 		delimiter string,
-		draft DraftLike,
+		location LocationLike,
 	) DiscardClauseLike
 }
 
@@ -583,6 +571,18 @@ type LineClassLike interface {
 }
 
 /*
+LocationClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete location-like class.
+*/
+type LocationClassLike interface {
+	// Constructor Methods
+	Location(
+		expression ExpressionLike,
+	) LocationLike
+}
+
+/*
 LogicalClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete logical-like class.
@@ -711,7 +711,7 @@ type NotarizeClauseClassLike interface {
 		delimiter1 string,
 		draft DraftLike,
 		delimiter2 string,
-		cited CitedLike,
+		location LocationLike,
 	) NotarizeClauseLike
 }
 
@@ -1016,7 +1016,7 @@ type SaveClauseClassLike interface {
 		delimiter1 string,
 		draft DraftLike,
 		delimiter2 string,
-		cited CitedLike,
+		location LocationLike,
 	) SaveClauseLike
 }
 
@@ -1347,20 +1347,7 @@ type CheckoutClauseLike interface {
 	GetRecipient() RecipientLike
 	GetOptionalAtLevel() AtLevelLike
 	GetDelimiter2() string
-	GetCited() CitedLike
-}
-
-/*
-CitedLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete cited-like class.
-*/
-type CitedLike interface {
-	// Principal Methods
-	GetClass() CitedClassLike
-
-	// Attribute Methods
-	GetExpression() ExpressionLike
+	GetLocation() LocationLike
 }
 
 /*
@@ -1469,7 +1456,7 @@ type DiscardClauseLike interface {
 
 	// Attribute Methods
 	GetDelimiter() string
-	GetDraft() DraftLike
+	GetLocation() LocationLike
 }
 
 /*
@@ -1760,6 +1747,19 @@ type LineLike interface {
 }
 
 /*
+LocationLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete location-like class.
+*/
+type LocationLike interface {
+	// Principal Methods
+	GetClass() LocationClassLike
+
+	// Attribute Methods
+	GetExpression() ExpressionLike
+}
+
+/*
 LogicalLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete logical-like class.
@@ -1899,7 +1899,7 @@ type NotarizeClauseLike interface {
 	GetDelimiter1() string
 	GetDraft() DraftLike
 	GetDelimiter2() string
-	GetCited() CitedLike
+	GetLocation() LocationLike
 }
 
 /*
@@ -2227,7 +2227,7 @@ type SaveClauseLike interface {
 	GetDelimiter1() string
 	GetDraft() DraftLike
 	GetDelimiter2() string
-	GetCited() CitedLike
+	GetLocation() LocationLike
 }
 
 /*

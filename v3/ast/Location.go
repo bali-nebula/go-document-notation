@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func CitedClass() CitedClassLike {
-	return citedClass()
+func LocationClass() LocationClassLike {
+	return locationClass()
 }
 
 // Constructor Methods
 
-func (c *citedClass_) Cited(
+func (c *locationClass_) Location(
 	expression ExpressionLike,
-) CitedLike {
+) LocationLike {
 	if uti.IsUndefined(expression) {
 		panic("The \"expression\" attribute is required by this class.")
 	}
-	var instance = &cited_{
+	var instance = &location_{
 		// Initialize the instance attributes.
 		expression_: expression,
 	}
@@ -52,13 +52,13 @@ func (c *citedClass_) Cited(
 
 // Principal Methods
 
-func (v *cited_) GetClass() CitedClassLike {
-	return citedClass()
+func (v *location_) GetClass() LocationClassLike {
+	return locationClass()
 }
 
 // Attribute Methods
 
-func (v *cited_) GetExpression() ExpressionLike {
+func (v *location_) GetExpression() ExpressionLike {
 	return v.expression_
 }
 
@@ -66,23 +66,23 @@ func (v *cited_) GetExpression() ExpressionLike {
 
 // Instance Structure
 
-type cited_ struct {
+type location_ struct {
 	// Declare the instance attributes.
 	expression_ ExpressionLike
 }
 
 // Class Structure
 
-type citedClass_ struct {
+type locationClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func citedClass() *citedClass_ {
-	return citedClassReference_
+func locationClass() *locationClass_ {
+	return locationClassReference_
 }
 
-var citedClassReference_ = &citedClass_{
+var locationClassReference_ = &locationClass_{
 	// Initialize the class constants.
 }

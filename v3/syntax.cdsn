@@ -223,19 +223,19 @@ $PublishClause: "publish" Event
 
 $Event: Expression
 
-$CheckoutClause: "checkout" Recipient AtLevel? "from" Cited
+$CheckoutClause: "checkout" Recipient AtLevel? "from" Location
 
 $AtLevel: "at" "level" Expression
 
-$Cited: Expression
+$Location: Expression
 
-$SaveClause: "save" Draft "as" Cited
+$SaveClause: "save" Draft "to" Location
 
 $Draft: Expression
 
-$DiscardClause: "discard" Draft
+$DiscardClause: "discard" Location
 
-$NotarizeClause: "notarize" Draft "as" Cited
+$NotarizeClause: "notarize" Draft "at" Location
 
 $Expression: Subject Predicate*
 

@@ -531,20 +531,6 @@ type Methodical interface {
 		checkoutClause ast.CheckoutClauseLike,
 		slot_ uint,
 	)
-	PreprocessCited(
-		cited ast.CitedLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessCited(
-		cited ast.CitedLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessCitedSlot(
-		cited ast.CitedLike,
-		slot_ uint,
-	)
 	PreprocessCollection(
 		collection ast.CollectionLike,
 		index_ uint,
@@ -949,6 +935,20 @@ type Methodical interface {
 	)
 	ProcessLineSlot(
 		line ast.LineLike,
+		slot_ uint,
+	)
+	PreprocessLocation(
+		location ast.LocationLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessLocation(
+		location ast.LocationLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessLocationSlot(
+		location ast.LocationLike,
 		slot_ uint,
 	)
 	PreprocessLogical(

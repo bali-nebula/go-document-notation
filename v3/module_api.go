@@ -53,7 +53,6 @@ type (
 	BagClassLike                = ast.BagClassLike
 	BreakClauseClassLike        = ast.BreakClauseClassLike
 	CheckoutClauseClassLike     = ast.CheckoutClauseClassLike
-	CitedClassLike              = ast.CitedClassLike
 	CollectionClassLike         = ast.CollectionClassLike
 	ComparisonOperatorClassLike = ast.ComparisonOperatorClassLike
 	ComplementClassLike         = ast.ComplementClassLike
@@ -83,6 +82,7 @@ type (
 	LetClauseClassLike          = ast.LetClauseClassLike
 	LexicalOperatorClassLike    = ast.LexicalOperatorClassLike
 	LineClassLike               = ast.LineClassLike
+	LocationClassLike           = ast.LocationClassLike
 	LogicalClassLike            = ast.LogicalClassLike
 	LogicalOperatorClassLike    = ast.LogicalOperatorClassLike
 	MagnitudeClassLike          = ast.MagnitudeClassLike
@@ -143,7 +143,6 @@ type (
 	BagLike                = ast.BagLike
 	BreakClauseLike        = ast.BreakClauseLike
 	CheckoutClauseLike     = ast.CheckoutClauseLike
-	CitedLike              = ast.CitedLike
 	CollectionLike         = ast.CollectionLike
 	ComparisonOperatorLike = ast.ComparisonOperatorLike
 	ComplementLike         = ast.ComplementLike
@@ -173,6 +172,7 @@ type (
 	LetClauseLike          = ast.LetClauseLike
 	LexicalOperatorLike    = ast.LexicalOperatorLike
 	LineLike               = ast.LineLike
+	LocationLike           = ast.LocationLike
 	LogicalLike            = ast.LogicalLike
 	LogicalOperatorLike    = ast.LogicalOperatorLike
 	MagnitudeLike          = ast.MagnitudeLike
@@ -439,26 +439,14 @@ func CheckoutClause(
 	recipient ast.RecipientLike,
 	optionalAtLevel ast.AtLevelLike,
 	delimiter2 string,
-	cited ast.CitedLike,
+	location ast.LocationLike,
 ) CheckoutClauseLike {
 	return CheckoutClauseClass().CheckoutClause(
 		delimiter1,
 		recipient,
 		optionalAtLevel,
 		delimiter2,
-		cited,
-	)
-}
-
-func CitedClass() CitedClassLike {
-	return ast.CitedClass()
-}
-
-func Cited(
-	expression ast.ExpressionLike,
-) CitedLike {
-	return CitedClass().Cited(
-		expression,
+		location,
 	)
 }
 
@@ -560,11 +548,11 @@ func DiscardClauseClass() DiscardClauseClassLike {
 
 func DiscardClause(
 	delimiter string,
-	draft ast.DraftLike,
+	location ast.LocationLike,
 ) DiscardClauseLike {
 	return DiscardClauseClass().DiscardClause(
 		delimiter,
-		draft,
+		location,
 	)
 }
 
@@ -848,6 +836,18 @@ func Line(
 	)
 }
 
+func LocationClass() LocationClassLike {
+	return ast.LocationClass()
+}
+
+func Location(
+	expression ast.ExpressionLike,
+) LocationLike {
+	return LocationClass().Location(
+		expression,
+	)
+}
+
 func LogicalClass() LogicalClassLike {
 	return ast.LogicalClass()
 }
@@ -984,13 +984,13 @@ func NotarizeClause(
 	delimiter1 string,
 	draft ast.DraftLike,
 	delimiter2 string,
-	cited ast.CitedLike,
+	location ast.LocationLike,
 ) NotarizeClauseLike {
 	return NotarizeClauseClass().NotarizeClause(
 		delimiter1,
 		draft,
 		delimiter2,
-		cited,
+		location,
 	)
 }
 
@@ -1318,13 +1318,13 @@ func SaveClause(
 	delimiter1 string,
 	draft ast.DraftLike,
 	delimiter2 string,
-	cited ast.CitedLike,
+	location ast.LocationLike,
 ) SaveClauseLike {
 	return SaveClauseClass().SaveClause(
 		delimiter1,
 		draft,
 		delimiter2,
-		cited,
+		location,
 	)
 }
 

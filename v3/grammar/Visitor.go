@@ -425,32 +425,15 @@ func (v *visitor_) visitCheckoutClause(
 		4,
 	)
 
-	var cited = checkoutClause.GetCited()
-	v.processor_.PreprocessCited(
-		cited,
+	var location = checkoutClause.GetLocation()
+	v.processor_.PreprocessLocation(
+		location,
 		0,
 		0,
 	)
-	v.visitCited(cited)
-	v.processor_.PostprocessCited(
-		cited,
-		0,
-		0,
-	)
-}
-
-func (v *visitor_) visitCited(
-	cited ast.CitedLike,
-) {
-	var expression = cited.GetExpression()
-	v.processor_.PreprocessExpression(
-		expression,
-		0,
-		0,
-	)
-	v.visitExpression(expression)
-	v.processor_.PostprocessExpression(
-		expression,
+	v.visitLocation(location)
+	v.processor_.PostprocessLocation(
+		location,
 		0,
 		0,
 	)
@@ -649,15 +632,15 @@ func (v *visitor_) visitDiscardClause(
 		1,
 	)
 
-	var draft = discardClause.GetDraft()
-	v.processor_.PreprocessDraft(
-		draft,
+	var location = discardClause.GetLocation()
+	v.processor_.PreprocessLocation(
+		location,
 		0,
 		0,
 	)
-	v.visitDraft(draft)
-	v.processor_.PostprocessDraft(
-		draft,
+	v.visitLocation(location)
+	v.processor_.PostprocessLocation(
+		location,
 		0,
 		0,
 	)
@@ -1354,6 +1337,23 @@ func (v *visitor_) visitLine(
 	}
 }
 
+func (v *visitor_) visitLocation(
+	location ast.LocationLike,
+) {
+	var expression = location.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
+		0,
+		0,
+	)
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
+		0,
+		0,
+	)
+}
+
 func (v *visitor_) visitLogical(
 	logical ast.LogicalLike,
 ) {
@@ -1854,15 +1854,15 @@ func (v *visitor_) visitNotarizeClause(
 		3,
 	)
 
-	var cited = notarizeClause.GetCited()
-	v.processor_.PreprocessCited(
-		cited,
+	var location = notarizeClause.GetLocation()
+	v.processor_.PreprocessLocation(
+		location,
 		0,
 		0,
 	)
-	v.visitCited(cited)
-	v.processor_.PostprocessCited(
-		cited,
+	v.visitLocation(location)
+	v.processor_.PostprocessLocation(
+		location,
 		0,
 		0,
 	)
@@ -2843,15 +2843,15 @@ func (v *visitor_) visitSaveClause(
 		3,
 	)
 
-	var cited = saveClause.GetCited()
-	v.processor_.PreprocessCited(
-		cited,
+	var location = saveClause.GetLocation()
+	v.processor_.PreprocessLocation(
+		location,
 		0,
 		0,
 	)
-	v.visitCited(cited)
-	v.processor_.PostprocessCited(
-		cited,
+	v.visitLocation(location)
+	v.processor_.PostprocessLocation(
+		location,
 		0,
 		0,
 	)
