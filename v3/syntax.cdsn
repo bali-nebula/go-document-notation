@@ -133,7 +133,7 @@ $ActionInduction:
     LetClause
 
 $MessageHandling:
-    PostClause
+    SendClause
     RetrieveClause
     AcceptClause
     RejectClause
@@ -207,7 +207,7 @@ $Recipient:
     Variable
     Subcomponent
 
-$PostClause: "post" Message "to" Bag
+$SendClause: "send" Message "to" Bag
 
 $Message: Expression
 

@@ -2555,12 +2555,12 @@ func (v *parser_) parseMessageHandling() (
 	token TokenLike,
 	ok bool,
 ) {
-	// Attempt to parse a single PostClause MessageHandling.
-	var postClause ast.PostClauseLike
-	postClause, token, ok = v.parsePostClause()
+	// Attempt to parse a single SendClause MessageHandling.
+	var sendClause ast.SendClauseLike
+	sendClause, token, ok = v.parseSendClause()
 	if ok {
-		// Found a single PostClause MessageHandling.
-		messageHandling = ast.MessageHandlingClass().MessageHandling(postClause)
+		// Found a single SendClause MessageHandling.
+		messageHandling = ast.MessageHandlingClass().MessageHandling(sendClause)
 		return
 	}
 
@@ -3273,95 +3273,6 @@ parametersLoop:
 		delimiter1,
 		parameters,
 		delimiter2,
-	)
-	return
-}
-
-func (v *parser_) parsePostClause() (
-	postClause ast.PostClauseLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single "post" literal.
-	var delimiter1 string
-	delimiter1, token, ok = v.parseDelimiter("post")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single PostClause rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$PostClause", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse a single Message rule.
-	var message ast.MessageLike
-	message, token, ok = v.parseMessage()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Message rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$PostClause", token)
-		panic(message)
-	}
-
-	// Attempt to parse a single "to" literal.
-	var delimiter2 string
-	delimiter2, token, ok = v.parseDelimiter("to")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single PostClause rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$PostClause", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse a single Bag rule.
-	var bag ast.BagLike
-	bag, token, ok = v.parseBag()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Bag rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$PostClause", token)
-		panic(message)
-	}
-
-	// Found a single PostClause rule.
-	ok = true
-	v.remove(tokens)
-	postClause = ast.PostClauseClass().PostClause(
-		delimiter1,
-		message,
-		delimiter2,
-		bag,
 	)
 	return
 }
@@ -4369,6 +4280,95 @@ matchingClausesLoop:
 	return
 }
 
+func (v *parser_) parseSendClause() (
+	sendClause ast.SendClauseLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = fra.List[TokenLike]()
+
+	// Attempt to parse a single "send" literal.
+	var delimiter1 string
+	delimiter1, token, ok = v.parseDelimiter("send")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single SendClause rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$SendClause", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single Message rule.
+	var message ast.MessageLike
+	message, token, ok = v.parseMessage()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single Message rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$SendClause", token)
+		panic(message)
+	}
+
+	// Attempt to parse a single "to" literal.
+	var delimiter2 string
+	delimiter2, token, ok = v.parseDelimiter("to")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single SendClause rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$SendClause", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single Bag rule.
+	var bag ast.BagLike
+	bag, token, ok = v.parseBag()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single Bag rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$SendClause", token)
+		panic(message)
+	}
+
+	// Found a single SendClause rule.
+	ok = true
+	v.remove(tokens)
+	sendClause = ast.SendClauseClass().SendClause(
+		delimiter1,
+		message,
+		delimiter2,
+		bag,
+	)
+	return
+}
+
 func (v *parser_) parseSequence() (
 	sequence ast.SequenceLike,
 	token TokenLike,
@@ -5359,7 +5359,7 @@ var parserClassReference_ = &parserClass_{
     DoClause
     LetClause`,
 			"$MessageHandling": `
-    PostClause
+    SendClause
     RetrieveClause
     AcceptClause
     RejectClause
@@ -5407,7 +5407,7 @@ var parserClassReference_ = &parserClass_{
 			"$Recipient": `
     Variable
     Subcomponent`,
-			"$PostClause":     `"post" Message "to" Bag`,
+			"$SendClause":     `"send" Message "to" Bag`,
 			"$Message":        `Expression`,
 			"$Bag":            `Expression`,
 			"$RetrieveClause": `"retrieve" Recipient "from" Bag`,

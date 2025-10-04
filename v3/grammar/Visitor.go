@@ -1637,14 +1637,14 @@ func (v *visitor_) visitMessageHandling(
 ) {
 	// Visit the possible messageHandling rule types.
 	switch actual := messageHandling.GetAny().(type) {
-	case ast.PostClauseLike:
-		v.processor_.PreprocessPostClause(
+	case ast.SendClauseLike:
+		v.processor_.PreprocessSendClause(
 			actual,
 			0,
 			0,
 		)
-		v.visitPostClause(actual)
-		v.processor_.PostprocessPostClause(
+		v.visitSendClause(actual)
+		v.processor_.PostprocessSendClause(
 			actual,
 			0,
 			0,
@@ -2186,57 +2186,6 @@ func (v *visitor_) visitParameterization(
 
 	var delimiter2 = parameterization.GetDelimiter2()
 	v.processor_.ProcessDelimiter(delimiter2)
-}
-
-func (v *visitor_) visitPostClause(
-	postClause ast.PostClauseLike,
-) {
-	var delimiter1 = postClause.GetDelimiter1()
-	v.processor_.ProcessDelimiter(delimiter1)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessPostClauseSlot(
-		postClause,
-		1,
-	)
-
-	var message = postClause.GetMessage()
-	v.processor_.PreprocessMessage(
-		message,
-		0,
-		0,
-	)
-	v.visitMessage(message)
-	v.processor_.PostprocessMessage(
-		message,
-		0,
-		0,
-	)
-	// Visit slot 2 between terms.
-	v.processor_.ProcessPostClauseSlot(
-		postClause,
-		2,
-	)
-
-	var delimiter2 = postClause.GetDelimiter2()
-	v.processor_.ProcessDelimiter(delimiter2)
-	// Visit slot 3 between terms.
-	v.processor_.ProcessPostClauseSlot(
-		postClause,
-		3,
-	)
-
-	var bag = postClause.GetBag()
-	v.processor_.PreprocessBag(
-		bag,
-		0,
-		0,
-	)
-	v.visitBag(bag)
-	v.processor_.PostprocessBag(
-		bag,
-		0,
-		0,
-	)
 }
 
 func (v *visitor_) visitPrecedence(
@@ -2904,6 +2853,57 @@ func (v *visitor_) visitSelectClause(
 			matchingClausesCount,
 		)
 	}
+}
+
+func (v *visitor_) visitSendClause(
+	sendClause ast.SendClauseLike,
+) {
+	var delimiter1 = sendClause.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessSendClauseSlot(
+		sendClause,
+		1,
+	)
+
+	var message = sendClause.GetMessage()
+	v.processor_.PreprocessMessage(
+		message,
+		0,
+		0,
+	)
+	v.visitMessage(message)
+	v.processor_.PostprocessMessage(
+		message,
+		0,
+		0,
+	)
+	// Visit slot 2 between terms.
+	v.processor_.ProcessSendClauseSlot(
+		sendClause,
+		2,
+	)
+
+	var delimiter2 = sendClause.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
+	// Visit slot 3 between terms.
+	v.processor_.ProcessSendClauseSlot(
+		sendClause,
+		3,
+	)
+
+	var bag = sendClause.GetBag()
+	v.processor_.PreprocessBag(
+		bag,
+		0,
+		0,
+	)
+	v.visitBag(bag)
+	v.processor_.PostprocessBag(
+		bag,
+		0,
+		0,
+	)
 }
 
 func (v *visitor_) visitSequence(

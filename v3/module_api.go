@@ -99,7 +99,6 @@ type (
 	OperatorClassLike           = ast.OperatorClassLike
 	ParameterClassLike          = ast.ParameterClassLike
 	ParameterizationClassLike   = ast.ParameterizationClassLike
-	PostClauseClassLike         = ast.PostClauseClassLike
 	PrecedenceClassLike         = ast.PrecedenceClassLike
 	PredicateClassLike          = ast.PredicateClassLike
 	PrimitiveClassLike          = ast.PrimitiveClassLike
@@ -117,6 +116,7 @@ type (
 	RightClassLike              = ast.RightClassLike
 	SaveClauseClassLike         = ast.SaveClauseClassLike
 	SelectClauseClassLike       = ast.SelectClauseClassLike
+	SendClauseClassLike         = ast.SendClauseClassLike
 	SequenceClassLike           = ast.SequenceClassLike
 	StatementClassLike          = ast.StatementClassLike
 	StringClassLike             = ast.StringClassLike
@@ -189,7 +189,6 @@ type (
 	OperatorLike           = ast.OperatorLike
 	ParameterLike          = ast.ParameterLike
 	ParameterizationLike   = ast.ParameterizationLike
-	PostClauseLike         = ast.PostClauseLike
 	PrecedenceLike         = ast.PrecedenceLike
 	PredicateLike          = ast.PredicateLike
 	PrimitiveLike          = ast.PrimitiveLike
@@ -207,6 +206,7 @@ type (
 	RightLike              = ast.RightLike
 	SaveClauseLike         = ast.SaveClauseLike
 	SelectClauseLike       = ast.SelectClauseLike
+	SendClauseLike         = ast.SendClauseLike
 	SequenceLike           = ast.SequenceLike
 	StatementLike          = ast.StatementLike
 	StringLike             = ast.StringLike
@@ -1080,24 +1080,6 @@ func Parameterization(
 	)
 }
 
-func PostClauseClass() PostClauseClassLike {
-	return ast.PostClauseClass()
-}
-
-func PostClause(
-	delimiter1 string,
-	message ast.MessageLike,
-	delimiter2 string,
-	bag ast.BagLike,
-) PostClauseLike {
-	return PostClauseClass().PostClause(
-		delimiter1,
-		message,
-		delimiter2,
-		bag,
-	)
-}
-
 func PrecedenceClass() PrecedenceClassLike {
 	return ast.PrecedenceClass()
 }
@@ -1341,6 +1323,24 @@ func SelectClause(
 		delimiter,
 		expression,
 		matchingClauses,
+	)
+}
+
+func SendClauseClass() SendClauseClassLike {
+	return ast.SendClauseClass()
+}
+
+func SendClause(
+	delimiter1 string,
+	message ast.MessageLike,
+	delimiter2 string,
+	bag ast.BagLike,
+) SendClauseLike {
+	return SendClauseClass().SendClause(
+		delimiter1,
+		message,
+		delimiter2,
+		bag,
 	)
 }
 

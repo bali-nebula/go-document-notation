@@ -29,18 +29,18 @@ import (
 
 // Access Function
 
-func PostClauseClass() PostClauseClassLike {
-	return postClauseClass()
+func SendClauseClass() SendClauseClassLike {
+	return sendClauseClass()
 }
 
 // Constructor Methods
 
-func (c *postClauseClass_) PostClause(
+func (c *sendClauseClass_) SendClause(
 	delimiter1 string,
 	message MessageLike,
 	delimiter2 string,
 	bag BagLike,
-) PostClauseLike {
+) SendClauseLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
 	}
@@ -53,7 +53,7 @@ func (c *postClauseClass_) PostClause(
 	if uti.IsUndefined(bag) {
 		panic("The \"bag\" attribute is required by this class.")
 	}
-	var instance = &postClause_{
+	var instance = &sendClause_{
 		// Initialize the instance attributes.
 		delimiter1_: delimiter1,
 		message_:    message,
@@ -67,25 +67,25 @@ func (c *postClauseClass_) PostClause(
 
 // Principal Methods
 
-func (v *postClause_) GetClass() PostClauseClassLike {
-	return postClauseClass()
+func (v *sendClause_) GetClass() SendClauseClassLike {
+	return sendClauseClass()
 }
 
 // Attribute Methods
 
-func (v *postClause_) GetDelimiter1() string {
+func (v *sendClause_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *postClause_) GetMessage() MessageLike {
+func (v *sendClause_) GetMessage() MessageLike {
 	return v.message_
 }
 
-func (v *postClause_) GetDelimiter2() string {
+func (v *sendClause_) GetDelimiter2() string {
 	return v.delimiter2_
 }
 
-func (v *postClause_) GetBag() BagLike {
+func (v *sendClause_) GetBag() BagLike {
 	return v.bag_
 }
 
@@ -93,7 +93,7 @@ func (v *postClause_) GetBag() BagLike {
 
 // Instance Structure
 
-type postClause_ struct {
+type sendClause_ struct {
 	// Declare the instance attributes.
 	delimiter1_ string
 	message_    MessageLike
@@ -103,16 +103,16 @@ type postClause_ struct {
 
 // Class Structure
 
-type postClauseClass_ struct {
+type sendClauseClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func postClauseClass() *postClauseClass_ {
-	return postClauseClassReference_
+func sendClauseClass() *sendClauseClass_ {
+	return sendClauseClassReference_
 }
 
-var postClauseClassReference_ = &postClauseClass_{
+var sendClauseClassReference_ = &sendClauseClass_{
 	// Initialize the class constants.
 }

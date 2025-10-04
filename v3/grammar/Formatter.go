@@ -592,13 +592,6 @@ func (v *formatter_) ProcessParameterizationSlot(
 	}
 }
 
-func (v *formatter_) ProcessPostClauseSlot(
-	postClause ast.PostClauseLike,
-	slot_ uint,
-) {
-	v.appendString(" ")
-}
-
 func (v *formatter_) PreprocessPredicate(
 	predicate ast.PredicateLike,
 	index_ uint,
@@ -670,6 +663,13 @@ func (v *formatter_) ProcessSelectClauseSlot(
 	case 1:
 		v.appendString(" ")
 	}
+}
+
+func (v *formatter_) ProcessSendClauseSlot(
+	sendClause ast.SendClauseLike,
+	slot_ uint,
+) {
+	v.appendString(" ")
 }
 
 func (v *formatter_) PreprocessStatement(

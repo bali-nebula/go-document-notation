@@ -1175,20 +1175,6 @@ type Methodical interface {
 		parameterization ast.ParameterizationLike,
 		slot_ uint,
 	)
-	PreprocessPostClause(
-		postClause ast.PostClauseLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessPostClause(
-		postClause ast.PostClauseLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessPostClauseSlot(
-		postClause ast.PostClauseLike,
-		slot_ uint,
-	)
 	PreprocessPrecedence(
 		precedence ast.PrecedenceLike,
 		index_ uint,
@@ -1425,6 +1411,20 @@ type Methodical interface {
 	)
 	ProcessSelectClauseSlot(
 		selectClause ast.SelectClauseLike,
+		slot_ uint,
+	)
+	PreprocessSendClause(
+		sendClause ast.SendClauseLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessSendClause(
+		sendClause ast.SendClauseLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessSendClauseSlot(
+		sendClause ast.SendClauseLike,
 		slot_ uint,
 	)
 	PreprocessSequence(
