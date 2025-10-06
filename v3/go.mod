@@ -3,8 +3,8 @@ module github.com/bali-nebula/go-document-notation/v3
 go 1.25
 
 require (
-	github.com/craterdog/go-component-framework/v7 v7.24.0
-	github.com/craterdog/go-missing-utilities/v7 v7.17.0
+	github.com/craterdog/go-component-framework/v7 v7.25.0
+	github.com/craterdog/go-missing-utilities/v7 v7.18.0
 	github.com/stretchr/testify v1.11.1
 )
 
