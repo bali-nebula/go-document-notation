@@ -1,15 +1,15 @@
 <img src="https://craterdog.com/images/CraterDog.png" width="50%">
 
-### _\* \* \* NOTICE \* \* \*_
-_This project is still under development and is for reference purposes only. If
-you are interested in this project or have suggestions on how to improve it feel
-free to contact us at [craterdog@gmail.com](mailto:craterdog@gmail.com)._
+## Go Document Notation
 
 ### Overview
-This project provides a framework for parsing, manipulating and formatting
-documents containing _Bali Document Notation™_ ("Bali" for short). The abstract
-syntax trees (ASTs) that are generated can be processed by agents like compilers,
-interpreters and formatters for different document types (HTML, JSON, XML, etc.)
+This project was automatically generated based on the Crater Dog Syntax Notation™
+(CDSN) file located
+[here](https://github.com/bali-nebula/go-document-notation/blob/main/v3/syntax.cdsn).
+It provides a framework for parsing, manipulating and formatting documents
+containing Bali Document Notation™ ("Bali" for short).
+
+⚠️  This project is not meant to be used directly by other projects.
 
 ### Quick Links
 For more information on this project click on the following links:
