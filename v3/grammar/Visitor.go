@@ -674,6 +674,26 @@ func (v *visitor_) visitDoClause(
 func (v *visitor_) visitDocument(
 	document ast.DocumentLike,
 ) {
+	var optionalAnnotation = document.GetOptionalAnnotation()
+	if uti.IsDefined(optionalAnnotation) {
+		v.processor_.PreprocessAnnotation(
+			optionalAnnotation,
+			0,
+			0,
+		)
+		v.visitAnnotation(optionalAnnotation)
+		v.processor_.PostprocessAnnotation(
+			optionalAnnotation,
+			0,
+			0,
+		)
+	}
+	// Visit slot 1 between terms.
+	v.processor_.ProcessDocumentSlot(
+		document,
+		1,
+	)
+
 	var component = document.GetComponent()
 	v.processor_.PreprocessComponent(
 		component,

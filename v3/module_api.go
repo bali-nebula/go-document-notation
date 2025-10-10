@@ -575,9 +575,11 @@ func DocumentClass() DocumentClassLike {
 }
 
 func Document(
+	optionalAnnotation ast.AnnotationLike,
 	component ast.ComponentLike,
 ) DocumentLike {
 	return DocumentClass().Document(
+		optionalAnnotation,
 		component,
 	)
 }

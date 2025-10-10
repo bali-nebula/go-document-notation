@@ -1143,6 +1143,16 @@ func (v *parser_) parseDocument() (
 ) {
 	var tokens = fra.List[TokenLike]()
 
+	// Attempt to parse an optional Annotation rule.
+	var optionalAnnotation ast.AnnotationLike
+	optionalAnnotation, token, ok = v.parseAnnotation()
+	if ok {
+		// Found a multiexpression token.
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	}
+
 	// Attempt to parse a single Component rule.
 	var component ast.ComponentLike
 	component, token, ok = v.parseComponent()
@@ -1163,7 +1173,10 @@ func (v *parser_) parseDocument() (
 	// Found a single Document rule.
 	ok = true
 	v.remove(tokens)
-	document = ast.DocumentClass().Document(component)
+	document = ast.DocumentClass().Document(
+		optionalAnnotation,
+		component,
+	)
 	return
 }
 
@@ -5277,7 +5290,7 @@ var parserClassReference_ = &parserClass_{
 	// Initialize the class constants.
 	syntax_: fra.CatalogFromMap[string, string](
 		map[string]string{
-			"$Document":  `Component`,
+			"$Document":  `Annotation? Component`,
 			"$Component": `Entity Parameterization?`,
 			"$Entity": `
     Element

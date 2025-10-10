@@ -409,6 +409,15 @@ func (v *formatter_) ProcessDoClauseSlot(
 	v.appendString(" ")
 }
 
+func (v *formatter_) ProcessDocumentSlot(
+	document ast.DocumentLike,
+	slot_ uint,
+) {
+	if uti.IsDefined(document.GetOptionalAnnotation()) {
+		v.appendNewline()
+	}
+}
+
 func (v *formatter_) PostprocessDocument(
 	document ast.DocumentLike,
 	index_ uint,
@@ -477,8 +486,8 @@ func (v *formatter_) PreprocessLine(
 		if index_ > 1 {
 			v.appendString("\n")
 		}
-		v.appendNewline()
 	}
+	v.appendNewline()
 }
 
 func (v *formatter_) PreprocessMatchingClause(
@@ -670,14 +679,6 @@ func (v *formatter_) ProcessSendClauseSlot(
 	slot_ uint,
 ) {
 	v.appendString(" ")
-}
-
-func (v *formatter_) PreprocessStatement(
-	statement ast.StatementLike,
-	index_ uint,
-	count_ uint,
-) {
-	v.appendNewline()
 }
 
 func (v *formatter_) ProcessThrowClauseSlot(

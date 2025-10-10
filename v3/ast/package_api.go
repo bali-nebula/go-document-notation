@@ -325,6 +325,7 @@ supported by each concrete document-like class.
 type DocumentClassLike interface {
 	// Constructor Methods
 	Document(
+		optionalAnnotation AnnotationLike,
 		component ComponentLike,
 	) DocumentLike
 }
@@ -1483,6 +1484,7 @@ type DocumentLike interface {
 	GetClass() DocumentClassLike
 
 	// Attribute Methods
+	GetOptionalAnnotation() AnnotationLike
 	GetComponent() ComponentLike
 }
 
