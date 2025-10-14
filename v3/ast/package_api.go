@@ -130,7 +130,7 @@ type AssociationClassLike interface {
 	Association(
 		primitive PrimitiveLike,
 		delimiter string,
-		object ObjectLike,
+		composite CompositeLike,
 	) AssociationLike
 }
 
@@ -251,6 +251,19 @@ type ComponentClassLike interface {
 		entity EntityLike,
 		optionalParameterization ParameterizationLike,
 	) ComponentLike
+}
+
+/*
+CompositeClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete composite-like class.
+*/
+type CompositeClassLike interface {
+	// Constructor Methods
+	Composite(
+		component ComponentLike,
+		optionalNote string,
+	) CompositeLike
 }
 
 /*
@@ -515,7 +528,7 @@ type ItemsClassLike interface {
 	// Constructor Methods
 	Items(
 		delimiter1 string,
-		objects fra.Sequential[ObjectLike],
+		composites fra.Sequential[CompositeLike],
 		delimiter2 string,
 	) ItemsLike
 }
@@ -726,19 +739,6 @@ type NumericalClassLike interface {
 	Numerical(
 		any_ any,
 	) NumericalLike
-}
-
-/*
-ObjectClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete object-like class.
-*/
-type ObjectClassLike interface {
-	// Constructor Methods
-	Object(
-		component ComponentLike,
-		optionalNote string,
-	) ObjectLike
 }
 
 /*
@@ -1274,7 +1274,7 @@ type AssociationLike interface {
 	// Attribute Methods
 	GetPrimitive() PrimitiveLike
 	GetDelimiter() string
-	GetObject() ObjectLike
+	GetComposite() CompositeLike
 }
 
 /*
@@ -1403,6 +1403,20 @@ type ComponentLike interface {
 	// Attribute Methods
 	GetEntity() EntityLike
 	GetOptionalParameterization() ParameterizationLike
+}
+
+/*
+CompositeLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete composite-like class.
+*/
+type CompositeLike interface {
+	// Principal Methods
+	GetClass() CompositeClassLike
+
+	// Attribute Methods
+	GetComponent() ComponentLike
+	GetOptionalNote() string
 }
 
 /*
@@ -1689,7 +1703,7 @@ type ItemsLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetObjects() fra.Sequential[ObjectLike]
+	GetComposites() fra.Sequential[CompositeLike]
 	GetDelimiter2() string
 }
 
@@ -1915,20 +1929,6 @@ type NumericalLike interface {
 
 	// Attribute Methods
 	GetAny() any
-}
-
-/*
-ObjectLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete object-like class.
-*/
-type ObjectLike interface {
-	// Principal Methods
-	GetClass() ObjectClassLike
-
-	// Attribute Methods
-	GetComponent() ComponentLike
-	GetOptionalNote() string
 }
 
 /*

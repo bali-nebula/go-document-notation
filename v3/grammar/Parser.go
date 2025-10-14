@@ -373,15 +373,15 @@ func (v *parser_) parseAssociation() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Object rule.
-	var object ast.ObjectLike
-	object, token, ok = v.parseObject()
+	// Attempt to parse a single Composite rule.
+	var composite ast.CompositeLike
+	composite, token, ok = v.parseComposite()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Object rule.
+		// This is not a single Composite rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -396,7 +396,7 @@ func (v *parser_) parseAssociation() (
 	association = ast.AssociationClass().Association(
 		primitive,
 		delimiter,
-		object,
+		composite,
 	)
 	return
 }
@@ -902,6 +902,51 @@ func (v *parser_) parseComponent() (
 	component = ast.ComponentClass().Component(
 		entity,
 		optionalParameterization,
+	)
+	return
+}
+
+func (v *parser_) parseComposite() (
+	composite ast.CompositeLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = fra.List[TokenLike]()
+
+	// Attempt to parse a single Component rule.
+	var component ast.ComponentLike
+	component, token, ok = v.parseComponent()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single Component rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$Composite", token)
+		panic(message)
+	}
+
+	// Attempt to parse an optional note token.
+	var optionalNote string
+	optionalNote, token, ok = v.parseToken(NoteToken)
+	if ok {
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	} else {
+		optionalNote = "" // Reset this to undefined.
+	}
+
+	// Found a single Composite rule.
+	ok = true
+	v.remove(tokens)
+	composite = ast.CompositeClass().Composite(
+		component,
+		optionalNote,
 	)
 	return
 }
@@ -1954,30 +1999,30 @@ func (v *parser_) parseItems() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse multiple Object rules.
-	var objects = fra.List[ast.ObjectLike]()
-objectsLoop:
+	// Attempt to parse multiple Composite rules.
+	var composites = fra.List[ast.CompositeLike]()
+compositesLoop:
 	for count_ := 0; count_ < mat.MaxInt; count_++ {
-		var object ast.ObjectLike
-		object, token, ok = v.parseObject()
+		var composite ast.CompositeLike
+		composite, token, ok = v.parseComposite()
 		if !ok {
 			switch {
 			case count_ >= 0:
-				break objectsLoop
+				break compositesLoop
 			case uti.IsDefined(tokens):
-				// This is not multiple Object rules.
+				// This is not multiple Composite rules.
 				v.putBack(tokens)
 				return
 			default:
 				// Found a syntax error.
 				var message = v.formatError("$Items", token)
-				message += "0 or more Object rules are required."
+				message += "0 or more Composite rules are required."
 				panic(message)
 			}
 		}
 		// No additional put backs allowed at this point.
 		tokens = nil
-		objects.AppendValue(object)
+		composites.AppendValue(composite)
 	}
 
 	// Attempt to parse a single "]" literal.
@@ -2003,7 +2048,7 @@ objectsLoop:
 	v.remove(tokens)
 	items = ast.ItemsClass().Items(
 		delimiter1,
-		objects,
+		composites,
 		delimiter2,
 	)
 	return
@@ -2967,51 +3012,6 @@ func (v *parser_) parseNumerical() (
 	}
 
 	// This is not a single Numerical rule.
-	return
-}
-
-func (v *parser_) parseObject() (
-	object ast.ObjectLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single Component rule.
-	var component ast.ComponentLike
-	component, token, ok = v.parseComponent()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Component rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Object", token)
-		panic(message)
-	}
-
-	// Attempt to parse an optional note token.
-	var optionalNote string
-	optionalNote, token, ok = v.parseToken(NoteToken)
-	if ok {
-		if uti.IsDefined(tokens) {
-			tokens.AppendValue(token)
-		}
-	} else {
-		optionalNote = "" // Reset this to undefined.
-	}
-
-	// Found a single Object rule.
-	ok = true
-	v.remove(tokens)
-	object = ast.ObjectClass().Object(
-		component,
-		optionalNote,
-	)
 	return
 }
 
@@ -5339,9 +5339,9 @@ var parserClassReference_ = &parserClass_{
     Attributes
     Items  ! Must be after attributes.`,
 			"$Attributes":  `"[" Association+ "]"`,
-			"$Association": `Primitive ":" Object`,
-			"$Items":       `"[" Object* "]"`,
-			"$Object":      `Component note?`,
+			"$Association": `Primitive ":" Composite`,
+			"$Items":       `"[" Composite* "]"`,
+			"$Composite":   `Component note?`,
 			"$Procedure":   `"{" Line* "}"`,
 			"$Line": `
     Annotation

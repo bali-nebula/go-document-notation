@@ -587,6 +587,20 @@ type Methodical interface {
 		component ast.ComponentLike,
 		slot_ uint,
 	)
+	PreprocessComposite(
+		composite ast.CompositeLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessComposite(
+		composite ast.CompositeLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessCompositeSlot(
+		composite ast.CompositeLike,
+		slot_ uint,
+	)
 	PreprocessCondition(
 		condition ast.ConditionLike,
 		index_ uint,
@@ -1103,20 +1117,6 @@ type Methodical interface {
 	)
 	ProcessNumericalSlot(
 		numerical ast.NumericalLike,
-		slot_ uint,
-	)
-	PreprocessObject(
-		object ast.ObjectLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessObject(
-		object ast.ObjectLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessObjectSlot(
-		object ast.ObjectLike,
 		slot_ uint,
 	)
 	PreprocessOnClause(

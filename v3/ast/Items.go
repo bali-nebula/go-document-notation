@@ -38,14 +38,14 @@ func ItemsClass() ItemsClassLike {
 
 func (c *itemsClass_) Items(
 	delimiter1 string,
-	objects fra.Sequential[ObjectLike],
+	composites fra.Sequential[CompositeLike],
 	delimiter2 string,
 ) ItemsLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(objects) {
-		panic("The \"objects\" attribute is required by this class.")
+	if uti.IsUndefined(composites) {
+		panic("The \"composites\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
@@ -53,7 +53,7 @@ func (c *itemsClass_) Items(
 	var instance = &items_{
 		// Initialize the instance attributes.
 		delimiter1_: delimiter1,
-		objects_:    objects,
+		composites_: composites,
 		delimiter2_: delimiter2,
 	}
 	return instance
@@ -73,8 +73,8 @@ func (v *items_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *items_) GetObjects() fra.Sequential[ObjectLike] {
-	return v.objects_
+func (v *items_) GetComposites() fra.Sequential[CompositeLike] {
+	return v.composites_
 }
 
 func (v *items_) GetDelimiter2() string {
@@ -88,7 +88,7 @@ func (v *items_) GetDelimiter2() string {
 type items_ struct {
 	// Declare the instance attributes.
 	delimiter1_ string
-	objects_    fra.Sequential[ObjectLike]
+	composites_ fra.Sequential[CompositeLike]
 	delimiter2_ string
 }
 

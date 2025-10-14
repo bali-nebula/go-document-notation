@@ -370,6 +370,28 @@ func (v *formatter_) ProcessComplementSlot(
 	v.appendString(" ")
 }
 
+func (v *formatter_) PreprocessComposite(
+	composite ast.CompositeLike,
+	index_ uint,
+	count_ uint,
+) {
+	if count_ > 0 {
+		v.appendNewline()
+	}
+}
+
+func (v *formatter_) ProcessCompositeSlot(
+	composite ast.CompositeLike,
+	slot_ uint,
+) {
+	switch slot_ {
+	case 1:
+		if uti.IsDefined(composite.GetOptionalNote()) {
+			v.appendString("  ")
+		}
+	}
+}
+
 func (v *formatter_) ProcessContinueClauseSlot(
 	continueClause ast.ContinueClauseLike,
 	slot_ uint,
@@ -434,8 +456,8 @@ func (v *formatter_) ProcessItemsSlot(
 		v.depth_++
 	case 2:
 		v.depth_--
-		var objects = items.GetObjects()
-		if objects.IsEmpty() {
+		var composites = items.GetComposites()
+		if composites.IsEmpty() {
 			v.appendString(" ")
 		} else {
 			v.appendNewline()
@@ -484,28 +506,6 @@ func (v *formatter_) ProcessNotarizeClauseSlot(
 	slot_ uint,
 ) {
 	v.appendString(" ")
-}
-
-func (v *formatter_) PreprocessObject(
-	object ast.ObjectLike,
-	index_ uint,
-	count_ uint,
-) {
-	if count_ > 0 {
-		v.appendNewline()
-	}
-}
-
-func (v *formatter_) ProcessObjectSlot(
-	object ast.ObjectLike,
-	slot_ uint,
-) {
-	switch slot_ {
-	case 1:
-		if uti.IsDefined(object.GetOptionalNote()) {
-			v.appendString("  ")
-		}
-	}
 }
 
 func (v *formatter_) PreprocessOnClause(

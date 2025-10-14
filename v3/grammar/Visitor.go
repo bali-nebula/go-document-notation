@@ -250,15 +250,15 @@ func (v *visitor_) visitAssociation(
 		2,
 	)
 
-	var object = association.GetObject()
-	v.processor_.PreprocessObject(
-		object,
+	var composite = association.GetComposite()
+	v.processor_.PreprocessComposite(
+		composite,
 		0,
 		0,
 	)
-	v.visitObject(object)
-	v.processor_.PostprocessObject(
-		object,
+	v.visitComposite(composite)
+	v.processor_.PostprocessComposite(
+		composite,
 		0,
 		0,
 	)
@@ -549,6 +549,33 @@ func (v *visitor_) visitComponent(
 			0,
 			0,
 		)
+	}
+}
+
+func (v *visitor_) visitComposite(
+	composite ast.CompositeLike,
+) {
+	var component = composite.GetComponent()
+	v.processor_.PreprocessComponent(
+		component,
+		0,
+		0,
+	)
+	v.visitComponent(component)
+	v.processor_.PostprocessComponent(
+		component,
+		0,
+		0,
+	)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessCompositeSlot(
+		composite,
+		1,
+	)
+
+	var optionalNote = composite.GetOptionalNote()
+	if uti.IsDefined(optionalNote) {
+		v.processor_.ProcessNote(optionalNote)
 	}
 }
 
@@ -1212,22 +1239,22 @@ func (v *visitor_) visitItems(
 		1,
 	)
 
-	var objectsIndex uint
-	var objects = items.GetObjects().GetIterator()
-	var objectsCount = uint(objects.GetSize())
-	for objects.HasNext() {
-		objectsIndex++
-		var rule = objects.GetNext()
-		v.processor_.PreprocessObject(
+	var compositesIndex uint
+	var composites = items.GetComposites().GetIterator()
+	var compositesCount = uint(composites.GetSize())
+	for composites.HasNext() {
+		compositesIndex++
+		var rule = composites.GetNext()
+		v.processor_.PreprocessComposite(
 			rule,
-			objectsIndex,
-			objectsCount,
+			compositesIndex,
+			compositesCount,
 		)
-		v.visitObject(rule)
-		v.processor_.PostprocessObject(
+		v.visitComposite(rule)
+		v.processor_.PostprocessComposite(
 			rule,
-			objectsIndex,
-			objectsCount,
+			compositesIndex,
+			compositesCount,
 		)
 	}
 	// Visit slot 2 between terms.
@@ -2001,33 +2028,6 @@ func (v *visitor_) visitNumerical(
 			0,
 			0,
 		)
-	}
-}
-
-func (v *visitor_) visitObject(
-	object ast.ObjectLike,
-) {
-	var component = object.GetComponent()
-	v.processor_.PreprocessComponent(
-		component,
-		0,
-		0,
-	)
-	v.visitComponent(component)
-	v.processor_.PostprocessComponent(
-		component,
-		0,
-		0,
-	)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessObjectSlot(
-		object,
-		1,
-	)
-
-	var optionalNote = object.GetOptionalNote()
-	if uti.IsDefined(optionalNote) {
-		v.processor_.ProcessNote(optionalNote)
 	}
 }
 

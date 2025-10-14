@@ -492,6 +492,26 @@ func (v *processor_) ProcessComponentSlot(
 ) {
 }
 
+func (v *processor_) PreprocessComposite(
+	composite ast.CompositeLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessComposite(
+	composite ast.CompositeLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessCompositeSlot(
+	composite ast.CompositeLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessCondition(
 	condition ast.ConditionLike,
 	index_ uint,
@@ -1228,26 +1248,6 @@ func (v *processor_) PostprocessNumerical(
 
 func (v *processor_) ProcessNumericalSlot(
 	numerical ast.NumericalLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessObject(
-	object ast.ObjectLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessObject(
-	object ast.ObjectLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessObjectSlot(
-	object ast.ObjectLike,
 	slot_ uint,
 ) {
 }

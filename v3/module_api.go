@@ -57,6 +57,7 @@ type (
 	ComparisonOperatorClassLike = ast.ComparisonOperatorClassLike
 	ComplementClassLike         = ast.ComplementClassLike
 	ComponentClassLike          = ast.ComponentClassLike
+	CompositeClassLike          = ast.CompositeClassLike
 	ConditionClassLike          = ast.ConditionClassLike
 	ConstraintClassLike         = ast.ConstraintClassLike
 	ContinueClauseClassLike     = ast.ContinueClauseClassLike
@@ -94,7 +95,6 @@ type (
 	MethodClassLike             = ast.MethodClassLike
 	NotarizeClauseClassLike     = ast.NotarizeClauseClassLike
 	NumericalClassLike          = ast.NumericalClassLike
-	ObjectClassLike             = ast.ObjectClassLike
 	OnClauseClassLike           = ast.OnClauseClassLike
 	OperatorClassLike           = ast.OperatorClassLike
 	ParameterClassLike          = ast.ParameterClassLike
@@ -147,6 +147,7 @@ type (
 	ComparisonOperatorLike = ast.ComparisonOperatorLike
 	ComplementLike         = ast.ComplementLike
 	ComponentLike          = ast.ComponentLike
+	CompositeLike          = ast.CompositeLike
 	ConditionLike          = ast.ConditionLike
 	ConstraintLike         = ast.ConstraintLike
 	ContinueClauseLike     = ast.ContinueClauseLike
@@ -184,7 +185,6 @@ type (
 	MethodLike             = ast.MethodLike
 	NotarizeClauseLike     = ast.NotarizeClauseLike
 	NumericalLike          = ast.NumericalLike
-	ObjectLike             = ast.ObjectLike
 	OnClauseLike           = ast.OnClauseLike
 	OperatorLike           = ast.OperatorLike
 	ParameterLike          = ast.ParameterLike
@@ -363,12 +363,12 @@ func AssociationClass() AssociationClassLike {
 func Association(
 	primitive ast.PrimitiveLike,
 	delimiter string,
-	object ast.ObjectLike,
+	composite ast.CompositeLike,
 ) AssociationLike {
 	return AssociationClass().Association(
 		primitive,
 		delimiter,
-		object,
+		composite,
 	)
 }
 
@@ -499,6 +499,20 @@ func Component(
 	return ComponentClass().Component(
 		entity,
 		optionalParameterization,
+	)
+}
+
+func CompositeClass() CompositeClassLike {
+	return ast.CompositeClass()
+}
+
+func Composite(
+	component ast.ComponentLike,
+	optionalNote string,
+) CompositeLike {
+	return CompositeClass().Composite(
+		component,
+		optionalNote,
 	)
 }
 
@@ -774,12 +788,12 @@ func ItemsClass() ItemsClassLike {
 
 func Items(
 	delimiter1 string,
-	objects fra.Sequential[ast.ObjectLike],
+	composites fra.Sequential[ast.CompositeLike],
 	delimiter2 string,
 ) ItemsLike {
 	return ItemsClass().Items(
 		delimiter1,
-		objects,
+		composites,
 		delimiter2,
 	)
 }
@@ -1005,20 +1019,6 @@ func Numerical(
 ) NumericalLike {
 	return NumericalClass().Numerical(
 		any_,
-	)
-}
-
-func ObjectClass() ObjectClassLike {
-	return ast.ObjectClass()
-}
-
-func Object(
-	component ast.ComponentLike,
-	optionalNote string,
-) ObjectLike {
-	return ObjectClass().Object(
-		component,
-		optionalNote,
 	)
 }
 
