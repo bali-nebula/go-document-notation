@@ -591,15 +591,15 @@ func (v *formatter_) ProcessPublishClauseSlot(
 	v.appendString(" ")
 }
 
-func (v *formatter_) ProcessRejectClauseSlot(
-	rejectClause ast.RejectClauseLike,
+func (v *formatter_) ProcessReceiveClauseSlot(
+	receiveClause ast.ReceiveClauseLike,
 	slot_ uint,
 ) {
 	v.appendString(" ")
 }
 
-func (v *formatter_) ProcessRetrieveClauseSlot(
-	retrieveClause ast.RetrieveClauseLike,
+func (v *formatter_) ProcessRejectClauseSlot(
+	rejectClause ast.RejectClauseLike,
 	slot_ uint,
 ) {
 	v.appendString(" ")

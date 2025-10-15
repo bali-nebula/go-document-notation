@@ -1696,14 +1696,14 @@ func (v *visitor_) visitMessageHandling(
 			0,
 			0,
 		)
-	case ast.RetrieveClauseLike:
-		v.processor_.PreprocessRetrieveClause(
+	case ast.ReceiveClauseLike:
+		v.processor_.PreprocessReceiveClause(
 			actual,
 			0,
 			0,
 		)
-		v.visitRetrieveClause(actual)
-		v.processor_.PostprocessRetrieveClause(
+		v.visitReceiveClause(actual)
+		v.processor_.PostprocessReceiveClause(
 			actual,
 			0,
 			0,
@@ -2451,6 +2451,57 @@ func (v *visitor_) visitRange(
 	)
 }
 
+func (v *visitor_) visitReceiveClause(
+	receiveClause ast.ReceiveClauseLike,
+) {
+	var delimiter1 = receiveClause.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessReceiveClauseSlot(
+		receiveClause,
+		1,
+	)
+
+	var recipient = receiveClause.GetRecipient()
+	v.processor_.PreprocessRecipient(
+		recipient,
+		0,
+		0,
+	)
+	v.visitRecipient(recipient)
+	v.processor_.PostprocessRecipient(
+		recipient,
+		0,
+		0,
+	)
+	// Visit slot 2 between terms.
+	v.processor_.ProcessReceiveClauseSlot(
+		receiveClause,
+		2,
+	)
+
+	var delimiter2 = receiveClause.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
+	// Visit slot 3 between terms.
+	v.processor_.ProcessReceiveClauseSlot(
+		receiveClause,
+		3,
+	)
+
+	var bag = receiveClause.GetBag()
+	v.processor_.PreprocessBag(
+		bag,
+		0,
+		0,
+	)
+	v.visitBag(bag)
+	v.processor_.PostprocessBag(
+		bag,
+		0,
+		0,
+	)
+}
+
 func (v *visitor_) visitRecipient(
 	recipient ast.RecipientLike,
 ) {
@@ -2681,57 +2732,6 @@ func (v *visitor_) visitResult(
 	v.visitExpression(expression)
 	v.processor_.PostprocessExpression(
 		expression,
-		0,
-		0,
-	)
-}
-
-func (v *visitor_) visitRetrieveClause(
-	retrieveClause ast.RetrieveClauseLike,
-) {
-	var delimiter1 = retrieveClause.GetDelimiter1()
-	v.processor_.ProcessDelimiter(delimiter1)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessRetrieveClauseSlot(
-		retrieveClause,
-		1,
-	)
-
-	var recipient = retrieveClause.GetRecipient()
-	v.processor_.PreprocessRecipient(
-		recipient,
-		0,
-		0,
-	)
-	v.visitRecipient(recipient)
-	v.processor_.PostprocessRecipient(
-		recipient,
-		0,
-		0,
-	)
-	// Visit slot 2 between terms.
-	v.processor_.ProcessRetrieveClauseSlot(
-		retrieveClause,
-		2,
-	)
-
-	var delimiter2 = retrieveClause.GetDelimiter2()
-	v.processor_.ProcessDelimiter(delimiter2)
-	// Visit slot 3 between terms.
-	v.processor_.ProcessRetrieveClauseSlot(
-		retrieveClause,
-		3,
-	)
-
-	var bag = retrieveClause.GetBag()
-	v.processor_.PreprocessBag(
-		bag,
-		0,
-		0,
-	)
-	v.visitBag(bag)
-	v.processor_.PostprocessBag(
-		bag,
 		0,
 		0,
 	)

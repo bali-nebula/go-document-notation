@@ -878,6 +878,21 @@ type RangeClassLike interface {
 }
 
 /*
+ReceiveClauseClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete receive-clause-like class.
+*/
+type ReceiveClauseClassLike interface {
+	// Constructor Methods
+	ReceiveClause(
+		delimiter1 string,
+		recipient RecipientLike,
+		delimiter2 string,
+		bag BagLike,
+	) ReceiveClauseLike
+}
+
+/*
 RecipientClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete recipient-like class.
@@ -949,21 +964,6 @@ type ResultClassLike interface {
 	Result(
 		expression ExpressionLike,
 	) ResultLike
-}
-
-/*
-RetrieveClauseClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete retrieve-clause-like class.
-*/
-type RetrieveClauseClassLike interface {
-	// Constructor Methods
-	RetrieveClause(
-		delimiter1 string,
-		recipient RecipientLike,
-		delimiter2 string,
-		bag BagLike,
-	) RetrieveClauseLike
 }
 
 /*
@@ -2078,6 +2078,22 @@ type RangeLike interface {
 }
 
 /*
+ReceiveClauseLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete receive-clause-like class.
+*/
+type ReceiveClauseLike interface {
+	// Principal Methods
+	GetClass() ReceiveClauseClassLike
+
+	// Attribute Methods
+	GetDelimiter1() string
+	GetRecipient() RecipientLike
+	GetDelimiter2() string
+	GetBag() BagLike
+}
+
+/*
 RecipientLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete recipient-like class.
@@ -2155,22 +2171,6 @@ type ResultLike interface {
 
 	// Attribute Methods
 	GetExpression() ExpressionLike
-}
-
-/*
-RetrieveClauseLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete retrieve-clause-like class.
-*/
-type RetrieveClauseLike interface {
-	// Principal Methods
-	GetClass() RetrieveClauseClassLike
-
-	// Attribute Methods
-	GetDelimiter1() string
-	GetRecipient() RecipientLike
-	GetDelimiter2() string
-	GetBag() BagLike
 }
 
 /*

@@ -29,18 +29,18 @@ import (
 
 // Access Function
 
-func RetrieveClauseClass() RetrieveClauseClassLike {
-	return retrieveClauseClass()
+func ReceiveClauseClass() ReceiveClauseClassLike {
+	return receiveClauseClass()
 }
 
 // Constructor Methods
 
-func (c *retrieveClauseClass_) RetrieveClause(
+func (c *receiveClauseClass_) ReceiveClause(
 	delimiter1 string,
 	recipient RecipientLike,
 	delimiter2 string,
 	bag BagLike,
-) RetrieveClauseLike {
+) ReceiveClauseLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
 	}
@@ -53,7 +53,7 @@ func (c *retrieveClauseClass_) RetrieveClause(
 	if uti.IsUndefined(bag) {
 		panic("The \"bag\" attribute is required by this class.")
 	}
-	var instance = &retrieveClause_{
+	var instance = &receiveClause_{
 		// Initialize the instance attributes.
 		delimiter1_: delimiter1,
 		recipient_:  recipient,
@@ -67,25 +67,25 @@ func (c *retrieveClauseClass_) RetrieveClause(
 
 // Principal Methods
 
-func (v *retrieveClause_) GetClass() RetrieveClauseClassLike {
-	return retrieveClauseClass()
+func (v *receiveClause_) GetClass() ReceiveClauseClassLike {
+	return receiveClauseClass()
 }
 
 // Attribute Methods
 
-func (v *retrieveClause_) GetDelimiter1() string {
+func (v *receiveClause_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *retrieveClause_) GetRecipient() RecipientLike {
+func (v *receiveClause_) GetRecipient() RecipientLike {
 	return v.recipient_
 }
 
-func (v *retrieveClause_) GetDelimiter2() string {
+func (v *receiveClause_) GetDelimiter2() string {
 	return v.delimiter2_
 }
 
-func (v *retrieveClause_) GetBag() BagLike {
+func (v *receiveClause_) GetBag() BagLike {
 	return v.bag_
 }
 
@@ -93,7 +93,7 @@ func (v *retrieveClause_) GetBag() BagLike {
 
 // Instance Structure
 
-type retrieveClause_ struct {
+type receiveClause_ struct {
 	// Declare the instance attributes.
 	delimiter1_ string
 	recipient_  RecipientLike
@@ -103,16 +103,16 @@ type retrieveClause_ struct {
 
 // Class Structure
 
-type retrieveClauseClass_ struct {
+type receiveClauseClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func retrieveClauseClass() *retrieveClauseClass_ {
-	return retrieveClauseClassReference_
+func receiveClauseClass() *receiveClauseClass_ {
+	return receiveClauseClassReference_
 }
 
-var retrieveClauseClassReference_ = &retrieveClauseClass_{
+var receiveClauseClassReference_ = &receiveClauseClass_{
 	// Initialize the class constants.
 }

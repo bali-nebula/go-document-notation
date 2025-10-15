@@ -1452,6 +1452,26 @@ func (v *processor_) ProcessRangeSlot(
 ) {
 }
 
+func (v *processor_) PreprocessReceiveClause(
+	receiveClause ast.ReceiveClauseLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessReceiveClause(
+	receiveClause ast.ReceiveClauseLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessReceiveClauseSlot(
+	receiveClause ast.ReceiveClauseLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessRecipient(
 	recipient ast.RecipientLike,
 	index_ uint,
@@ -1568,26 +1588,6 @@ func (v *processor_) PostprocessResult(
 
 func (v *processor_) ProcessResultSlot(
 	result ast.ResultLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessRetrieveClause(
-	retrieveClause ast.RetrieveClauseLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessRetrieveClause(
-	retrieveClause ast.RetrieveClauseLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessRetrieveClauseSlot(
-	retrieveClause ast.RetrieveClauseLike,
 	slot_ uint,
 ) {
 }

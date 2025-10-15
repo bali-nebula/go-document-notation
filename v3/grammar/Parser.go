@@ -2622,12 +2622,12 @@ func (v *parser_) parseMessageHandling() (
 		return
 	}
 
-	// Attempt to parse a single RetrieveClause MessageHandling.
-	var retrieveClause ast.RetrieveClauseLike
-	retrieveClause, token, ok = v.parseRetrieveClause()
+	// Attempt to parse a single ReceiveClause MessageHandling.
+	var receiveClause ast.ReceiveClauseLike
+	receiveClause, token, ok = v.parseReceiveClause()
 	if ok {
-		// Found a single RetrieveClause MessageHandling.
-		messageHandling = ast.MessageHandlingClass().MessageHandling(retrieveClause)
+		// Found a single ReceiveClause MessageHandling.
+		messageHandling = ast.MessageHandlingClass().MessageHandling(receiveClause)
 		return
 	}
 
@@ -3687,6 +3687,95 @@ func (v *parser_) parseRange() (
 	return
 }
 
+func (v *parser_) parseReceiveClause() (
+	receiveClause ast.ReceiveClauseLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = fra.List[TokenLike]()
+
+	// Attempt to parse a single "receive" literal.
+	var delimiter1 string
+	delimiter1, token, ok = v.parseDelimiter("receive")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single ReceiveClause rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$ReceiveClause", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single Recipient rule.
+	var recipient ast.RecipientLike
+	recipient, token, ok = v.parseRecipient()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single Recipient rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$ReceiveClause", token)
+		panic(message)
+	}
+
+	// Attempt to parse a single "from" literal.
+	var delimiter2 string
+	delimiter2, token, ok = v.parseDelimiter("from")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single ReceiveClause rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$ReceiveClause", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single Bag rule.
+	var bag ast.BagLike
+	bag, token, ok = v.parseBag()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single Bag rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$ReceiveClause", token)
+		panic(message)
+	}
+
+	// Found a single ReceiveClause rule.
+	ok = true
+	v.remove(tokens)
+	receiveClause = ast.ReceiveClauseClass().ReceiveClause(
+		delimiter1,
+		recipient,
+		delimiter2,
+		bag,
+	)
+	return
+}
+
 func (v *parser_) parseRecipient() (
 	recipient ast.RecipientLike,
 	token TokenLike,
@@ -3954,95 +4043,6 @@ func (v *parser_) parseResult() (
 	ok = true
 	v.remove(tokens)
 	result = ast.ResultClass().Result(expression)
-	return
-}
-
-func (v *parser_) parseRetrieveClause() (
-	retrieveClause ast.RetrieveClauseLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single "retrieve" literal.
-	var delimiter1 string
-	delimiter1, token, ok = v.parseDelimiter("retrieve")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single RetrieveClause rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$RetrieveClause", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse a single Recipient rule.
-	var recipient ast.RecipientLike
-	recipient, token, ok = v.parseRecipient()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Recipient rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$RetrieveClause", token)
-		panic(message)
-	}
-
-	// Attempt to parse a single "from" literal.
-	var delimiter2 string
-	delimiter2, token, ok = v.parseDelimiter("from")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single RetrieveClause rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$RetrieveClause", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse a single Bag rule.
-	var bag ast.BagLike
-	bag, token, ok = v.parseBag()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Bag rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$RetrieveClause", token)
-		panic(message)
-	}
-
-	// Found a single RetrieveClause rule.
-	ok = true
-	v.remove(tokens)
-	retrieveClause = ast.RetrieveClauseClass().RetrieveClause(
-		delimiter1,
-		recipient,
-		delimiter2,
-		bag,
-	)
 	return
 }
 
@@ -5373,7 +5373,7 @@ var parserClassReference_ = &parserClass_{
     LetClause`,
 			"$MessageHandling": `
     SendClause
-    RetrieveClause
+    ReceiveClause
     AcceptClause
     RejectClause
     PublishClause`,
@@ -5423,7 +5423,7 @@ var parserClassReference_ = &parserClass_{
 			"$SendClause":     `"send" Message "to" Bag`,
 			"$Message":        `Expression`,
 			"$Bag":            `Expression`,
-			"$RetrieveClause": `"retrieve" Recipient "from" Bag`,
+			"$ReceiveClause":  `"receive" Recipient "from" Bag`,
 			"$AcceptClause":   `"accept" Message`,
 			"$RejectClause":   `"reject" Message`,
 			"$PublishClause":  `"publish" Event`,

@@ -134,7 +134,7 @@ $ActionInduction:
 
 $MessageHandling:
     SendClause
-    RetrieveClause
+    ReceiveClause
     AcceptClause
     RejectClause
     PublishClause
@@ -213,7 +213,7 @@ $Message: Expression
 
 $Bag: Expression
 
-$RetrieveClause: "retrieve" Recipient "from" Bag
+$ReceiveClause: "receive" Recipient "from" Bag
 
 $AcceptClause: "accept" Message
 

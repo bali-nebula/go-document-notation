@@ -105,13 +105,13 @@ type (
 	ProcedureClassLike          = ast.ProcedureClassLike
 	PublishClauseClassLike      = ast.PublishClauseClassLike
 	RangeClassLike              = ast.RangeClassLike
+	ReceiveClauseClassLike      = ast.ReceiveClauseClassLike
 	RecipientClassLike          = ast.RecipientClassLike
 	ReferenceClassLike          = ast.ReferenceClassLike
 	ReferentClassLike           = ast.ReferentClassLike
 	RejectClauseClassLike       = ast.RejectClauseClassLike
 	RepositoryAccessClassLike   = ast.RepositoryAccessClassLike
 	ResultClassLike             = ast.ResultClassLike
-	RetrieveClauseClassLike     = ast.RetrieveClauseClassLike
 	ReturnClauseClassLike       = ast.ReturnClauseClassLike
 	RightClassLike              = ast.RightClassLike
 	SaveClauseClassLike         = ast.SaveClauseClassLike
@@ -195,13 +195,13 @@ type (
 	ProcedureLike          = ast.ProcedureLike
 	PublishClauseLike      = ast.PublishClauseLike
 	RangeLike              = ast.RangeLike
+	ReceiveClauseLike      = ast.ReceiveClauseLike
 	RecipientLike          = ast.RecipientLike
 	ReferenceLike          = ast.ReferenceLike
 	ReferentLike           = ast.ReferentLike
 	RejectClauseLike       = ast.RejectClauseLike
 	RepositoryAccessLike   = ast.RepositoryAccessLike
 	ResultLike             = ast.ResultLike
-	RetrieveClauseLike     = ast.RetrieveClauseLike
 	ReturnClauseLike       = ast.ReturnClauseLike
 	RightLike              = ast.RightLike
 	SaveClauseLike         = ast.SaveClauseLike
@@ -1174,6 +1174,24 @@ func Range(
 	)
 }
 
+func ReceiveClauseClass() ReceiveClauseClassLike {
+	return ast.ReceiveClauseClass()
+}
+
+func ReceiveClause(
+	delimiter1 string,
+	recipient ast.RecipientLike,
+	delimiter2 string,
+	bag ast.BagLike,
+) ReceiveClauseLike {
+	return ReceiveClauseClass().ReceiveClause(
+		delimiter1,
+		recipient,
+		delimiter2,
+		bag,
+	)
+}
+
 func RecipientClass() RecipientClassLike {
 	return ast.RecipientClass()
 }
@@ -1247,24 +1265,6 @@ func Result(
 ) ResultLike {
 	return ResultClass().Result(
 		expression,
-	)
-}
-
-func RetrieveClauseClass() RetrieveClauseClassLike {
-	return ast.RetrieveClauseClass()
-}
-
-func RetrieveClause(
-	delimiter1 string,
-	recipient ast.RecipientLike,
-	delimiter2 string,
-	bag ast.BagLike,
-) RetrieveClauseLike {
-	return RetrieveClauseClass().RetrieveClause(
-		delimiter1,
-		recipient,
-		delimiter2,
-		bag,
 	)
 }
 
