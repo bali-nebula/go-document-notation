@@ -37,15 +37,15 @@ func IfClauseClass() IfClauseClassLike {
 
 func (c *ifClauseClass_) IfClause(
 	delimiter1 string,
-	condition ConditionLike,
+	expression ExpressionLike,
 	delimiter2 string,
 	procedure ProcedureLike,
 ) IfClauseLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(condition) {
-		panic("The \"condition\" attribute is required by this class.")
+	if uti.IsUndefined(expression) {
+		panic("The \"expression\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
@@ -56,7 +56,7 @@ func (c *ifClauseClass_) IfClause(
 	var instance = &ifClause_{
 		// Initialize the instance attributes.
 		delimiter1_: delimiter1,
-		condition_:  condition,
+		expression_: expression,
 		delimiter2_: delimiter2,
 		procedure_:  procedure,
 	}
@@ -77,8 +77,8 @@ func (v *ifClause_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *ifClause_) GetCondition() ConditionLike {
-	return v.condition_
+func (v *ifClause_) GetExpression() ExpressionLike {
+	return v.expression_
 }
 
 func (v *ifClause_) GetDelimiter2() string {
@@ -96,7 +96,7 @@ func (v *ifClause_) GetProcedure() ProcedureLike {
 type ifClause_ struct {
 	// Declare the instance attributes.
 	delimiter1_ string
-	condition_  ConditionLike
+	expression_ ExpressionLike
 	delimiter2_ string
 	procedure_  ProcedureLike
 }

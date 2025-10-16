@@ -39,7 +39,7 @@ func (c *saveClauseClass_) SaveClause(
 	delimiter1 string,
 	draft DraftLike,
 	delimiter2 string,
-	location LocationLike,
+	recipient RecipientLike,
 ) SaveClauseLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
@@ -50,15 +50,15 @@ func (c *saveClauseClass_) SaveClause(
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(location) {
-		panic("The \"location\" attribute is required by this class.")
+	if uti.IsUndefined(recipient) {
+		panic("The \"recipient\" attribute is required by this class.")
 	}
 	var instance = &saveClause_{
 		// Initialize the instance attributes.
 		delimiter1_: delimiter1,
 		draft_:      draft,
 		delimiter2_: delimiter2,
-		location_:   location,
+		recipient_:  recipient,
 	}
 	return instance
 }
@@ -85,8 +85,8 @@ func (v *saveClause_) GetDelimiter2() string {
 	return v.delimiter2_
 }
 
-func (v *saveClause_) GetLocation() LocationLike {
-	return v.location_
+func (v *saveClause_) GetRecipient() RecipientLike {
+	return v.recipient_
 }
 
 // PROTECTED INTERFACE
@@ -98,7 +98,7 @@ type saveClause_ struct {
 	delimiter1_ string
 	draft_      DraftLike
 	delimiter2_ string
-	location_   LocationLike
+	recipient_  RecipientLike
 }
 
 // Class Structure

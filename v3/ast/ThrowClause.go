@@ -37,18 +37,18 @@ func ThrowClauseClass() ThrowClauseClassLike {
 
 func (c *throwClauseClass_) ThrowClause(
 	delimiter string,
-	exception ExceptionLike,
+	expression ExpressionLike,
 ) ThrowClauseLike {
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(exception) {
-		panic("The \"exception\" attribute is required by this class.")
+	if uti.IsUndefined(expression) {
+		panic("The \"expression\" attribute is required by this class.")
 	}
 	var instance = &throwClause_{
 		// Initialize the instance attributes.
-		delimiter_: delimiter,
-		exception_: exception,
+		delimiter_:  delimiter,
+		expression_: expression,
 	}
 	return instance
 }
@@ -67,8 +67,8 @@ func (v *throwClause_) GetDelimiter() string {
 	return v.delimiter_
 }
 
-func (v *throwClause_) GetException() ExceptionLike {
-	return v.exception_
+func (v *throwClause_) GetExpression() ExpressionLike {
+	return v.expression_
 }
 
 // PROTECTED INTERFACE
@@ -77,8 +77,8 @@ func (v *throwClause_) GetException() ExceptionLike {
 
 type throwClause_ struct {
 	// Declare the instance attributes.
-	delimiter_ string
-	exception_ ExceptionLike
+	delimiter_  string
+	expression_ ExpressionLike
 }
 
 // Class Structure

@@ -336,23 +336,6 @@ func (v *visitor_) visitAttributes(
 	v.processor_.ProcessDelimiter(delimiter2)
 }
 
-func (v *visitor_) visitBag(
-	bag ast.BagLike,
-) {
-	var expression = bag.GetExpression()
-	v.processor_.PreprocessExpression(
-		expression,
-		0,
-		0,
-	)
-	v.visitExpression(expression)
-	v.processor_.PostprocessExpression(
-		expression,
-		0,
-		0,
-	)
-}
-
 func (v *visitor_) visitBreakClause(
 	breakClause ast.BreakClauseLike,
 ) {
@@ -577,23 +560,6 @@ func (v *visitor_) visitComposite(
 	if uti.IsDefined(optionalNote) {
 		v.processor_.ProcessNote(optionalNote)
 	}
-}
-
-func (v *visitor_) visitCondition(
-	condition ast.ConditionLike,
-) {
-	var expression = condition.GetExpression()
-	v.processor_.PreprocessExpression(
-		expression,
-		0,
-		0,
-	)
-	v.visitExpression(expression)
-	v.processor_.PostprocessExpression(
-		expression,
-		0,
-		0,
-	)
 }
 
 func (v *visitor_) visitConstraint(
@@ -849,40 +815,6 @@ func (v *visitor_) visitEntity(
 	}
 }
 
-func (v *visitor_) visitEvent(
-	event ast.EventLike,
-) {
-	var expression = event.GetExpression()
-	v.processor_.PreprocessExpression(
-		expression,
-		0,
-		0,
-	)
-	v.visitExpression(expression)
-	v.processor_.PostprocessExpression(
-		expression,
-		0,
-		0,
-	)
-}
-
-func (v *visitor_) visitException(
-	exception ast.ExceptionLike,
-) {
-	var expression = exception.GetExpression()
-	v.processor_.PreprocessExpression(
-		expression,
-		0,
-		0,
-	)
-	v.visitExpression(expression)
-	v.processor_.PostprocessExpression(
-		expression,
-		0,
-		0,
-	)
-}
-
 func (v *visitor_) visitExpression(
 	expression ast.ExpressionLike,
 ) {
@@ -1093,15 +1025,15 @@ func (v *visitor_) visitIfClause(
 		1,
 	)
 
-	var condition = ifClause.GetCondition()
-	v.processor_.PreprocessCondition(
-		condition,
+	var expression = ifClause.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
 		0,
 		0,
 	)
-	v.visitCondition(condition)
-	v.processor_.PostprocessCondition(
-		condition,
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
 		0,
 		0,
 	)
@@ -1572,18 +1504,6 @@ func (v *visitor_) visitMainClause(
 			0,
 			0,
 		)
-	case ast.ActionInductionLike:
-		v.processor_.PreprocessActionInduction(
-			actual,
-			0,
-			0,
-		)
-		v.visitActionInduction(actual)
-		v.processor_.PostprocessActionInduction(
-			actual,
-			0,
-			0,
-		)
 	case ast.MessageHandlingLike:
 		v.processor_.PreprocessMessageHandling(
 			actual,
@@ -1608,6 +1528,18 @@ func (v *visitor_) visitMainClause(
 			0,
 			0,
 		)
+	case ast.ActionInductionLike:
+		v.processor_.PreprocessActionInduction(
+			actual,
+			0,
+			0,
+		)
+		v.visitActionInduction(actual)
+		v.processor_.PostprocessActionInduction(
+			actual,
+			0,
+			0,
+		)
 	}
 }
 
@@ -1622,15 +1554,15 @@ func (v *visitor_) visitMatchingClause(
 		1,
 	)
 
-	var template = matchingClause.GetTemplate()
-	v.processor_.PreprocessTemplate(
-		template,
+	var expression = matchingClause.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
 		0,
 		0,
 	)
-	v.visitTemplate(template)
-	v.processor_.PostprocessTemplate(
-		template,
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
 		0,
 		0,
 	)
@@ -2358,15 +2290,15 @@ func (v *visitor_) visitPublishClause(
 		1,
 	)
 
-	var event = publishClause.GetEvent()
-	v.processor_.PreprocessEvent(
-		event,
+	var message = publishClause.GetMessage()
+	v.processor_.PreprocessMessage(
+		message,
 		0,
 		0,
 	)
-	v.visitEvent(event)
-	v.processor_.PostprocessEvent(
-		event,
+	v.visitMessage(message)
+	v.processor_.PostprocessMessage(
+		message,
 		0,
 		0,
 	)
@@ -2488,15 +2420,15 @@ func (v *visitor_) visitReceiveClause(
 		3,
 	)
 
-	var bag = receiveClause.GetBag()
-	v.processor_.PreprocessBag(
-		bag,
+	var location = receiveClause.GetLocation()
+	v.processor_.PreprocessLocation(
+		location,
 		0,
 		0,
 	)
-	v.visitBag(bag)
-	v.processor_.PostprocessBag(
-		bag,
+	v.visitLocation(location)
+	v.processor_.PostprocessLocation(
+		location,
 		0,
 		0,
 	)
@@ -2669,18 +2601,6 @@ func (v *visitor_) visitRepositoryAccess(
 ) {
 	// Visit the possible repositoryAccess rule types.
 	switch actual := repositoryAccess.GetAny().(type) {
-	case ast.CheckoutClauseLike:
-		v.processor_.PreprocessCheckoutClause(
-			actual,
-			0,
-			0,
-		)
-		v.visitCheckoutClause(actual)
-		v.processor_.PostprocessCheckoutClause(
-			actual,
-			0,
-			0,
-		)
 	case ast.SaveClauseLike:
 		v.processor_.PreprocessSaveClause(
 			actual,
@@ -2717,21 +2637,79 @@ func (v *visitor_) visitRepositoryAccess(
 			0,
 			0,
 		)
+	case ast.RetrieveClauseLike:
+		v.processor_.PreprocessRetrieveClause(
+			actual,
+			0,
+			0,
+		)
+		v.visitRetrieveClause(actual)
+		v.processor_.PostprocessRetrieveClause(
+			actual,
+			0,
+			0,
+		)
+	case ast.CheckoutClauseLike:
+		v.processor_.PreprocessCheckoutClause(
+			actual,
+			0,
+			0,
+		)
+		v.visitCheckoutClause(actual)
+		v.processor_.PostprocessCheckoutClause(
+			actual,
+			0,
+			0,
+		)
 	}
 }
 
-func (v *visitor_) visitResult(
-	result ast.ResultLike,
+func (v *visitor_) visitRetrieveClause(
+	retrieveClause ast.RetrieveClauseLike,
 ) {
-	var expression = result.GetExpression()
-	v.processor_.PreprocessExpression(
-		expression,
+	var delimiter1 = retrieveClause.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessRetrieveClauseSlot(
+		retrieveClause,
+		1,
+	)
+
+	var recipient = retrieveClause.GetRecipient()
+	v.processor_.PreprocessRecipient(
+		recipient,
 		0,
 		0,
 	)
-	v.visitExpression(expression)
-	v.processor_.PostprocessExpression(
-		expression,
+	v.visitRecipient(recipient)
+	v.processor_.PostprocessRecipient(
+		recipient,
+		0,
+		0,
+	)
+	// Visit slot 2 between terms.
+	v.processor_.ProcessRetrieveClauseSlot(
+		retrieveClause,
+		2,
+	)
+
+	var delimiter2 = retrieveClause.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
+	// Visit slot 3 between terms.
+	v.processor_.ProcessRetrieveClauseSlot(
+		retrieveClause,
+		3,
+	)
+
+	var location = retrieveClause.GetLocation()
+	v.processor_.PreprocessLocation(
+		location,
+		0,
+		0,
+	)
+	v.visitLocation(location)
+	v.processor_.PostprocessLocation(
+		location,
 		0,
 		0,
 	)
@@ -2748,15 +2726,15 @@ func (v *visitor_) visitReturnClause(
 		1,
 	)
 
-	var result = returnClause.GetResult()
-	v.processor_.PreprocessResult(
-		result,
+	var expression = returnClause.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
 		0,
 		0,
 	)
-	v.visitResult(result)
-	v.processor_.PostprocessResult(
-		result,
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
 		0,
 		0,
 	)
@@ -2812,15 +2790,15 @@ func (v *visitor_) visitSaveClause(
 		3,
 	)
 
-	var location = saveClause.GetLocation()
-	v.processor_.PreprocessLocation(
-		location,
+	var recipient = saveClause.GetRecipient()
+	v.processor_.PreprocessRecipient(
+		recipient,
 		0,
 		0,
 	)
-	v.visitLocation(location)
-	v.processor_.PostprocessLocation(
-		location,
+	v.visitRecipient(recipient)
+	v.processor_.PostprocessRecipient(
+		recipient,
 		0,
 		0,
 	)
@@ -2912,32 +2890,15 @@ func (v *visitor_) visitSendClause(
 		3,
 	)
 
-	var bag = sendClause.GetBag()
-	v.processor_.PreprocessBag(
-		bag,
+	var location = sendClause.GetLocation()
+	v.processor_.PreprocessLocation(
+		location,
 		0,
 		0,
 	)
-	v.visitBag(bag)
-	v.processor_.PostprocessBag(
-		bag,
-		0,
-		0,
-	)
-}
-
-func (v *visitor_) visitSequence(
-	sequence ast.SequenceLike,
-) {
-	var expression = sequence.GetExpression()
-	v.processor_.PreprocessExpression(
-		expression,
-		0,
-		0,
-	)
-	v.visitExpression(expression)
-	v.processor_.PostprocessExpression(
-		expression,
+	v.visitLocation(location)
+	v.processor_.PostprocessLocation(
+		location,
 		0,
 		0,
 	)
@@ -3180,23 +3141,6 @@ func (v *visitor_) visitSubject(
 	}
 }
 
-func (v *visitor_) visitTemplate(
-	template ast.TemplateLike,
-) {
-	var expression = template.GetExpression()
-	v.processor_.PreprocessExpression(
-		expression,
-		0,
-		0,
-	)
-	v.visitExpression(expression)
-	v.processor_.PostprocessExpression(
-		expression,
-		0,
-		0,
-	)
-}
-
 func (v *visitor_) visitThrowClause(
 	throwClause ast.ThrowClauseLike,
 ) {
@@ -3208,15 +3152,15 @@ func (v *visitor_) visitThrowClause(
 		1,
 	)
 
-	var exception = throwClause.GetException()
-	v.processor_.PreprocessException(
-		exception,
+	var expression = throwClause.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
 		0,
 		0,
 	)
-	v.visitException(exception)
-	v.processor_.PostprocessException(
-		exception,
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
 		0,
 		0,
 	)
@@ -3247,15 +3191,15 @@ func (v *visitor_) visitWhileClause(
 		1,
 	)
 
-	var condition = whileClause.GetCondition()
-	v.processor_.PreprocessCondition(
-		condition,
+	var expression = whileClause.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
 		0,
 		0,
 	)
-	v.visitCondition(condition)
-	v.processor_.PostprocessCondition(
-		condition,
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
 		0,
 		0,
 	)
@@ -3332,15 +3276,15 @@ func (v *visitor_) visitWithClause(
 		4,
 	)
 
-	var sequence = withClause.GetSequence()
-	v.processor_.PreprocessSequence(
-		sequence,
+	var expression = withClause.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
 		0,
 		0,
 	)
-	v.visitSequence(sequence)
-	v.processor_.PostprocessSequence(
-		sequence,
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
 		0,
 		0,
 	)

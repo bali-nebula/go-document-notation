@@ -37,18 +37,18 @@ func PublishClauseClass() PublishClauseClassLike {
 
 func (c *publishClauseClass_) PublishClause(
 	delimiter string,
-	event EventLike,
+	message MessageLike,
 ) PublishClauseLike {
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(event) {
-		panic("The \"event\" attribute is required by this class.")
+	if uti.IsUndefined(message) {
+		panic("The \"message\" attribute is required by this class.")
 	}
 	var instance = &publishClause_{
 		// Initialize the instance attributes.
 		delimiter_: delimiter,
-		event_:     event,
+		message_:   message,
 	}
 	return instance
 }
@@ -67,8 +67,8 @@ func (v *publishClause_) GetDelimiter() string {
 	return v.delimiter_
 }
 
-func (v *publishClause_) GetEvent() EventLike {
-	return v.event_
+func (v *publishClause_) GetMessage() MessageLike {
+	return v.message_
 }
 
 // PROTECTED INTERFACE
@@ -78,7 +78,7 @@ func (v *publishClause_) GetEvent() EventLike {
 type publishClause_ struct {
 	// Declare the instance attributes.
 	delimiter_ string
-	event_     EventLike
+	message_   MessageLike
 }
 
 // Class Structure

@@ -37,18 +37,18 @@ func ReturnClauseClass() ReturnClauseClassLike {
 
 func (c *returnClauseClass_) ReturnClause(
 	delimiter string,
-	result ResultLike,
+	expression ExpressionLike,
 ) ReturnClauseLike {
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(result) {
-		panic("The \"result\" attribute is required by this class.")
+	if uti.IsUndefined(expression) {
+		panic("The \"expression\" attribute is required by this class.")
 	}
 	var instance = &returnClause_{
 		// Initialize the instance attributes.
-		delimiter_: delimiter,
-		result_:    result,
+		delimiter_:  delimiter,
+		expression_: expression,
 	}
 	return instance
 }
@@ -67,8 +67,8 @@ func (v *returnClause_) GetDelimiter() string {
 	return v.delimiter_
 }
 
-func (v *returnClause_) GetResult() ResultLike {
-	return v.result_
+func (v *returnClause_) GetExpression() ExpressionLike {
+	return v.expression_
 }
 
 // PROTECTED INTERFACE
@@ -77,8 +77,8 @@ func (v *returnClause_) GetResult() ResultLike {
 
 type returnClause_ struct {
 	// Declare the instance attributes.
-	delimiter_ string
-	result_    ResultLike
+	delimiter_  string
+	expression_ ExpressionLike
 }
 
 // Class Structure

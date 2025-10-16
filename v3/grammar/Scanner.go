@@ -358,7 +358,7 @@ const (
 	comment_        = "(?:!>" + eol_ + "(" + any_ + "|" + eol_ + ")+?" + eol_ + "(?:" + space_ + ")*<!)"
 	day_            = "(?:([0-2][1-9])|(3[0-1]))"
 	days_           = "(?:(?:" + timespan_ + ")D)"
-	delimiter_      = "(?:xor|with|while|to|throw|send|select|save|san|return|reject|receive|publish|on|notarize|not|matching|matches|loop|level|let|is|ior|in|if|from|each|do|discard|continue|checkout|break|at|and|accept|\\}|\\||\\{|\\^|\\]|\\[|\\?=|\\.\\.|\\+=|\\+|\\*=|\\*|\\)|\\(|@|>|=|<~|<-|<|:=|:|/=|/|-=|-|&|%)"
+	delimiter_      = "(?:xor|with|while|to|throw|send|select|save|san|return|retrieve|reject|receive|publish|on|notarize|not|matching|matches|loop|level|let|is|ior|in|if|from|each|do|discard|continue|checkout|break|at|as|and|accept|\\}|\\||\\{|\\^|\\]|\\[|\\?=|\\.\\.|\\+=|\\+|\\*=|\\*|\\)|\\(|@|>|=|<~|<-|<|:=|:|/=|/|-=|-|&|%)"
 	duration_       = "(?:~P((?:" + weeks_ + ")|((?:" + years_ + ")?(?:" + months_ + ")?(?:" + days_ + ")?(T(?:" + hours_ + ")?(?:" + minutes_ + ")?(?:" + seconds_ + ")?)?)))"
 	escape_         = "(?:\\\\((?:" + unicode_ + ")|[abfnrtv\\\\]))"
 	exponent_       = "(?:E(?:" + sign_ + ")?(?:" + ordinal_ + "))"

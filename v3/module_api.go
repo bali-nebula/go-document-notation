@@ -50,7 +50,6 @@ type (
 	AssociationClassLike        = ast.AssociationClassLike
 	AtLevelClassLike            = ast.AtLevelClassLike
 	AttributesClassLike         = ast.AttributesClassLike
-	BagClassLike                = ast.BagClassLike
 	BreakClauseClassLike        = ast.BreakClauseClassLike
 	CheckoutClauseClassLike     = ast.CheckoutClauseClassLike
 	CollectionClassLike         = ast.CollectionClassLike
@@ -58,7 +57,6 @@ type (
 	ComplementClassLike         = ast.ComplementClassLike
 	ComponentClassLike          = ast.ComponentClassLike
 	CompositeClassLike          = ast.CompositeClassLike
-	ConditionClassLike          = ast.ConditionClassLike
 	ConstraintClassLike         = ast.ConstraintClassLike
 	ContinueClauseClassLike     = ast.ContinueClauseClassLike
 	DiscardClauseClassLike      = ast.DiscardClauseClassLike
@@ -67,8 +65,6 @@ type (
 	DraftClassLike              = ast.DraftClassLike
 	ElementClassLike            = ast.ElementClassLike
 	EntityClassLike             = ast.EntityClassLike
-	EventClassLike              = ast.EventClassLike
-	ExceptionClassLike          = ast.ExceptionClassLike
 	ExpressionClassLike         = ast.ExpressionClassLike
 	FailureClassLike            = ast.FailureClassLike
 	FlowControlClassLike        = ast.FlowControlClassLike
@@ -111,18 +107,16 @@ type (
 	ReferentClassLike           = ast.ReferentClassLike
 	RejectClauseClassLike       = ast.RejectClauseClassLike
 	RepositoryAccessClassLike   = ast.RepositoryAccessClassLike
-	ResultClassLike             = ast.ResultClassLike
+	RetrieveClauseClassLike     = ast.RetrieveClauseClassLike
 	ReturnClauseClassLike       = ast.ReturnClauseClassLike
 	RightClassLike              = ast.RightClassLike
 	SaveClauseClassLike         = ast.SaveClauseClassLike
 	SelectClauseClassLike       = ast.SelectClauseClassLike
 	SendClauseClassLike         = ast.SendClauseClassLike
-	SequenceClassLike           = ast.SequenceClassLike
 	StatementClassLike          = ast.StatementClassLike
 	StringClassLike             = ast.StringClassLike
 	SubcomponentClassLike       = ast.SubcomponentClassLike
 	SubjectClassLike            = ast.SubjectClassLike
-	TemplateClassLike           = ast.TemplateClassLike
 	ThrowClauseClassLike        = ast.ThrowClauseClassLike
 	ValueClassLike              = ast.ValueClassLike
 	VariableClassLike           = ast.VariableClassLike
@@ -140,7 +134,6 @@ type (
 	AssociationLike        = ast.AssociationLike
 	AtLevelLike            = ast.AtLevelLike
 	AttributesLike         = ast.AttributesLike
-	BagLike                = ast.BagLike
 	BreakClauseLike        = ast.BreakClauseLike
 	CheckoutClauseLike     = ast.CheckoutClauseLike
 	CollectionLike         = ast.CollectionLike
@@ -148,7 +141,6 @@ type (
 	ComplementLike         = ast.ComplementLike
 	ComponentLike          = ast.ComponentLike
 	CompositeLike          = ast.CompositeLike
-	ConditionLike          = ast.ConditionLike
 	ConstraintLike         = ast.ConstraintLike
 	ContinueClauseLike     = ast.ContinueClauseLike
 	DiscardClauseLike      = ast.DiscardClauseLike
@@ -157,8 +149,6 @@ type (
 	DraftLike              = ast.DraftLike
 	ElementLike            = ast.ElementLike
 	EntityLike             = ast.EntityLike
-	EventLike              = ast.EventLike
-	ExceptionLike          = ast.ExceptionLike
 	ExpressionLike         = ast.ExpressionLike
 	FailureLike            = ast.FailureLike
 	FlowControlLike        = ast.FlowControlLike
@@ -201,18 +191,16 @@ type (
 	ReferentLike           = ast.ReferentLike
 	RejectClauseLike       = ast.RejectClauseLike
 	RepositoryAccessLike   = ast.RepositoryAccessLike
-	ResultLike             = ast.ResultLike
+	RetrieveClauseLike     = ast.RetrieveClauseLike
 	ReturnClauseLike       = ast.ReturnClauseLike
 	RightLike              = ast.RightLike
 	SaveClauseLike         = ast.SaveClauseLike
 	SelectClauseLike       = ast.SelectClauseLike
 	SendClauseLike         = ast.SendClauseLike
-	SequenceLike           = ast.SequenceLike
 	StatementLike          = ast.StatementLike
 	StringLike             = ast.StringLike
 	SubcomponentLike       = ast.SubcomponentLike
 	SubjectLike            = ast.SubjectLike
-	TemplateLike           = ast.TemplateLike
 	ThrowClauseLike        = ast.ThrowClauseLike
 	ValueLike              = ast.ValueLike
 	VariableLike           = ast.VariableLike
@@ -404,18 +392,6 @@ func Attributes(
 	)
 }
 
-func BagClass() BagClassLike {
-	return ast.BagClass()
-}
-
-func Bag(
-	expression ast.ExpressionLike,
-) BagLike {
-	return BagClass().Bag(
-		expression,
-	)
-}
-
 func BreakClauseClass() BreakClauseClassLike {
 	return ast.BreakClauseClass()
 }
@@ -513,18 +489,6 @@ func Composite(
 	return CompositeClass().Composite(
 		component,
 		optionalNote,
-	)
-}
-
-func ConditionClass() ConditionClassLike {
-	return ast.ConditionClass()
-}
-
-func Condition(
-	expression ast.ExpressionLike,
-) ConditionLike {
-	return ConditionClass().Condition(
-		expression,
 	)
 }
 
@@ -634,30 +598,6 @@ func Entity(
 	)
 }
 
-func EventClass() EventClassLike {
-	return ast.EventClass()
-}
-
-func Event(
-	expression ast.ExpressionLike,
-) EventLike {
-	return EventClass().Event(
-		expression,
-	)
-}
-
-func ExceptionClass() ExceptionClassLike {
-	return ast.ExceptionClass()
-}
-
-func Exception(
-	expression ast.ExpressionLike,
-) ExceptionLike {
-	return ExceptionClass().Exception(
-		expression,
-	)
-}
-
 func ExpressionClass() ExpressionClassLike {
 	return ast.ExpressionClass()
 }
@@ -720,13 +660,13 @@ func IfClauseClass() IfClauseClassLike {
 
 func IfClause(
 	delimiter1 string,
-	condition ast.ConditionLike,
+	expression ast.ExpressionLike,
 	delimiter2 string,
 	procedure ast.ProcedureLike,
 ) IfClauseLike {
 	return IfClauseClass().IfClause(
 		delimiter1,
-		condition,
+		expression,
 		delimiter2,
 		procedure,
 	)
@@ -922,13 +862,13 @@ func MatchingClauseClass() MatchingClauseClassLike {
 
 func MatchingClause(
 	delimiter1 string,
-	template ast.TemplateLike,
+	expression ast.ExpressionLike,
 	delimiter2 string,
 	procedure ast.ProcedureLike,
 ) MatchingClauseLike {
 	return MatchingClauseClass().MatchingClause(
 		delimiter1,
-		template,
+		expression,
 		delimiter2,
 		procedure,
 	)
@@ -1146,11 +1086,11 @@ func PublishClauseClass() PublishClauseClassLike {
 
 func PublishClause(
 	delimiter string,
-	event ast.EventLike,
+	message ast.MessageLike,
 ) PublishClauseLike {
 	return PublishClauseClass().PublishClause(
 		delimiter,
-		event,
+		message,
 	)
 }
 
@@ -1182,13 +1122,13 @@ func ReceiveClause(
 	delimiter1 string,
 	recipient ast.RecipientLike,
 	delimiter2 string,
-	bag ast.BagLike,
+	location ast.LocationLike,
 ) ReceiveClauseLike {
 	return ReceiveClauseClass().ReceiveClause(
 		delimiter1,
 		recipient,
 		delimiter2,
-		bag,
+		location,
 	)
 }
 
@@ -1256,15 +1196,21 @@ func RepositoryAccess(
 	)
 }
 
-func ResultClass() ResultClassLike {
-	return ast.ResultClass()
+func RetrieveClauseClass() RetrieveClauseClassLike {
+	return ast.RetrieveClauseClass()
 }
 
-func Result(
-	expression ast.ExpressionLike,
-) ResultLike {
-	return ResultClass().Result(
-		expression,
+func RetrieveClause(
+	delimiter1 string,
+	recipient ast.RecipientLike,
+	delimiter2 string,
+	location ast.LocationLike,
+) RetrieveClauseLike {
+	return RetrieveClauseClass().RetrieveClause(
+		delimiter1,
+		recipient,
+		delimiter2,
+		location,
 	)
 }
 
@@ -1274,11 +1220,11 @@ func ReturnClauseClass() ReturnClauseClassLike {
 
 func ReturnClause(
 	delimiter string,
-	result ast.ResultLike,
+	expression ast.ExpressionLike,
 ) ReturnClauseLike {
 	return ReturnClauseClass().ReturnClause(
 		delimiter,
-		result,
+		expression,
 	)
 }
 
@@ -1302,13 +1248,13 @@ func SaveClause(
 	delimiter1 string,
 	draft ast.DraftLike,
 	delimiter2 string,
-	location ast.LocationLike,
+	recipient ast.RecipientLike,
 ) SaveClauseLike {
 	return SaveClauseClass().SaveClause(
 		delimiter1,
 		draft,
 		delimiter2,
-		location,
+		recipient,
 	)
 }
 
@@ -1336,25 +1282,13 @@ func SendClause(
 	delimiter1 string,
 	message ast.MessageLike,
 	delimiter2 string,
-	bag ast.BagLike,
+	location ast.LocationLike,
 ) SendClauseLike {
 	return SendClauseClass().SendClause(
 		delimiter1,
 		message,
 		delimiter2,
-		bag,
-	)
-}
-
-func SequenceClass() SequenceClassLike {
-	return ast.SequenceClass()
-}
-
-func Sequence(
-	expression ast.ExpressionLike,
-) SequenceLike {
-	return SequenceClass().Sequence(
-		expression,
+		location,
 	)
 }
 
@@ -1414,29 +1348,17 @@ func Subject(
 	)
 }
 
-func TemplateClass() TemplateClassLike {
-	return ast.TemplateClass()
-}
-
-func Template(
-	expression ast.ExpressionLike,
-) TemplateLike {
-	return TemplateClass().Template(
-		expression,
-	)
-}
-
 func ThrowClauseClass() ThrowClauseClassLike {
 	return ast.ThrowClauseClass()
 }
 
 func ThrowClause(
 	delimiter string,
-	exception ast.ExceptionLike,
+	expression ast.ExpressionLike,
 ) ThrowClauseLike {
 	return ThrowClauseClass().ThrowClause(
 		delimiter,
-		exception,
+		expression,
 	)
 }
 
@@ -1470,13 +1392,13 @@ func WhileClauseClass() WhileClauseClassLike {
 
 func WhileClause(
 	delimiter1 string,
-	condition ast.ConditionLike,
+	expression ast.ExpressionLike,
 	delimiter2 string,
 	procedure ast.ProcedureLike,
 ) WhileClauseLike {
 	return WhileClauseClass().WhileClause(
 		delimiter1,
-		condition,
+		expression,
 		delimiter2,
 		procedure,
 	)
@@ -1491,7 +1413,7 @@ func WithClause(
 	delimiter2 string,
 	variable ast.VariableLike,
 	delimiter3 string,
-	sequence ast.SequenceLike,
+	expression ast.ExpressionLike,
 	delimiter4 string,
 	procedure ast.ProcedureLike,
 ) WithClauseLike {
@@ -1500,7 +1422,7 @@ func WithClause(
 		delimiter2,
 		variable,
 		delimiter3,
-		sequence,
+		expression,
 		delimiter4,
 		procedure,
 	)

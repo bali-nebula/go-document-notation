@@ -39,7 +39,7 @@ func (c *receiveClauseClass_) ReceiveClause(
 	delimiter1 string,
 	recipient RecipientLike,
 	delimiter2 string,
-	bag BagLike,
+	location LocationLike,
 ) ReceiveClauseLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
@@ -50,15 +50,15 @@ func (c *receiveClauseClass_) ReceiveClause(
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(bag) {
-		panic("The \"bag\" attribute is required by this class.")
+	if uti.IsUndefined(location) {
+		panic("The \"location\" attribute is required by this class.")
 	}
 	var instance = &receiveClause_{
 		// Initialize the instance attributes.
 		delimiter1_: delimiter1,
 		recipient_:  recipient,
 		delimiter2_: delimiter2,
-		bag_:        bag,
+		location_:   location,
 	}
 	return instance
 }
@@ -85,8 +85,8 @@ func (v *receiveClause_) GetDelimiter2() string {
 	return v.delimiter2_
 }
 
-func (v *receiveClause_) GetBag() BagLike {
-	return v.bag_
+func (v *receiveClause_) GetLocation() LocationLike {
+	return v.location_
 }
 
 // PROTECTED INTERFACE
@@ -98,7 +98,7 @@ type receiveClause_ struct {
 	delimiter1_ string
 	recipient_  RecipientLike
 	delimiter2_ string
-	bag_        BagLike
+	location_   LocationLike
 }
 
 // Class Structure

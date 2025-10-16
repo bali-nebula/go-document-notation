@@ -37,15 +37,15 @@ func MatchingClauseClass() MatchingClauseClassLike {
 
 func (c *matchingClauseClass_) MatchingClause(
 	delimiter1 string,
-	template TemplateLike,
+	expression ExpressionLike,
 	delimiter2 string,
 	procedure ProcedureLike,
 ) MatchingClauseLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(template) {
-		panic("The \"template\" attribute is required by this class.")
+	if uti.IsUndefined(expression) {
+		panic("The \"expression\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
@@ -56,7 +56,7 @@ func (c *matchingClauseClass_) MatchingClause(
 	var instance = &matchingClause_{
 		// Initialize the instance attributes.
 		delimiter1_: delimiter1,
-		template_:   template,
+		expression_: expression,
 		delimiter2_: delimiter2,
 		procedure_:  procedure,
 	}
@@ -77,8 +77,8 @@ func (v *matchingClause_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *matchingClause_) GetTemplate() TemplateLike {
-	return v.template_
+func (v *matchingClause_) GetExpression() ExpressionLike {
+	return v.expression_
 }
 
 func (v *matchingClause_) GetDelimiter2() string {
@@ -96,7 +96,7 @@ func (v *matchingClause_) GetProcedure() ProcedureLike {
 type matchingClause_ struct {
 	// Declare the instance attributes.
 	delimiter1_ string
-	template_   TemplateLike
+	expression_ ExpressionLike
 	delimiter2_ string
 	procedure_  ProcedureLike
 }

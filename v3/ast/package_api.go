@@ -163,18 +163,6 @@ type AttributesClassLike interface {
 }
 
 /*
-BagClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete bag-like class.
-*/
-type BagClassLike interface {
-	// Constructor Methods
-	Bag(
-		expression ExpressionLike,
-	) BagLike
-}
-
-/*
 BreakClauseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete break-clause-like class.
@@ -264,18 +252,6 @@ type CompositeClassLike interface {
 		component ComponentLike,
 		optionalNote string,
 	) CompositeLike
-}
-
-/*
-ConditionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete condition-like class.
-*/
-type ConditionClassLike interface {
-	// Constructor Methods
-	Condition(
-		expression ExpressionLike,
-	) ConditionLike
 }
 
 /*
@@ -380,30 +356,6 @@ type EntityClassLike interface {
 }
 
 /*
-EventClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete event-like class.
-*/
-type EventClassLike interface {
-	// Constructor Methods
-	Event(
-		expression ExpressionLike,
-	) EventLike
-}
-
-/*
-ExceptionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete exception-like class.
-*/
-type ExceptionClassLike interface {
-	// Constructor Methods
-	Exception(
-		expression ExpressionLike,
-	) ExceptionLike
-}
-
-/*
 ExpressionClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete expression-like class.
@@ -464,7 +416,7 @@ type IfClauseClassLike interface {
 	// Constructor Methods
 	IfClause(
 		delimiter1 string,
-		condition ConditionLike,
+		expression ExpressionLike,
 		delimiter2 string,
 		procedure ProcedureLike,
 	) IfClauseLike
@@ -655,7 +607,7 @@ type MatchingClauseClassLike interface {
 	// Constructor Methods
 	MatchingClause(
 		delimiter1 string,
-		template TemplateLike,
+		expression ExpressionLike,
 		delimiter2 string,
 		procedure ProcedureLike,
 	) MatchingClauseLike
@@ -857,7 +809,7 @@ type PublishClauseClassLike interface {
 	// Constructor Methods
 	PublishClause(
 		delimiter string,
-		event EventLike,
+		message MessageLike,
 	) PublishClauseLike
 }
 
@@ -888,7 +840,7 @@ type ReceiveClauseClassLike interface {
 		delimiter1 string,
 		recipient RecipientLike,
 		delimiter2 string,
-		bag BagLike,
+		location LocationLike,
 	) ReceiveClauseLike
 }
 
@@ -955,15 +907,18 @@ type RepositoryAccessClassLike interface {
 }
 
 /*
-ResultClassLike is a class interface that declares the
+RetrieveClauseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete result-like class.
+supported by each concrete retrieve-clause-like class.
 */
-type ResultClassLike interface {
+type RetrieveClauseClassLike interface {
 	// Constructor Methods
-	Result(
-		expression ExpressionLike,
-	) ResultLike
+	RetrieveClause(
+		delimiter1 string,
+		recipient RecipientLike,
+		delimiter2 string,
+		location LocationLike,
+	) RetrieveClauseLike
 }
 
 /*
@@ -975,7 +930,7 @@ type ReturnClauseClassLike interface {
 	// Constructor Methods
 	ReturnClause(
 		delimiter string,
-		result ResultLike,
+		expression ExpressionLike,
 	) ReturnClauseLike
 }
 
@@ -1002,7 +957,7 @@ type SaveClauseClassLike interface {
 		delimiter1 string,
 		draft DraftLike,
 		delimiter2 string,
-		location LocationLike,
+		recipient RecipientLike,
 	) SaveClauseLike
 }
 
@@ -1031,20 +986,8 @@ type SendClauseClassLike interface {
 		delimiter1 string,
 		message MessageLike,
 		delimiter2 string,
-		bag BagLike,
+		location LocationLike,
 	) SendClauseLike
-}
-
-/*
-SequenceClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete sequence-like class.
-*/
-type SequenceClassLike interface {
-	// Constructor Methods
-	Sequence(
-		expression ExpressionLike,
-	) SequenceLike
 }
 
 /*
@@ -1100,18 +1043,6 @@ type SubjectClassLike interface {
 }
 
 /*
-TemplateClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete template-like class.
-*/
-type TemplateClassLike interface {
-	// Constructor Methods
-	Template(
-		expression ExpressionLike,
-	) TemplateLike
-}
-
-/*
 ThrowClauseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete throw-clause-like class.
@@ -1120,7 +1051,7 @@ type ThrowClauseClassLike interface {
 	// Constructor Methods
 	ThrowClause(
 		delimiter string,
-		exception ExceptionLike,
+		expression ExpressionLike,
 	) ThrowClauseLike
 }
 
@@ -1157,7 +1088,7 @@ type WhileClauseClassLike interface {
 	// Constructor Methods
 	WhileClause(
 		delimiter1 string,
-		condition ConditionLike,
+		expression ExpressionLike,
 		delimiter2 string,
 		procedure ProcedureLike,
 	) WhileClauseLike
@@ -1175,7 +1106,7 @@ type WithClauseClassLike interface {
 		delimiter2 string,
 		variable VariableLike,
 		delimiter3 string,
-		sequence SequenceLike,
+		expression ExpressionLike,
 		delimiter4 string,
 		procedure ProcedureLike,
 	) WithClauseLike
@@ -1308,19 +1239,6 @@ type AttributesLike interface {
 }
 
 /*
-BagLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete bag-like class.
-*/
-type BagLike interface {
-	// Principal Methods
-	GetClass() BagClassLike
-
-	// Attribute Methods
-	GetExpression() ExpressionLike
-}
-
-/*
 BreakClauseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete break-clause-like class.
@@ -1417,19 +1335,6 @@ type CompositeLike interface {
 	// Attribute Methods
 	GetComponent() ComponentLike
 	GetOptionalNote() string
-}
-
-/*
-ConditionLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete condition-like class.
-*/
-type ConditionLike interface {
-	// Principal Methods
-	GetClass() ConditionClassLike
-
-	// Attribute Methods
-	GetExpression() ExpressionLike
 }
 
 /*
@@ -1542,32 +1447,6 @@ type EntityLike interface {
 }
 
 /*
-EventLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete event-like class.
-*/
-type EventLike interface {
-	// Principal Methods
-	GetClass() EventClassLike
-
-	// Attribute Methods
-	GetExpression() ExpressionLike
-}
-
-/*
-ExceptionLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete exception-like class.
-*/
-type ExceptionLike interface {
-	// Principal Methods
-	GetClass() ExceptionClassLike
-
-	// Attribute Methods
-	GetExpression() ExpressionLike
-}
-
-/*
 ExpressionLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete expression-like class.
@@ -1634,7 +1513,7 @@ type IfClauseLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetCondition() ConditionLike
+	GetExpression() ExpressionLike
 	GetDelimiter2() string
 	GetProcedure() ProcedureLike
 }
@@ -1840,7 +1719,7 @@ type MatchingClauseLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetTemplate() TemplateLike
+	GetExpression() ExpressionLike
 	GetDelimiter2() string
 	GetProcedure() ProcedureLike
 }
@@ -2057,7 +1936,7 @@ type PublishClauseLike interface {
 
 	// Attribute Methods
 	GetDelimiter() string
-	GetEvent() EventLike
+	GetMessage() MessageLike
 }
 
 /*
@@ -2090,7 +1969,7 @@ type ReceiveClauseLike interface {
 	GetDelimiter1() string
 	GetRecipient() RecipientLike
 	GetDelimiter2() string
-	GetBag() BagLike
+	GetLocation() LocationLike
 }
 
 /*
@@ -2161,16 +2040,19 @@ type RepositoryAccessLike interface {
 }
 
 /*
-ResultLike is an instance interface that declares the
+RetrieveClauseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete result-like class.
+by each instance of a concrete retrieve-clause-like class.
 */
-type ResultLike interface {
+type RetrieveClauseLike interface {
 	// Principal Methods
-	GetClass() ResultClassLike
+	GetClass() RetrieveClauseClassLike
 
 	// Attribute Methods
-	GetExpression() ExpressionLike
+	GetDelimiter1() string
+	GetRecipient() RecipientLike
+	GetDelimiter2() string
+	GetLocation() LocationLike
 }
 
 /*
@@ -2184,7 +2066,7 @@ type ReturnClauseLike interface {
 
 	// Attribute Methods
 	GetDelimiter() string
-	GetResult() ResultLike
+	GetExpression() ExpressionLike
 }
 
 /*
@@ -2213,7 +2095,7 @@ type SaveClauseLike interface {
 	GetDelimiter1() string
 	GetDraft() DraftLike
 	GetDelimiter2() string
-	GetLocation() LocationLike
+	GetRecipient() RecipientLike
 }
 
 /*
@@ -2244,20 +2126,7 @@ type SendClauseLike interface {
 	GetDelimiter1() string
 	GetMessage() MessageLike
 	GetDelimiter2() string
-	GetBag() BagLike
-}
-
-/*
-SequenceLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete sequence-like class.
-*/
-type SequenceLike interface {
-	// Principal Methods
-	GetClass() SequenceClassLike
-
-	// Attribute Methods
-	GetExpression() ExpressionLike
+	GetLocation() LocationLike
 }
 
 /*
@@ -2317,19 +2186,6 @@ type SubjectLike interface {
 }
 
 /*
-TemplateLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete template-like class.
-*/
-type TemplateLike interface {
-	// Principal Methods
-	GetClass() TemplateClassLike
-
-	// Attribute Methods
-	GetExpression() ExpressionLike
-}
-
-/*
 ThrowClauseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete throw-clause-like class.
@@ -2340,7 +2196,7 @@ type ThrowClauseLike interface {
 
 	// Attribute Methods
 	GetDelimiter() string
-	GetException() ExceptionLike
+	GetExpression() ExpressionLike
 }
 
 /*
@@ -2380,7 +2236,7 @@ type WhileClauseLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetCondition() ConditionLike
+	GetExpression() ExpressionLike
 	GetDelimiter2() string
 	GetProcedure() ProcedureLike
 }
@@ -2399,7 +2255,7 @@ type WithClauseLike interface {
 	GetDelimiter2() string
 	GetVariable() VariableLike
 	GetDelimiter3() string
-	GetSequence() SequenceLike
+	GetExpression() ExpressionLike
 	GetDelimiter4() string
 	GetProcedure() ProcedureLike
 }

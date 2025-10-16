@@ -29,21 +29,36 @@ import (
 
 // Access Function
 
-func SequenceClass() SequenceClassLike {
-	return sequenceClass()
+func RetrieveClauseClass() RetrieveClauseClassLike {
+	return retrieveClauseClass()
 }
 
 // Constructor Methods
 
-func (c *sequenceClass_) Sequence(
-	expression ExpressionLike,
-) SequenceLike {
-	if uti.IsUndefined(expression) {
-		panic("The \"expression\" attribute is required by this class.")
+func (c *retrieveClauseClass_) RetrieveClause(
+	delimiter1 string,
+	recipient RecipientLike,
+	delimiter2 string,
+	location LocationLike,
+) RetrieveClauseLike {
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	var instance = &sequence_{
+	if uti.IsUndefined(recipient) {
+		panic("The \"recipient\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(location) {
+		panic("The \"location\" attribute is required by this class.")
+	}
+	var instance = &retrieveClause_{
 		// Initialize the instance attributes.
-		expression_: expression,
+		delimiter1_: delimiter1,
+		recipient_:  recipient,
+		delimiter2_: delimiter2,
+		location_:   location,
 	}
 	return instance
 }
@@ -52,37 +67,52 @@ func (c *sequenceClass_) Sequence(
 
 // Principal Methods
 
-func (v *sequence_) GetClass() SequenceClassLike {
-	return sequenceClass()
+func (v *retrieveClause_) GetClass() RetrieveClauseClassLike {
+	return retrieveClauseClass()
 }
 
 // Attribute Methods
 
-func (v *sequence_) GetExpression() ExpressionLike {
-	return v.expression_
+func (v *retrieveClause_) GetDelimiter1() string {
+	return v.delimiter1_
+}
+
+func (v *retrieveClause_) GetRecipient() RecipientLike {
+	return v.recipient_
+}
+
+func (v *retrieveClause_) GetDelimiter2() string {
+	return v.delimiter2_
+}
+
+func (v *retrieveClause_) GetLocation() LocationLike {
+	return v.location_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type sequence_ struct {
+type retrieveClause_ struct {
 	// Declare the instance attributes.
-	expression_ ExpressionLike
+	delimiter1_ string
+	recipient_  RecipientLike
+	delimiter2_ string
+	location_   LocationLike
 }
 
 // Class Structure
 
-type sequenceClass_ struct {
+type retrieveClauseClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func sequenceClass() *sequenceClass_ {
-	return sequenceClassReference_
+func retrieveClauseClass() *retrieveClauseClass_ {
+	return retrieveClauseClassReference_
 }
 
-var sequenceClassReference_ = &sequenceClass_{
+var retrieveClauseClassReference_ = &retrieveClauseClass_{
 	// Initialize the class constants.
 }

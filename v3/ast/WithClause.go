@@ -40,7 +40,7 @@ func (c *withClauseClass_) WithClause(
 	delimiter2 string,
 	variable VariableLike,
 	delimiter3 string,
-	sequence SequenceLike,
+	expression ExpressionLike,
 	delimiter4 string,
 	procedure ProcedureLike,
 ) WithClauseLike {
@@ -56,8 +56,8 @@ func (c *withClauseClass_) WithClause(
 	if uti.IsUndefined(delimiter3) {
 		panic("The \"delimiter3\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(sequence) {
-		panic("The \"sequence\" attribute is required by this class.")
+	if uti.IsUndefined(expression) {
+		panic("The \"expression\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(delimiter4) {
 		panic("The \"delimiter4\" attribute is required by this class.")
@@ -71,7 +71,7 @@ func (c *withClauseClass_) WithClause(
 		delimiter2_: delimiter2,
 		variable_:   variable,
 		delimiter3_: delimiter3,
-		sequence_:   sequence,
+		expression_: expression,
 		delimiter4_: delimiter4,
 		procedure_:  procedure,
 	}
@@ -104,8 +104,8 @@ func (v *withClause_) GetDelimiter3() string {
 	return v.delimiter3_
 }
 
-func (v *withClause_) GetSequence() SequenceLike {
-	return v.sequence_
+func (v *withClause_) GetExpression() ExpressionLike {
+	return v.expression_
 }
 
 func (v *withClause_) GetDelimiter4() string {
@@ -126,7 +126,7 @@ type withClause_ struct {
 	delimiter2_ string
 	variable_   VariableLike
 	delimiter3_ string
-	sequence_   SequenceLike
+	expression_ ExpressionLike
 	delimiter4_ string
 	procedure_  ProcedureLike
 }

@@ -106,17 +106,15 @@ $Statement: MainClause OnClause?
 
 $MainClause:
     FlowControl
-    ActionInduction
     MessageHandling
     RepositoryAccess
+    ActionInduction
 
 $OnClause: "on" Failure MatchingClause+
 
 $Failure: symbol
 
-$MatchingClause: "matching" Template "do" Procedure
-
-$Template: Expression
+$MatchingClause: "matching" Expression "do" Procedure
 
 $FlowControl:
     IfClause
@@ -128,10 +126,6 @@ $FlowControl:
     ReturnClause
     ThrowClause
 
-$ActionInduction:
-    DoClause
-    LetClause
-
 $MessageHandling:
     SendClause
     ReceiveClause
@@ -140,60 +134,69 @@ $MessageHandling:
     PublishClause
 
 $RepositoryAccess:
-    CheckoutClause
     SaveClause
     DiscardClause
     NotarizeClause
+    RetrieveClause
+    CheckoutClause
 
-$IfClause: "if" Condition "do" Procedure
+$ActionInduction:
+    DoClause
+    LetClause
 
-$Condition: Expression
+$IfClause: "if" Expression "do" Procedure
 
 $SelectClause: "select" Expression MatchingClause+
 
-$Function: identifier "(" Argument* ")"
+$WhileClause: "while" Expression "do" Procedure
 
-$Method: identifier Invoke identifier "(" Argument* ")"
-
-$Invoke:
-    "<-"  ! The method is invoked synchronously.
-    "<~"  ! The method is invoked asynchronously.
-
-$Argument:
-    Value
-    Primitive
-
-$Value: identifier
-
-$Subcomponent: identifier "[" Index+ "]"
-
-$Index:
-    Value
-    Primitive
-
-$WhileClause: "while" Condition "do" Procedure
-
-$WithClause: "with" "each" Variable "in" Sequence "do" Procedure
+$WithClause: "with" "each" Variable "in" Expression "do" Procedure
 
 $Variable: symbol
-
-$Sequence: Expression
 
 $ContinueClause: "continue" "loop"
 
 $BreakClause: "break" "loop"
 
-$ReturnClause: "return" Result
+$ReturnClause: "return" Expression
 
-$Result: Expression
+$ThrowClause: "throw" Expression
 
-$ThrowClause: "throw" Exception
+$SendClause: "send" Message "to" Location
 
-$Exception: Expression
+$ReceiveClause: "receive" Recipient "from" Location  ! Returns a message.
+
+$AcceptClause: "accept" Message
+
+$RejectClause: "reject" Message
+
+$PublishClause: "publish" Message
+
+$Location: Expression  ! A location a global name or a citation.
+
+$Message: Expression
+
+$SaveClause: "save" Draft "as" Recipient  ! The recipient receives a citation.
+
+$RetrieveClause: "retrieve" Recipient "from" Location
+
+$DiscardClause: "discard" Location
+
+$NotarizeClause: "notarize" Draft "as" Location  ! The draft becomes a document.
+
+$CheckoutClause: "checkout" Recipient AtLevel? "from" Location  ! Returns a draft.
+
+$Draft: Expression
+
+$AtLevel: "at" "level" Expression
 
 $DoClause: "do" Method
 
 $LetClause: "let" Recipient Assignment Expression
+
+$Recipient:
+    Variable
+    Subcomponent
 
 $Assignment:
     ":="
@@ -202,40 +205,6 @@ $Assignment:
     "-="
     "*="
     "/="
-
-$Recipient:
-    Variable
-    Subcomponent
-
-$SendClause: "send" Message "to" Bag
-
-$Message: Expression
-
-$Bag: Expression
-
-$ReceiveClause: "receive" Recipient "from" Bag
-
-$AcceptClause: "accept" Message
-
-$RejectClause: "reject" Message
-
-$PublishClause: "publish" Event
-
-$Event: Expression
-
-$CheckoutClause: "checkout" Recipient AtLevel? "from" Location
-
-$AtLevel: "at" "level" Expression
-
-$Location: Expression
-
-$SaveClause: "save" Draft "to" Location
-
-$Draft: Expression
-
-$DiscardClause: "discard" Location
-
-$NotarizeClause: "notarize" Draft "at" Location
 
 $Expression: Subject Predicate*
 
@@ -251,37 +220,11 @@ $Subject:
     Method
     Value  ! This must be last since others also begin with an identifier.
 
-$Predicate: Operator Expression
+$Subcomponent: identifier "[" Index+ "]"
 
-$Operator:
-    LexicalOperator
-    LogicalOperator
-    ArithmeticOperator
-    ComparisonOperator
-
-$LexicalOperator:
-    "&"
-
-$LogicalOperator:
-    "and"
-    "san"
-    "ior"
-    "xor"
-
-$ArithmeticOperator:
-    "+"
-    "-"
-    "*"
-    "/"
-    "%"
-    "^"
-
-$ComparisonOperator:
-    "<"
-    "="
-    ">"
-    "is"
-    "matches"
+$Index:
+    Value
+    Primitive
 
 $Precedence: "(" Expression ")"
 
@@ -326,6 +269,52 @@ $Numerical:
     Value  ! This must be last since others also begin with an identifier.
 
 $Magnitude: "|" Expression "|"
+
+$Function: identifier "(" Argument* ")"
+
+$Method: identifier Invoke identifier "(" Argument* ")"
+
+$Invoke:
+    "<-"  ! The method is invoked synchronously.
+    "<~"  ! The method is invoked asynchronously.
+
+$Argument:
+    Value
+    Primitive
+
+$Value: identifier
+
+$Predicate: Operator Expression
+
+$Operator:
+    LexicalOperator
+    LogicalOperator
+    ArithmeticOperator
+    ComparisonOperator
+
+$LexicalOperator:
+    "&"
+
+$LogicalOperator:
+    "and"
+    "san"
+    "ior"
+    "xor"
+
+$ArithmeticOperator:
+    "+"
+    "-"
+    "*"
+    "/"
+    "%"
+    "^"
+
+$ComparisonOperator:
+    "<"
+    "="
+    ">"
+    "is"
+    "matches"
 
 !>
 ┌──────────────────────────────────────────────────────────────────────────────┐
@@ -372,7 +361,7 @@ $version: 'v' ORDINAL ('.' ORDINAL)*
 
 $number: POLAR | RECTANGULAR | IMAGINARY | REAL  ! Must be after other numerics.
 
-$identifier: LETTER (LETTER | DIGIT | '-')*  ! Must be last alphanumeric expression.
+$identifier: LETTER (LETTER | DIGIT | '-')*  ! Must be after other alphanumerics.
 
 !>
 ┌──────────────────────────────────────────────────────────────────────────────┐

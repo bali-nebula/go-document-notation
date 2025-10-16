@@ -552,37 +552,6 @@ associationsLoop:
 	return
 }
 
-func (v *parser_) parseBag() (
-	bag ast.BagLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single Expression rule.
-	var expression ast.ExpressionLike
-	expression, token, ok = v.parseExpression()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Expression rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Bag", token)
-		panic(message)
-	}
-
-	// Found a single Bag rule.
-	ok = true
-	v.remove(tokens)
-	bag = ast.BagClass().Bag(expression)
-	return
-}
-
 func (v *parser_) parseBreakClause() (
 	breakClause ast.BreakClauseLike,
 	token TokenLike,
@@ -948,37 +917,6 @@ func (v *parser_) parseComposite() (
 		component,
 		optionalNote,
 	)
-	return
-}
-
-func (v *parser_) parseCondition() (
-	condition ast.ConditionLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single Expression rule.
-	var expression ast.ExpressionLike
-	expression, token, ok = v.parseExpression()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Expression rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Condition", token)
-		panic(message)
-	}
-
-	// Found a single Condition rule.
-	ok = true
-	v.remove(tokens)
-	condition = ast.ConditionClass().Condition(expression)
 	return
 }
 
@@ -1409,68 +1347,6 @@ func (v *parser_) parseEntity() (
 	return
 }
 
-func (v *parser_) parseEvent() (
-	event ast.EventLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single Expression rule.
-	var expression ast.ExpressionLike
-	expression, token, ok = v.parseExpression()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Expression rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Event", token)
-		panic(message)
-	}
-
-	// Found a single Event rule.
-	ok = true
-	v.remove(tokens)
-	event = ast.EventClass().Event(expression)
-	return
-}
-
-func (v *parser_) parseException() (
-	exception ast.ExceptionLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single Expression rule.
-	var expression ast.ExpressionLike
-	expression, token, ok = v.parseExpression()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Expression rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Exception", token)
-		panic(message)
-	}
-
-	// Found a single Exception rule.
-	ok = true
-	v.remove(tokens)
-	exception = ast.ExceptionClass().Exception(expression)
-	return
-}
-
 func (v *parser_) parseExpression() (
 	expression ast.ExpressionLike,
 	token TokenLike,
@@ -1768,15 +1644,15 @@ func (v *parser_) parseIfClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Condition rule.
-	var condition ast.ConditionLike
-	condition, token, ok = v.parseCondition()
+	// Attempt to parse a single Expression rule.
+	var expression ast.ExpressionLike
+	expression, token, ok = v.parseExpression()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Condition rule.
+		// This is not a single Expression rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -1825,7 +1701,7 @@ func (v *parser_) parseIfClause() (
 	v.remove(tokens)
 	ifClause = ast.IfClauseClass().IfClause(
 		delimiter1,
-		condition,
+		expression,
 		delimiter2,
 		procedure,
 	)
@@ -2457,15 +2333,6 @@ func (v *parser_) parseMainClause() (
 		return
 	}
 
-	// Attempt to parse a single ActionInduction MainClause.
-	var actionInduction ast.ActionInductionLike
-	actionInduction, token, ok = v.parseActionInduction()
-	if ok {
-		// Found a single ActionInduction MainClause.
-		mainClause = ast.MainClauseClass().MainClause(actionInduction)
-		return
-	}
-
 	// Attempt to parse a single MessageHandling MainClause.
 	var messageHandling ast.MessageHandlingLike
 	messageHandling, token, ok = v.parseMessageHandling()
@@ -2481,6 +2348,15 @@ func (v *parser_) parseMainClause() (
 	if ok {
 		// Found a single RepositoryAccess MainClause.
 		mainClause = ast.MainClauseClass().MainClause(repositoryAccess)
+		return
+	}
+
+	// Attempt to parse a single ActionInduction MainClause.
+	var actionInduction ast.ActionInductionLike
+	actionInduction, token, ok = v.parseActionInduction()
+	if ok {
+		// Found a single ActionInduction MainClause.
+		mainClause = ast.MainClauseClass().MainClause(actionInduction)
 		return
 	}
 
@@ -2513,15 +2389,15 @@ func (v *parser_) parseMatchingClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Template rule.
-	var template ast.TemplateLike
-	template, token, ok = v.parseTemplate()
+	// Attempt to parse a single Expression rule.
+	var expression ast.ExpressionLike
+	expression, token, ok = v.parseExpression()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Template rule.
+		// This is not a single Expression rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -2570,7 +2446,7 @@ func (v *parser_) parseMatchingClause() (
 	v.remove(tokens)
 	matchingClause = ast.MatchingClauseClass().MatchingClause(
 		delimiter1,
-		template,
+		expression,
 		delimiter2,
 		procedure,
 	)
@@ -2878,9 +2754,9 @@ func (v *parser_) parseNotarizeClause() (
 		panic(message)
 	}
 
-	// Attempt to parse a single "at" literal.
+	// Attempt to parse a single "as" literal.
 	var delimiter2 string
-	delimiter2, token, ok = v.parseDelimiter("at")
+	delimiter2, token, ok = v.parseDelimiter("as")
 	if !ok {
 		if uti.IsDefined(tokens) {
 			// This is not a single NotarizeClause rule.
@@ -3546,15 +3422,15 @@ func (v *parser_) parsePublishClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Event rule.
-	var event ast.EventLike
-	event, token, ok = v.parseEvent()
+	// Attempt to parse a single Message rule.
+	var message ast.MessageLike
+	message, token, ok = v.parseMessage()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Event rule.
+		// This is not a single Message rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -3568,7 +3444,7 @@ func (v *parser_) parsePublishClause() (
 	v.remove(tokens)
 	publishClause = ast.PublishClauseClass().PublishClause(
 		delimiter,
-		event,
+		message,
 	)
 	return
 }
@@ -3747,15 +3623,15 @@ func (v *parser_) parseReceiveClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Bag rule.
-	var bag ast.BagLike
-	bag, token, ok = v.parseBag()
+	// Attempt to parse a single Location rule.
+	var location ast.LocationLike
+	location, token, ok = v.parseLocation()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Bag rule.
+		// This is not a single Location rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -3771,7 +3647,7 @@ func (v *parser_) parseReceiveClause() (
 		delimiter1,
 		recipient,
 		delimiter2,
-		bag,
+		location,
 	)
 	return
 }
@@ -3975,15 +3851,6 @@ func (v *parser_) parseRepositoryAccess() (
 	token TokenLike,
 	ok bool,
 ) {
-	// Attempt to parse a single CheckoutClause RepositoryAccess.
-	var checkoutClause ast.CheckoutClauseLike
-	checkoutClause, token, ok = v.parseCheckoutClause()
-	if ok {
-		// Found a single CheckoutClause RepositoryAccess.
-		repositoryAccess = ast.RepositoryAccessClass().RepositoryAccess(checkoutClause)
-		return
-	}
-
 	// Attempt to parse a single SaveClause RepositoryAccess.
 	var saveClause ast.SaveClauseLike
 	saveClause, token, ok = v.parseSaveClause()
@@ -4011,38 +3878,114 @@ func (v *parser_) parseRepositoryAccess() (
 		return
 	}
 
+	// Attempt to parse a single RetrieveClause RepositoryAccess.
+	var retrieveClause ast.RetrieveClauseLike
+	retrieveClause, token, ok = v.parseRetrieveClause()
+	if ok {
+		// Found a single RetrieveClause RepositoryAccess.
+		repositoryAccess = ast.RepositoryAccessClass().RepositoryAccess(retrieveClause)
+		return
+	}
+
+	// Attempt to parse a single CheckoutClause RepositoryAccess.
+	var checkoutClause ast.CheckoutClauseLike
+	checkoutClause, token, ok = v.parseCheckoutClause()
+	if ok {
+		// Found a single CheckoutClause RepositoryAccess.
+		repositoryAccess = ast.RepositoryAccessClass().RepositoryAccess(checkoutClause)
+		return
+	}
+
 	// This is not a single RepositoryAccess rule.
 	return
 }
 
-func (v *parser_) parseResult() (
-	result ast.ResultLike,
+func (v *parser_) parseRetrieveClause() (
+	retrieveClause ast.RetrieveClauseLike,
 	token TokenLike,
 	ok bool,
 ) {
 	var tokens = fra.List[TokenLike]()
 
-	// Attempt to parse a single Expression rule.
-	var expression ast.ExpressionLike
-	expression, token, ok = v.parseExpression()
+	// Attempt to parse a single "retrieve" literal.
+	var delimiter1 string
+	delimiter1, token, ok = v.parseDelimiter("retrieve")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single RetrieveClause rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$RetrieveClause", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single Recipient rule.
+	var recipient ast.RecipientLike
+	recipient, token, ok = v.parseRecipient()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Expression rule.
+		// This is not a single Recipient rule.
 		v.putBack(tokens)
 		return
 	default:
 		// Found a syntax error.
-		var message = v.formatError("$Result", token)
+		var message = v.formatError("$RetrieveClause", token)
 		panic(message)
 	}
 
-	// Found a single Result rule.
+	// Attempt to parse a single "from" literal.
+	var delimiter2 string
+	delimiter2, token, ok = v.parseDelimiter("from")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single RetrieveClause rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$RetrieveClause", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single Location rule.
+	var location ast.LocationLike
+	location, token, ok = v.parseLocation()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single Location rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$RetrieveClause", token)
+		panic(message)
+	}
+
+	// Found a single RetrieveClause rule.
 	ok = true
 	v.remove(tokens)
-	result = ast.ResultClass().Result(expression)
+	retrieveClause = ast.RetrieveClauseClass().RetrieveClause(
+		delimiter1,
+		recipient,
+		delimiter2,
+		location,
+	)
 	return
 }
 
@@ -4071,15 +4014,15 @@ func (v *parser_) parseReturnClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Result rule.
-	var result ast.ResultLike
-	result, token, ok = v.parseResult()
+	// Attempt to parse a single Expression rule.
+	var expression ast.ExpressionLike
+	expression, token, ok = v.parseExpression()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Result rule.
+		// This is not a single Expression rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -4093,7 +4036,7 @@ func (v *parser_) parseReturnClause() (
 	v.remove(tokens)
 	returnClause = ast.ReturnClauseClass().ReturnClause(
 		delimiter,
-		result,
+		expression,
 	)
 	return
 }
@@ -4167,9 +4110,9 @@ func (v *parser_) parseSaveClause() (
 		panic(message)
 	}
 
-	// Attempt to parse a single "to" literal.
+	// Attempt to parse a single "as" literal.
 	var delimiter2 string
-	delimiter2, token, ok = v.parseDelimiter("to")
+	delimiter2, token, ok = v.parseDelimiter("as")
 	if !ok {
 		if uti.IsDefined(tokens) {
 			// This is not a single SaveClause rule.
@@ -4185,15 +4128,15 @@ func (v *parser_) parseSaveClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Location rule.
-	var location ast.LocationLike
-	location, token, ok = v.parseLocation()
+	// Attempt to parse a single Recipient rule.
+	var recipient ast.RecipientLike
+	recipient, token, ok = v.parseRecipient()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Location rule.
+		// This is not a single Recipient rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -4209,7 +4152,7 @@ func (v *parser_) parseSaveClause() (
 		delimiter1,
 		draft,
 		delimiter2,
-		location,
+		recipient,
 	)
 	return
 }
@@ -4353,15 +4296,15 @@ func (v *parser_) parseSendClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Bag rule.
-	var bag ast.BagLike
-	bag, token, ok = v.parseBag()
+	// Attempt to parse a single Location rule.
+	var location ast.LocationLike
+	location, token, ok = v.parseLocation()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Bag rule.
+		// This is not a single Location rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -4377,39 +4320,8 @@ func (v *parser_) parseSendClause() (
 		delimiter1,
 		message,
 		delimiter2,
-		bag,
+		location,
 	)
-	return
-}
-
-func (v *parser_) parseSequence() (
-	sequence ast.SequenceLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single Expression rule.
-	var expression ast.ExpressionLike
-	expression, token, ok = v.parseExpression()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Expression rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Sequence", token)
-		panic(message)
-	}
-
-	// Found a single Sequence rule.
-	ok = true
-	v.remove(tokens)
-	sequence = ast.SequenceClass().Sequence(expression)
 	return
 }
 
@@ -4734,37 +4646,6 @@ func (v *parser_) parseSubject() (
 	return
 }
 
-func (v *parser_) parseTemplate() (
-	template ast.TemplateLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single Expression rule.
-	var expression ast.ExpressionLike
-	expression, token, ok = v.parseExpression()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Expression rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Template", token)
-		panic(message)
-	}
-
-	// Found a single Template rule.
-	ok = true
-	v.remove(tokens)
-	template = ast.TemplateClass().Template(expression)
-	return
-}
-
 func (v *parser_) parseThrowClause() (
 	throwClause ast.ThrowClauseLike,
 	token TokenLike,
@@ -4790,15 +4671,15 @@ func (v *parser_) parseThrowClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Exception rule.
-	var exception ast.ExceptionLike
-	exception, token, ok = v.parseException()
+	// Attempt to parse a single Expression rule.
+	var expression ast.ExpressionLike
+	expression, token, ok = v.parseExpression()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Exception rule.
+		// This is not a single Expression rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -4812,7 +4693,7 @@ func (v *parser_) parseThrowClause() (
 	v.remove(tokens)
 	throwClause = ast.ThrowClauseClass().ThrowClause(
 		delimiter,
-		exception,
+		expression,
 	)
 	return
 }
@@ -4906,15 +4787,15 @@ func (v *parser_) parseWhileClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Condition rule.
-	var condition ast.ConditionLike
-	condition, token, ok = v.parseCondition()
+	// Attempt to parse a single Expression rule.
+	var expression ast.ExpressionLike
+	expression, token, ok = v.parseExpression()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Condition rule.
+		// This is not a single Expression rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -4963,7 +4844,7 @@ func (v *parser_) parseWhileClause() (
 	v.remove(tokens)
 	whileClause = ast.WhileClauseClass().WhileClause(
 		delimiter1,
-		condition,
+		expression,
 		delimiter2,
 		procedure,
 	)
@@ -5048,15 +4929,15 @@ func (v *parser_) parseWithClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Sequence rule.
-	var sequence ast.SequenceLike
-	sequence, token, ok = v.parseSequence()
+	// Attempt to parse a single Expression rule.
+	var expression ast.ExpressionLike
+	expression, token, ok = v.parseExpression()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Sequence rule.
+		// This is not a single Expression rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -5108,7 +4989,7 @@ func (v *parser_) parseWithClause() (
 		delimiter2,
 		variable,
 		delimiter3,
-		sequence,
+		expression,
 		delimiter4,
 		procedure,
 	)
@@ -5352,13 +5233,12 @@ var parserClassReference_ = &parserClass_{
 			"$Statement": `MainClause OnClause?`,
 			"$MainClause": `
     FlowControl
-    ActionInduction
     MessageHandling
-    RepositoryAccess`,
+    RepositoryAccess
+    ActionInduction`,
 			"$OnClause":       `"on" Failure MatchingClause+`,
 			"$Failure":        `symbol`,
-			"$MatchingClause": `"matching" Template "do" Procedure`,
-			"$Template":       `Expression`,
+			"$MatchingClause": `"matching" Expression "do" Procedure`,
 			"$FlowControl": `
     IfClause
     SelectClause
@@ -5368,9 +5248,6 @@ var parserClassReference_ = &parserClass_{
     BreakClause
     ReturnClause
     ThrowClause`,
-			"$ActionInduction": `
-    DoClause
-    LetClause`,
 			"$MessageHandling": `
     SendClause
     ReceiveClause
@@ -5378,38 +5255,42 @@ var parserClassReference_ = &parserClass_{
     RejectClause
     PublishClause`,
 			"$RepositoryAccess": `
-    CheckoutClause
     SaveClause
     DiscardClause
-    NotarizeClause`,
-			"$IfClause":     `"if" Condition "do" Procedure`,
-			"$Condition":    `Expression`,
-			"$SelectClause": `"select" Expression MatchingClause+`,
-			"$Function":     `identifier "(" Argument* ")"`,
-			"$Method":       `identifier Invoke identifier "(" Argument* ")"`,
-			"$Invoke": `
-    "<-"  ! The method is invoked synchronously.
-    "<~"  ! The method is invoked asynchronously.`,
-			"$Argument": `
-    Value
-    Primitive`,
-			"$Value":        `identifier`,
-			"$Subcomponent": `identifier "[" Index+ "]"`,
-			"$Index": `
-    Value
-    Primitive`,
-			"$WhileClause":    `"while" Condition "do" Procedure`,
-			"$WithClause":     `"with" "each" Variable "in" Sequence "do" Procedure`,
+    NotarizeClause
+    RetrieveClause
+    CheckoutClause`,
+			"$ActionInduction": `
+    DoClause
+    LetClause`,
+			"$IfClause":       `"if" Expression "do" Procedure`,
+			"$SelectClause":   `"select" Expression MatchingClause+`,
+			"$WhileClause":    `"while" Expression "do" Procedure`,
+			"$WithClause":     `"with" "each" Variable "in" Expression "do" Procedure`,
 			"$Variable":       `symbol`,
-			"$Sequence":       `Expression`,
 			"$ContinueClause": `"continue" "loop"`,
 			"$BreakClause":    `"break" "loop"`,
-			"$ReturnClause":   `"return" Result`,
-			"$Result":         `Expression`,
-			"$ThrowClause":    `"throw" Exception`,
-			"$Exception":      `Expression`,
+			"$ReturnClause":   `"return" Expression`,
+			"$ThrowClause":    `"throw" Expression`,
+			"$SendClause":     `"send" Message "to" Location`,
+			"$ReceiveClause":  `"receive" Recipient "from" Location  ! Returns a message.`,
+			"$AcceptClause":   `"accept" Message`,
+			"$RejectClause":   `"reject" Message`,
+			"$PublishClause":  `"publish" Message`,
+			"$Location":       `Expression  ! A location a global name or a citation.`,
+			"$Message":        `Expression`,
+			"$SaveClause":     `"save" Draft "as" Recipient  ! The recipient receives a citation.`,
+			"$RetrieveClause": `"retrieve" Recipient "from" Location`,
+			"$DiscardClause":  `"discard" Location`,
+			"$NotarizeClause": `"notarize" Draft "as" Location  ! The draft becomes a document.`,
+			"$CheckoutClause": `"checkout" Recipient AtLevel? "from" Location  ! Returns a draft.`,
+			"$Draft":          `Expression`,
+			"$AtLevel":        `"at" "level" Expression`,
 			"$DoClause":       `"do" Method`,
 			"$LetClause":      `"let" Recipient Assignment Expression`,
+			"$Recipient": `
+    Variable
+    Subcomponent`,
 			"$Assignment": `
     ":="
     "?="
@@ -5417,25 +5298,7 @@ var parserClassReference_ = &parserClass_{
     "-="
     "*="
     "/="`,
-			"$Recipient": `
-    Variable
-    Subcomponent`,
-			"$SendClause":     `"send" Message "to" Bag`,
-			"$Message":        `Expression`,
-			"$Bag":            `Expression`,
-			"$ReceiveClause":  `"receive" Recipient "from" Bag`,
-			"$AcceptClause":   `"accept" Message`,
-			"$RejectClause":   `"reject" Message`,
-			"$PublishClause":  `"publish" Event`,
-			"$Event":          `Expression`,
-			"$CheckoutClause": `"checkout" Recipient AtLevel? "from" Location`,
-			"$AtLevel":        `"at" "level" Expression`,
-			"$Location":       `Expression`,
-			"$SaveClause":     `"save" Draft "to" Location`,
-			"$Draft":          `Expression`,
-			"$DiscardClause":  `"discard" Location`,
-			"$NotarizeClause": `"notarize" Draft "at" Location`,
-			"$Expression":     `Subject Predicate*`,
+			"$Expression": `Subject Predicate*`,
 			"$Subject": `
     Component
     Subcomponent
@@ -5447,32 +5310,10 @@ var parserClassReference_ = &parserClass_{
     Function
     Method
     Value  ! This must be last since others also begin with an identifier.`,
-			"$Predicate": `Operator Expression`,
-			"$Operator": `
-    LexicalOperator
-    LogicalOperator
-    ArithmeticOperator
-    ComparisonOperator`,
-			"$LexicalOperator": `
-    "&"`,
-			"$LogicalOperator": `
-    "and"
-    "san"
-    "ior"
-    "xor"`,
-			"$ArithmeticOperator": `
-    "+"
-    "-"
-    "*"
-    "/"
-    "%"
-    "^"`,
-			"$ComparisonOperator": `
-    "<"
-    "="
-    ">"
-    "is"
-    "matches"`,
+			"$Subcomponent": `identifier "[" Index+ "]"`,
+			"$Index": `
+    Value
+    Primitive`,
 			"$Precedence": `"(" Expression ")"`,
 			"$Referent":   `"@" Reference`,
 			"$Reference": `
@@ -5508,6 +5349,41 @@ var parserClassReference_ = &parserClass_{
     Method
     Value  ! This must be last since others also begin with an identifier.`,
 			"$Magnitude": `"|" Expression "|"`,
+			"$Function":  `identifier "(" Argument* ")"`,
+			"$Method":    `identifier Invoke identifier "(" Argument* ")"`,
+			"$Invoke": `
+    "<-"  ! The method is invoked synchronously.
+    "<~"  ! The method is invoked asynchronously.`,
+			"$Argument": `
+    Value
+    Primitive`,
+			"$Value":     `identifier`,
+			"$Predicate": `Operator Expression`,
+			"$Operator": `
+    LexicalOperator
+    LogicalOperator
+    ArithmeticOperator
+    ComparisonOperator`,
+			"$LexicalOperator": `
+    "&"`,
+			"$LogicalOperator": `
+    "and"
+    "san"
+    "ior"
+    "xor"`,
+			"$ArithmeticOperator": `
+    "+"
+    "-"
+    "*"
+    "/"
+    "%"
+    "^"`,
+			"$ComparisonOperator": `
+    "<"
+    "="
+    ">"
+    "is"
+    "matches"`,
 		},
 	),
 }

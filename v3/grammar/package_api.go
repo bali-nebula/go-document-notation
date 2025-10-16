@@ -489,20 +489,6 @@ type Methodical interface {
 		attributes ast.AttributesLike,
 		slot_ uint,
 	)
-	PreprocessBag(
-		bag ast.BagLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessBag(
-		bag ast.BagLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessBagSlot(
-		bag ast.BagLike,
-		slot_ uint,
-	)
 	PreprocessBreakClause(
 		breakClause ast.BreakClauseLike,
 		index_ uint,
@@ -599,20 +585,6 @@ type Methodical interface {
 	)
 	ProcessCompositeSlot(
 		composite ast.CompositeLike,
-		slot_ uint,
-	)
-	PreprocessCondition(
-		condition ast.ConditionLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessCondition(
-		condition ast.ConditionLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessConditionSlot(
-		condition ast.ConditionLike,
 		slot_ uint,
 	)
 	PreprocessConstraint(
@@ -725,34 +697,6 @@ type Methodical interface {
 	)
 	ProcessEntitySlot(
 		entity ast.EntityLike,
-		slot_ uint,
-	)
-	PreprocessEvent(
-		event ast.EventLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessEvent(
-		event ast.EventLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessEventSlot(
-		event ast.EventLike,
-		slot_ uint,
-	)
-	PreprocessException(
-		exception ast.ExceptionLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessException(
-		exception ast.ExceptionLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessExceptionSlot(
-		exception ast.ExceptionLike,
 		slot_ uint,
 	)
 	PreprocessExpression(
@@ -1343,18 +1287,18 @@ type Methodical interface {
 		repositoryAccess ast.RepositoryAccessLike,
 		slot_ uint,
 	)
-	PreprocessResult(
-		result ast.ResultLike,
+	PreprocessRetrieveClause(
+		retrieveClause ast.RetrieveClauseLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessResult(
-		result ast.ResultLike,
+	PostprocessRetrieveClause(
+		retrieveClause ast.RetrieveClauseLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessResultSlot(
-		result ast.ResultLike,
+	ProcessRetrieveClauseSlot(
+		retrieveClause ast.RetrieveClauseLike,
 		slot_ uint,
 	)
 	PreprocessReturnClause(
@@ -1427,20 +1371,6 @@ type Methodical interface {
 		sendClause ast.SendClauseLike,
 		slot_ uint,
 	)
-	PreprocessSequence(
-		sequence ast.SequenceLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessSequence(
-		sequence ast.SequenceLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessSequenceSlot(
-		sequence ast.SequenceLike,
-		slot_ uint,
-	)
 	PreprocessStatement(
 		statement ast.StatementLike,
 		index_ uint,
@@ -1495,20 +1425,6 @@ type Methodical interface {
 	)
 	ProcessSubjectSlot(
 		subject ast.SubjectLike,
-		slot_ uint,
-	)
-	PreprocessTemplate(
-		template ast.TemplateLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessTemplate(
-		template ast.TemplateLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessTemplateSlot(
-		template ast.TemplateLike,
 		slot_ uint,
 	)
 	PreprocessThrowClause(
