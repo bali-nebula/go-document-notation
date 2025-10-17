@@ -135,9 +135,9 @@ $MessageHandling:
 
 $RepositoryAccess:
     SaveClause
+    RetrieveClause
     DiscardClause
     NotarizeClause
-    RetrieveClause
     CheckoutClause
 
 $ActionInduction:
