@@ -172,7 +172,7 @@ $RejectClause: "reject" Message
 
 $PublishClause: "publish" Message
 
-$Location: Expression  ! A location a global name or a citation.
+$Location: Expression  ! A location is a global name or a citation.
 
 $Message: Expression
 
