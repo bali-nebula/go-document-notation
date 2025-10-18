@@ -136,6 +136,7 @@ $RepositoryAccess:
     RetrieveClause
     DiscardClause
     NotarizeClause
+    InspectClause
     CheckoutClause
 
 $ActionInduction:
@@ -184,21 +185,25 @@ $Bag: Expression  ! The global name of the message bag.
 
 $Message: Expression
 
-$SaveClause: "save" Draft "as" Recipient  ! The recipient receives a citation.
+$SaveClause: "save" Draft "to" Recipient  ! The recipient receives a citation.
 
-$RetrieveClause: "retrieve" Recipient "from" Location
+$RetrieveClause: "retrieve" Recipient "from" Citation
 
-$DiscardClause: "discard" Location
+$DiscardClause: "discard" Citation
+
+$Citation: Expression  ! A citation to a draft document.
 
 $NotarizeClause: "notarize" Draft "as" Location  ! The draft becomes a document.
+
+$InspectClause: "inspect" Recipient "at" Location
 
 $CheckoutClause: "checkout" Recipient AtLevel? "from" Location  ! Returns a draft.
 
 $Draft: Expression
 
-$AtLevel: "at" "level" Expression
+$Location: Expression  ! The global name of a document.
 
-$Location: Expression  ! A location is a global name or a citation.
+$AtLevel: "at" "level" Expression
 
 $DoClause: "do" Method
 
