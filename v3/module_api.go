@@ -50,8 +50,10 @@ type (
 	AssociationClassLike        = ast.AssociationClassLike
 	AtLevelClassLike            = ast.AtLevelClassLike
 	AttributesClassLike         = ast.AttributesClassLike
+	BagClassLike                = ast.BagClassLike
 	BreakClauseClassLike        = ast.BreakClauseClassLike
 	CheckoutClauseClassLike     = ast.CheckoutClauseClassLike
+	CitationClassLike           = ast.CitationClassLike
 	CollectionClassLike         = ast.CollectionClassLike
 	ComparisonOperatorClassLike = ast.ComparisonOperatorClassLike
 	ComplementClassLike         = ast.ComplementClassLike
@@ -70,6 +72,7 @@ type (
 	FunctionClassLike           = ast.FunctionClassLike
 	IfClauseClassLike           = ast.IfClauseClassLike
 	IndexClassLike              = ast.IndexClassLike
+	InspectClauseClassLike      = ast.InspectClauseClassLike
 	InverseClassLike            = ast.InverseClassLike
 	InversionClassLike          = ast.InversionClassLike
 	InvokeClassLike             = ast.InvokeClassLike
@@ -133,8 +136,10 @@ type (
 	AssociationLike        = ast.AssociationLike
 	AtLevelLike            = ast.AtLevelLike
 	AttributesLike         = ast.AttributesLike
+	BagLike                = ast.BagLike
 	BreakClauseLike        = ast.BreakClauseLike
 	CheckoutClauseLike     = ast.CheckoutClauseLike
+	CitationLike           = ast.CitationLike
 	CollectionLike         = ast.CollectionLike
 	ComparisonOperatorLike = ast.ComparisonOperatorLike
 	ComplementLike         = ast.ComplementLike
@@ -153,6 +158,7 @@ type (
 	FunctionLike           = ast.FunctionLike
 	IfClauseLike           = ast.IfClauseLike
 	IndexLike              = ast.IndexLike
+	InspectClauseLike      = ast.InspectClauseLike
 	InverseLike            = ast.InverseLike
 	InversionLike          = ast.InversionLike
 	InvokeLike             = ast.InvokeLike
@@ -273,12 +279,16 @@ func AcceptClauseClass() AcceptClauseClassLike {
 }
 
 func AcceptClause(
-	delimiter string,
+	delimiter1 string,
 	message ast.MessageLike,
+	delimiter2 string,
+	bag ast.BagLike,
 ) AcceptClauseLike {
 	return AcceptClauseClass().AcceptClause(
-		delimiter,
+		delimiter1,
 		message,
+		delimiter2,
+		bag,
 	)
 }
 
@@ -390,6 +400,18 @@ func Attributes(
 	)
 }
 
+func BagClass() BagClassLike {
+	return ast.BagClass()
+}
+
+func Bag(
+	expression ast.ExpressionLike,
+) BagLike {
+	return BagClass().Bag(
+		expression,
+	)
+}
+
 func BreakClauseClass() BreakClauseClassLike {
 	return ast.BreakClauseClass()
 }
@@ -421,6 +443,18 @@ func CheckoutClause(
 		optionalAtLevel,
 		delimiter2,
 		location,
+	)
+}
+
+func CitationClass() CitationClassLike {
+	return ast.CitationClass()
+}
+
+func Citation(
+	expression ast.ExpressionLike,
+) CitationLike {
+	return CitationClass().Citation(
+		expression,
 	)
 }
 
@@ -524,11 +558,11 @@ func DiscardClauseClass() DiscardClauseClassLike {
 
 func DiscardClause(
 	delimiter string,
-	location ast.LocationLike,
+	citation ast.CitationLike,
 ) DiscardClauseLike {
 	return DiscardClauseClass().DiscardClause(
 		delimiter,
-		location,
+		citation,
 	)
 }
 
@@ -667,6 +701,24 @@ func Index(
 ) IndexLike {
 	return IndexClass().Index(
 		any_,
+	)
+}
+
+func InspectClauseClass() InspectClauseClassLike {
+	return ast.InspectClauseClass()
+}
+
+func InspectClause(
+	delimiter1 string,
+	recipient ast.RecipientLike,
+	delimiter2 string,
+	location ast.LocationLike,
+) InspectClauseLike {
+	return InspectClauseClass().InspectClause(
+		delimiter1,
+		recipient,
+		delimiter2,
+		location,
 	)
 }
 
@@ -1108,13 +1160,13 @@ func ReceiveClause(
 	delimiter1 string,
 	recipient ast.RecipientLike,
 	delimiter2 string,
-	location ast.LocationLike,
+	bag ast.BagLike,
 ) ReceiveClauseLike {
 	return ReceiveClauseClass().ReceiveClause(
 		delimiter1,
 		recipient,
 		delimiter2,
-		location,
+		bag,
 	)
 }
 
@@ -1161,12 +1213,16 @@ func RejectClauseClass() RejectClauseClassLike {
 }
 
 func RejectClause(
-	delimiter string,
+	delimiter1 string,
 	message ast.MessageLike,
+	delimiter2 string,
+	bag ast.BagLike,
 ) RejectClauseLike {
 	return RejectClauseClass().RejectClause(
-		delimiter,
+		delimiter1,
 		message,
+		delimiter2,
+		bag,
 	)
 }
 
@@ -1190,13 +1246,13 @@ func RetrieveClause(
 	delimiter1 string,
 	recipient ast.RecipientLike,
 	delimiter2 string,
-	location ast.LocationLike,
+	citation ast.CitationLike,
 ) RetrieveClauseLike {
 	return RetrieveClauseClass().RetrieveClause(
 		delimiter1,
 		recipient,
 		delimiter2,
-		location,
+		citation,
 	)
 }
 
@@ -1268,13 +1324,13 @@ func SendClause(
 	delimiter1 string,
 	message ast.MessageLike,
 	delimiter2 string,
-	location ast.LocationLike,
+	bag ast.BagLike,
 ) SendClauseLike {
 	return SendClauseClass().SendClause(
 		delimiter1,
 		message,
 		delimiter2,
-		location,
+		bag,
 	)
 }
 

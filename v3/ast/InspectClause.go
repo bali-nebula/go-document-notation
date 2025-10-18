@@ -29,18 +29,18 @@ import (
 
 // Access Function
 
-func ReceiveClauseClass() ReceiveClauseClassLike {
-	return receiveClauseClass()
+func InspectClauseClass() InspectClauseClassLike {
+	return inspectClauseClass()
 }
 
 // Constructor Methods
 
-func (c *receiveClauseClass_) ReceiveClause(
+func (c *inspectClauseClass_) InspectClause(
 	delimiter1 string,
 	recipient RecipientLike,
 	delimiter2 string,
-	bag BagLike,
-) ReceiveClauseLike {
+	location LocationLike,
+) InspectClauseLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
 	}
@@ -50,15 +50,15 @@ func (c *receiveClauseClass_) ReceiveClause(
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(bag) {
-		panic("The \"bag\" attribute is required by this class.")
+	if uti.IsUndefined(location) {
+		panic("The \"location\" attribute is required by this class.")
 	}
-	var instance = &receiveClause_{
+	var instance = &inspectClause_{
 		// Initialize the instance attributes.
 		delimiter1_: delimiter1,
 		recipient_:  recipient,
 		delimiter2_: delimiter2,
-		bag_:        bag,
+		location_:   location,
 	}
 	return instance
 }
@@ -67,52 +67,52 @@ func (c *receiveClauseClass_) ReceiveClause(
 
 // Principal Methods
 
-func (v *receiveClause_) GetClass() ReceiveClauseClassLike {
-	return receiveClauseClass()
+func (v *inspectClause_) GetClass() InspectClauseClassLike {
+	return inspectClauseClass()
 }
 
 // Attribute Methods
 
-func (v *receiveClause_) GetDelimiter1() string {
+func (v *inspectClause_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *receiveClause_) GetRecipient() RecipientLike {
+func (v *inspectClause_) GetRecipient() RecipientLike {
 	return v.recipient_
 }
 
-func (v *receiveClause_) GetDelimiter2() string {
+func (v *inspectClause_) GetDelimiter2() string {
 	return v.delimiter2_
 }
 
-func (v *receiveClause_) GetBag() BagLike {
-	return v.bag_
+func (v *inspectClause_) GetLocation() LocationLike {
+	return v.location_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type receiveClause_ struct {
+type inspectClause_ struct {
 	// Declare the instance attributes.
 	delimiter1_ string
 	recipient_  RecipientLike
 	delimiter2_ string
-	bag_        BagLike
+	location_   LocationLike
 }
 
 // Class Structure
 
-type receiveClauseClass_ struct {
+type inspectClauseClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func receiveClauseClass() *receiveClauseClass_ {
-	return receiveClauseClassReference_
+func inspectClauseClass() *inspectClauseClass_ {
+	return inspectClauseClassReference_
 }
 
-var receiveClauseClassReference_ = &receiveClauseClass_{
+var inspectClauseClassReference_ = &inspectClauseClass_{
 	// Initialize the class constants.
 }

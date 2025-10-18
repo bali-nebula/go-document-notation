@@ -489,6 +489,20 @@ type Methodical interface {
 		attributes ast.AttributesLike,
 		slot_ uint,
 	)
+	PreprocessBag(
+		bag ast.BagLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessBag(
+		bag ast.BagLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessBagSlot(
+		bag ast.BagLike,
+		slot_ uint,
+	)
 	PreprocessBreakClause(
 		breakClause ast.BreakClauseLike,
 		index_ uint,
@@ -515,6 +529,20 @@ type Methodical interface {
 	)
 	ProcessCheckoutClauseSlot(
 		checkoutClause ast.CheckoutClauseLike,
+		slot_ uint,
+	)
+	PreprocessCitation(
+		citation ast.CitationLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessCitation(
+		citation ast.CitationLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessCitationSlot(
+		citation ast.CitationLike,
 		slot_ uint,
 	)
 	PreprocessCollection(
@@ -767,6 +795,20 @@ type Methodical interface {
 	)
 	ProcessIndexSlot(
 		index ast.IndexLike,
+		slot_ uint,
+	)
+	PreprocessInspectClause(
+		inspectClause ast.InspectClauseLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessInspectClause(
+		inspectClause ast.InspectClauseLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessInspectClauseSlot(
+		inspectClause ast.InspectClauseLike,
 		slot_ uint,
 	)
 	PreprocessInverse(

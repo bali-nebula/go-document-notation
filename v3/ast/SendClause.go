@@ -39,7 +39,7 @@ func (c *sendClauseClass_) SendClause(
 	delimiter1 string,
 	message MessageLike,
 	delimiter2 string,
-	location LocationLike,
+	bag BagLike,
 ) SendClauseLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
@@ -50,15 +50,15 @@ func (c *sendClauseClass_) SendClause(
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(location) {
-		panic("The \"location\" attribute is required by this class.")
+	if uti.IsUndefined(bag) {
+		panic("The \"bag\" attribute is required by this class.")
 	}
 	var instance = &sendClause_{
 		// Initialize the instance attributes.
 		delimiter1_: delimiter1,
 		message_:    message,
 		delimiter2_: delimiter2,
-		location_:   location,
+		bag_:        bag,
 	}
 	return instance
 }
@@ -85,8 +85,8 @@ func (v *sendClause_) GetDelimiter2() string {
 	return v.delimiter2_
 }
 
-func (v *sendClause_) GetLocation() LocationLike {
-	return v.location_
+func (v *sendClause_) GetBag() BagLike {
+	return v.bag_
 }
 
 // PROTECTED INTERFACE
@@ -98,7 +98,7 @@ type sendClause_ struct {
 	delimiter1_ string
 	message_    MessageLike
 	delimiter2_ string
-	location_   LocationLike
+	bag_        BagLike
 }
 
 // Class Structure

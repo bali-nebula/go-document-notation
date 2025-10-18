@@ -29,36 +29,21 @@ import (
 
 // Access Function
 
-func ReceiveClauseClass() ReceiveClauseClassLike {
-	return receiveClauseClass()
+func CitationClass() CitationClassLike {
+	return citationClass()
 }
 
 // Constructor Methods
 
-func (c *receiveClauseClass_) ReceiveClause(
-	delimiter1 string,
-	recipient RecipientLike,
-	delimiter2 string,
-	bag BagLike,
-) ReceiveClauseLike {
-	if uti.IsUndefined(delimiter1) {
-		panic("The \"delimiter1\" attribute is required by this class.")
+func (c *citationClass_) Citation(
+	expression ExpressionLike,
+) CitationLike {
+	if uti.IsUndefined(expression) {
+		panic("The \"expression\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(recipient) {
-		panic("The \"recipient\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(delimiter2) {
-		panic("The \"delimiter2\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(bag) {
-		panic("The \"bag\" attribute is required by this class.")
-	}
-	var instance = &receiveClause_{
+	var instance = &citation_{
 		// Initialize the instance attributes.
-		delimiter1_: delimiter1,
-		recipient_:  recipient,
-		delimiter2_: delimiter2,
-		bag_:        bag,
+		expression_: expression,
 	}
 	return instance
 }
@@ -67,52 +52,37 @@ func (c *receiveClauseClass_) ReceiveClause(
 
 // Principal Methods
 
-func (v *receiveClause_) GetClass() ReceiveClauseClassLike {
-	return receiveClauseClass()
+func (v *citation_) GetClass() CitationClassLike {
+	return citationClass()
 }
 
 // Attribute Methods
 
-func (v *receiveClause_) GetDelimiter1() string {
-	return v.delimiter1_
-}
-
-func (v *receiveClause_) GetRecipient() RecipientLike {
-	return v.recipient_
-}
-
-func (v *receiveClause_) GetDelimiter2() string {
-	return v.delimiter2_
-}
-
-func (v *receiveClause_) GetBag() BagLike {
-	return v.bag_
+func (v *citation_) GetExpression() ExpressionLike {
+	return v.expression_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type receiveClause_ struct {
+type citation_ struct {
 	// Declare the instance attributes.
-	delimiter1_ string
-	recipient_  RecipientLike
-	delimiter2_ string
-	bag_        BagLike
+	expression_ ExpressionLike
 }
 
 // Class Structure
 
-type receiveClauseClass_ struct {
+type citationClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func receiveClauseClass() *receiveClauseClass_ {
-	return receiveClauseClassReference_
+func citationClass() *citationClass_ {
+	return citationClassReference_
 }
 
-var receiveClauseClassReference_ = &receiveClauseClass_{
+var citationClassReference_ = &citationClass_{
 	// Initialize the class constants.
 }

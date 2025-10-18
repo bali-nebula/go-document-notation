@@ -55,8 +55,10 @@ supported by each concrete accept-clause-like class.
 type AcceptClauseClassLike interface {
 	// Constructor Methods
 	AcceptClause(
-		delimiter string,
+		delimiter1 string,
 		message MessageLike,
+		delimiter2 string,
+		bag BagLike,
 	) AcceptClauseLike
 }
 
@@ -163,6 +165,18 @@ type AttributesClassLike interface {
 }
 
 /*
+BagClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete bag-like class.
+*/
+type BagClassLike interface {
+	// Constructor Methods
+	Bag(
+		expression ExpressionLike,
+	) BagLike
+}
+
+/*
 BreakClauseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete break-clause-like class.
@@ -189,6 +203,18 @@ type CheckoutClauseClassLike interface {
 		delimiter2 string,
 		location LocationLike,
 	) CheckoutClauseLike
+}
+
+/*
+CitationClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete citation-like class.
+*/
+type CitationClassLike interface {
+	// Constructor Methods
+	Citation(
+		expression ExpressionLike,
+	) CitationLike
 }
 
 /*
@@ -289,7 +315,7 @@ type DiscardClauseClassLike interface {
 	// Constructor Methods
 	DiscardClause(
 		delimiter string,
-		location LocationLike,
+		citation CitationLike,
 	) DiscardClauseLike
 }
 
@@ -420,6 +446,21 @@ type IndexClassLike interface {
 	Index(
 		any_ any,
 	) IndexLike
+}
+
+/*
+InspectClauseClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete inspect-clause-like class.
+*/
+type InspectClauseClassLike interface {
+	// Constructor Methods
+	InspectClause(
+		delimiter1 string,
+		recipient RecipientLike,
+		delimiter2 string,
+		location LocationLike,
+	) InspectClauseLike
 }
 
 /*
@@ -828,7 +869,7 @@ type ReceiveClauseClassLike interface {
 		delimiter1 string,
 		recipient RecipientLike,
 		delimiter2 string,
-		location LocationLike,
+		bag BagLike,
 	) ReceiveClauseLike
 }
 
@@ -877,8 +918,10 @@ supported by each concrete reject-clause-like class.
 type RejectClauseClassLike interface {
 	// Constructor Methods
 	RejectClause(
-		delimiter string,
+		delimiter1 string,
 		message MessageLike,
+		delimiter2 string,
+		bag BagLike,
 	) RejectClauseLike
 }
 
@@ -905,7 +948,7 @@ type RetrieveClauseClassLike interface {
 		delimiter1 string,
 		recipient RecipientLike,
 		delimiter2 string,
-		location LocationLike,
+		citation CitationLike,
 	) RetrieveClauseLike
 }
 
@@ -974,7 +1017,7 @@ type SendClauseClassLike interface {
 		delimiter1 string,
 		message MessageLike,
 		delimiter2 string,
-		location LocationLike,
+		bag BagLike,
 	) SendClauseLike
 }
 
@@ -1112,8 +1155,10 @@ type AcceptClauseLike interface {
 	GetClass() AcceptClauseClassLike
 
 	// Attribute Methods
-	GetDelimiter() string
+	GetDelimiter1() string
 	GetMessage() MessageLike
+	GetDelimiter2() string
+	GetBag() BagLike
 }
 
 /*
@@ -1227,6 +1272,19 @@ type AttributesLike interface {
 }
 
 /*
+BagLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete bag-like class.
+*/
+type BagLike interface {
+	// Principal Methods
+	GetClass() BagClassLike
+
+	// Attribute Methods
+	GetExpression() ExpressionLike
+}
+
+/*
 BreakClauseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete break-clause-like class.
@@ -1255,6 +1313,19 @@ type CheckoutClauseLike interface {
 	GetOptionalAtLevel() AtLevelLike
 	GetDelimiter2() string
 	GetLocation() LocationLike
+}
+
+/*
+CitationLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete citation-like class.
+*/
+type CitationLike interface {
+	// Principal Methods
+	GetClass() CitationClassLike
+
+	// Attribute Methods
+	GetExpression() ExpressionLike
 }
 
 /*
@@ -1364,7 +1435,7 @@ type DiscardClauseLike interface {
 
 	// Attribute Methods
 	GetDelimiter() string
-	GetLocation() LocationLike
+	GetCitation() CitationLike
 }
 
 /*
@@ -1504,6 +1575,22 @@ type IndexLike interface {
 
 	// Attribute Methods
 	GetAny() any
+}
+
+/*
+InspectClauseLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete inspect-clause-like class.
+*/
+type InspectClauseLike interface {
+	// Principal Methods
+	GetClass() InspectClauseClassLike
+
+	// Attribute Methods
+	GetDelimiter1() string
+	GetRecipient() RecipientLike
+	GetDelimiter2() string
+	GetLocation() LocationLike
 }
 
 /*
@@ -1944,7 +2031,7 @@ type ReceiveClauseLike interface {
 	GetDelimiter1() string
 	GetRecipient() RecipientLike
 	GetDelimiter2() string
-	GetLocation() LocationLike
+	GetBag() BagLike
 }
 
 /*
@@ -1997,8 +2084,10 @@ type RejectClauseLike interface {
 	GetClass() RejectClauseClassLike
 
 	// Attribute Methods
-	GetDelimiter() string
+	GetDelimiter1() string
 	GetMessage() MessageLike
+	GetDelimiter2() string
+	GetBag() BagLike
 }
 
 /*
@@ -2027,7 +2116,7 @@ type RetrieveClauseLike interface {
 	GetDelimiter1() string
 	GetRecipient() RecipientLike
 	GetDelimiter2() string
-	GetLocation() LocationLike
+	GetCitation() CitationLike
 }
 
 /*
@@ -2101,7 +2190,7 @@ type SendClauseLike interface {
 	GetDelimiter1() string
 	GetMessage() MessageLike
 	GetDelimiter2() string
-	GetLocation() LocationLike
+	GetBag() BagLike
 }
 
 /*

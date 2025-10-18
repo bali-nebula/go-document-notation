@@ -352,6 +352,26 @@ func (v *processor_) ProcessAttributesSlot(
 ) {
 }
 
+func (v *processor_) PreprocessBag(
+	bag ast.BagLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessBag(
+	bag ast.BagLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessBagSlot(
+	bag ast.BagLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessBreakClause(
 	breakClause ast.BreakClauseLike,
 	index_ uint,
@@ -388,6 +408,26 @@ func (v *processor_) PostprocessCheckoutClause(
 
 func (v *processor_) ProcessCheckoutClauseSlot(
 	checkoutClause ast.CheckoutClauseLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessCitation(
+	citation ast.CitationLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessCitation(
+	citation ast.CitationLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessCitationSlot(
+	citation ast.CitationLike,
 	slot_ uint,
 ) {
 }
@@ -748,6 +788,26 @@ func (v *processor_) PostprocessIndex(
 
 func (v *processor_) ProcessIndexSlot(
 	index ast.IndexLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessInspectClause(
+	inspectClause ast.InspectClauseLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessInspectClause(
+	inspectClause ast.InspectClauseLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessInspectClauseSlot(
+	inspectClause ast.InspectClauseLike,
 	slot_ uint,
 ) {
 }

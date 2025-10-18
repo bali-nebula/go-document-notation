@@ -80,8 +80,8 @@ func (v *visitor_) VisitDocument(
 func (v *visitor_) visitAcceptClause(
 	acceptClause ast.AcceptClauseLike,
 ) {
-	var delimiter = acceptClause.GetDelimiter()
-	v.processor_.ProcessDelimiter(delimiter)
+	var delimiter1 = acceptClause.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
 	// Visit slot 1 between terms.
 	v.processor_.ProcessAcceptClauseSlot(
 		acceptClause,
@@ -97,6 +97,32 @@ func (v *visitor_) visitAcceptClause(
 	v.visitMessage(message)
 	v.processor_.PostprocessMessage(
 		message,
+		0,
+		0,
+	)
+	// Visit slot 2 between terms.
+	v.processor_.ProcessAcceptClauseSlot(
+		acceptClause,
+		2,
+	)
+
+	var delimiter2 = acceptClause.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
+	// Visit slot 3 between terms.
+	v.processor_.ProcessAcceptClauseSlot(
+		acceptClause,
+		3,
+	)
+
+	var bag = acceptClause.GetBag()
+	v.processor_.PreprocessBag(
+		bag,
+		0,
+		0,
+	)
+	v.visitBag(bag)
+	v.processor_.PostprocessBag(
+		bag,
 		0,
 		0,
 	)
@@ -336,6 +362,23 @@ func (v *visitor_) visitAttributes(
 	v.processor_.ProcessDelimiter(delimiter2)
 }
 
+func (v *visitor_) visitBag(
+	bag ast.BagLike,
+) {
+	var expression = bag.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
+		0,
+		0,
+	)
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
+		0,
+		0,
+	)
+}
+
 func (v *visitor_) visitBreakClause(
 	breakClause ast.BreakClauseLike,
 ) {
@@ -417,6 +460,23 @@ func (v *visitor_) visitCheckoutClause(
 	v.visitLocation(location)
 	v.processor_.PostprocessLocation(
 		location,
+		0,
+		0,
+	)
+}
+
+func (v *visitor_) visitCitation(
+	citation ast.CitationLike,
+) {
+	var expression = citation.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
+		0,
+		0,
+	)
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
 		0,
 		0,
 	)
@@ -625,15 +685,15 @@ func (v *visitor_) visitDiscardClause(
 		1,
 	)
 
-	var location = discardClause.GetLocation()
-	v.processor_.PreprocessLocation(
-		location,
+	var citation = discardClause.GetCitation()
+	v.processor_.PreprocessCitation(
+		citation,
 		0,
 		0,
 	)
-	v.visitLocation(location)
-	v.processor_.PostprocessLocation(
-		location,
+	v.visitCitation(citation)
+	v.processor_.PostprocessCitation(
+		citation,
 		0,
 		0,
 	)
@@ -1088,6 +1148,57 @@ func (v *visitor_) visitIndex(
 			0,
 		)
 	}
+}
+
+func (v *visitor_) visitInspectClause(
+	inspectClause ast.InspectClauseLike,
+) {
+	var delimiter1 = inspectClause.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessInspectClauseSlot(
+		inspectClause,
+		1,
+	)
+
+	var recipient = inspectClause.GetRecipient()
+	v.processor_.PreprocessRecipient(
+		recipient,
+		0,
+		0,
+	)
+	v.visitRecipient(recipient)
+	v.processor_.PostprocessRecipient(
+		recipient,
+		0,
+		0,
+	)
+	// Visit slot 2 between terms.
+	v.processor_.ProcessInspectClauseSlot(
+		inspectClause,
+		2,
+	)
+
+	var delimiter2 = inspectClause.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
+	// Visit slot 3 between terms.
+	v.processor_.ProcessInspectClauseSlot(
+		inspectClause,
+		3,
+	)
+
+	var location = inspectClause.GetLocation()
+	v.processor_.PreprocessLocation(
+		location,
+		0,
+		0,
+	)
+	v.visitLocation(location)
+	v.processor_.PostprocessLocation(
+		location,
+		0,
+		0,
+	)
 }
 
 func (v *visitor_) visitInverse(
@@ -2403,15 +2514,15 @@ func (v *visitor_) visitReceiveClause(
 		3,
 	)
 
-	var location = receiveClause.GetLocation()
-	v.processor_.PreprocessLocation(
-		location,
+	var bag = receiveClause.GetBag()
+	v.processor_.PreprocessBag(
+		bag,
 		0,
 		0,
 	)
-	v.visitLocation(location)
-	v.processor_.PostprocessLocation(
-		location,
+	v.visitBag(bag)
+	v.processor_.PostprocessBag(
+		bag,
 		0,
 		0,
 	)
@@ -2557,8 +2668,8 @@ func (v *visitor_) visitReferent(
 func (v *visitor_) visitRejectClause(
 	rejectClause ast.RejectClauseLike,
 ) {
-	var delimiter = rejectClause.GetDelimiter()
-	v.processor_.ProcessDelimiter(delimiter)
+	var delimiter1 = rejectClause.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
 	// Visit slot 1 between terms.
 	v.processor_.ProcessRejectClauseSlot(
 		rejectClause,
@@ -2574,6 +2685,32 @@ func (v *visitor_) visitRejectClause(
 	v.visitMessage(message)
 	v.processor_.PostprocessMessage(
 		message,
+		0,
+		0,
+	)
+	// Visit slot 2 between terms.
+	v.processor_.ProcessRejectClauseSlot(
+		rejectClause,
+		2,
+	)
+
+	var delimiter2 = rejectClause.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
+	// Visit slot 3 between terms.
+	v.processor_.ProcessRejectClauseSlot(
+		rejectClause,
+		3,
+	)
+
+	var bag = rejectClause.GetBag()
+	v.processor_.PreprocessBag(
+		bag,
+		0,
+		0,
+	)
+	v.visitBag(bag)
+	v.processor_.PostprocessBag(
+		bag,
 		0,
 		0,
 	)
@@ -2632,6 +2769,18 @@ func (v *visitor_) visitRepositoryAccess(
 			0,
 			0,
 		)
+	case ast.InspectClauseLike:
+		v.processor_.PreprocessInspectClause(
+			actual,
+			0,
+			0,
+		)
+		v.visitInspectClause(actual)
+		v.processor_.PostprocessInspectClause(
+			actual,
+			0,
+			0,
+		)
 	case ast.CheckoutClauseLike:
 		v.processor_.PreprocessCheckoutClause(
 			actual,
@@ -2684,15 +2833,15 @@ func (v *visitor_) visitRetrieveClause(
 		3,
 	)
 
-	var location = retrieveClause.GetLocation()
-	v.processor_.PreprocessLocation(
-		location,
+	var citation = retrieveClause.GetCitation()
+	v.processor_.PreprocessCitation(
+		citation,
 		0,
 		0,
 	)
-	v.visitLocation(location)
-	v.processor_.PostprocessLocation(
-		location,
+	v.visitCitation(citation)
+	v.processor_.PostprocessCitation(
+		citation,
 		0,
 		0,
 	)
@@ -2873,15 +3022,15 @@ func (v *visitor_) visitSendClause(
 		3,
 	)
 
-	var location = sendClause.GetLocation()
-	v.processor_.PreprocessLocation(
-		location,
+	var bag = sendClause.GetBag()
+	v.processor_.PreprocessBag(
+		bag,
 		0,
 		0,
 	)
-	v.visitLocation(location)
-	v.processor_.PostprocessLocation(
-		location,
+	v.visitBag(bag)
+	v.processor_.PostprocessBag(
+		bag,
 		0,
 		0,
 	)

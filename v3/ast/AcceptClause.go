@@ -36,19 +36,29 @@ func AcceptClauseClass() AcceptClauseClassLike {
 // Constructor Methods
 
 func (c *acceptClauseClass_) AcceptClause(
-	delimiter string,
+	delimiter1 string,
 	message MessageLike,
+	delimiter2 string,
+	bag BagLike,
 ) AcceptClauseLike {
-	if uti.IsUndefined(delimiter) {
-		panic("The \"delimiter\" attribute is required by this class.")
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(message) {
 		panic("The \"message\" attribute is required by this class.")
 	}
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(bag) {
+		panic("The \"bag\" attribute is required by this class.")
+	}
 	var instance = &acceptClause_{
 		// Initialize the instance attributes.
-		delimiter_: delimiter,
-		message_:   message,
+		delimiter1_: delimiter1,
+		message_:    message,
+		delimiter2_: delimiter2,
+		bag_:        bag,
 	}
 	return instance
 }
@@ -63,12 +73,20 @@ func (v *acceptClause_) GetClass() AcceptClauseClassLike {
 
 // Attribute Methods
 
-func (v *acceptClause_) GetDelimiter() string {
-	return v.delimiter_
+func (v *acceptClause_) GetDelimiter1() string {
+	return v.delimiter1_
 }
 
 func (v *acceptClause_) GetMessage() MessageLike {
 	return v.message_
+}
+
+func (v *acceptClause_) GetDelimiter2() string {
+	return v.delimiter2_
+}
+
+func (v *acceptClause_) GetBag() BagLike {
+	return v.bag_
 }
 
 // PROTECTED INTERFACE
@@ -77,8 +95,10 @@ func (v *acceptClause_) GetMessage() MessageLike {
 
 type acceptClause_ struct {
 	// Declare the instance attributes.
-	delimiter_ string
-	message_   MessageLike
+	delimiter1_ string
+	message_    MessageLike
+	delimiter2_ string
+	bag_        BagLike
 }
 
 // Class Structure
