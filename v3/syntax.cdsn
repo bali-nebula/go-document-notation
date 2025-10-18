@@ -158,13 +158,13 @@ $ReturnClause: "return" Expression
 
 $ThrowClause: "throw" Expression
 
-$SendClause: "send" Message "to" Location
+$SendClause: "send" Message "to" Bag
 
-$ReceiveClause: "receive" Recipient "from" Location  ! Returns a message.
+$ReceiveClause: "receive" Recipient "from" Bag  ! Returns a message.
 
-$AcceptClause: "accept" Message
+$AcceptClause: "accept" Message "from" Bag
 
-$RejectClause: "reject" Message
+$RejectClause: "reject" Message "from" Bag
 
 $PublishClause: "publish" Message
 
@@ -180,7 +180,7 @@ $Index:
     Value
     Primitive
 
-$Location: Expression  ! A location is a global name or a citation.
+$Bag: Expression  ! The global name of the message bag.
 
 $Message: Expression
 
@@ -197,6 +197,8 @@ $CheckoutClause: "checkout" Recipient AtLevel? "from" Location  ! Returns a draf
 $Draft: Expression
 
 $AtLevel: "at" "level" Expression
+
+$Location: Expression  ! A location is a global name or a citation.
 
 $DoClause: "do" Method
 
