@@ -110,9 +110,7 @@ $MainClause:
     RepositoryAccess
     ActionInduction
 
-$OnClause: "on" Failure MatchingClause+
-
-$Failure: symbol
+$OnClause: "on" symbol MatchingClause+
 
 $MatchingClause: "matching" Expression "do" Procedure
 
@@ -150,9 +148,7 @@ $SelectClause: "select" Expression MatchingClause+
 
 $WhileClause: "while" Expression "do" Procedure
 
-$WithClause: "with" "each" Variable "in" Expression "do" Procedure
-
-$Variable: symbol
+$WithClause: "with" "each" symbol "in" Expression "do" Procedure
 
 $ContinueClause: "continue" "loop"
 
@@ -171,6 +167,18 @@ $AcceptClause: "accept" Message
 $RejectClause: "reject" Message
 
 $PublishClause: "publish" Message
+
+$Recipient:
+    Variable
+    Subcomponent
+
+$Variable: symbol
+
+$Subcomponent: identifier "[" Index+ "]"
+
+$Index:
+    Value
+    Primitive
 
 $Location: Expression  ! A location is a global name or a citation.
 
@@ -194,10 +202,6 @@ $DoClause: "do" Method
 
 $LetClause: "let" Recipient Assignment Expression
 
-$Recipient:
-    Variable
-    Subcomponent
-
 $Assignment:
     ":="
     "?="
@@ -219,12 +223,6 @@ $Subject:
     Function
     Method
     Value  ! This must be last since others also begin with an identifier.
-
-$Subcomponent: identifier "[" Index+ "]"
-
-$Index:
-    Value
-    Primitive
 
 $Precedence: "(" Expression ")"
 

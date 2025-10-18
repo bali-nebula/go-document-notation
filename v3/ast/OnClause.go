@@ -38,14 +38,14 @@ func OnClauseClass() OnClauseClassLike {
 
 func (c *onClauseClass_) OnClause(
 	delimiter string,
-	failure FailureLike,
+	symbol string,
 	matchingClauses fra.Sequential[MatchingClauseLike],
 ) OnClauseLike {
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(failure) {
-		panic("The \"failure\" attribute is required by this class.")
+	if uti.IsUndefined(symbol) {
+		panic("The \"symbol\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(matchingClauses) {
 		panic("The \"matchingClauses\" attribute is required by this class.")
@@ -53,7 +53,7 @@ func (c *onClauseClass_) OnClause(
 	var instance = &onClause_{
 		// Initialize the instance attributes.
 		delimiter_:       delimiter,
-		failure_:         failure,
+		symbol_:          symbol,
 		matchingClauses_: matchingClauses,
 	}
 	return instance
@@ -73,8 +73,8 @@ func (v *onClause_) GetDelimiter() string {
 	return v.delimiter_
 }
 
-func (v *onClause_) GetFailure() FailureLike {
-	return v.failure_
+func (v *onClause_) GetSymbol() string {
+	return v.symbol_
 }
 
 func (v *onClause_) GetMatchingClauses() fra.Sequential[MatchingClauseLike] {
@@ -88,7 +88,7 @@ func (v *onClause_) GetMatchingClauses() fra.Sequential[MatchingClauseLike] {
 type onClause_ struct {
 	// Declare the instance attributes.
 	delimiter_       string
-	failure_         FailureLike
+	symbol_          string
 	matchingClauses_ fra.Sequential[MatchingClauseLike]
 }
 

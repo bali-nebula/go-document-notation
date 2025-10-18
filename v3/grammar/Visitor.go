@@ -856,13 +856,6 @@ func (v *visitor_) visitExpression(
 	}
 }
 
-func (v *visitor_) visitFailure(
-	failure ast.FailureLike,
-) {
-	var symbol = failure.GetSymbol()
-	v.processor_.ProcessSymbol(symbol)
-}
-
 func (v *visitor_) visitFlowControl(
 	flowControl ast.FlowControlLike,
 ) {
@@ -1974,18 +1967,8 @@ func (v *visitor_) visitOnClause(
 		1,
 	)
 
-	var failure = onClause.GetFailure()
-	v.processor_.PreprocessFailure(
-		failure,
-		0,
-		0,
-	)
-	v.visitFailure(failure)
-	v.processor_.PostprocessFailure(
-		failure,
-		0,
-		0,
-	)
+	var symbol = onClause.GetSymbol()
+	v.processor_.ProcessSymbol(symbol)
 	// Visit slot 2 between terms.
 	v.processor_.ProcessOnClauseSlot(
 		onClause,
@@ -2613,6 +2596,18 @@ func (v *visitor_) visitRepositoryAccess(
 			0,
 			0,
 		)
+	case ast.RetrieveClauseLike:
+		v.processor_.PreprocessRetrieveClause(
+			actual,
+			0,
+			0,
+		)
+		v.visitRetrieveClause(actual)
+		v.processor_.PostprocessRetrieveClause(
+			actual,
+			0,
+			0,
+		)
 	case ast.DiscardClauseLike:
 		v.processor_.PreprocessDiscardClause(
 			actual,
@@ -2633,18 +2628,6 @@ func (v *visitor_) visitRepositoryAccess(
 		)
 		v.visitNotarizeClause(actual)
 		v.processor_.PostprocessNotarizeClause(
-			actual,
-			0,
-			0,
-		)
-	case ast.RetrieveClauseLike:
-		v.processor_.PreprocessRetrieveClause(
-			actual,
-			0,
-			0,
-		)
-		v.visitRetrieveClause(actual)
-		v.processor_.PostprocessRetrieveClause(
 			actual,
 			0,
 			0,
@@ -3250,18 +3233,8 @@ func (v *visitor_) visitWithClause(
 		2,
 	)
 
-	var variable = withClause.GetVariable()
-	v.processor_.PreprocessVariable(
-		variable,
-		0,
-		0,
-	)
-	v.visitVariable(variable)
-	v.processor_.PostprocessVariable(
-		variable,
-		0,
-		0,
-	)
+	var symbol = withClause.GetSymbol()
+	v.processor_.ProcessSymbol(symbol)
 	// Visit slot 3 between terms.
 	v.processor_.ProcessWithClauseSlot(
 		withClause,

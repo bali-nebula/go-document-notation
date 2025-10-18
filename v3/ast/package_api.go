@@ -369,18 +369,6 @@ type ExpressionClassLike interface {
 }
 
 /*
-FailureClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete failure-like class.
-*/
-type FailureClassLike interface {
-	// Constructor Methods
-	Failure(
-		symbol string,
-	) FailureLike
-}
-
-/*
 FlowControlClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete flow-control-like class.
@@ -702,7 +690,7 @@ type OnClauseClassLike interface {
 	// Constructor Methods
 	OnClause(
 		delimiter string,
-		failure FailureLike,
+		symbol string,
 		matchingClauses fra.Sequential[MatchingClauseLike],
 	) OnClauseLike
 }
@@ -1104,7 +1092,7 @@ type WithClauseClassLike interface {
 	WithClause(
 		delimiter1 string,
 		delimiter2 string,
-		variable VariableLike,
+		symbol string,
 		delimiter3 string,
 		expression ExpressionLike,
 		delimiter4 string,
@@ -1461,19 +1449,6 @@ type ExpressionLike interface {
 }
 
 /*
-FailureLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete failure-like class.
-*/
-type FailureLike interface {
-	// Principal Methods
-	GetClass() FailureClassLike
-
-	// Attribute Methods
-	GetSymbol() string
-}
-
-/*
 FlowControlLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete flow-control-like class.
@@ -1821,7 +1796,7 @@ type OnClauseLike interface {
 
 	// Attribute Methods
 	GetDelimiter() string
-	GetFailure() FailureLike
+	GetSymbol() string
 	GetMatchingClauses() fra.Sequential[MatchingClauseLike]
 }
 
@@ -2253,7 +2228,7 @@ type WithClauseLike interface {
 	// Attribute Methods
 	GetDelimiter1() string
 	GetDelimiter2() string
-	GetVariable() VariableLike
+	GetSymbol() string
 	GetDelimiter3() string
 	GetExpression() ExpressionLike
 	GetDelimiter4() string

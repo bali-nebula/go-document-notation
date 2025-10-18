@@ -66,7 +66,6 @@ type (
 	ElementClassLike            = ast.ElementClassLike
 	EntityClassLike             = ast.EntityClassLike
 	ExpressionClassLike         = ast.ExpressionClassLike
-	FailureClassLike            = ast.FailureClassLike
 	FlowControlClassLike        = ast.FlowControlClassLike
 	FunctionClassLike           = ast.FunctionClassLike
 	IfClauseClassLike           = ast.IfClauseClassLike
@@ -150,7 +149,6 @@ type (
 	ElementLike            = ast.ElementLike
 	EntityLike             = ast.EntityLike
 	ExpressionLike         = ast.ExpressionLike
-	FailureLike            = ast.FailureLike
 	FlowControlLike        = ast.FlowControlLike
 	FunctionLike           = ast.FunctionLike
 	IfClauseLike           = ast.IfClauseLike
@@ -612,18 +610,6 @@ func Expression(
 	)
 }
 
-func FailureClass() FailureClassLike {
-	return ast.FailureClass()
-}
-
-func Failure(
-	symbol string,
-) FailureLike {
-	return FailureClass().Failure(
-		symbol,
-	)
-}
-
 func FlowControlClass() FlowControlClassLike {
 	return ast.FlowControlClass()
 }
@@ -968,12 +954,12 @@ func OnClauseClass() OnClauseClassLike {
 
 func OnClause(
 	delimiter string,
-	failure ast.FailureLike,
+	symbol string,
 	matchingClauses fra.Sequential[ast.MatchingClauseLike],
 ) OnClauseLike {
 	return OnClauseClass().OnClause(
 		delimiter,
-		failure,
+		symbol,
 		matchingClauses,
 	)
 }
@@ -1411,7 +1397,7 @@ func WithClauseClass() WithClauseClassLike {
 func WithClause(
 	delimiter1 string,
 	delimiter2 string,
-	variable ast.VariableLike,
+	symbol string,
 	delimiter3 string,
 	expression ast.ExpressionLike,
 	delimiter4 string,
@@ -1420,7 +1406,7 @@ func WithClause(
 	return WithClauseClass().WithClause(
 		delimiter1,
 		delimiter2,
-		variable,
+		symbol,
 		delimiter3,
 		expression,
 		delimiter4,

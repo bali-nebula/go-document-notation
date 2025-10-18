@@ -713,20 +713,6 @@ type Methodical interface {
 		expression ast.ExpressionLike,
 		slot_ uint,
 	)
-	PreprocessFailure(
-		failure ast.FailureLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessFailure(
-		failure ast.FailureLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessFailureSlot(
-		failure ast.FailureLike,
-		slot_ uint,
-	)
 	PreprocessFlowControl(
 		flowControl ast.FlowControlLike,
 		index_ uint,

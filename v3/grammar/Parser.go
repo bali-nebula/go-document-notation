@@ -1407,38 +1407,6 @@ predicatesLoop:
 	return
 }
 
-func (v *parser_) parseFailure() (
-	failure ast.FailureLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single symbol token.
-	var symbol string
-	symbol, token, ok = v.parseToken(SymbolToken)
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single symbol token.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Failure", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Found a single Failure rule.
-	ok = true
-	v.remove(tokens)
-	failure = ast.FailureClass().Failure(symbol)
-	return
-}
-
 func (v *parser_) parseFlowControl() (
 	flowControl ast.FlowControlLike,
 	token TokenLike,
@@ -2916,21 +2884,22 @@ func (v *parser_) parseOnClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Failure rule.
-	var failure ast.FailureLike
-	failure, token, ok = v.parseFailure()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Failure rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$OnClause", token)
-		panic(message)
+	// Attempt to parse a single symbol token.
+	var symbol string
+	symbol, token, ok = v.parseToken(SymbolToken)
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single symbol token.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$OnClause", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
 	}
 
 	// Attempt to parse multiple MatchingClause rules.
@@ -2964,7 +2933,7 @@ matchingClausesLoop:
 	v.remove(tokens)
 	onClause = ast.OnClauseClass().OnClause(
 		delimiter,
-		failure,
+		symbol,
 		matchingClauses,
 	)
 	return
@@ -3860,6 +3829,15 @@ func (v *parser_) parseRepositoryAccess() (
 		return
 	}
 
+	// Attempt to parse a single RetrieveClause RepositoryAccess.
+	var retrieveClause ast.RetrieveClauseLike
+	retrieveClause, token, ok = v.parseRetrieveClause()
+	if ok {
+		// Found a single RetrieveClause RepositoryAccess.
+		repositoryAccess = ast.RepositoryAccessClass().RepositoryAccess(retrieveClause)
+		return
+	}
+
 	// Attempt to parse a single DiscardClause RepositoryAccess.
 	var discardClause ast.DiscardClauseLike
 	discardClause, token, ok = v.parseDiscardClause()
@@ -3875,15 +3853,6 @@ func (v *parser_) parseRepositoryAccess() (
 	if ok {
 		// Found a single NotarizeClause RepositoryAccess.
 		repositoryAccess = ast.RepositoryAccessClass().RepositoryAccess(notarizeClause)
-		return
-	}
-
-	// Attempt to parse a single RetrieveClause RepositoryAccess.
-	var retrieveClause ast.RetrieveClauseLike
-	retrieveClause, token, ok = v.parseRetrieveClause()
-	if ok {
-		// Found a single RetrieveClause RepositoryAccess.
-		repositoryAccess = ast.RepositoryAccessClass().RepositoryAccess(retrieveClause)
 		return
 	}
 
@@ -4894,21 +4863,22 @@ func (v *parser_) parseWithClause() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Variable rule.
-	var variable ast.VariableLike
-	variable, token, ok = v.parseVariable()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Variable rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$WithClause", token)
-		panic(message)
+	// Attempt to parse a single symbol token.
+	var symbol string
+	symbol, token, ok = v.parseToken(SymbolToken)
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single symbol token.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$WithClause", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
 	}
 
 	// Attempt to parse a single "in" literal.
@@ -4987,7 +4957,7 @@ func (v *parser_) parseWithClause() (
 	withClause = ast.WithClauseClass().WithClause(
 		delimiter1,
 		delimiter2,
-		variable,
+		symbol,
 		delimiter3,
 		expression,
 		delimiter4,
@@ -5236,8 +5206,7 @@ var parserClassReference_ = &parserClass_{
     MessageHandling
     RepositoryAccess
     ActionInduction`,
-			"$OnClause":       `"on" Failure MatchingClause+`,
-			"$Failure":        `symbol`,
+			"$OnClause":       `"on" symbol MatchingClause+`,
 			"$MatchingClause": `"matching" Expression "do" Procedure`,
 			"$FlowControl": `
     IfClause
@@ -5256,9 +5225,9 @@ var parserClassReference_ = &parserClass_{
     PublishClause`,
 			"$RepositoryAccess": `
     SaveClause
+    RetrieveClause
     DiscardClause
     NotarizeClause
-    RetrieveClause
     CheckoutClause`,
 			"$ActionInduction": `
     DoClause
@@ -5266,8 +5235,7 @@ var parserClassReference_ = &parserClass_{
 			"$IfClause":       `"if" Expression "do" Procedure`,
 			"$SelectClause":   `"select" Expression MatchingClause+`,
 			"$WhileClause":    `"while" Expression "do" Procedure`,
-			"$WithClause":     `"with" "each" Variable "in" Expression "do" Procedure`,
-			"$Variable":       `symbol`,
+			"$WithClause":     `"with" "each" symbol "in" Expression "do" Procedure`,
 			"$ContinueClause": `"continue" "loop"`,
 			"$BreakClause":    `"break" "loop"`,
 			"$ReturnClause":   `"return" Expression`,
@@ -5277,7 +5245,15 @@ var parserClassReference_ = &parserClass_{
 			"$AcceptClause":   `"accept" Message`,
 			"$RejectClause":   `"reject" Message`,
 			"$PublishClause":  `"publish" Message`,
-			"$Location":       `Expression  ! A location a global name or a citation.`,
+			"$Recipient": `
+    Variable
+    Subcomponent`,
+			"$Variable":     `symbol`,
+			"$Subcomponent": `identifier "[" Index+ "]"`,
+			"$Index": `
+    Value
+    Primitive`,
+			"$Location":       `Expression  ! A location is a global name or a citation.`,
 			"$Message":        `Expression`,
 			"$SaveClause":     `"save" Draft "as" Recipient  ! The recipient receives a citation.`,
 			"$RetrieveClause": `"retrieve" Recipient "from" Location`,
@@ -5288,9 +5264,6 @@ var parserClassReference_ = &parserClass_{
 			"$AtLevel":        `"at" "level" Expression`,
 			"$DoClause":       `"do" Method`,
 			"$LetClause":      `"let" Recipient Assignment Expression`,
-			"$Recipient": `
-    Variable
-    Subcomponent`,
 			"$Assignment": `
     ":="
     "?="
@@ -5310,10 +5283,6 @@ var parserClassReference_ = &parserClass_{
     Function
     Method
     Value  ! This must be last since others also begin with an identifier.`,
-			"$Subcomponent": `identifier "[" Index+ "]"`,
-			"$Index": `
-    Value
-    Primitive`,
 			"$Precedence": `"(" Expression ")"`,
 			"$Referent":   `"@" Reference`,
 			"$Reference": `

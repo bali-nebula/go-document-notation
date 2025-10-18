@@ -672,26 +672,6 @@ func (v *processor_) ProcessExpressionSlot(
 ) {
 }
 
-func (v *processor_) PreprocessFailure(
-	failure ast.FailureLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessFailure(
-	failure ast.FailureLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessFailureSlot(
-	failure ast.FailureLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessFlowControl(
 	flowControl ast.FlowControlLike,
 	index_ uint,
