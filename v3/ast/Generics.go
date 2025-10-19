@@ -30,17 +30,17 @@ import (
 
 // Access Function
 
-func ParameterizationClass() ParameterizationClassLike {
-	return parameterizationClass()
+func GenericsClass() GenericsClassLike {
+	return genericsClass()
 }
 
 // Constructor Methods
 
-func (c *parameterizationClass_) Parameterization(
+func (c *genericsClass_) Generics(
 	delimiter1 string,
 	parameters fra.Sequential[ParameterLike],
 	delimiter2 string,
-) ParameterizationLike {
+) GenericsLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
 	}
@@ -50,7 +50,7 @@ func (c *parameterizationClass_) Parameterization(
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
 	}
-	var instance = &parameterization_{
+	var instance = &generics_{
 		// Initialize the instance attributes.
 		delimiter1_: delimiter1,
 		parameters_: parameters,
@@ -63,21 +63,21 @@ func (c *parameterizationClass_) Parameterization(
 
 // Principal Methods
 
-func (v *parameterization_) GetClass() ParameterizationClassLike {
-	return parameterizationClass()
+func (v *generics_) GetClass() GenericsClassLike {
+	return genericsClass()
 }
 
 // Attribute Methods
 
-func (v *parameterization_) GetDelimiter1() string {
+func (v *generics_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *parameterization_) GetParameters() fra.Sequential[ParameterLike] {
+func (v *generics_) GetParameters() fra.Sequential[ParameterLike] {
 	return v.parameters_
 }
 
-func (v *parameterization_) GetDelimiter2() string {
+func (v *generics_) GetDelimiter2() string {
 	return v.delimiter2_
 }
 
@@ -85,7 +85,7 @@ func (v *parameterization_) GetDelimiter2() string {
 
 // Instance Structure
 
-type parameterization_ struct {
+type generics_ struct {
 	// Declare the instance attributes.
 	delimiter1_ string
 	parameters_ fra.Sequential[ParameterLike]
@@ -94,16 +94,16 @@ type parameterization_ struct {
 
 // Class Structure
 
-type parameterizationClass_ struct {
+type genericsClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func parameterizationClass() *parameterizationClass_ {
-	return parameterizationClassReference_
+func genericsClass() *genericsClass_ {
+	return genericsClassReference_
 }
 
-var parameterizationClassReference_ = &parameterizationClass_{
+var genericsClassReference_ = &genericsClass_{
 	// Initialize the class constants.
 }

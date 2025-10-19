@@ -37,15 +37,15 @@ func ConstraintClass() ConstraintClassLike {
 
 func (c *constraintClass_) Constraint(
 	metadata MetadataLike,
-	optionalParameterization ParameterizationLike,
+	optionalGenerics GenericsLike,
 ) ConstraintLike {
 	if uti.IsUndefined(metadata) {
 		panic("The \"metadata\" attribute is required by this class.")
 	}
 	var instance = &constraint_{
 		// Initialize the instance attributes.
-		metadata_:                 metadata,
-		optionalParameterization_: optionalParameterization,
+		metadata_:         metadata,
+		optionalGenerics_: optionalGenerics,
 	}
 	return instance
 }
@@ -64,8 +64,8 @@ func (v *constraint_) GetMetadata() MetadataLike {
 	return v.metadata_
 }
 
-func (v *constraint_) GetOptionalParameterization() ParameterizationLike {
-	return v.optionalParameterization_
+func (v *constraint_) GetOptionalGenerics() GenericsLike {
+	return v.optionalGenerics_
 }
 
 // PROTECTED INTERFACE
@@ -74,8 +74,8 @@ func (v *constraint_) GetOptionalParameterization() ParameterizationLike {
 
 type constraint_ struct {
 	// Declare the instance attributes.
-	metadata_                 MetadataLike
-	optionalParameterization_ ParameterizationLike
+	metadata_         MetadataLike
+	optionalGenerics_ GenericsLike
 }
 
 // Class Structure

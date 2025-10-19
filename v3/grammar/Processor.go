@@ -372,26 +372,6 @@ func (v *processor_) ProcessBagSlot(
 ) {
 }
 
-func (v *processor_) PreprocessBoolean(
-	boolean ast.BooleanLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessBoolean(
-	boolean ast.BooleanLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessBooleanSlot(
-	boolean ast.BooleanLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessBreakClause(
 	breakClause ast.BreakClauseLike,
 	index_ uint,
@@ -768,6 +748,26 @@ func (v *processor_) PostprocessFunction(
 
 func (v *processor_) ProcessFunctionSlot(
 	function ast.FunctionLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessGenerics(
+	generics ast.GenericsLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessGenerics(
+	generics ast.GenericsLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessGenericsSlot(
+	generics ast.GenericsLike,
 	slot_ uint,
 ) {
 }
@@ -1272,26 +1272,6 @@ func (v *processor_) ProcessParameterSlot(
 ) {
 }
 
-func (v *processor_) PreprocessParameterization(
-	parameterization ast.ParameterizationLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessParameterization(
-	parameterization ast.ParameterizationLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessParameterizationSlot(
-	parameterization ast.ParameterizationLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessPrecedence(
 	precedence ast.PrecedenceLike,
 	index_ uint,
@@ -1568,6 +1548,26 @@ func (v *processor_) PostprocessReturnClause(
 
 func (v *processor_) ProcessReturnClauseSlot(
 	returnClause ast.ReturnClauseLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessReversible(
+	reversible ast.ReversibleLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessReversible(
+	reversible ast.ReversibleLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessReversibleSlot(
+	reversible ast.ReversibleLike,
 	slot_ uint,
 ) {
 }

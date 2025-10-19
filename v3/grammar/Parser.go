@@ -322,14 +322,6 @@ func (v *parser_) parseAssignment() (
 		return
 	}
 
-	// Attempt to parse a single "?=" delimiter.
-	delimiter, token, ok = v.parseDelimiter("?=")
-	if ok {
-		// Found a single "?=" delimiter.
-		assignment = ast.AssignmentClass().Assignment(delimiter)
-		return
-	}
-
 	// Attempt to parse a single "+=" delimiter.
 	delimiter, token, ok = v.parseDelimiter("+=")
 	if ok {
@@ -358,6 +350,38 @@ func (v *parser_) parseAssignment() (
 	delimiter, token, ok = v.parseDelimiter("/=")
 	if ok {
 		// Found a single "/=" delimiter.
+		assignment = ast.AssignmentClass().Assignment(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "%=" delimiter.
+	delimiter, token, ok = v.parseDelimiter("%=")
+	if ok {
+		// Found a single "%=" delimiter.
+		assignment = ast.AssignmentClass().Assignment(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "^=" delimiter.
+	delimiter, token, ok = v.parseDelimiter("^=")
+	if ok {
+		// Found a single "^=" delimiter.
+		assignment = ast.AssignmentClass().Assignment(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "&=" delimiter.
+	delimiter, token, ok = v.parseDelimiter("&=")
+	if ok {
+		// Found a single "&=" delimiter.
+		assignment = ast.AssignmentClass().Assignment(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "?=" delimiter.
+	delimiter, token, ok = v.parseDelimiter("?=")
+	if ok {
+		// Found a single "?=" delimiter.
 		assignment = ast.AssignmentClass().Assignment(delimiter)
 		return
 	}
@@ -617,49 +641,6 @@ func (v *parser_) parseBag() (
 	ok = true
 	v.remove(tokens)
 	bag = ast.BagClass().Bag(expression)
-	return
-}
-
-func (v *parser_) parseBoolean() (
-	boolean ast.BooleanLike,
-	token TokenLike,
-	ok bool,
-) {
-	var delimiter string
-
-	// Attempt to parse a single "and" delimiter.
-	delimiter, token, ok = v.parseDelimiter("and")
-	if ok {
-		// Found a single "and" delimiter.
-		boolean = ast.BooleanClass().Boolean(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "san" delimiter.
-	delimiter, token, ok = v.parseDelimiter("san")
-	if ok {
-		// Found a single "san" delimiter.
-		boolean = ast.BooleanClass().Boolean(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "ior" delimiter.
-	delimiter, token, ok = v.parseDelimiter("ior")
-	if ok {
-		// Found a single "ior" delimiter.
-		boolean = ast.BooleanClass().Boolean(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "xor" delimiter.
-	delimiter, token, ok = v.parseDelimiter("xor")
-	if ok {
-		// Found a single "xor" delimiter.
-		boolean = ast.BooleanClass().Boolean(delimiter)
-		return
-	}
-
-	// This is not a single Boolean rule.
 	return
 }
 
@@ -948,15 +929,15 @@ func (v *parser_) parseComplement() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Logical rule.
-	var logical ast.LogicalLike
-	logical, token, ok = v.parseLogical()
+	// Attempt to parse a single Reversible rule.
+	var reversible ast.ReversibleLike
+	reversible, token, ok = v.parseReversible()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Logical rule.
+		// This is not a single Reversible rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -970,7 +951,7 @@ func (v *parser_) parseComplement() (
 	v.remove(tokens)
 	complement = ast.ComplementClass().Complement(
 		delimiter,
-		logical,
+		reversible,
 	)
 	return
 }
@@ -999,9 +980,9 @@ func (v *parser_) parseComponent() (
 		panic(message)
 	}
 
-	// Attempt to parse an optional Parameterization rule.
-	var optionalParameterization ast.ParameterizationLike
-	optionalParameterization, _, ok = v.parseParameterization()
+	// Attempt to parse an optional Generics rule.
+	var optionalGenerics ast.GenericsLike
+	optionalGenerics, _, ok = v.parseGenerics()
 	if ok {
 		// No additional put backs allowed at this point.
 		tokens = nil
@@ -1012,7 +993,7 @@ func (v *parser_) parseComponent() (
 	v.remove(tokens)
 	component = ast.ComponentClass().Component(
 		entity,
-		optionalParameterization,
+		optionalGenerics,
 	)
 	return
 }
@@ -1086,9 +1067,9 @@ func (v *parser_) parseConstraint() (
 		panic(message)
 	}
 
-	// Attempt to parse an optional Parameterization rule.
-	var optionalParameterization ast.ParameterizationLike
-	optionalParameterization, _, ok = v.parseParameterization()
+	// Attempt to parse an optional Generics rule.
+	var optionalGenerics ast.GenericsLike
+	optionalGenerics, _, ok = v.parseGenerics()
 	if ok {
 		// No additional put backs allowed at this point.
 		tokens = nil
@@ -1099,7 +1080,7 @@ func (v *parser_) parseConstraint() (
 	v.remove(tokens)
 	constraint = ast.ConstraintClass().Constraint(
 		metadata,
-		optionalParameterization,
+		optionalGenerics,
 	)
 	return
 }
@@ -1729,6 +1710,86 @@ argumentsLoop:
 	return
 }
 
+func (v *parser_) parseGenerics() (
+	generics ast.GenericsLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = fra.List[TokenLike]()
+
+	// Attempt to parse a single "(" literal.
+	var delimiter1 string
+	delimiter1, token, ok = v.parseDelimiter("(")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single Generics rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Generics", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse multiple Parameter rules.
+	var parameters = fra.List[ast.ParameterLike]()
+parametersLoop:
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
+		var parameter ast.ParameterLike
+		parameter, token, ok = v.parseParameter()
+		if !ok {
+			switch {
+			case count_ >= 1:
+				break parametersLoop
+			case uti.IsDefined(tokens):
+				// This is not multiple Parameter rules.
+				v.putBack(tokens)
+				return
+			default:
+				// Found a syntax error.
+				var message = v.formatError("$Generics", token)
+				message += "1 or more Parameter rules are required."
+				panic(message)
+			}
+		}
+		// No additional put backs allowed at this point.
+		tokens = nil
+		parameters.AppendValue(parameter)
+	}
+
+	// Attempt to parse a single ")" literal.
+	var delimiter2 string
+	delimiter2, token, ok = v.parseDelimiter(")")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single Generics rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Generics", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Found a single Generics rule.
+	ok = true
+	v.remove(tokens)
+	generics = ast.GenericsClass().Generics(
+		delimiter1,
+		parameters,
+		delimiter2,
+	)
+	return
+}
+
 func (v *parser_) parseIfClause() (
 	ifClause ast.IfClauseLike,
 	token TokenLike,
@@ -2328,75 +2389,37 @@ func (v *parser_) parseLogical() (
 	token TokenLike,
 	ok bool,
 ) {
-	// Attempt to parse a single Component Logical.
-	var component ast.ComponentLike
-	component, token, ok = v.parseComponent()
+	var delimiter string
+
+	// Attempt to parse a single "and" delimiter.
+	delimiter, token, ok = v.parseDelimiter("and")
 	if ok {
-		// Found a single Component Logical.
-		logical = ast.LogicalClass().Logical(component)
+		// Found a single "and" delimiter.
+		logical = ast.LogicalClass().Logical(delimiter)
 		return
 	}
 
-	// Attempt to parse a single Subcomponent Logical.
-	var subcomponent ast.SubcomponentLike
-	subcomponent, token, ok = v.parseSubcomponent()
+	// Attempt to parse a single "san" delimiter.
+	delimiter, token, ok = v.parseDelimiter("san")
 	if ok {
-		// Found a single Subcomponent Logical.
-		logical = ast.LogicalClass().Logical(subcomponent)
+		// Found a single "san" delimiter.
+		logical = ast.LogicalClass().Logical(delimiter)
 		return
 	}
 
-	// Attempt to parse a single Precedence Logical.
-	var precedence ast.PrecedenceLike
-	precedence, token, ok = v.parsePrecedence()
+	// Attempt to parse a single "ior" delimiter.
+	delimiter, token, ok = v.parseDelimiter("ior")
 	if ok {
-		// Found a single Precedence Logical.
-		logical = ast.LogicalClass().Logical(precedence)
+		// Found a single "ior" delimiter.
+		logical = ast.LogicalClass().Logical(delimiter)
 		return
 	}
 
-	// Attempt to parse a single Referent Logical.
-	var referent ast.ReferentLike
-	referent, token, ok = v.parseReferent()
+	// Attempt to parse a single "xor" delimiter.
+	delimiter, token, ok = v.parseDelimiter("xor")
 	if ok {
-		// Found a single Referent Logical.
-		logical = ast.LogicalClass().Logical(referent)
-		return
-	}
-
-	// Attempt to parse a single Complement Logical.
-	var complement ast.ComplementLike
-	complement, token, ok = v.parseComplement()
-	if ok {
-		// Found a single Complement Logical.
-		logical = ast.LogicalClass().Logical(complement)
-		return
-	}
-
-	// Attempt to parse a single Function Logical.
-	var function ast.FunctionLike
-	function, token, ok = v.parseFunction()
-	if ok {
-		// Found a single Function Logical.
-		logical = ast.LogicalClass().Logical(function)
-		return
-	}
-
-	// Attempt to parse a single Method Logical.
-	var method ast.MethodLike
-	method, token, ok = v.parseMethod()
-	if ok {
-		// Found a single Method Logical.
-		logical = ast.LogicalClass().Logical(method)
-		return
-	}
-
-	// Attempt to parse a single Value Logical.
-	var value ast.ValueLike
-	value, token, ok = v.parseValue()
-	if ok {
-		// Found a single Value Logical.
-		logical = ast.LogicalClass().Logical(value)
+		// Found a single "xor" delimiter.
+		logical = ast.LogicalClass().Logical(delimiter)
 		return
 	}
 
@@ -3141,12 +3164,12 @@ func (v *parser_) parseOperator() (
 		return
 	}
 
-	// Attempt to parse a single Boolean Operator.
-	var boolean ast.BooleanLike
-	boolean, token, ok = v.parseBoolean()
+	// Attempt to parse a single Logical Operator.
+	var logical ast.LogicalLike
+	logical, token, ok = v.parseLogical()
 	if ok {
-		// Found a single Boolean Operator.
-		operator = ast.OperatorClass().Operator(boolean)
+		// Found a single Logical Operator.
+		operator = ast.OperatorClass().Operator(logical)
 		return
 	}
 
@@ -3239,86 +3262,6 @@ func (v *parser_) parseParameter() (
 		symbol,
 		delimiter,
 		constraint,
-	)
-	return
-}
-
-func (v *parser_) parseParameterization() (
-	parameterization ast.ParameterizationLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = fra.List[TokenLike]()
-
-	// Attempt to parse a single "(" literal.
-	var delimiter1 string
-	delimiter1, token, ok = v.parseDelimiter("(")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single Parameterization rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Parameterization", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse multiple Parameter rules.
-	var parameters = fra.List[ast.ParameterLike]()
-parametersLoop:
-	for count_ := 0; count_ < mat.MaxInt; count_++ {
-		var parameter ast.ParameterLike
-		parameter, token, ok = v.parseParameter()
-		if !ok {
-			switch {
-			case count_ >= 1:
-				break parametersLoop
-			case uti.IsDefined(tokens):
-				// This is not multiple Parameter rules.
-				v.putBack(tokens)
-				return
-			default:
-				// Found a syntax error.
-				var message = v.formatError("$Parameterization", token)
-				message += "1 or more Parameter rules are required."
-				panic(message)
-			}
-		}
-		// No additional put backs allowed at this point.
-		tokens = nil
-		parameters.AppendValue(parameter)
-	}
-
-	// Attempt to parse a single ")" literal.
-	var delimiter2 string
-	delimiter2, token, ok = v.parseDelimiter(")")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single Parameterization rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Parameterization", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Found a single Parameterization rule.
-	ok = true
-	v.remove(tokens)
-	parameterization = ast.ParameterizationClass().Parameterization(
-		delimiter1,
-		parameters,
-		delimiter2,
 	)
 	return
 }
@@ -4241,6 +4184,87 @@ func (v *parser_) parseReturnClause() (
 		delimiter,
 		expression,
 	)
+	return
+}
+
+func (v *parser_) parseReversible() (
+	reversible ast.ReversibleLike,
+	token TokenLike,
+	ok bool,
+) {
+	// Attempt to parse a single Component Reversible.
+	var component ast.ComponentLike
+	component, token, ok = v.parseComponent()
+	if ok {
+		// Found a single Component Reversible.
+		reversible = ast.ReversibleClass().Reversible(component)
+		return
+	}
+
+	// Attempt to parse a single Subcomponent Reversible.
+	var subcomponent ast.SubcomponentLike
+	subcomponent, token, ok = v.parseSubcomponent()
+	if ok {
+		// Found a single Subcomponent Reversible.
+		reversible = ast.ReversibleClass().Reversible(subcomponent)
+		return
+	}
+
+	// Attempt to parse a single Precedence Reversible.
+	var precedence ast.PrecedenceLike
+	precedence, token, ok = v.parsePrecedence()
+	if ok {
+		// Found a single Precedence Reversible.
+		reversible = ast.ReversibleClass().Reversible(precedence)
+		return
+	}
+
+	// Attempt to parse a single Referent Reversible.
+	var referent ast.ReferentLike
+	referent, token, ok = v.parseReferent()
+	if ok {
+		// Found a single Referent Reversible.
+		reversible = ast.ReversibleClass().Reversible(referent)
+		return
+	}
+
+	// Attempt to parse a single Complement Reversible.
+	var complement ast.ComplementLike
+	complement, token, ok = v.parseComplement()
+	if ok {
+		// Found a single Complement Reversible.
+		reversible = ast.ReversibleClass().Reversible(complement)
+		return
+	}
+
+	// Attempt to parse a single Function Reversible.
+	var function ast.FunctionLike
+	function, token, ok = v.parseFunction()
+	if ok {
+		// Found a single Function Reversible.
+		reversible = ast.ReversibleClass().Reversible(function)
+		return
+	}
+
+	// Attempt to parse a single Method Reversible.
+	var method ast.MethodLike
+	method, token, ok = v.parseMethod()
+	if ok {
+		// Found a single Method Reversible.
+		reversible = ast.ReversibleClass().Reversible(method)
+		return
+	}
+
+	// Attempt to parse a single Value Reversible.
+	var value ast.ValueLike
+	value, token, ok = v.parseValue()
+	if ok {
+		// Found a single Value Reversible.
+		reversible = ast.ReversibleClass().Reversible(value)
+		return
+	}
+
+	// This is not a single Reversible rule.
 	return
 }
 
@@ -5376,16 +5400,16 @@ var parserClassReference_ = &parserClass_{
 	syntax_: fra.CatalogFromMap[string, string](
 		map[string]string{
 			"$Document":  `Annotation? Component`,
-			"$Component": `Entity Parameterization?`,
+			"$Component": `Entity Generics?`,
 			"$Entity": `
     Element
     String
     Range
     Collection
     Procedure`,
-			"$Parameterization": `"(" Parameter+ ")"`,
-			"$Parameter":        `symbol ":" Constraint`,
-			"$Constraint":       `Metadata Parameterization?`,
+			"$Generics":   `"(" Parameter+ ")"`,
+			"$Parameter":  `symbol ":" Constraint`,
+			"$Constraint": `Metadata Generics?`,
 			"$Metadata": `
     Element
     String
@@ -5504,11 +5528,14 @@ var parserClassReference_ = &parserClass_{
 			"$LetClause":      `"let" Recipient Assignment Expression`,
 			"$Assignment": `
     ":="
-    "?="
     "+="
     "-="
     "*="
-    "/="`,
+    "/="
+    "%="
+    "^="
+    "&="
+    "?="  ! Assign a default value if not already initialized.`,
 			"$Expression": `Subject Predicate*`,
 			"$Subject": `
     Component
@@ -5530,8 +5557,8 @@ var parserClassReference_ = &parserClass_{
     Function
     Method
     Value  ! This must be last since others also begin with an identifier.`,
-			"$Complement": `"not" Logical`,
-			"$Logical": `
+			"$Complement": `"not" Reversible`,
+			"$Reversible": `
     Component
     Subcomponent
     Precedence
@@ -5568,7 +5595,7 @@ var parserClassReference_ = &parserClass_{
 			"$Predicate": `Operator Expression`,
 			"$Operator": `
     Comparison
-    Boolean
+    Logical
     Arithmetic
     Lexical`,
 			"$Comparison": `
@@ -5577,7 +5604,7 @@ var parserClassReference_ = &parserClass_{
     ">"
     "is"
     "matches"`,
-			"$Boolean": `
+			"$Logical": `
     "and"
     "san"
     "ior"

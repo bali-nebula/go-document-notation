@@ -503,20 +503,6 @@ type Methodical interface {
 		bag ast.BagLike,
 		slot_ uint,
 	)
-	PreprocessBoolean(
-		boolean ast.BooleanLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessBoolean(
-		boolean ast.BooleanLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessBooleanSlot(
-		boolean ast.BooleanLike,
-		slot_ uint,
-	)
 	PreprocessBreakClause(
 		breakClause ast.BreakClauseLike,
 		index_ uint,
@@ -781,6 +767,20 @@ type Methodical interface {
 	)
 	ProcessFunctionSlot(
 		function ast.FunctionLike,
+		slot_ uint,
+	)
+	PreprocessGenerics(
+		generics ast.GenericsLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessGenerics(
+		generics ast.GenericsLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessGenericsSlot(
+		generics ast.GenericsLike,
 		slot_ uint,
 	)
 	PreprocessIfClause(
@@ -1133,20 +1133,6 @@ type Methodical interface {
 		parameter ast.ParameterLike,
 		slot_ uint,
 	)
-	PreprocessParameterization(
-		parameterization ast.ParameterizationLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessParameterization(
-		parameterization ast.ParameterizationLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessParameterizationSlot(
-		parameterization ast.ParameterizationLike,
-		slot_ uint,
-	)
 	PreprocessPrecedence(
 		precedence ast.PrecedenceLike,
 		index_ uint,
@@ -1341,6 +1327,20 @@ type Methodical interface {
 	)
 	ProcessReturnClauseSlot(
 		returnClause ast.ReturnClauseLike,
+		slot_ uint,
+	)
+	PreprocessReversible(
+		reversible ast.ReversibleLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessReversible(
+		reversible ast.ReversibleLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessReversibleSlot(
+		reversible ast.ReversibleLike,
 		slot_ uint,
 	)
 	PreprocessRight(

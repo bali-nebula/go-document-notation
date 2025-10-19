@@ -37,18 +37,18 @@ func ComplementClass() ComplementClassLike {
 
 func (c *complementClass_) Complement(
 	delimiter string,
-	logical LogicalLike,
+	reversible ReversibleLike,
 ) ComplementLike {
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(logical) {
-		panic("The \"logical\" attribute is required by this class.")
+	if uti.IsUndefined(reversible) {
+		panic("The \"reversible\" attribute is required by this class.")
 	}
 	var instance = &complement_{
 		// Initialize the instance attributes.
-		delimiter_: delimiter,
-		logical_:   logical,
+		delimiter_:  delimiter,
+		reversible_: reversible,
 	}
 	return instance
 }
@@ -67,8 +67,8 @@ func (v *complement_) GetDelimiter() string {
 	return v.delimiter_
 }
 
-func (v *complement_) GetLogical() LogicalLike {
-	return v.logical_
+func (v *complement_) GetReversible() ReversibleLike {
+	return v.reversible_
 }
 
 // PROTECTED INTERFACE
@@ -77,8 +77,8 @@ func (v *complement_) GetLogical() LogicalLike {
 
 type complement_ struct {
 	// Declare the instance attributes.
-	delimiter_ string
-	logical_   LogicalLike
+	delimiter_  string
+	reversible_ ReversibleLike
 }
 
 // Class Structure

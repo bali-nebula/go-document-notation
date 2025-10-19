@@ -177,18 +177,6 @@ type BagClassLike interface {
 }
 
 /*
-BooleanClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete boolean-like class.
-*/
-type BooleanClassLike interface {
-	// Constructor Methods
-	Boolean(
-		any_ any,
-	) BooleanLike
-}
-
-/*
 BreakClauseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete break-clause-like class.
@@ -262,7 +250,7 @@ type ComplementClassLike interface {
 	// Constructor Methods
 	Complement(
 		delimiter string,
-		logical LogicalLike,
+		reversible ReversibleLike,
 	) ComplementLike
 }
 
@@ -275,7 +263,7 @@ type ComponentClassLike interface {
 	// Constructor Methods
 	Component(
 		entity EntityLike,
-		optionalParameterization ParameterizationLike,
+		optionalGenerics GenericsLike,
 	) ComponentLike
 }
 
@@ -301,7 +289,7 @@ type ConstraintClassLike interface {
 	// Constructor Methods
 	Constraint(
 		metadata MetadataLike,
-		optionalParameterization ParameterizationLike,
+		optionalGenerics GenericsLike,
 	) ConstraintLike
 }
 
@@ -431,6 +419,20 @@ type FunctionClassLike interface {
 		arguments fra.Sequential[ArgumentLike],
 		delimiter2 string,
 	) FunctionLike
+}
+
+/*
+GenericsClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete generics-like class.
+*/
+type GenericsClassLike interface {
+	// Constructor Methods
+	Generics(
+		delimiter1 string,
+		parameters fra.Sequential[ParameterLike],
+		delimiter2 string,
+	) GenericsLike
 }
 
 /*
@@ -763,20 +765,6 @@ type ParameterClassLike interface {
 }
 
 /*
-ParameterizationClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete parameterization-like class.
-*/
-type ParameterizationClassLike interface {
-	// Constructor Methods
-	Parameterization(
-		delimiter1 string,
-		parameters fra.Sequential[ParameterLike],
-		delimiter2 string,
-	) ParameterizationLike
-}
-
-/*
 PrecedenceClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete precedence-like class.
@@ -963,6 +951,18 @@ type ReturnClauseClassLike interface {
 		delimiter string,
 		expression ExpressionLike,
 	) ReturnClauseLike
+}
+
+/*
+ReversibleClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete reversible-like class.
+*/
+type ReversibleClassLike interface {
+	// Constructor Methods
+	Reversible(
+		any_ any,
+	) ReversibleLike
 }
 
 /*
@@ -1285,19 +1285,6 @@ type BagLike interface {
 }
 
 /*
-BooleanLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete boolean-like class.
-*/
-type BooleanLike interface {
-	// Principal Methods
-	GetClass() BooleanClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
 BreakClauseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete break-clause-like class.
@@ -1378,7 +1365,7 @@ type ComplementLike interface {
 
 	// Attribute Methods
 	GetDelimiter() string
-	GetLogical() LogicalLike
+	GetReversible() ReversibleLike
 }
 
 /*
@@ -1392,7 +1379,7 @@ type ComponentLike interface {
 
 	// Attribute Methods
 	GetEntity() EntityLike
-	GetOptionalParameterization() ParameterizationLike
+	GetOptionalGenerics() GenericsLike
 }
 
 /*
@@ -1420,7 +1407,7 @@ type ConstraintLike interface {
 
 	// Attribute Methods
 	GetMetadata() MetadataLike
-	GetOptionalParameterization() ParameterizationLike
+	GetOptionalGenerics() GenericsLike
 }
 
 /*
@@ -1558,6 +1545,21 @@ type FunctionLike interface {
 	GetIdentifier() string
 	GetDelimiter1() string
 	GetArguments() fra.Sequential[ArgumentLike]
+	GetDelimiter2() string
+}
+
+/*
+GenericsLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete generics-like class.
+*/
+type GenericsLike interface {
+	// Principal Methods
+	GetClass() GenericsClassLike
+
+	// Attribute Methods
+	GetDelimiter1() string
+	GetParameters() fra.Sequential[ParameterLike]
 	GetDelimiter2() string
 }
 
@@ -1916,21 +1918,6 @@ type ParameterLike interface {
 }
 
 /*
-ParameterizationLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete parameterization-like class.
-*/
-type ParameterizationLike interface {
-	// Principal Methods
-	GetClass() ParameterizationClassLike
-
-	// Attribute Methods
-	GetDelimiter1() string
-	GetParameters() fra.Sequential[ParameterLike]
-	GetDelimiter2() string
-}
-
-/*
 PrecedenceLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete precedence-like class.
@@ -2131,6 +2118,19 @@ type ReturnClauseLike interface {
 	// Attribute Methods
 	GetDelimiter() string
 	GetExpression() ExpressionLike
+}
+
+/*
+ReversibleLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete reversible-like class.
+*/
+type ReversibleLike interface {
+	// Principal Methods
+	GetClass() ReversibleClassLike
+
+	// Attribute Methods
+	GetAny() any
 }
 
 /*

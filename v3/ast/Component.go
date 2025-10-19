@@ -37,15 +37,15 @@ func ComponentClass() ComponentClassLike {
 
 func (c *componentClass_) Component(
 	entity EntityLike,
-	optionalParameterization ParameterizationLike,
+	optionalGenerics GenericsLike,
 ) ComponentLike {
 	if uti.IsUndefined(entity) {
 		panic("The \"entity\" attribute is required by this class.")
 	}
 	var instance = &component_{
 		// Initialize the instance attributes.
-		entity_:                   entity,
-		optionalParameterization_: optionalParameterization,
+		entity_:           entity,
+		optionalGenerics_: optionalGenerics,
 	}
 	return instance
 }
@@ -64,8 +64,8 @@ func (v *component_) GetEntity() EntityLike {
 	return v.entity_
 }
 
-func (v *component_) GetOptionalParameterization() ParameterizationLike {
-	return v.optionalParameterization_
+func (v *component_) GetOptionalGenerics() GenericsLike {
+	return v.optionalGenerics_
 }
 
 // PROTECTED INTERFACE
@@ -74,8 +74,8 @@ func (v *component_) GetOptionalParameterization() ParameterizationLike {
 
 type component_ struct {
 	// Declare the instance attributes.
-	entity_                   EntityLike
-	optionalParameterization_ ParameterizationLike
+	entity_           EntityLike
+	optionalGenerics_ GenericsLike
 }
 
 // Class Structure

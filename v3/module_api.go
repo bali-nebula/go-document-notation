@@ -51,7 +51,6 @@ type (
 	AtLevelClassLike          = ast.AtLevelClassLike
 	AttributesClassLike       = ast.AttributesClassLike
 	BagClassLike              = ast.BagClassLike
-	BooleanClassLike          = ast.BooleanClassLike
 	BreakClauseClassLike      = ast.BreakClauseClassLike
 	CheckoutClauseClassLike   = ast.CheckoutClauseClassLike
 	CitationClassLike         = ast.CitationClassLike
@@ -71,6 +70,7 @@ type (
 	ExpressionClassLike       = ast.ExpressionClassLike
 	FlowControlClassLike      = ast.FlowControlClassLike
 	FunctionClassLike         = ast.FunctionClassLike
+	GenericsClassLike         = ast.GenericsClassLike
 	IfClauseClassLike         = ast.IfClauseClassLike
 	IndexClassLike            = ast.IndexClassLike
 	InspectClauseClassLike    = ast.InspectClauseClassLike
@@ -96,7 +96,6 @@ type (
 	OnClauseClassLike         = ast.OnClauseClassLike
 	OperatorClassLike         = ast.OperatorClassLike
 	ParameterClassLike        = ast.ParameterClassLike
-	ParameterizationClassLike = ast.ParameterizationClassLike
 	PrecedenceClassLike       = ast.PrecedenceClassLike
 	PredicateClassLike        = ast.PredicateClassLike
 	PrimitiveClassLike        = ast.PrimitiveClassLike
@@ -111,6 +110,7 @@ type (
 	RepositoryAccessClassLike = ast.RepositoryAccessClassLike
 	RetrieveClauseClassLike   = ast.RetrieveClauseClassLike
 	ReturnClauseClassLike     = ast.ReturnClauseClassLike
+	ReversibleClassLike       = ast.ReversibleClassLike
 	RightClassLike            = ast.RightClassLike
 	SaveClauseClassLike       = ast.SaveClauseClassLike
 	SelectClauseClassLike     = ast.SelectClauseClassLike
@@ -137,7 +137,6 @@ type (
 	AtLevelLike          = ast.AtLevelLike
 	AttributesLike       = ast.AttributesLike
 	BagLike              = ast.BagLike
-	BooleanLike          = ast.BooleanLike
 	BreakClauseLike      = ast.BreakClauseLike
 	CheckoutClauseLike   = ast.CheckoutClauseLike
 	CitationLike         = ast.CitationLike
@@ -157,6 +156,7 @@ type (
 	ExpressionLike       = ast.ExpressionLike
 	FlowControlLike      = ast.FlowControlLike
 	FunctionLike         = ast.FunctionLike
+	GenericsLike         = ast.GenericsLike
 	IfClauseLike         = ast.IfClauseLike
 	IndexLike            = ast.IndexLike
 	InspectClauseLike    = ast.InspectClauseLike
@@ -182,7 +182,6 @@ type (
 	OnClauseLike         = ast.OnClauseLike
 	OperatorLike         = ast.OperatorLike
 	ParameterLike        = ast.ParameterLike
-	ParameterizationLike = ast.ParameterizationLike
 	PrecedenceLike       = ast.PrecedenceLike
 	PredicateLike        = ast.PredicateLike
 	PrimitiveLike        = ast.PrimitiveLike
@@ -197,6 +196,7 @@ type (
 	RepositoryAccessLike = ast.RepositoryAccessLike
 	RetrieveClauseLike   = ast.RetrieveClauseLike
 	ReturnClauseLike     = ast.ReturnClauseLike
+	ReversibleLike       = ast.ReversibleLike
 	RightLike            = ast.RightLike
 	SaveClauseLike       = ast.SaveClauseLike
 	SelectClauseLike     = ast.SelectClauseLike
@@ -412,18 +412,6 @@ func Bag(
 	)
 }
 
-func BooleanClass() BooleanClassLike {
-	return ast.BooleanClass()
-}
-
-func Boolean(
-	any_ any,
-) BooleanLike {
-	return BooleanClass().Boolean(
-		any_,
-	)
-}
-
 func BreakClauseClass() BreakClauseClassLike {
 	return ast.BreakClauseClass()
 }
@@ -500,11 +488,11 @@ func ComplementClass() ComplementClassLike {
 
 func Complement(
 	delimiter string,
-	logical ast.LogicalLike,
+	reversible ast.ReversibleLike,
 ) ComplementLike {
 	return ComplementClass().Complement(
 		delimiter,
-		logical,
+		reversible,
 	)
 }
 
@@ -514,11 +502,11 @@ func ComponentClass() ComponentClassLike {
 
 func Component(
 	entity ast.EntityLike,
-	optionalParameterization ast.ParameterizationLike,
+	optionalGenerics ast.GenericsLike,
 ) ComponentLike {
 	return ComponentClass().Component(
 		entity,
-		optionalParameterization,
+		optionalGenerics,
 	)
 }
 
@@ -542,11 +530,11 @@ func ConstraintClass() ConstraintClassLike {
 
 func Constraint(
 	metadata ast.MetadataLike,
-	optionalParameterization ast.ParameterizationLike,
+	optionalGenerics ast.GenericsLike,
 ) ConstraintLike {
 	return ConstraintClass().Constraint(
 		metadata,
-		optionalParameterization,
+		optionalGenerics,
 	)
 }
 
@@ -682,6 +670,22 @@ func Function(
 		identifier,
 		delimiter1,
 		arguments,
+		delimiter2,
+	)
+}
+
+func GenericsClass() GenericsClassLike {
+	return ast.GenericsClass()
+}
+
+func Generics(
+	delimiter1 string,
+	parameters fra.Sequential[ast.ParameterLike],
+	delimiter2 string,
+) GenericsLike {
+	return GenericsClass().Generics(
+		delimiter1,
+		parameters,
 		delimiter2,
 	)
 }
@@ -1044,22 +1048,6 @@ func Parameter(
 	)
 }
 
-func ParameterizationClass() ParameterizationClassLike {
-	return ast.ParameterizationClass()
-}
-
-func Parameterization(
-	delimiter1 string,
-	parameters fra.Sequential[ast.ParameterLike],
-	delimiter2 string,
-) ParameterizationLike {
-	return ParameterizationClass().Parameterization(
-		delimiter1,
-		parameters,
-		delimiter2,
-	)
-}
-
 func PrecedenceClass() PrecedenceClassLike {
 	return ast.PrecedenceClass()
 }
@@ -1267,6 +1255,18 @@ func ReturnClause(
 	return ReturnClauseClass().ReturnClause(
 		delimiter,
 		expression,
+	)
+}
+
+func ReversibleClass() ReversibleClassLike {
+	return ast.ReversibleClass()
+}
+
+func Reversible(
+	any_ any,
+) ReversibleLike {
+	return ReversibleClass().Reversible(
+		any_,
 	)
 }
 

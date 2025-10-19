@@ -24,7 +24,7 @@ For more information on CDSN see the wiki at:
 <!
 $Document: Annotation? Component
 
-$Component: Entity Parameterization?
+$Component: Entity Generics?
 
 $Entity:
     Element
@@ -33,11 +33,11 @@ $Entity:
     Collection
     Procedure
 
-$Parameterization: "(" Parameter+ ")"
+$Generics: "(" Parameter+ ")"
 
 $Parameter: symbol ":" Constraint
 
-$Constraint: Metadata Parameterization?
+$Constraint: Metadata Generics?
 
 $Metadata:
     Element
@@ -211,11 +211,14 @@ $LetClause: "let" Recipient Assignment Expression
 
 $Assignment:
     ":="
-    "?="
     "+="
     "-="
     "*="
     "/="
+    "%="
+    "^="
+    "&="
+    "?="  ! Assign a default value if not already initialized.
 
 $Expression: Subject Predicate*
 
@@ -243,9 +246,9 @@ $Reference:
     Method
     Value  ! This must be last since others also begin with an identifier.
 
-$Complement: "not" Logical
+$Complement: "not" Reversible
 
-$Logical:
+$Reversible:
     Component
     Subcomponent
     Precedence
@@ -293,7 +296,7 @@ $Predicate: Operator Expression
 
 $Operator:
     Comparison
-    Boolean
+    Logical
     Arithmetic
     Lexical
 
@@ -304,7 +307,7 @@ $Comparison:
     "is"
     "matches"
 
-$Boolean:
+$Logical:
     "and"
     "san"
     "ior"

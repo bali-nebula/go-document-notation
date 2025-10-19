@@ -430,6 +430,19 @@ func (v *formatter_) PostprocessDocument(
 	v.appendNewline()
 }
 
+func (v *formatter_) ProcessGenericsSlot(
+	generics ast.GenericsLike,
+	slot_ uint,
+) {
+	switch slot_ {
+	case 1:
+		v.depth_++
+	case 2:
+		v.depth_--
+		v.appendNewline()
+	}
+}
+
 func (v *formatter_) ProcessIfClauseSlot(
 	ifClause ast.IfClauseLike,
 	slot_ uint,
@@ -540,19 +553,6 @@ func (v *formatter_) ProcessParameterSlot(
 ) {
 	if slot_ == 2 {
 		v.appendString(" ")
-	}
-}
-
-func (v *formatter_) ProcessParameterizationSlot(
-	parameterization ast.ParameterizationLike,
-	slot_ uint,
-) {
-	switch slot_ {
-	case 1:
-		v.depth_++
-	case 2:
-		v.depth_--
-		v.appendNewline()
 	}
 }
 

@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func BooleanClass() BooleanClassLike {
-	return booleanClass()
+func ReversibleClass() ReversibleClassLike {
+	return reversibleClass()
 }
 
 // Constructor Methods
 
-func (c *booleanClass_) Boolean(
+func (c *reversibleClass_) Reversible(
 	any_ any,
-) BooleanLike {
+) ReversibleLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &boolean_{
+	var instance = &reversible_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *booleanClass_) Boolean(
 
 // Principal Methods
 
-func (v *boolean_) GetClass() BooleanClassLike {
-	return booleanClass()
+func (v *reversible_) GetClass() ReversibleClassLike {
+	return reversibleClass()
 }
 
 // Attribute Methods
 
-func (v *boolean_) GetAny() any {
+func (v *reversible_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *boolean_) GetAny() any {
 
 // Instance Structure
 
-type boolean_ struct {
+type reversible_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type booleanClass_ struct {
+type reversibleClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func booleanClass() *booleanClass_ {
-	return booleanClassReference_
+func reversibleClass() *reversibleClass_ {
+	return reversibleClassReference_
 }
 
-var booleanClassReference_ = &booleanClass_{
+var reversibleClassReference_ = &reversibleClass_{
 	// Initialize the class constants.
 }

@@ -234,8 +234,6 @@ func (v *visitor_) visitAssignment(
 	switch actual {
 	case ":=":
 		v.processor_.ProcessDelimiter(":=")
-	case "?=":
-		v.processor_.ProcessDelimiter("?=")
 	case "+=":
 		v.processor_.ProcessDelimiter("+=")
 	case "-=":
@@ -244,6 +242,14 @@ func (v *visitor_) visitAssignment(
 		v.processor_.ProcessDelimiter("*=")
 	case "/=":
 		v.processor_.ProcessDelimiter("/=")
+	case "%=":
+		v.processor_.ProcessDelimiter("%=")
+	case "^=":
+		v.processor_.ProcessDelimiter("^=")
+	case "&=":
+		v.processor_.ProcessDelimiter("&=")
+	case "?=":
+		v.processor_.ProcessDelimiter("?=")
 	}
 }
 
@@ -377,23 +383,6 @@ func (v *visitor_) visitBag(
 		0,
 		0,
 	)
-}
-
-func (v *visitor_) visitBoolean(
-	boolean ast.BooleanLike,
-) {
-	// Visit the possible boolean literal values.
-	var actual = boolean.GetAny().(string)
-	switch actual {
-	case "and":
-		v.processor_.ProcessDelimiter("and")
-	case "san":
-		v.processor_.ProcessDelimiter("san")
-	case "ior":
-		v.processor_.ProcessDelimiter("ior")
-	case "xor":
-		v.processor_.ProcessDelimiter("xor")
-	}
 }
 
 func (v *visitor_) visitBreakClause(
@@ -561,15 +550,15 @@ func (v *visitor_) visitComplement(
 		1,
 	)
 
-	var logical = complement.GetLogical()
-	v.processor_.PreprocessLogical(
-		logical,
+	var reversible = complement.GetReversible()
+	v.processor_.PreprocessReversible(
+		reversible,
 		0,
 		0,
 	)
-	v.visitLogical(logical)
-	v.processor_.PostprocessLogical(
-		logical,
+	v.visitReversible(reversible)
+	v.processor_.PostprocessReversible(
+		reversible,
 		0,
 		0,
 	)
@@ -596,16 +585,16 @@ func (v *visitor_) visitComponent(
 		1,
 	)
 
-	var optionalParameterization = component.GetOptionalParameterization()
-	if uti.IsDefined(optionalParameterization) {
-		v.processor_.PreprocessParameterization(
-			optionalParameterization,
+	var optionalGenerics = component.GetOptionalGenerics()
+	if uti.IsDefined(optionalGenerics) {
+		v.processor_.PreprocessGenerics(
+			optionalGenerics,
 			0,
 			0,
 		)
-		v.visitParameterization(optionalParameterization)
-		v.processor_.PostprocessParameterization(
-			optionalParameterization,
+		v.visitGenerics(optionalGenerics)
+		v.processor_.PostprocessGenerics(
+			optionalGenerics,
 			0,
 			0,
 		)
@@ -660,16 +649,16 @@ func (v *visitor_) visitConstraint(
 		1,
 	)
 
-	var optionalParameterization = constraint.GetOptionalParameterization()
-	if uti.IsDefined(optionalParameterization) {
-		v.processor_.PreprocessParameterization(
-			optionalParameterization,
+	var optionalGenerics = constraint.GetOptionalGenerics()
+	if uti.IsDefined(optionalGenerics) {
+		v.processor_.PreprocessGenerics(
+			optionalGenerics,
 			0,
 			0,
 		)
-		v.visitParameterization(optionalParameterization)
-		v.processor_.PostprocessParameterization(
-			optionalParameterization,
+		v.visitGenerics(optionalGenerics)
+		v.processor_.PostprocessGenerics(
+			optionalGenerics,
 			0,
 			0,
 		)
@@ -1084,6 +1073,45 @@ func (v *visitor_) visitFunction(
 	v.processor_.ProcessDelimiter(delimiter2)
 }
 
+func (v *visitor_) visitGenerics(
+	generics ast.GenericsLike,
+) {
+	var delimiter1 = generics.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessGenericsSlot(
+		generics,
+		1,
+	)
+
+	var parametersIndex uint
+	var parameters = generics.GetParameters().GetIterator()
+	var parametersCount = uint(parameters.GetSize())
+	for parameters.HasNext() {
+		parametersIndex++
+		var rule = parameters.GetNext()
+		v.processor_.PreprocessParameter(
+			rule,
+			parametersIndex,
+			parametersCount,
+		)
+		v.visitParameter(rule)
+		v.processor_.PostprocessParameter(
+			rule,
+			parametersIndex,
+			parametersCount,
+		)
+	}
+	// Visit slot 2 between terms.
+	v.processor_.ProcessGenericsSlot(
+		generics,
+		2,
+	)
+
+	var delimiter2 = generics.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
+}
+
 func (v *visitor_) visitIfClause(
 	ifClause ast.IfClauseLike,
 ) {
@@ -1457,104 +1485,17 @@ func (v *visitor_) visitLocation(
 func (v *visitor_) visitLogical(
 	logical ast.LogicalLike,
 ) {
-	// Visit the possible logical rule types.
-	switch actual := logical.GetAny().(type) {
-	case ast.ComponentLike:
-		v.processor_.PreprocessComponent(
-			actual,
-			0,
-			0,
-		)
-		v.visitComponent(actual)
-		v.processor_.PostprocessComponent(
-			actual,
-			0,
-			0,
-		)
-	case ast.SubcomponentLike:
-		v.processor_.PreprocessSubcomponent(
-			actual,
-			0,
-			0,
-		)
-		v.visitSubcomponent(actual)
-		v.processor_.PostprocessSubcomponent(
-			actual,
-			0,
-			0,
-		)
-	case ast.PrecedenceLike:
-		v.processor_.PreprocessPrecedence(
-			actual,
-			0,
-			0,
-		)
-		v.visitPrecedence(actual)
-		v.processor_.PostprocessPrecedence(
-			actual,
-			0,
-			0,
-		)
-	case ast.ReferentLike:
-		v.processor_.PreprocessReferent(
-			actual,
-			0,
-			0,
-		)
-		v.visitReferent(actual)
-		v.processor_.PostprocessReferent(
-			actual,
-			0,
-			0,
-		)
-	case ast.ComplementLike:
-		v.processor_.PreprocessComplement(
-			actual,
-			0,
-			0,
-		)
-		v.visitComplement(actual)
-		v.processor_.PostprocessComplement(
-			actual,
-			0,
-			0,
-		)
-	case ast.FunctionLike:
-		v.processor_.PreprocessFunction(
-			actual,
-			0,
-			0,
-		)
-		v.visitFunction(actual)
-		v.processor_.PostprocessFunction(
-			actual,
-			0,
-			0,
-		)
-	case ast.MethodLike:
-		v.processor_.PreprocessMethod(
-			actual,
-			0,
-			0,
-		)
-		v.visitMethod(actual)
-		v.processor_.PostprocessMethod(
-			actual,
-			0,
-			0,
-		)
-	case ast.ValueLike:
-		v.processor_.PreprocessValue(
-			actual,
-			0,
-			0,
-		)
-		v.visitValue(actual)
-		v.processor_.PostprocessValue(
-			actual,
-			0,
-			0,
-		)
+	// Visit the possible logical literal values.
+	var actual = logical.GetAny().(string)
+	switch actual {
+	case "and":
+		v.processor_.ProcessDelimiter("and")
+	case "san":
+		v.processor_.ProcessDelimiter("san")
+	case "ior":
+		v.processor_.ProcessDelimiter("ior")
+	case "xor":
+		v.processor_.ProcessDelimiter("xor")
 	}
 }
 
@@ -2123,14 +2064,14 @@ func (v *visitor_) visitOperator(
 			0,
 			0,
 		)
-	case ast.BooleanLike:
-		v.processor_.PreprocessBoolean(
+	case ast.LogicalLike:
+		v.processor_.PreprocessLogical(
 			actual,
 			0,
 			0,
 		)
-		v.visitBoolean(actual)
-		v.processor_.PostprocessBoolean(
+		v.visitLogical(actual)
+		v.processor_.PostprocessLogical(
 			actual,
 			0,
 			0,
@@ -2193,45 +2134,6 @@ func (v *visitor_) visitParameter(
 		0,
 		0,
 	)
-}
-
-func (v *visitor_) visitParameterization(
-	parameterization ast.ParameterizationLike,
-) {
-	var delimiter1 = parameterization.GetDelimiter1()
-	v.processor_.ProcessDelimiter(delimiter1)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessParameterizationSlot(
-		parameterization,
-		1,
-	)
-
-	var parametersIndex uint
-	var parameters = parameterization.GetParameters().GetIterator()
-	var parametersCount = uint(parameters.GetSize())
-	for parameters.HasNext() {
-		parametersIndex++
-		var rule = parameters.GetNext()
-		v.processor_.PreprocessParameter(
-			rule,
-			parametersIndex,
-			parametersCount,
-		)
-		v.visitParameter(rule)
-		v.processor_.PostprocessParameter(
-			rule,
-			parametersIndex,
-			parametersCount,
-		)
-	}
-	// Visit slot 2 between terms.
-	v.processor_.ProcessParameterizationSlot(
-		parameterization,
-		2,
-	)
-
-	var delimiter2 = parameterization.GetDelimiter2()
-	v.processor_.ProcessDelimiter(delimiter2)
 }
 
 func (v *visitor_) visitPrecedence(
@@ -2870,6 +2772,110 @@ func (v *visitor_) visitReturnClause(
 		0,
 		0,
 	)
+}
+
+func (v *visitor_) visitReversible(
+	reversible ast.ReversibleLike,
+) {
+	// Visit the possible reversible rule types.
+	switch actual := reversible.GetAny().(type) {
+	case ast.ComponentLike:
+		v.processor_.PreprocessComponent(
+			actual,
+			0,
+			0,
+		)
+		v.visitComponent(actual)
+		v.processor_.PostprocessComponent(
+			actual,
+			0,
+			0,
+		)
+	case ast.SubcomponentLike:
+		v.processor_.PreprocessSubcomponent(
+			actual,
+			0,
+			0,
+		)
+		v.visitSubcomponent(actual)
+		v.processor_.PostprocessSubcomponent(
+			actual,
+			0,
+			0,
+		)
+	case ast.PrecedenceLike:
+		v.processor_.PreprocessPrecedence(
+			actual,
+			0,
+			0,
+		)
+		v.visitPrecedence(actual)
+		v.processor_.PostprocessPrecedence(
+			actual,
+			0,
+			0,
+		)
+	case ast.ReferentLike:
+		v.processor_.PreprocessReferent(
+			actual,
+			0,
+			0,
+		)
+		v.visitReferent(actual)
+		v.processor_.PostprocessReferent(
+			actual,
+			0,
+			0,
+		)
+	case ast.ComplementLike:
+		v.processor_.PreprocessComplement(
+			actual,
+			0,
+			0,
+		)
+		v.visitComplement(actual)
+		v.processor_.PostprocessComplement(
+			actual,
+			0,
+			0,
+		)
+	case ast.FunctionLike:
+		v.processor_.PreprocessFunction(
+			actual,
+			0,
+			0,
+		)
+		v.visitFunction(actual)
+		v.processor_.PostprocessFunction(
+			actual,
+			0,
+			0,
+		)
+	case ast.MethodLike:
+		v.processor_.PreprocessMethod(
+			actual,
+			0,
+			0,
+		)
+		v.visitMethod(actual)
+		v.processor_.PostprocessMethod(
+			actual,
+			0,
+			0,
+		)
+	case ast.ValueLike:
+		v.processor_.PreprocessValue(
+			actual,
+			0,
+			0,
+		)
+		v.visitValue(actual)
+		v.processor_.PostprocessValue(
+			actual,
+			0,
+			0,
+		)
+	}
 }
 
 func (v *visitor_) visitRight(
