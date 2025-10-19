@@ -252,22 +252,22 @@ func (v *processor_) ProcessArgumentSlot(
 ) {
 }
 
-func (v *processor_) PreprocessArithmeticOperator(
-	arithmeticOperator ast.ArithmeticOperatorLike,
+func (v *processor_) PreprocessArithmetic(
+	arithmetic ast.ArithmeticLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessArithmeticOperator(
-	arithmeticOperator ast.ArithmeticOperatorLike,
+func (v *processor_) PostprocessArithmetic(
+	arithmetic ast.ArithmeticLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessArithmeticOperatorSlot(
-	arithmeticOperator ast.ArithmeticOperatorLike,
+func (v *processor_) ProcessArithmeticSlot(
+	arithmetic ast.ArithmeticLike,
 	slot_ uint,
 ) {
 }
@@ -372,6 +372,26 @@ func (v *processor_) ProcessBagSlot(
 ) {
 }
 
+func (v *processor_) PreprocessBoolean(
+	boolean ast.BooleanLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessBoolean(
+	boolean ast.BooleanLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessBooleanSlot(
+	boolean ast.BooleanLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessBreakClause(
 	breakClause ast.BreakClauseLike,
 	index_ uint,
@@ -452,22 +472,22 @@ func (v *processor_) ProcessCollectionSlot(
 ) {
 }
 
-func (v *processor_) PreprocessComparisonOperator(
-	comparisonOperator ast.ComparisonOperatorLike,
+func (v *processor_) PreprocessComparison(
+	comparison ast.ComparisonLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessComparisonOperator(
-	comparisonOperator ast.ComparisonOperatorLike,
+func (v *processor_) PostprocessComparison(
+	comparison ast.ComparisonLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessComparisonOperatorSlot(
-	comparisonOperator ast.ComparisonOperatorLike,
+func (v *processor_) ProcessComparisonSlot(
+	comparison ast.ComparisonLike,
 	slot_ uint,
 ) {
 }
@@ -932,22 +952,22 @@ func (v *processor_) ProcessLetClauseSlot(
 ) {
 }
 
-func (v *processor_) PreprocessLexicalOperator(
-	lexicalOperator ast.LexicalOperatorLike,
+func (v *processor_) PreprocessLexical(
+	lexical ast.LexicalLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessLexicalOperator(
-	lexicalOperator ast.LexicalOperatorLike,
+func (v *processor_) PostprocessLexical(
+	lexical ast.LexicalLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessLexicalOperatorSlot(
-	lexicalOperator ast.LexicalOperatorLike,
+func (v *processor_) ProcessLexicalSlot(
+	lexical ast.LexicalLike,
 	slot_ uint,
 ) {
 }
@@ -1008,26 +1028,6 @@ func (v *processor_) PostprocessLogical(
 
 func (v *processor_) ProcessLogicalSlot(
 	logical ast.LogicalLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessLogicalOperator(
-	logicalOperator ast.LogicalOperatorLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessLogicalOperator(
-	logicalOperator ast.LogicalOperatorLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessLogicalOperatorSlot(
-	logicalOperator ast.LogicalOperatorLike,
 	slot_ uint,
 ) {
 }

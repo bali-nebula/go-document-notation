@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func LexicalOperatorClass() LexicalOperatorClassLike {
-	return lexicalOperatorClass()
+func BooleanClass() BooleanClassLike {
+	return booleanClass()
 }
 
 // Constructor Methods
 
-func (c *lexicalOperatorClass_) LexicalOperator(
+func (c *booleanClass_) Boolean(
 	any_ any,
-) LexicalOperatorLike {
+) BooleanLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &lexicalOperator_{
+	var instance = &boolean_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *lexicalOperatorClass_) LexicalOperator(
 
 // Principal Methods
 
-func (v *lexicalOperator_) GetClass() LexicalOperatorClassLike {
-	return lexicalOperatorClass()
+func (v *boolean_) GetClass() BooleanClassLike {
+	return booleanClass()
 }
 
 // Attribute Methods
 
-func (v *lexicalOperator_) GetAny() any {
+func (v *boolean_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *lexicalOperator_) GetAny() any {
 
 // Instance Structure
 
-type lexicalOperator_ struct {
+type boolean_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type lexicalOperatorClass_ struct {
+type booleanClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func lexicalOperatorClass() *lexicalOperatorClass_ {
-	return lexicalOperatorClassReference_
+func booleanClass() *booleanClass_ {
+	return booleanClassReference_
 }
 
-var lexicalOperatorClassReference_ = &lexicalOperatorClass_{
+var booleanClassReference_ = &booleanClass_{
 	// Initialize the class constants.
 }

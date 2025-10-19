@@ -248,8 +248,8 @@ func (v *parser_) parseArgument() (
 	return
 }
 
-func (v *parser_) parseArithmeticOperator() (
-	arithmeticOperator ast.ArithmeticOperatorLike,
+func (v *parser_) parseArithmetic() (
+	arithmetic ast.ArithmeticLike,
 	token TokenLike,
 	ok bool,
 ) {
@@ -259,7 +259,7 @@ func (v *parser_) parseArithmeticOperator() (
 	delimiter, token, ok = v.parseDelimiter("+")
 	if ok {
 		// Found a single "+" delimiter.
-		arithmeticOperator = ast.ArithmeticOperatorClass().ArithmeticOperator(delimiter)
+		arithmetic = ast.ArithmeticClass().Arithmetic(delimiter)
 		return
 	}
 
@@ -267,7 +267,7 @@ func (v *parser_) parseArithmeticOperator() (
 	delimiter, token, ok = v.parseDelimiter("-")
 	if ok {
 		// Found a single "-" delimiter.
-		arithmeticOperator = ast.ArithmeticOperatorClass().ArithmeticOperator(delimiter)
+		arithmetic = ast.ArithmeticClass().Arithmetic(delimiter)
 		return
 	}
 
@@ -275,7 +275,7 @@ func (v *parser_) parseArithmeticOperator() (
 	delimiter, token, ok = v.parseDelimiter("*")
 	if ok {
 		// Found a single "*" delimiter.
-		arithmeticOperator = ast.ArithmeticOperatorClass().ArithmeticOperator(delimiter)
+		arithmetic = ast.ArithmeticClass().Arithmetic(delimiter)
 		return
 	}
 
@@ -283,7 +283,7 @@ func (v *parser_) parseArithmeticOperator() (
 	delimiter, token, ok = v.parseDelimiter("/")
 	if ok {
 		// Found a single "/" delimiter.
-		arithmeticOperator = ast.ArithmeticOperatorClass().ArithmeticOperator(delimiter)
+		arithmetic = ast.ArithmeticClass().Arithmetic(delimiter)
 		return
 	}
 
@@ -291,7 +291,7 @@ func (v *parser_) parseArithmeticOperator() (
 	delimiter, token, ok = v.parseDelimiter("%")
 	if ok {
 		// Found a single "%" delimiter.
-		arithmeticOperator = ast.ArithmeticOperatorClass().ArithmeticOperator(delimiter)
+		arithmetic = ast.ArithmeticClass().Arithmetic(delimiter)
 		return
 	}
 
@@ -299,11 +299,11 @@ func (v *parser_) parseArithmeticOperator() (
 	delimiter, token, ok = v.parseDelimiter("^")
 	if ok {
 		// Found a single "^" delimiter.
-		arithmeticOperator = ast.ArithmeticOperatorClass().ArithmeticOperator(delimiter)
+		arithmetic = ast.ArithmeticClass().Arithmetic(delimiter)
 		return
 	}
 
-	// This is not a single ArithmeticOperator rule.
+	// This is not a single Arithmetic rule.
 	return
 }
 
@@ -620,6 +620,49 @@ func (v *parser_) parseBag() (
 	return
 }
 
+func (v *parser_) parseBoolean() (
+	boolean ast.BooleanLike,
+	token TokenLike,
+	ok bool,
+) {
+	var delimiter string
+
+	// Attempt to parse a single "and" delimiter.
+	delimiter, token, ok = v.parseDelimiter("and")
+	if ok {
+		// Found a single "and" delimiter.
+		boolean = ast.BooleanClass().Boolean(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "san" delimiter.
+	delimiter, token, ok = v.parseDelimiter("san")
+	if ok {
+		// Found a single "san" delimiter.
+		boolean = ast.BooleanClass().Boolean(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "ior" delimiter.
+	delimiter, token, ok = v.parseDelimiter("ior")
+	if ok {
+		// Found a single "ior" delimiter.
+		boolean = ast.BooleanClass().Boolean(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "xor" delimiter.
+	delimiter, token, ok = v.parseDelimiter("xor")
+	if ok {
+		// Found a single "xor" delimiter.
+		boolean = ast.BooleanClass().Boolean(delimiter)
+		return
+	}
+
+	// This is not a single Boolean rule.
+	return
+}
+
 func (v *parser_) parseBreakClause() (
 	breakClause ast.BreakClauseLike,
 	token TokenLike,
@@ -829,8 +872,8 @@ func (v *parser_) parseCollection() (
 	return
 }
 
-func (v *parser_) parseComparisonOperator() (
-	comparisonOperator ast.ComparisonOperatorLike,
+func (v *parser_) parseComparison() (
+	comparison ast.ComparisonLike,
 	token TokenLike,
 	ok bool,
 ) {
@@ -840,7 +883,7 @@ func (v *parser_) parseComparisonOperator() (
 	delimiter, token, ok = v.parseDelimiter("<")
 	if ok {
 		// Found a single "<" delimiter.
-		comparisonOperator = ast.ComparisonOperatorClass().ComparisonOperator(delimiter)
+		comparison = ast.ComparisonClass().Comparison(delimiter)
 		return
 	}
 
@@ -848,7 +891,7 @@ func (v *parser_) parseComparisonOperator() (
 	delimiter, token, ok = v.parseDelimiter("=")
 	if ok {
 		// Found a single "=" delimiter.
-		comparisonOperator = ast.ComparisonOperatorClass().ComparisonOperator(delimiter)
+		comparison = ast.ComparisonClass().Comparison(delimiter)
 		return
 	}
 
@@ -856,7 +899,7 @@ func (v *parser_) parseComparisonOperator() (
 	delimiter, token, ok = v.parseDelimiter(">")
 	if ok {
 		// Found a single ">" delimiter.
-		comparisonOperator = ast.ComparisonOperatorClass().ComparisonOperator(delimiter)
+		comparison = ast.ComparisonClass().Comparison(delimiter)
 		return
 	}
 
@@ -864,7 +907,7 @@ func (v *parser_) parseComparisonOperator() (
 	delimiter, token, ok = v.parseDelimiter("is")
 	if ok {
 		// Found a single "is" delimiter.
-		comparisonOperator = ast.ComparisonOperatorClass().ComparisonOperator(delimiter)
+		comparison = ast.ComparisonClass().Comparison(delimiter)
 		return
 	}
 
@@ -872,11 +915,11 @@ func (v *parser_) parseComparisonOperator() (
 	delimiter, token, ok = v.parseDelimiter("matches")
 	if ok {
 		// Found a single "matches" delimiter.
-		comparisonOperator = ast.ComparisonOperatorClass().ComparisonOperator(delimiter)
+		comparison = ast.ComparisonClass().Comparison(delimiter)
 		return
 	}
 
-	// This is not a single ComparisonOperator rule.
+	// This is not a single Comparison rule.
 	return
 }
 
@@ -2203,8 +2246,8 @@ func (v *parser_) parseLetClause() (
 	return
 }
 
-func (v *parser_) parseLexicalOperator() (
-	lexicalOperator ast.LexicalOperatorLike,
+func (v *parser_) parseLexical() (
+	lexical ast.LexicalLike,
 	token TokenLike,
 	ok bool,
 ) {
@@ -2214,11 +2257,11 @@ func (v *parser_) parseLexicalOperator() (
 	delimiter, token, ok = v.parseDelimiter("&")
 	if ok {
 		// Found a single "&" delimiter.
-		lexicalOperator = ast.LexicalOperatorClass().LexicalOperator(delimiter)
+		lexical = ast.LexicalClass().Lexical(delimiter)
 		return
 	}
 
-	// This is not a single LexicalOperator rule.
+	// This is not a single Lexical rule.
 	return
 }
 
@@ -2358,49 +2401,6 @@ func (v *parser_) parseLogical() (
 	}
 
 	// This is not a single Logical rule.
-	return
-}
-
-func (v *parser_) parseLogicalOperator() (
-	logicalOperator ast.LogicalOperatorLike,
-	token TokenLike,
-	ok bool,
-) {
-	var delimiter string
-
-	// Attempt to parse a single "and" delimiter.
-	delimiter, token, ok = v.parseDelimiter("and")
-	if ok {
-		// Found a single "and" delimiter.
-		logicalOperator = ast.LogicalOperatorClass().LogicalOperator(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "san" delimiter.
-	delimiter, token, ok = v.parseDelimiter("san")
-	if ok {
-		// Found a single "san" delimiter.
-		logicalOperator = ast.LogicalOperatorClass().LogicalOperator(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "ior" delimiter.
-	delimiter, token, ok = v.parseDelimiter("ior")
-	if ok {
-		// Found a single "ior" delimiter.
-		logicalOperator = ast.LogicalOperatorClass().LogicalOperator(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "xor" delimiter.
-	delimiter, token, ok = v.parseDelimiter("xor")
-	if ok {
-		// Found a single "xor" delimiter.
-		logicalOperator = ast.LogicalOperatorClass().LogicalOperator(delimiter)
-		return
-	}
-
-	// This is not a single LogicalOperator rule.
 	return
 }
 
@@ -3132,39 +3132,39 @@ func (v *parser_) parseOperator() (
 	token TokenLike,
 	ok bool,
 ) {
-	// Attempt to parse a single LexicalOperator Operator.
-	var lexicalOperator ast.LexicalOperatorLike
-	lexicalOperator, token, ok = v.parseLexicalOperator()
+	// Attempt to parse a single Comparison Operator.
+	var comparison ast.ComparisonLike
+	comparison, token, ok = v.parseComparison()
 	if ok {
-		// Found a single LexicalOperator Operator.
-		operator = ast.OperatorClass().Operator(lexicalOperator)
+		// Found a single Comparison Operator.
+		operator = ast.OperatorClass().Operator(comparison)
 		return
 	}
 
-	// Attempt to parse a single LogicalOperator Operator.
-	var logicalOperator ast.LogicalOperatorLike
-	logicalOperator, token, ok = v.parseLogicalOperator()
+	// Attempt to parse a single Boolean Operator.
+	var boolean ast.BooleanLike
+	boolean, token, ok = v.parseBoolean()
 	if ok {
-		// Found a single LogicalOperator Operator.
-		operator = ast.OperatorClass().Operator(logicalOperator)
+		// Found a single Boolean Operator.
+		operator = ast.OperatorClass().Operator(boolean)
 		return
 	}
 
-	// Attempt to parse a single ArithmeticOperator Operator.
-	var arithmeticOperator ast.ArithmeticOperatorLike
-	arithmeticOperator, token, ok = v.parseArithmeticOperator()
+	// Attempt to parse a single Arithmetic Operator.
+	var arithmetic ast.ArithmeticLike
+	arithmetic, token, ok = v.parseArithmetic()
 	if ok {
-		// Found a single ArithmeticOperator Operator.
-		operator = ast.OperatorClass().Operator(arithmeticOperator)
+		// Found a single Arithmetic Operator.
+		operator = ast.OperatorClass().Operator(arithmetic)
 		return
 	}
 
-	// Attempt to parse a single ComparisonOperator Operator.
-	var comparisonOperator ast.ComparisonOperatorLike
-	comparisonOperator, token, ok = v.parseComparisonOperator()
+	// Attempt to parse a single Lexical Operator.
+	var lexical ast.LexicalLike
+	lexical, token, ok = v.parseLexical()
 	if ok {
-		// Found a single ComparisonOperator Operator.
-		operator = ast.OperatorClass().Operator(comparisonOperator)
+		// Found a single Lexical Operator.
+		operator = ast.OperatorClass().Operator(lexical)
 		return
 	}
 
@@ -5480,6 +5480,8 @@ var parserClassReference_ = &parserClass_{
 			"$AcceptClause":   `"accept" Message "from" Bag`,
 			"$RejectClause":   `"reject" Message "from" Bag`,
 			"$PublishClause":  `"publish" Message`,
+			"$Message":        `Expression`,
+			"$Bag":            `Expression  ! The global name of the message bag.`,
 			"$Recipient": `
     Variable
     Subcomponent`,
@@ -5488,16 +5490,14 @@ var parserClassReference_ = &parserClass_{
 			"$Index": `
     Value
     Primitive`,
-			"$Bag":            `Expression  ! The global name of the message bag.`,
-			"$Message":        `Expression`,
 			"$SaveClause":     `"save" Draft "to" Recipient  ! The recipient receives a citation.`,
 			"$RetrieveClause": `"retrieve" Recipient "from" Citation`,
 			"$DiscardClause":  `"discard" Citation`,
+			"$Draft":          `Expression`,
 			"$Citation":       `Expression  ! A citation to a draft document.`,
 			"$NotarizeClause": `"notarize" Draft "as" Location  ! The draft becomes a document.`,
 			"$InspectClause":  `"inspect" Recipient "at" Location`,
 			"$CheckoutClause": `"checkout" Recipient AtLevel? "from" Location  ! Returns a draft.`,
-			"$Draft":          `Expression`,
 			"$Location":       `Expression  ! The global name of a document.`,
 			"$AtLevel":        `"at" "level" Expression`,
 			"$DoClause":       `"do" Method`,
@@ -5567,30 +5567,30 @@ var parserClassReference_ = &parserClass_{
 			"$Value":     `identifier`,
 			"$Predicate": `Operator Expression`,
 			"$Operator": `
-    LexicalOperator
-    LogicalOperator
-    ArithmeticOperator
-    ComparisonOperator`,
-			"$LexicalOperator": `
-    "&"`,
-			"$LogicalOperator": `
+    Comparison
+    Boolean
+    Arithmetic
+    Lexical`,
+			"$Comparison": `
+    "<"
+    "="
+    ">"
+    "is"
+    "matches"`,
+			"$Boolean": `
     "and"
     "san"
     "ior"
     "xor"`,
-			"$ArithmeticOperator": `
+			"$Arithmetic": `
     "+"
     "-"
     "*"
     "/"
     "%"
     "^"`,
-			"$ComparisonOperator": `
-    "<"
-    "="
-    ">"
-    "is"
-    "matches"`,
+			"$Lexical": `
+    "&"`,
 		},
 	),
 }

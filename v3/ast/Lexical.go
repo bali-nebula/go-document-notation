@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func ArithmeticOperatorClass() ArithmeticOperatorClassLike {
-	return arithmeticOperatorClass()
+func LexicalClass() LexicalClassLike {
+	return lexicalClass()
 }
 
 // Constructor Methods
 
-func (c *arithmeticOperatorClass_) ArithmeticOperator(
+func (c *lexicalClass_) Lexical(
 	any_ any,
-) ArithmeticOperatorLike {
+) LexicalLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &arithmeticOperator_{
+	var instance = &lexical_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *arithmeticOperatorClass_) ArithmeticOperator(
 
 // Principal Methods
 
-func (v *arithmeticOperator_) GetClass() ArithmeticOperatorClassLike {
-	return arithmeticOperatorClass()
+func (v *lexical_) GetClass() LexicalClassLike {
+	return lexicalClass()
 }
 
 // Attribute Methods
 
-func (v *arithmeticOperator_) GetAny() any {
+func (v *lexical_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *arithmeticOperator_) GetAny() any {
 
 // Instance Structure
 
-type arithmeticOperator_ struct {
+type lexical_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type arithmeticOperatorClass_ struct {
+type lexicalClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func arithmeticOperatorClass() *arithmeticOperatorClass_ {
-	return arithmeticOperatorClassReference_
+func lexicalClass() *lexicalClass_ {
+	return lexicalClassReference_
 }
 
-var arithmeticOperatorClassReference_ = &arithmeticOperatorClass_{
+var lexicalClassReference_ = &lexicalClass_{
 	// Initialize the class constants.
 }

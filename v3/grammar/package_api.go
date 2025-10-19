@@ -419,18 +419,18 @@ type Methodical interface {
 		argument ast.ArgumentLike,
 		slot_ uint,
 	)
-	PreprocessArithmeticOperator(
-		arithmeticOperator ast.ArithmeticOperatorLike,
+	PreprocessArithmetic(
+		arithmetic ast.ArithmeticLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessArithmeticOperator(
-		arithmeticOperator ast.ArithmeticOperatorLike,
+	PostprocessArithmetic(
+		arithmetic ast.ArithmeticLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessArithmeticOperatorSlot(
-		arithmeticOperator ast.ArithmeticOperatorLike,
+	ProcessArithmeticSlot(
+		arithmetic ast.ArithmeticLike,
 		slot_ uint,
 	)
 	PreprocessAssignment(
@@ -503,6 +503,20 @@ type Methodical interface {
 		bag ast.BagLike,
 		slot_ uint,
 	)
+	PreprocessBoolean(
+		boolean ast.BooleanLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessBoolean(
+		boolean ast.BooleanLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessBooleanSlot(
+		boolean ast.BooleanLike,
+		slot_ uint,
+	)
 	PreprocessBreakClause(
 		breakClause ast.BreakClauseLike,
 		index_ uint,
@@ -559,18 +573,18 @@ type Methodical interface {
 		collection ast.CollectionLike,
 		slot_ uint,
 	)
-	PreprocessComparisonOperator(
-		comparisonOperator ast.ComparisonOperatorLike,
+	PreprocessComparison(
+		comparison ast.ComparisonLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessComparisonOperator(
-		comparisonOperator ast.ComparisonOperatorLike,
+	PostprocessComparison(
+		comparison ast.ComparisonLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessComparisonOperatorSlot(
-		comparisonOperator ast.ComparisonOperatorLike,
+	ProcessComparisonSlot(
+		comparison ast.ComparisonLike,
 		slot_ uint,
 	)
 	PreprocessComplement(
@@ -895,18 +909,18 @@ type Methodical interface {
 		letClause ast.LetClauseLike,
 		slot_ uint,
 	)
-	PreprocessLexicalOperator(
-		lexicalOperator ast.LexicalOperatorLike,
+	PreprocessLexical(
+		lexical ast.LexicalLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessLexicalOperator(
-		lexicalOperator ast.LexicalOperatorLike,
+	PostprocessLexical(
+		lexical ast.LexicalLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessLexicalOperatorSlot(
-		lexicalOperator ast.LexicalOperatorLike,
+	ProcessLexicalSlot(
+		lexical ast.LexicalLike,
 		slot_ uint,
 	)
 	PreprocessLine(
@@ -949,20 +963,6 @@ type Methodical interface {
 	)
 	ProcessLogicalSlot(
 		logical ast.LogicalLike,
-		slot_ uint,
-	)
-	PreprocessLogicalOperator(
-		logicalOperator ast.LogicalOperatorLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessLogicalOperator(
-		logicalOperator ast.LogicalOperatorLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessLogicalOperatorSlot(
-		logicalOperator ast.LogicalOperatorLike,
 		slot_ uint,
 	)
 	PreprocessMagnitude(

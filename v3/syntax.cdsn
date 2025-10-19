@@ -169,6 +169,10 @@ $RejectClause: "reject" Message "from" Bag
 
 $PublishClause: "publish" Message
 
+$Message: Expression
+
+$Bag: Expression  ! The global name of the message bag.
+
 $Recipient:
     Variable
     Subcomponent
@@ -181,15 +185,13 @@ $Index:
     Value
     Primitive
 
-$Bag: Expression  ! The global name of the message bag.
-
-$Message: Expression
-
 $SaveClause: "save" Draft "to" Recipient  ! The recipient receives a citation.
 
 $RetrieveClause: "retrieve" Recipient "from" Citation
 
 $DiscardClause: "discard" Citation
+
+$Draft: Expression
 
 $Citation: Expression  ! A citation to a draft document.
 
@@ -198,8 +200,6 @@ $NotarizeClause: "notarize" Draft "as" Location  ! The draft becomes a document.
 $InspectClause: "inspect" Recipient "at" Location
 
 $CheckoutClause: "checkout" Recipient AtLevel? "from" Location  ! Returns a draft.
-
-$Draft: Expression
 
 $Location: Expression  ! The global name of a document.
 
@@ -292,21 +292,25 @@ $Value: identifier
 $Predicate: Operator Expression
 
 $Operator:
-    LexicalOperator
-    LogicalOperator
-    ArithmeticOperator
-    ComparisonOperator
+    Comparison
+    Boolean
+    Arithmetic
+    Lexical
 
-$LexicalOperator:
-    "&"
+$Comparison:
+    "<"
+    "="
+    ">"
+    "is"
+    "matches"
 
-$LogicalOperator:
+$Boolean:
     "and"
     "san"
     "ior"
     "xor"
 
-$ArithmeticOperator:
+$Arithmetic:
     "+"
     "-"
     "*"
@@ -314,12 +318,8 @@ $ArithmeticOperator:
     "%"
     "^"
 
-$ComparisonOperator:
-    "<"
-    "="
-    ">"
-    "is"
-    "matches"
+$Lexical:
+    "&"
 
 !>
 ┌──────────────────────────────────────────────────────────────────────────────┐

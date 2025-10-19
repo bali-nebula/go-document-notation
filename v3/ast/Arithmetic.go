@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func ComparisonOperatorClass() ComparisonOperatorClassLike {
-	return comparisonOperatorClass()
+func ArithmeticClass() ArithmeticClassLike {
+	return arithmeticClass()
 }
 
 // Constructor Methods
 
-func (c *comparisonOperatorClass_) ComparisonOperator(
+func (c *arithmeticClass_) Arithmetic(
 	any_ any,
-) ComparisonOperatorLike {
+) ArithmeticLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &comparisonOperator_{
+	var instance = &arithmetic_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *comparisonOperatorClass_) ComparisonOperator(
 
 // Principal Methods
 
-func (v *comparisonOperator_) GetClass() ComparisonOperatorClassLike {
-	return comparisonOperatorClass()
+func (v *arithmetic_) GetClass() ArithmeticClassLike {
+	return arithmeticClass()
 }
 
 // Attribute Methods
 
-func (v *comparisonOperator_) GetAny() any {
+func (v *arithmetic_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *comparisonOperator_) GetAny() any {
 
 // Instance Structure
 
-type comparisonOperator_ struct {
+type arithmetic_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type comparisonOperatorClass_ struct {
+type arithmeticClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func comparisonOperatorClass() *comparisonOperatorClass_ {
-	return comparisonOperatorClassReference_
+func arithmeticClass() *arithmeticClass_ {
+	return arithmeticClassReference_
 }
 
-var comparisonOperatorClassReference_ = &comparisonOperatorClass_{
+var arithmeticClassReference_ = &arithmeticClass_{
 	// Initialize the class constants.
 }

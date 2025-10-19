@@ -99,15 +99,15 @@ type ArgumentClassLike interface {
 }
 
 /*
-ArithmeticOperatorClassLike is a class interface that declares the
+ArithmeticClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete arithmetic-operator-like class.
+supported by each concrete arithmetic-like class.
 */
-type ArithmeticOperatorClassLike interface {
+type ArithmeticClassLike interface {
 	// Constructor Methods
-	ArithmeticOperator(
+	Arithmetic(
 		any_ any,
-	) ArithmeticOperatorLike
+	) ArithmeticLike
 }
 
 /*
@@ -177,6 +177,18 @@ type BagClassLike interface {
 }
 
 /*
+BooleanClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete boolean-like class.
+*/
+type BooleanClassLike interface {
+	// Constructor Methods
+	Boolean(
+		any_ any,
+	) BooleanLike
+}
+
+/*
 BreakClauseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete break-clause-like class.
@@ -230,15 +242,15 @@ type CollectionClassLike interface {
 }
 
 /*
-ComparisonOperatorClassLike is a class interface that declares the
+ComparisonClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete comparison-operator-like class.
+supported by each concrete comparison-like class.
 */
-type ComparisonOperatorClassLike interface {
+type ComparisonClassLike interface {
 	// Constructor Methods
-	ComparisonOperator(
+	Comparison(
 		any_ any,
-	) ComparisonOperatorLike
+	) ComparisonLike
 }
 
 /*
@@ -542,15 +554,15 @@ type LetClauseClassLike interface {
 }
 
 /*
-LexicalOperatorClassLike is a class interface that declares the
+LexicalClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete lexical-operator-like class.
+supported by each concrete lexical-like class.
 */
-type LexicalOperatorClassLike interface {
+type LexicalClassLike interface {
 	// Constructor Methods
-	LexicalOperator(
+	Lexical(
 		any_ any,
-	) LexicalOperatorLike
+	) LexicalLike
 }
 
 /*
@@ -587,18 +599,6 @@ type LogicalClassLike interface {
 	Logical(
 		any_ any,
 	) LogicalLike
-}
-
-/*
-LogicalOperatorClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete logical-operator-like class.
-*/
-type LogicalOperatorClassLike interface {
-	// Constructor Methods
-	LogicalOperator(
-		any_ any,
-	) LogicalOperatorLike
 }
 
 /*
@@ -1201,13 +1201,13 @@ type ArgumentLike interface {
 }
 
 /*
-ArithmeticOperatorLike is an instance interface that declares the
+ArithmeticLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete arithmetic-operator-like class.
+by each instance of a concrete arithmetic-like class.
 */
-type ArithmeticOperatorLike interface {
+type ArithmeticLike interface {
 	// Principal Methods
-	GetClass() ArithmeticOperatorClassLike
+	GetClass() ArithmeticClassLike
 
 	// Attribute Methods
 	GetAny() any
@@ -1285,6 +1285,19 @@ type BagLike interface {
 }
 
 /*
+BooleanLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete boolean-like class.
+*/
+type BooleanLike interface {
+	// Principal Methods
+	GetClass() BooleanClassLike
+
+	// Attribute Methods
+	GetAny() any
+}
+
+/*
 BreakClauseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete break-clause-like class.
@@ -1342,13 +1355,13 @@ type CollectionLike interface {
 }
 
 /*
-ComparisonOperatorLike is an instance interface that declares the
+ComparisonLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete comparison-operator-like class.
+by each instance of a concrete comparison-like class.
 */
-type ComparisonOperatorLike interface {
+type ComparisonLike interface {
 	// Principal Methods
-	GetClass() ComparisonOperatorClassLike
+	GetClass() ComparisonClassLike
 
 	// Attribute Methods
 	GetAny() any
@@ -1678,13 +1691,13 @@ type LetClauseLike interface {
 }
 
 /*
-LexicalOperatorLike is an instance interface that declares the
+LexicalLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete lexical-operator-like class.
+by each instance of a concrete lexical-like class.
 */
-type LexicalOperatorLike interface {
+type LexicalLike interface {
 	// Principal Methods
-	GetClass() LexicalOperatorClassLike
+	GetClass() LexicalClassLike
 
 	// Attribute Methods
 	GetAny() any
@@ -1724,19 +1737,6 @@ by each instance of a concrete logical-like class.
 type LogicalLike interface {
 	// Principal Methods
 	GetClass() LogicalClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
-LogicalOperatorLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete logical-operator-like class.
-*/
-type LogicalOperatorLike interface {
-	// Principal Methods
-	GetClass() LogicalOperatorClassLike
 
 	// Attribute Methods
 	GetAny() any

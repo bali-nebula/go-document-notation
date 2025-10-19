@@ -205,11 +205,11 @@ func (v *visitor_) visitArgument(
 	}
 }
 
-func (v *visitor_) visitArithmeticOperator(
-	arithmeticOperator ast.ArithmeticOperatorLike,
+func (v *visitor_) visitArithmetic(
+	arithmetic ast.ArithmeticLike,
 ) {
-	// Visit the possible arithmeticOperator literal values.
-	var actual = arithmeticOperator.GetAny().(string)
+	// Visit the possible arithmetic literal values.
+	var actual = arithmetic.GetAny().(string)
 	switch actual {
 	case "+":
 		v.processor_.ProcessDelimiter("+")
@@ -379,6 +379,23 @@ func (v *visitor_) visitBag(
 	)
 }
 
+func (v *visitor_) visitBoolean(
+	boolean ast.BooleanLike,
+) {
+	// Visit the possible boolean literal values.
+	var actual = boolean.GetAny().(string)
+	switch actual {
+	case "and":
+		v.processor_.ProcessDelimiter("and")
+	case "san":
+		v.processor_.ProcessDelimiter("san")
+	case "ior":
+		v.processor_.ProcessDelimiter("ior")
+	case "xor":
+		v.processor_.ProcessDelimiter("xor")
+	}
+}
+
 func (v *visitor_) visitBreakClause(
 	breakClause ast.BreakClauseLike,
 ) {
@@ -514,11 +531,11 @@ func (v *visitor_) visitCollection(
 	}
 }
 
-func (v *visitor_) visitComparisonOperator(
-	comparisonOperator ast.ComparisonOperatorLike,
+func (v *visitor_) visitComparison(
+	comparison ast.ComparisonLike,
 ) {
-	// Visit the possible comparisonOperator literal values.
-	var actual = comparisonOperator.GetAny().(string)
+	// Visit the possible comparison literal values.
+	var actual = comparison.GetAny().(string)
 	switch actual {
 	case "<":
 		v.processor_.ProcessDelimiter("<")
@@ -1377,11 +1394,11 @@ func (v *visitor_) visitLetClause(
 	)
 }
 
-func (v *visitor_) visitLexicalOperator(
-	lexicalOperator ast.LexicalOperatorLike,
+func (v *visitor_) visitLexical(
+	lexical ast.LexicalLike,
 ) {
-	// Visit the possible lexicalOperator literal values.
-	var actual = lexicalOperator.GetAny().(string)
+	// Visit the possible lexical literal values.
+	var actual = lexical.GetAny().(string)
 	switch actual {
 	case "&":
 		v.processor_.ProcessDelimiter("&")
@@ -1538,23 +1555,6 @@ func (v *visitor_) visitLogical(
 			0,
 			0,
 		)
-	}
-}
-
-func (v *visitor_) visitLogicalOperator(
-	logicalOperator ast.LogicalOperatorLike,
-) {
-	// Visit the possible logicalOperator literal values.
-	var actual = logicalOperator.GetAny().(string)
-	switch actual {
-	case "and":
-		v.processor_.ProcessDelimiter("and")
-	case "san":
-		v.processor_.ProcessDelimiter("san")
-	case "ior":
-		v.processor_.ProcessDelimiter("ior")
-	case "xor":
-		v.processor_.ProcessDelimiter("xor")
 	}
 }
 
@@ -2111,50 +2111,50 @@ func (v *visitor_) visitOperator(
 ) {
 	// Visit the possible operator rule types.
 	switch actual := operator.GetAny().(type) {
-	case ast.LexicalOperatorLike:
-		v.processor_.PreprocessLexicalOperator(
+	case ast.ComparisonLike:
+		v.processor_.PreprocessComparison(
 			actual,
 			0,
 			0,
 		)
-		v.visitLexicalOperator(actual)
-		v.processor_.PostprocessLexicalOperator(
+		v.visitComparison(actual)
+		v.processor_.PostprocessComparison(
 			actual,
 			0,
 			0,
 		)
-	case ast.LogicalOperatorLike:
-		v.processor_.PreprocessLogicalOperator(
+	case ast.BooleanLike:
+		v.processor_.PreprocessBoolean(
 			actual,
 			0,
 			0,
 		)
-		v.visitLogicalOperator(actual)
-		v.processor_.PostprocessLogicalOperator(
+		v.visitBoolean(actual)
+		v.processor_.PostprocessBoolean(
 			actual,
 			0,
 			0,
 		)
-	case ast.ArithmeticOperatorLike:
-		v.processor_.PreprocessArithmeticOperator(
+	case ast.ArithmeticLike:
+		v.processor_.PreprocessArithmetic(
 			actual,
 			0,
 			0,
 		)
-		v.visitArithmeticOperator(actual)
-		v.processor_.PostprocessArithmeticOperator(
+		v.visitArithmetic(actual)
+		v.processor_.PostprocessArithmetic(
 			actual,
 			0,
 			0,
 		)
-	case ast.ComparisonOperatorLike:
-		v.processor_.PreprocessComparisonOperator(
+	case ast.LexicalLike:
+		v.processor_.PreprocessLexical(
 			actual,
 			0,
 			0,
 		)
-		v.visitComparisonOperator(actual)
-		v.processor_.PostprocessComparisonOperator(
+		v.visitLexical(actual)
+		v.processor_.PostprocessLexical(
 			actual,
 			0,
 			0,

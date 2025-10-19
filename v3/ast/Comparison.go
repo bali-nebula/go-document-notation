@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func LogicalOperatorClass() LogicalOperatorClassLike {
-	return logicalOperatorClass()
+func ComparisonClass() ComparisonClassLike {
+	return comparisonClass()
 }
 
 // Constructor Methods
 
-func (c *logicalOperatorClass_) LogicalOperator(
+func (c *comparisonClass_) Comparison(
 	any_ any,
-) LogicalOperatorLike {
+) ComparisonLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &logicalOperator_{
+	var instance = &comparison_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *logicalOperatorClass_) LogicalOperator(
 
 // Principal Methods
 
-func (v *logicalOperator_) GetClass() LogicalOperatorClassLike {
-	return logicalOperatorClass()
+func (v *comparison_) GetClass() ComparisonClassLike {
+	return comparisonClass()
 }
 
 // Attribute Methods
 
-func (v *logicalOperator_) GetAny() any {
+func (v *comparison_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *logicalOperator_) GetAny() any {
 
 // Instance Structure
 
-type logicalOperator_ struct {
+type comparison_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type logicalOperatorClass_ struct {
+type comparisonClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func logicalOperatorClass() *logicalOperatorClass_ {
-	return logicalOperatorClassReference_
+func comparisonClass() *comparisonClass_ {
+	return comparisonClassReference_
 }
 
-var logicalOperatorClassReference_ = &logicalOperatorClass_{
+var comparisonClassReference_ = &comparisonClass_{
 	// Initialize the class constants.
 }
