@@ -232,6 +232,8 @@ func (v *visitor_) visitAssignment(
 	// Visit the possible assignment literal values.
 	var actual = assignment.GetAny().(string)
 	switch actual {
+	case "?=":
+		v.processor_.ProcessDelimiter("?=")
 	case ":=":
 		v.processor_.ProcessDelimiter(":=")
 	case "+=":
@@ -242,14 +244,8 @@ func (v *visitor_) visitAssignment(
 		v.processor_.ProcessDelimiter("*=")
 	case "/=":
 		v.processor_.ProcessDelimiter("/=")
-	case "%=":
-		v.processor_.ProcessDelimiter("%=")
-	case "^=":
-		v.processor_.ProcessDelimiter("^=")
 	case "&=":
 		v.processor_.ProcessDelimiter("&=")
-	case "?=":
-		v.processor_.ProcessDelimiter("?=")
 	}
 }
 

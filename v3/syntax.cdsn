@@ -210,15 +210,13 @@ $DoClause: "do" Method
 $LetClause: "let" Recipient Assignment Expression
 
 $Assignment:
+    "?="  ! Assign a default value if not already initialized.
     ":="
     "+="
     "-="
     "*="
     "/="
-    "%="
-    "^="
     "&="
-    "?="  ! Assign a default value if not already initialized.
 
 $Expression: Subject Predicate*
 

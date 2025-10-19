@@ -314,6 +314,14 @@ func (v *parser_) parseAssignment() (
 ) {
 	var delimiter string
 
+	// Attempt to parse a single "?=" delimiter.
+	delimiter, token, ok = v.parseDelimiter("?=")
+	if ok {
+		// Found a single "?=" delimiter.
+		assignment = ast.AssignmentClass().Assignment(delimiter)
+		return
+	}
+
 	// Attempt to parse a single ":=" delimiter.
 	delimiter, token, ok = v.parseDelimiter(":=")
 	if ok {
@@ -354,34 +362,10 @@ func (v *parser_) parseAssignment() (
 		return
 	}
 
-	// Attempt to parse a single "%=" delimiter.
-	delimiter, token, ok = v.parseDelimiter("%=")
-	if ok {
-		// Found a single "%=" delimiter.
-		assignment = ast.AssignmentClass().Assignment(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "^=" delimiter.
-	delimiter, token, ok = v.parseDelimiter("^=")
-	if ok {
-		// Found a single "^=" delimiter.
-		assignment = ast.AssignmentClass().Assignment(delimiter)
-		return
-	}
-
 	// Attempt to parse a single "&=" delimiter.
 	delimiter, token, ok = v.parseDelimiter("&=")
 	if ok {
 		// Found a single "&=" delimiter.
-		assignment = ast.AssignmentClass().Assignment(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "?=" delimiter.
-	delimiter, token, ok = v.parseDelimiter("?=")
-	if ok {
-		// Found a single "?=" delimiter.
 		assignment = ast.AssignmentClass().Assignment(delimiter)
 		return
 	}
@@ -5527,15 +5511,13 @@ var parserClassReference_ = &parserClass_{
 			"$DoClause":       `"do" Method`,
 			"$LetClause":      `"let" Recipient Assignment Expression`,
 			"$Assignment": `
+    "?="  ! Assign a default value if not already initialized.
     ":="
     "+="
     "-="
     "*="
     "/="
-    "%="
-    "^="
-    "&="
-    "?="  ! Assign a default value if not already initialized.`,
+    "&="`,
 			"$Expression": `Subject Predicate*`,
 			"$Subject": `
     Component
