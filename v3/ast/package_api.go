@@ -38,7 +38,7 @@ on interfaces, not on each other.
 package ast
 
 import (
-	fra "github.com/craterdog/go-component-framework/v7"
+	fra "github.com/craterdog/go-collection-framework/v8"
 )
 
 // TYPE DECLARATIONS

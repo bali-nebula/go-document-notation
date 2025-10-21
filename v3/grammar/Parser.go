@@ -24,8 +24,8 @@ package grammar
 import (
 	fmt "fmt"
 	ast "github.com/bali-nebula/go-document-notation/v3/ast"
-	fra "github.com/craterdog/go-component-framework/v7"
-	uti "github.com/craterdog/go-missing-utilities/v7"
+	fra "github.com/craterdog/go-collection-framework/v8"
+	uti "github.com/craterdog/go-missing-utilities/v8"
 	mat "math"
 	sts "strings"
 )

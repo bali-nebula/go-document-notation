@@ -33,7 +33,7 @@ package module
 import (
 	ast "github.com/bali-nebula/go-document-notation/v3/ast"
 	gra "github.com/bali-nebula/go-document-notation/v3/grammar"
-	fra "github.com/craterdog/go-component-framework/v7"
+	fra "github.com/craterdog/go-collection-framework/v8"
 )
 
 // TYPE ALIASES

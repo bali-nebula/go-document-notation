@@ -15,7 +15,7 @@ package module_test
 import (
 	fmt "fmt"
 	doc "github.com/bali-nebula/go-document-notation/v3"
-	uti "github.com/craterdog/go-missing-utilities/v7"
+	uti "github.com/craterdog/go-missing-utilities/v8"
 	ass "github.com/stretchr/testify/assert"
 	sts "strings"
 	tes "testing"

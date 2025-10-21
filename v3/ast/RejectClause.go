@@ -22,7 +22,7 @@
 package ast
 
 import (
-	uti "github.com/craterdog/go-missing-utilities/v7"
+	uti "github.com/craterdog/go-missing-utilities/v8"
 )
 
 // CLASS INTERFACE
