@@ -1399,6 +1399,20 @@ type Methodical interface {
 		sendClause ast.SendClauseLike,
 		slot_ uint,
 	)
+	PreprocessSequence(
+		sequence ast.SequenceLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessSequence(
+		sequence ast.SequenceLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessSequenceSlot(
+		sequence ast.SequenceLike,
+		slot_ uint,
+	)
 	PreprocessStatement(
 		statement ast.StatementLike,
 		index_ uint,
@@ -1411,20 +1425,6 @@ type Methodical interface {
 	)
 	ProcessStatementSlot(
 		statement ast.StatementLike,
-		slot_ uint,
-	)
-	PreprocessString(
-		string_ ast.StringLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessString(
-		string_ ast.StringLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessStringSlot(
-		string_ ast.StringLike,
 		slot_ uint,
 	)
 	PreprocessSubcomponent(

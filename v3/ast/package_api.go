@@ -1022,6 +1022,18 @@ type SendClauseClassLike interface {
 }
 
 /*
+SequenceClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete sequence-like class.
+*/
+type SequenceClassLike interface {
+	// Constructor Methods
+	Sequence(
+		any_ any,
+	) SequenceLike
+}
+
+/*
 StatementClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete statement-like class.
@@ -1032,18 +1044,6 @@ type StatementClassLike interface {
 		mainClause MainClauseLike,
 		optionalOnClause OnClauseLike,
 	) StatementLike
-}
-
-/*
-StringClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete string-like class.
-*/
-type StringClassLike interface {
-	// Constructor Methods
-	String(
-		any_ any,
-	) StringLike
 }
 
 /*
@@ -2194,6 +2194,19 @@ type SendClauseLike interface {
 }
 
 /*
+SequenceLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete sequence-like class.
+*/
+type SequenceLike interface {
+	// Principal Methods
+	GetClass() SequenceClassLike
+
+	// Attribute Methods
+	GetAny() any
+}
+
+/*
 StatementLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete statement-like class.
@@ -2205,19 +2218,6 @@ type StatementLike interface {
 	// Attribute Methods
 	GetMainClause() MainClauseLike
 	GetOptionalOnClause() OnClauseLike
-}
-
-/*
-StringLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete string-like class.
-*/
-type StringLike interface {
-	// Principal Methods
-	GetClass() StringClassLike
-
-	// Attribute Methods
-	GetAny() any
 }
 
 /*

@@ -1414,12 +1414,12 @@ func (v *parser_) parseEntity() (
 		return
 	}
 
-	// Attempt to parse a single String Entity.
-	var string_ ast.StringLike
-	string_, token, ok = v.parseString()
+	// Attempt to parse a single Sequence Entity.
+	var sequence ast.SequenceLike
+	sequence, token, ok = v.parseSequence()
 	if ok {
-		// Found a single String Entity.
-		entity = ast.EntityClass().Entity(string_)
+		// Found a single Sequence Entity.
+		entity = ast.EntityClass().Entity(sequence)
 		return
 	}
 
@@ -2715,12 +2715,12 @@ func (v *parser_) parseMetadata() (
 		return
 	}
 
-	// Attempt to parse a single String Metadata.
-	var string_ ast.StringLike
-	string_, token, ok = v.parseString()
+	// Attempt to parse a single Sequence Metadata.
+	var sequence ast.SequenceLike
+	sequence, token, ok = v.parseSequence()
 	if ok {
-		// Found a single String Metadata.
-		metadata = ast.MetadataClass().Metadata(string_)
+		// Found a single Sequence Metadata.
+		metadata = ast.MetadataClass().Metadata(sequence)
 		return
 	}
 
@@ -3388,12 +3388,12 @@ func (v *parser_) parsePrimitive() (
 		return
 	}
 
-	// Attempt to parse a single String Primitive.
-	var string_ ast.StringLike
-	string_, token, ok = v.parseString()
+	// Attempt to parse a single Sequence Primitive.
+	var sequence ast.SequenceLike
+	sequence, token, ok = v.parseSequence()
 	if ok {
-		// Found a single String Primitive.
-		primitive = ast.PrimitiveClass().Primitive(string_)
+		// Found a single Sequence Primitive.
+		primitive = ast.PrimitiveClass().Primitive(sequence)
 		return
 	}
 
@@ -4536,6 +4536,87 @@ func (v *parser_) parseSendClause() (
 	return
 }
 
+func (v *parser_) parseSequence() (
+	sequence ast.SequenceLike,
+	token TokenLike,
+	ok bool,
+) {
+	// Attempt to parse a single binary Sequence.
+	var binary string
+	binary, token, ok = v.parseToken(BinaryToken)
+	if ok {
+		// Found a single binary Sequence.
+		sequence = ast.SequenceClass().Sequence(binary)
+		return
+	}
+
+	// Attempt to parse a single bytecode Sequence.
+	var bytecode string
+	bytecode, token, ok = v.parseToken(BytecodeToken)
+	if ok {
+		// Found a single bytecode Sequence.
+		sequence = ast.SequenceClass().Sequence(bytecode)
+		return
+	}
+
+	// Attempt to parse a single name Sequence.
+	var name string
+	name, token, ok = v.parseToken(NameToken)
+	if ok {
+		// Found a single name Sequence.
+		sequence = ast.SequenceClass().Sequence(name)
+		return
+	}
+
+	// Attempt to parse a single narrative Sequence.
+	var narrative string
+	narrative, token, ok = v.parseToken(NarrativeToken)
+	if ok {
+		// Found a single narrative Sequence.
+		sequence = ast.SequenceClass().Sequence(narrative)
+		return
+	}
+
+	// Attempt to parse a single pattern Sequence.
+	var pattern string
+	pattern, token, ok = v.parseToken(PatternToken)
+	if ok {
+		// Found a single pattern Sequence.
+		sequence = ast.SequenceClass().Sequence(pattern)
+		return
+	}
+
+	// Attempt to parse a single quote Sequence.
+	var quote string
+	quote, token, ok = v.parseToken(QuoteToken)
+	if ok {
+		// Found a single quote Sequence.
+		sequence = ast.SequenceClass().Sequence(quote)
+		return
+	}
+
+	// Attempt to parse a single tag Sequence.
+	var tag string
+	tag, token, ok = v.parseToken(TagToken)
+	if ok {
+		// Found a single tag Sequence.
+		sequence = ast.SequenceClass().Sequence(tag)
+		return
+	}
+
+	// Attempt to parse a single version Sequence.
+	var version string
+	version, token, ok = v.parseToken(VersionToken)
+	if ok {
+		// Found a single version Sequence.
+		sequence = ast.SequenceClass().Sequence(version)
+		return
+	}
+
+	// This is not a single Sequence rule.
+	return
+}
+
 func (v *parser_) parseStatement() (
 	statement ast.StatementLike,
 	token TokenLike,
@@ -4575,87 +4656,6 @@ func (v *parser_) parseStatement() (
 		mainClause,
 		optionalOnClause,
 	)
-	return
-}
-
-func (v *parser_) parseString() (
-	string_ ast.StringLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single binary String.
-	var binary string
-	binary, token, ok = v.parseToken(BinaryToken)
-	if ok {
-		// Found a single binary String.
-		string_ = ast.StringClass().String(binary)
-		return
-	}
-
-	// Attempt to parse a single bytecode String.
-	var bytecode string
-	bytecode, token, ok = v.parseToken(BytecodeToken)
-	if ok {
-		// Found a single bytecode String.
-		string_ = ast.StringClass().String(bytecode)
-		return
-	}
-
-	// Attempt to parse a single name String.
-	var name string
-	name, token, ok = v.parseToken(NameToken)
-	if ok {
-		// Found a single name String.
-		string_ = ast.StringClass().String(name)
-		return
-	}
-
-	// Attempt to parse a single narrative String.
-	var narrative string
-	narrative, token, ok = v.parseToken(NarrativeToken)
-	if ok {
-		// Found a single narrative String.
-		string_ = ast.StringClass().String(narrative)
-		return
-	}
-
-	// Attempt to parse a single pattern String.
-	var pattern string
-	pattern, token, ok = v.parseToken(PatternToken)
-	if ok {
-		// Found a single pattern String.
-		string_ = ast.StringClass().String(pattern)
-		return
-	}
-
-	// Attempt to parse a single quote String.
-	var quote string
-	quote, token, ok = v.parseToken(QuoteToken)
-	if ok {
-		// Found a single quote String.
-		string_ = ast.StringClass().String(quote)
-		return
-	}
-
-	// Attempt to parse a single tag String.
-	var tag string
-	tag, token, ok = v.parseToken(TagToken)
-	if ok {
-		// Found a single tag String.
-		string_ = ast.StringClass().String(tag)
-		return
-	}
-
-	// Attempt to parse a single version String.
-	var version string
-	version, token, ok = v.parseToken(VersionToken)
-	if ok {
-		// Found a single version String.
-		string_ = ast.StringClass().String(version)
-		return
-	}
-
-	// This is not a single String rule.
 	return
 }
 
@@ -5387,7 +5387,7 @@ var parserClassReference_ = &parserClass_{
 			"$Component": `Entity Generics?`,
 			"$Entity": `
     Element
-    String
+    Sequence
     Range
     Collection
     Procedure`,
@@ -5396,7 +5396,7 @@ var parserClassReference_ = &parserClass_{
 			"$Constraint": `Metadata Generics?`,
 			"$Metadata": `
     Element
-    String
+    Sequence
     Range`,
 			"$Element": `
     angle
@@ -5409,7 +5409,7 @@ var parserClassReference_ = &parserClass_{
     probability
     resource
     symbol`,
-			"$String": `
+			"$Sequence": `
     binary
     bytecode
     name
@@ -5427,7 +5427,7 @@ var parserClassReference_ = &parserClass_{
     ")"`,
 			"$Primitive": `
     Element
-    String`,
+    Sequence`,
 			"$Collection": `
     Attributes
     Items  ! Must be after attributes.`,

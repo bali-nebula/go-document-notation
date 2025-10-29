@@ -14,7 +14,7 @@ package module_test
 
 import (
 	fmt "fmt"
-	doc "github.com/bali-nebula/go-document-notation/v3"
+	not "github.com/bali-nebula/go-document-notation/v3"
 	uti "github.com/craterdog/go-essential-utilities/v8"
 	ass "github.com/stretchr/testify/assert"
 	sts "strings"
@@ -30,8 +30,8 @@ func TestParsingRoundtrips(t *tes.T) {
 			filename = testDirectory + filename
 			fmt.Println(filename)
 			var source = uti.ReadFile(filename)
-			var document = doc.ParseSource(source)
-			var formatted = doc.FormatDocument(document)
+			var document = not.ParseSource(source)
+			var formatted = not.FormatDocument(document)
 			ass.Equal(t, source, formatted)
 		}
 	}

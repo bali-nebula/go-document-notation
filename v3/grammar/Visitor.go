@@ -826,14 +826,14 @@ func (v *visitor_) visitEntity(
 			0,
 			0,
 		)
-	case ast.StringLike:
-		v.processor_.PreprocessString(
+	case ast.SequenceLike:
+		v.processor_.PreprocessSequence(
 			actual,
 			0,
 			0,
 		)
-		v.visitString(actual)
-		v.processor_.PostprocessString(
+		v.visitSequence(actual)
+		v.processor_.PostprocessSequence(
 			actual,
 			0,
 			0,
@@ -1737,14 +1737,14 @@ func (v *visitor_) visitMetadata(
 			0,
 			0,
 		)
-	case ast.StringLike:
-		v.processor_.PreprocessString(
+	case ast.SequenceLike:
+		v.processor_.PreprocessSequence(
 			actual,
 			0,
 			0,
 		)
-		v.visitString(actual)
-		v.processor_.PostprocessString(
+		v.visitSequence(actual)
+		v.processor_.PostprocessSequence(
 			actual,
 			0,
 			0,
@@ -2217,14 +2217,14 @@ func (v *visitor_) visitPrimitive(
 			0,
 			0,
 		)
-	case ast.StringLike:
-		v.processor_.PreprocessString(
+	case ast.SequenceLike:
+		v.processor_.PreprocessSequence(
 			actual,
 			0,
 			0,
 		)
-		v.visitString(actual)
-		v.processor_.PostprocessString(
+		v.visitSequence(actual)
+		v.processor_.PostprocessSequence(
 			actual,
 			0,
 			0,
@@ -3038,6 +3038,31 @@ func (v *visitor_) visitSendClause(
 	)
 }
 
+func (v *visitor_) visitSequence(
+	sequence ast.SequenceLike,
+) {
+	// Visit the possible sequence expression types.
+	var actual = sequence.GetAny().(string)
+	switch {
+	case ScannerClass().MatchesType(actual, BinaryToken):
+		v.processor_.ProcessBinary(actual)
+	case ScannerClass().MatchesType(actual, BytecodeToken):
+		v.processor_.ProcessBytecode(actual)
+	case ScannerClass().MatchesType(actual, NameToken):
+		v.processor_.ProcessName(actual)
+	case ScannerClass().MatchesType(actual, NarrativeToken):
+		v.processor_.ProcessNarrative(actual)
+	case ScannerClass().MatchesType(actual, PatternToken):
+		v.processor_.ProcessPattern(actual)
+	case ScannerClass().MatchesType(actual, QuoteToken):
+		v.processor_.ProcessQuote(actual)
+	case ScannerClass().MatchesType(actual, TagToken):
+		v.processor_.ProcessTag(actual)
+	case ScannerClass().MatchesType(actual, VersionToken):
+		v.processor_.ProcessVersion(actual)
+	}
+}
+
 func (v *visitor_) visitStatement(
 	statement ast.StatementLike,
 ) {
@@ -3072,31 +3097,6 @@ func (v *visitor_) visitStatement(
 			0,
 			0,
 		)
-	}
-}
-
-func (v *visitor_) visitString(
-	string_ ast.StringLike,
-) {
-	// Visit the possible string expression types.
-	var actual = string_.GetAny().(string)
-	switch {
-	case ScannerClass().MatchesType(actual, BinaryToken):
-		v.processor_.ProcessBinary(actual)
-	case ScannerClass().MatchesType(actual, BytecodeToken):
-		v.processor_.ProcessBytecode(actual)
-	case ScannerClass().MatchesType(actual, NameToken):
-		v.processor_.ProcessName(actual)
-	case ScannerClass().MatchesType(actual, NarrativeToken):
-		v.processor_.ProcessNarrative(actual)
-	case ScannerClass().MatchesType(actual, PatternToken):
-		v.processor_.ProcessPattern(actual)
-	case ScannerClass().MatchesType(actual, QuoteToken):
-		v.processor_.ProcessQuote(actual)
-	case ScannerClass().MatchesType(actual, TagToken):
-		v.processor_.ProcessTag(actual)
-	case ScannerClass().MatchesType(actual, VersionToken):
-		v.processor_.ProcessVersion(actual)
 	}
 }
 

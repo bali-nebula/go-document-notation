@@ -28,7 +28,7 @@ $Component: Entity Generics?
 
 $Entity:
     Element
-    String
+    Sequence
     Range
     Collection
     Procedure
@@ -41,7 +41,7 @@ $Constraint: Metadata Generics?
 
 $Metadata:
     Element
-    String
+    Sequence
     Range
 
 $Element:
@@ -56,7 +56,7 @@ $Element:
     resource
     symbol
 
-$String:
+$Sequence:
     binary
     bytecode
     name
@@ -78,7 +78,7 @@ $Right:
 
 $Primitive:
     Element
-    String
+    Sequence
 
 $Collection:
     Attributes

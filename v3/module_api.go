@@ -115,8 +115,8 @@ type (
 	SaveClauseClassLike       = ast.SaveClauseClassLike
 	SelectClauseClassLike     = ast.SelectClauseClassLike
 	SendClauseClassLike       = ast.SendClauseClassLike
+	SequenceClassLike         = ast.SequenceClassLike
 	StatementClassLike        = ast.StatementClassLike
-	StringClassLike           = ast.StringClassLike
 	SubcomponentClassLike     = ast.SubcomponentClassLike
 	SubjectClassLike          = ast.SubjectClassLike
 	ThrowClauseClassLike      = ast.ThrowClauseClassLike
@@ -201,8 +201,8 @@ type (
 	SaveClauseLike       = ast.SaveClauseLike
 	SelectClauseLike     = ast.SelectClauseLike
 	SendClauseLike       = ast.SendClauseLike
+	SequenceLike         = ast.SequenceLike
 	StatementLike        = ast.StatementLike
-	StringLike           = ast.StringLike
 	SubcomponentLike     = ast.SubcomponentLike
 	SubjectLike          = ast.SubjectLike
 	ThrowClauseLike      = ast.ThrowClauseLike
@@ -1334,6 +1334,18 @@ func SendClause(
 	)
 }
 
+func SequenceClass() SequenceClassLike {
+	return ast.SequenceClass()
+}
+
+func Sequence(
+	any_ any,
+) SequenceLike {
+	return SequenceClass().Sequence(
+		any_,
+	)
+}
+
 func StatementClass() StatementClassLike {
 	return ast.StatementClass()
 }
@@ -1345,18 +1357,6 @@ func Statement(
 	return StatementClass().Statement(
 		mainClause,
 		optionalOnClause,
-	)
-}
-
-func StringClass() StringClassLike {
-	return ast.StringClass()
-}
-
-func String(
-	any_ any,
-) StringLike {
-	return StringClass().String(
-		any_,
 	)
 }
 
