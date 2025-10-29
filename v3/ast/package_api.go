@@ -38,7 +38,7 @@ on interfaces, not on each other.
 package ast
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
 )
 
 // TYPE DECLARATIONS
@@ -159,7 +159,7 @@ type AttributesClassLike interface {
 	// Constructor Methods
 	Attributes(
 		delimiter1 string,
-		associations fra.Sequential[AssociationLike],
+		associations com.Sequential[AssociationLike],
 		delimiter2 string,
 	) AttributesLike
 }
@@ -390,7 +390,7 @@ type ExpressionClassLike interface {
 	// Constructor Methods
 	Expression(
 		subject SubjectLike,
-		predicates fra.Sequential[PredicateLike],
+		predicates com.Sequential[PredicateLike],
 	) ExpressionLike
 }
 
@@ -416,7 +416,7 @@ type FunctionClassLike interface {
 	Function(
 		identifier string,
 		delimiter1 string,
-		arguments fra.Sequential[ArgumentLike],
+		arguments com.Sequential[ArgumentLike],
 		delimiter2 string,
 	) FunctionLike
 }
@@ -430,7 +430,7 @@ type GenericsClassLike interface {
 	// Constructor Methods
 	Generics(
 		delimiter1 string,
-		parameters fra.Sequential[ParameterLike],
+		parameters com.Sequential[ParameterLike],
 		delimiter2 string,
 	) GenericsLike
 }
@@ -523,7 +523,7 @@ type ItemsClassLike interface {
 	// Constructor Methods
 	Items(
 		delimiter1 string,
-		composites fra.Sequential[CompositeLike],
+		composites com.Sequential[CompositeLike],
 		delimiter2 string,
 	) ItemsLike
 }
@@ -692,7 +692,7 @@ type MethodClassLike interface {
 		invoke InvokeLike,
 		identifier2 string,
 		delimiter1 string,
-		arguments fra.Sequential[ArgumentLike],
+		arguments com.Sequential[ArgumentLike],
 		delimiter2 string,
 	) MethodLike
 }
@@ -734,7 +734,7 @@ type OnClauseClassLike interface {
 	OnClause(
 		delimiter string,
 		symbol string,
-		matchingClauses fra.Sequential[MatchingClauseLike],
+		matchingClauses com.Sequential[MatchingClauseLike],
 	) OnClauseLike
 }
 
@@ -812,7 +812,7 @@ type ProcedureClassLike interface {
 	// Constructor Methods
 	Procedure(
 		delimiter1 string,
-		lines fra.Sequential[LineLike],
+		lines com.Sequential[LineLike],
 		delimiter2 string,
 	) ProcedureLike
 }
@@ -1002,7 +1002,7 @@ type SelectClauseClassLike interface {
 	SelectClause(
 		delimiter string,
 		expression ExpressionLike,
-		matchingClauses fra.Sequential[MatchingClauseLike],
+		matchingClauses com.Sequential[MatchingClauseLike],
 	) SelectClauseLike
 }
 
@@ -1056,7 +1056,7 @@ type SubcomponentClassLike interface {
 	Subcomponent(
 		identifier string,
 		delimiter1 string,
-		indexes fra.Sequential[IndexLike],
+		indexes com.Sequential[IndexLike],
 		delimiter2 string,
 	) SubcomponentLike
 }
@@ -1267,7 +1267,7 @@ type AttributesLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetAssociations() fra.Sequential[AssociationLike]
+	GetAssociations() com.Sequential[AssociationLike]
 	GetDelimiter2() string
 }
 
@@ -1516,7 +1516,7 @@ type ExpressionLike interface {
 
 	// Attribute Methods
 	GetSubject() SubjectLike
-	GetPredicates() fra.Sequential[PredicateLike]
+	GetPredicates() com.Sequential[PredicateLike]
 }
 
 /*
@@ -1544,7 +1544,7 @@ type FunctionLike interface {
 	// Attribute Methods
 	GetIdentifier() string
 	GetDelimiter1() string
-	GetArguments() fra.Sequential[ArgumentLike]
+	GetArguments() com.Sequential[ArgumentLike]
 	GetDelimiter2() string
 }
 
@@ -1559,7 +1559,7 @@ type GenericsLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetParameters() fra.Sequential[ParameterLike]
+	GetParameters() com.Sequential[ParameterLike]
 	GetDelimiter2() string
 }
 
@@ -1659,7 +1659,7 @@ type ItemsLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetComposites() fra.Sequential[CompositeLike]
+	GetComposites() com.Sequential[CompositeLike]
 	GetDelimiter2() string
 }
 
@@ -1841,7 +1841,7 @@ type MethodLike interface {
 	GetInvoke() InvokeLike
 	GetIdentifier2() string
 	GetDelimiter1() string
-	GetArguments() fra.Sequential[ArgumentLike]
+	GetArguments() com.Sequential[ArgumentLike]
 	GetDelimiter2() string
 }
 
@@ -1886,7 +1886,7 @@ type OnClauseLike interface {
 	// Attribute Methods
 	GetDelimiter() string
 	GetSymbol() string
-	GetMatchingClauses() fra.Sequential[MatchingClauseLike]
+	GetMatchingClauses() com.Sequential[MatchingClauseLike]
 }
 
 /*
@@ -1970,7 +1970,7 @@ type ProcedureLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetLines() fra.Sequential[LineLike]
+	GetLines() com.Sequential[LineLike]
 	GetDelimiter2() string
 }
 
@@ -2174,7 +2174,7 @@ type SelectClauseLike interface {
 	// Attribute Methods
 	GetDelimiter() string
 	GetExpression() ExpressionLike
-	GetMatchingClauses() fra.Sequential[MatchingClauseLike]
+	GetMatchingClauses() com.Sequential[MatchingClauseLike]
 }
 
 /*
@@ -2232,7 +2232,7 @@ type SubcomponentLike interface {
 	// Attribute Methods
 	GetIdentifier() string
 	GetDelimiter1() string
-	GetIndexes() fra.Sequential[IndexLike]
+	GetIndexes() com.Sequential[IndexLike]
 	GetDelimiter2() string
 }
 

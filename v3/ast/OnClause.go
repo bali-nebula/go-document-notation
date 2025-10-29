@@ -22,8 +22,8 @@
 package ast
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 )
 
 // CLASS INTERFACE
@@ -39,7 +39,7 @@ func OnClauseClass() OnClauseClassLike {
 func (c *onClauseClass_) OnClause(
 	delimiter string,
 	symbol string,
-	matchingClauses fra.Sequential[MatchingClauseLike],
+	matchingClauses com.Sequential[MatchingClauseLike],
 ) OnClauseLike {
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
@@ -77,7 +77,7 @@ func (v *onClause_) GetSymbol() string {
 	return v.symbol_
 }
 
-func (v *onClause_) GetMatchingClauses() fra.Sequential[MatchingClauseLike] {
+func (v *onClause_) GetMatchingClauses() com.Sequential[MatchingClauseLike] {
 	return v.matchingClauses_
 }
 
@@ -89,7 +89,7 @@ type onClause_ struct {
 	// Declare the instance attributes.
 	delimiter_       string
 	symbol_          string
-	matchingClauses_ fra.Sequential[MatchingClauseLike]
+	matchingClauses_ com.Sequential[MatchingClauseLike]
 }
 
 // Class Structure

@@ -22,8 +22,8 @@
 package ast
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 )
 
 // CLASS INTERFACE
@@ -39,7 +39,7 @@ func SubcomponentClass() SubcomponentClassLike {
 func (c *subcomponentClass_) Subcomponent(
 	identifier string,
 	delimiter1 string,
-	indexes fra.Sequential[IndexLike],
+	indexes com.Sequential[IndexLike],
 	delimiter2 string,
 ) SubcomponentLike {
 	if uti.IsUndefined(identifier) {
@@ -82,7 +82,7 @@ func (v *subcomponent_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *subcomponent_) GetIndexes() fra.Sequential[IndexLike] {
+func (v *subcomponent_) GetIndexes() com.Sequential[IndexLike] {
 	return v.indexes_
 }
 
@@ -98,7 +98,7 @@ type subcomponent_ struct {
 	// Declare the instance attributes.
 	identifier_ string
 	delimiter1_ string
-	indexes_    fra.Sequential[IndexLike]
+	indexes_    com.Sequential[IndexLike]
 	delimiter2_ string
 }
 

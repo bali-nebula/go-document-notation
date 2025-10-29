@@ -44,7 +44,7 @@ package grammar
 
 import (
 	ast "github.com/bali-nebula/go-document-notation/v3/ast"
-	fra "github.com/craterdog/go-collection-framework/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
 )
 
 // TYPE DECLARATIONS
@@ -132,7 +132,7 @@ type ScannerClassLike interface {
 	// Constructor Methods
 	Scanner(
 		source string,
-		tokens fra.QueueLike[TokenLike],
+		tokens com.QueueLike[TokenLike],
 	) ScannerLike
 
 	// Function Methods

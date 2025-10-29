@@ -22,8 +22,8 @@
 package ast
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 )
 
 // CLASS INTERFACE
@@ -39,7 +39,7 @@ func FunctionClass() FunctionClassLike {
 func (c *functionClass_) Function(
 	identifier string,
 	delimiter1 string,
-	arguments fra.Sequential[ArgumentLike],
+	arguments com.Sequential[ArgumentLike],
 	delimiter2 string,
 ) FunctionLike {
 	if uti.IsUndefined(identifier) {
@@ -82,7 +82,7 @@ func (v *function_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *function_) GetArguments() fra.Sequential[ArgumentLike] {
+func (v *function_) GetArguments() com.Sequential[ArgumentLike] {
 	return v.arguments_
 }
 
@@ -98,7 +98,7 @@ type function_ struct {
 	// Declare the instance attributes.
 	identifier_ string
 	delimiter1_ string
-	arguments_  fra.Sequential[ArgumentLike]
+	arguments_  com.Sequential[ArgumentLike]
 	delimiter2_ string
 }
 

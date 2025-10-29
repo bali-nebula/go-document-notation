@@ -33,7 +33,7 @@ package module
 import (
 	ast "github.com/bali-nebula/go-document-notation/v3/ast"
 	gra "github.com/bali-nebula/go-document-notation/v3/grammar"
-	fra "github.com/craterdog/go-collection-framework/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
 )
 
 // TYPE ALIASES
@@ -390,7 +390,7 @@ func AttributesClass() AttributesClassLike {
 
 func Attributes(
 	delimiter1 string,
-	associations fra.Sequential[ast.AssociationLike],
+	associations com.Sequential[ast.AssociationLike],
 	delimiter2 string,
 ) AttributesLike {
 	return AttributesClass().Attributes(
@@ -636,7 +636,7 @@ func ExpressionClass() ExpressionClassLike {
 
 func Expression(
 	subject ast.SubjectLike,
-	predicates fra.Sequential[ast.PredicateLike],
+	predicates com.Sequential[ast.PredicateLike],
 ) ExpressionLike {
 	return ExpressionClass().Expression(
 		subject,
@@ -663,7 +663,7 @@ func FunctionClass() FunctionClassLike {
 func Function(
 	identifier string,
 	delimiter1 string,
-	arguments fra.Sequential[ast.ArgumentLike],
+	arguments com.Sequential[ast.ArgumentLike],
 	delimiter2 string,
 ) FunctionLike {
 	return FunctionClass().Function(
@@ -680,7 +680,7 @@ func GenericsClass() GenericsClassLike {
 
 func Generics(
 	delimiter1 string,
-	parameters fra.Sequential[ast.ParameterLike],
+	parameters com.Sequential[ast.ParameterLike],
 	delimiter2 string,
 ) GenericsLike {
 	return GenericsClass().Generics(
@@ -782,7 +782,7 @@ func ItemsClass() ItemsClassLike {
 
 func Items(
 	delimiter1 string,
-	composites fra.Sequential[ast.CompositeLike],
+	composites com.Sequential[ast.CompositeLike],
 	delimiter2 string,
 ) ItemsLike {
 	return ItemsClass().Items(
@@ -961,7 +961,7 @@ func Method(
 	invoke ast.InvokeLike,
 	identifier2 string,
 	delimiter1 string,
-	arguments fra.Sequential[ast.ArgumentLike],
+	arguments com.Sequential[ast.ArgumentLike],
 	delimiter2 string,
 ) MethodLike {
 	return MethodClass().Method(
@@ -1011,7 +1011,7 @@ func OnClauseClass() OnClauseClassLike {
 func OnClause(
 	delimiter string,
 	symbol string,
-	matchingClauses fra.Sequential[ast.MatchingClauseLike],
+	matchingClauses com.Sequential[ast.MatchingClauseLike],
 ) OnClauseLike {
 	return OnClauseClass().OnClause(
 		delimiter,
@@ -1096,7 +1096,7 @@ func ProcedureClass() ProcedureClassLike {
 
 func Procedure(
 	delimiter1 string,
-	lines fra.Sequential[ast.LineLike],
+	lines com.Sequential[ast.LineLike],
 	delimiter2 string,
 ) ProcedureLike {
 	return ProcedureClass().Procedure(
@@ -1307,7 +1307,7 @@ func SelectClauseClass() SelectClauseClassLike {
 func SelectClause(
 	delimiter string,
 	expression ast.ExpressionLike,
-	matchingClauses fra.Sequential[ast.MatchingClauseLike],
+	matchingClauses com.Sequential[ast.MatchingClauseLike],
 ) SelectClauseLike {
 	return SelectClauseClass().SelectClause(
 		delimiter,
@@ -1367,7 +1367,7 @@ func SubcomponentClass() SubcomponentClassLike {
 func Subcomponent(
 	identifier string,
 	delimiter1 string,
-	indexes fra.Sequential[ast.IndexLike],
+	indexes com.Sequential[ast.IndexLike],
 	delimiter2 string,
 ) SubcomponentLike {
 	return SubcomponentClass().Subcomponent(
@@ -1502,7 +1502,7 @@ func ScannerClass() ScannerClassLike {
 
 func Scanner(
 	source string,
-	tokens fra.QueueLike[gra.TokenLike],
+	tokens com.QueueLike[gra.TokenLike],
 ) ScannerLike {
 	return ScannerClass().Scanner(
 		source,

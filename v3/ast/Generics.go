@@ -22,8 +22,8 @@
 package ast
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 )
 
 // CLASS INTERFACE
@@ -38,7 +38,7 @@ func GenericsClass() GenericsClassLike {
 
 func (c *genericsClass_) Generics(
 	delimiter1 string,
-	parameters fra.Sequential[ParameterLike],
+	parameters com.Sequential[ParameterLike],
 	delimiter2 string,
 ) GenericsLike {
 	if uti.IsUndefined(delimiter1) {
@@ -73,7 +73,7 @@ func (v *generics_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *generics_) GetParameters() fra.Sequential[ParameterLike] {
+func (v *generics_) GetParameters() com.Sequential[ParameterLike] {
 	return v.parameters_
 }
 
@@ -88,7 +88,7 @@ func (v *generics_) GetDelimiter2() string {
 type generics_ struct {
 	// Declare the instance attributes.
 	delimiter1_ string
-	parameters_ fra.Sequential[ParameterLike]
+	parameters_ com.Sequential[ParameterLike]
 	delimiter2_ string
 }
 

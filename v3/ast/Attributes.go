@@ -22,8 +22,8 @@
 package ast
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 )
 
 // CLASS INTERFACE
@@ -38,7 +38,7 @@ func AttributesClass() AttributesClassLike {
 
 func (c *attributesClass_) Attributes(
 	delimiter1 string,
-	associations fra.Sequential[AssociationLike],
+	associations com.Sequential[AssociationLike],
 	delimiter2 string,
 ) AttributesLike {
 	if uti.IsUndefined(delimiter1) {
@@ -73,7 +73,7 @@ func (v *attributes_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *attributes_) GetAssociations() fra.Sequential[AssociationLike] {
+func (v *attributes_) GetAssociations() com.Sequential[AssociationLike] {
 	return v.associations_
 }
 
@@ -88,7 +88,7 @@ func (v *attributes_) GetDelimiter2() string {
 type attributes_ struct {
 	// Declare the instance attributes.
 	delimiter1_   string
-	associations_ fra.Sequential[AssociationLike]
+	associations_ com.Sequential[AssociationLike]
 	delimiter2_   string
 }
 

@@ -22,8 +22,8 @@
 package ast
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 )
 
 // CLASS INTERFACE
@@ -38,7 +38,7 @@ func ProcedureClass() ProcedureClassLike {
 
 func (c *procedureClass_) Procedure(
 	delimiter1 string,
-	lines fra.Sequential[LineLike],
+	lines com.Sequential[LineLike],
 	delimiter2 string,
 ) ProcedureLike {
 	if uti.IsUndefined(delimiter1) {
@@ -73,7 +73,7 @@ func (v *procedure_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *procedure_) GetLines() fra.Sequential[LineLike] {
+func (v *procedure_) GetLines() com.Sequential[LineLike] {
 	return v.lines_
 }
 
@@ -88,7 +88,7 @@ func (v *procedure_) GetDelimiter2() string {
 type procedure_ struct {
 	// Declare the instance attributes.
 	delimiter1_ string
-	lines_      fra.Sequential[LineLike]
+	lines_      com.Sequential[LineLike]
 	delimiter2_ string
 }
 

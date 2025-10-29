@@ -22,8 +22,8 @@
 package ast
 
 import (
-	fra "github.com/craterdog/go-collection-framework/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 )
 
 // CLASS INTERFACE
@@ -38,7 +38,7 @@ func ItemsClass() ItemsClassLike {
 
 func (c *itemsClass_) Items(
 	delimiter1 string,
-	composites fra.Sequential[CompositeLike],
+	composites com.Sequential[CompositeLike],
 	delimiter2 string,
 ) ItemsLike {
 	if uti.IsUndefined(delimiter1) {
@@ -73,7 +73,7 @@ func (v *items_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *items_) GetComposites() fra.Sequential[CompositeLike] {
+func (v *items_) GetComposites() com.Sequential[CompositeLike] {
 	return v.composites_
 }
 
@@ -88,7 +88,7 @@ func (v *items_) GetDelimiter2() string {
 type items_ struct {
 	// Declare the instance attributes.
 	delimiter1_ string
-	composites_ fra.Sequential[CompositeLike]
+	composites_ com.Sequential[CompositeLike]
 	delimiter2_ string
 }
 
