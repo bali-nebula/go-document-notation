@@ -1387,15 +1387,6 @@ func (v *parser_) parseElement() (
 		return
 	}
 
-	// Attempt to parse a single symbol Element.
-	var symbol string
-	symbol, token, ok = v.parseToken(SymbolToken)
-	if ok {
-		// Found a single symbol Element.
-		element = ast.ElementClass().Element(symbol)
-		return
-	}
-
 	// This is not a single Element rule.
 	return
 }
@@ -4595,6 +4586,15 @@ func (v *parser_) parseSequence() (
 		return
 	}
 
+	// Attempt to parse a single symbol Sequence.
+	var symbol string
+	symbol, token, ok = v.parseToken(SymbolToken)
+	if ok {
+		// Found a single symbol Sequence.
+		sequence = ast.SequenceClass().Sequence(symbol)
+		return
+	}
+
 	// Attempt to parse a single tag Sequence.
 	var tag string
 	tag, token, ok = v.parseToken(TagToken)
@@ -5407,8 +5407,7 @@ var parserClassReference_ = &parserClass_{
     percentage
     number
     probability
-    resource
-    symbol`,
+    resource`,
 			"$Sequence": `
     binary
     bytecode
@@ -5416,6 +5415,7 @@ var parserClassReference_ = &parserClass_{
     narrative
     pattern
     quote
+    symbol
     tag
     version`,
 			"$Range": `Left Primitive ".." Primitive Right`,

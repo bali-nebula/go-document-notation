@@ -804,8 +804,6 @@ func (v *visitor_) visitElement(
 		v.processor_.ProcessProbability(actual)
 	case ScannerClass().MatchesType(actual, ResourceToken):
 		v.processor_.ProcessResource(actual)
-	case ScannerClass().MatchesType(actual, SymbolToken):
-		v.processor_.ProcessSymbol(actual)
 	}
 }
 
@@ -3056,6 +3054,8 @@ func (v *visitor_) visitSequence(
 		v.processor_.ProcessPattern(actual)
 	case ScannerClass().MatchesType(actual, QuoteToken):
 		v.processor_.ProcessQuote(actual)
+	case ScannerClass().MatchesType(actual, SymbolToken):
+		v.processor_.ProcessSymbol(actual)
 	case ScannerClass().MatchesType(actual, TagToken):
 		v.processor_.ProcessTag(actual)
 	case ScannerClass().MatchesType(actual, VersionToken):
