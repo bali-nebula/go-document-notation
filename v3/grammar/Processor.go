@@ -212,6 +212,26 @@ func (v *processor_) ProcessActionInductionSlot(
 ) {
 }
 
+func (v *processor_) PreprocessAnnotation(
+	annotation ast.AnnotationLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessAnnotation(
+	annotation ast.AnnotationLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessAnnotationSlot(
+	annotation ast.AnnotationLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessArgument(
 	argument ast.ArgumentLike,
 	index_ uint,
@@ -668,26 +688,6 @@ func (v *processor_) PostprocessEntity(
 
 func (v *processor_) ProcessEntitySlot(
 	entity ast.EntityLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessExplanation(
-	explanation ast.ExplanationLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessExplanation(
-	explanation ast.ExplanationLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessExplanationSlot(
-	explanation ast.ExplanationLike,
 	slot_ uint,
 ) {
 }

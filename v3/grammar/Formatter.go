@@ -490,7 +490,7 @@ func (v *formatter_) PreprocessLine(
 	count_ uint,
 ) {
 	switch line.GetAny().(type) {
-	case ast.ExplanationLike:
+	case ast.AnnotationLike:
 		if index_ > 1 {
 			v.appendString("\n")
 		}

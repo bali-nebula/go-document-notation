@@ -43,6 +43,7 @@ import (
 type (
 	AcceptClauseClassLike     = ast.AcceptClauseClassLike
 	ActionInductionClassLike  = ast.ActionInductionClassLike
+	AnnotationClassLike       = ast.AnnotationClassLike
 	ArgumentClassLike         = ast.ArgumentClassLike
 	ArithmeticClassLike       = ast.ArithmeticClassLike
 	AssignmentClassLike       = ast.AssignmentClassLike
@@ -66,7 +67,6 @@ type (
 	DraftClassLike            = ast.DraftClassLike
 	ElementClassLike          = ast.ElementClassLike
 	EntityClassLike           = ast.EntityClassLike
-	ExplanationClassLike      = ast.ExplanationClassLike
 	ExpressionClassLike       = ast.ExpressionClassLike
 	FlowControlClassLike      = ast.FlowControlClassLike
 	FunctionClassLike         = ast.FunctionClassLike
@@ -130,6 +130,7 @@ type (
 type (
 	AcceptClauseLike     = ast.AcceptClauseLike
 	ActionInductionLike  = ast.ActionInductionLike
+	AnnotationLike       = ast.AnnotationLike
 	ArgumentLike         = ast.ArgumentLike
 	ArithmeticLike       = ast.ArithmeticLike
 	AssignmentLike       = ast.AssignmentLike
@@ -153,7 +154,6 @@ type (
 	DraftLike            = ast.DraftLike
 	ElementLike          = ast.ElementLike
 	EntityLike           = ast.EntityLike
-	ExplanationLike      = ast.ExplanationLike
 	ExpressionLike       = ast.ExpressionLike
 	FlowControlLike      = ast.FlowControlLike
 	FunctionLike         = ast.FunctionLike
@@ -302,6 +302,18 @@ func ActionInduction(
 	any_ any,
 ) ActionInductionLike {
 	return ActionInductionClass().ActionInduction(
+		any_,
+	)
+}
+
+func AnnotationClass() AnnotationClassLike {
+	return ast.AnnotationClass()
+}
+
+func Annotation(
+	any_ any,
+) AnnotationLike {
+	return AnnotationClass().Annotation(
 		any_,
 	)
 }
@@ -616,18 +628,6 @@ func Entity(
 	any_ any,
 ) EntityLike {
 	return EntityClass().Entity(
-		any_,
-	)
-}
-
-func ExplanationClass() ExplanationClassLike {
-	return ast.ExplanationClass()
-}
-
-func Explanation(
-	any_ any,
-) ExplanationLike {
-	return ExplanationClass().Explanation(
 		any_,
 	)
 }

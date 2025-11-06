@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func ExplanationClass() ExplanationClassLike {
-	return explanationClass()
+func AnnotationClass() AnnotationClassLike {
+	return annotationClass()
 }
 
 // Constructor Methods
 
-func (c *explanationClass_) Explanation(
+func (c *annotationClass_) Annotation(
 	any_ any,
-) ExplanationLike {
+) AnnotationLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &explanation_{
+	var instance = &annotation_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *explanationClass_) Explanation(
 
 // Principal Methods
 
-func (v *explanation_) GetClass() ExplanationClassLike {
-	return explanationClass()
+func (v *annotation_) GetClass() AnnotationClassLike {
+	return annotationClass()
 }
 
 // Attribute Methods
 
-func (v *explanation_) GetAny() any {
+func (v *annotation_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *explanation_) GetAny() any {
 
 // Instance Structure
 
-type explanation_ struct {
+type annotation_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type explanationClass_ struct {
+type annotationClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func explanationClass() *explanationClass_ {
-	return explanationClassReference_
+func annotationClass() *annotationClass_ {
+	return annotationClassReference_
 }
 
-var explanationClassReference_ = &explanationClass_{
+var annotationClassReference_ = &annotationClass_{
 	// Initialize the class constants.
 }

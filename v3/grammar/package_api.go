@@ -391,6 +391,20 @@ type Methodical interface {
 		actionInduction ast.ActionInductionLike,
 		slot_ uint,
 	)
+	PreprocessAnnotation(
+		annotation ast.AnnotationLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessAnnotation(
+		annotation ast.AnnotationLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessAnnotationSlot(
+		annotation ast.AnnotationLike,
+		slot_ uint,
+	)
 	PreprocessArgument(
 		argument ast.ArgumentLike,
 		index_ uint,
@@ -711,20 +725,6 @@ type Methodical interface {
 	)
 	ProcessEntitySlot(
 		entity ast.EntityLike,
-		slot_ uint,
-	)
-	PreprocessExplanation(
-		explanation ast.ExplanationLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessExplanation(
-		explanation ast.ExplanationLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessExplanationSlot(
-		explanation ast.ExplanationLike,
 		slot_ uint,
 	)
 	PreprocessExpression(

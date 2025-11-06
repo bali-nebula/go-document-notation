@@ -194,6 +194,33 @@ func (v *parser_) parseActionInduction() (
 	return
 }
 
+func (v *parser_) parseAnnotation() (
+	annotation ast.AnnotationLike,
+	token TokenLike,
+	ok bool,
+) {
+	// Attempt to parse a single note Annotation.
+	var note string
+	note, token, ok = v.parseToken(NoteToken)
+	if ok {
+		// Found a single note Annotation.
+		annotation = ast.AnnotationClass().Annotation(note)
+		return
+	}
+
+	// Attempt to parse a single comment Annotation.
+	var comment string
+	comment, token, ok = v.parseToken(CommentToken)
+	if ok {
+		// Found a single comment Annotation.
+		annotation = ast.AnnotationClass().Annotation(comment)
+		return
+	}
+
+	// This is not a single Annotation rule.
+	return
+}
+
 func (v *parser_) parseArgument() (
 	argument ast.ArgumentLike,
 	token TokenLike,
@@ -1416,33 +1443,6 @@ func (v *parser_) parseEntity() (
 	return
 }
 
-func (v *parser_) parseExplanation() (
-	explanation ast.ExplanationLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single note Explanation.
-	var note string
-	note, token, ok = v.parseToken(NoteToken)
-	if ok {
-		// Found a single note Explanation.
-		explanation = ast.ExplanationClass().Explanation(note)
-		return
-	}
-
-	// Attempt to parse a single comment Explanation.
-	var comment string
-	comment, token, ok = v.parseToken(CommentToken)
-	if ok {
-		// Found a single comment Explanation.
-		explanation = ast.ExplanationClass().Explanation(comment)
-		return
-	}
-
-	// This is not a single Explanation rule.
-	return
-}
-
 func (v *parser_) parseExpression() (
 	expression ast.ExpressionLike,
 	token TokenLike,
@@ -2336,12 +2336,12 @@ func (v *parser_) parseLine() (
 	token TokenLike,
 	ok bool,
 ) {
-	// Attempt to parse a single Explanation Line.
-	var explanation ast.ExplanationLike
-	explanation, token, ok = v.parseExplanation()
+	// Attempt to parse a single Annotation Line.
+	var annotation ast.AnnotationLike
+	annotation, token, ok = v.parseAnnotation()
 	if ok {
-		// Found a single Explanation Line.
-		line = ast.LineClass().Line(explanation)
+		// Found a single Annotation Line.
+		line = ast.LineClass().Line(annotation)
 		return
 	}
 
@@ -5468,9 +5468,9 @@ var parserClassReference_ = &parserClass_{
 			"$Content":     `Component note?`,
 			"$Procedure":   `"{" Line* "}"`,
 			"$Line": `
-    Explanation
+    Annotation
     Statement`,
-			"$Explanation": `
+			"$Annotation": `
     note
     comment`,
 			"$Statement": `MainClause OnClause?`,

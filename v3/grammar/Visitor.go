@@ -160,6 +160,19 @@ func (v *visitor_) visitActionInduction(
 	}
 }
 
+func (v *visitor_) visitAnnotation(
+	annotation ast.AnnotationLike,
+) {
+	// Visit the possible annotation expression types.
+	var actual = annotation.GetAny().(string)
+	switch {
+	case ScannerClass().MatchesType(actual, NoteToken):
+		v.processor_.ProcessNote(actual)
+	case ScannerClass().MatchesType(actual, CommentToken):
+		v.processor_.ProcessComment(actual)
+	}
+}
+
 func (v *visitor_) visitArgument(
 	argument ast.ArgumentLike,
 ) {
@@ -862,19 +875,6 @@ func (v *visitor_) visitEntity(
 	}
 }
 
-func (v *visitor_) visitExplanation(
-	explanation ast.ExplanationLike,
-) {
-	// Visit the possible explanation expression types.
-	var actual = explanation.GetAny().(string)
-	switch {
-	case ScannerClass().MatchesType(actual, NoteToken):
-		v.processor_.ProcessNote(actual)
-	case ScannerClass().MatchesType(actual, CommentToken):
-		v.processor_.ProcessComment(actual)
-	}
-}
-
 func (v *visitor_) visitExpression(
 	expression ast.ExpressionLike,
 ) {
@@ -1439,14 +1439,14 @@ func (v *visitor_) visitLine(
 ) {
 	// Visit the possible line rule types.
 	switch actual := line.GetAny().(type) {
-	case ast.ExplanationLike:
-		v.processor_.PreprocessExplanation(
+	case ast.AnnotationLike:
+		v.processor_.PreprocessAnnotation(
 			actual,
 			0,
 			0,
 		)
-		v.visitExplanation(actual)
-		v.processor_.PostprocessExplanation(
+		v.visitAnnotation(actual)
+		v.processor_.PostprocessAnnotation(
 			actual,
 			0,
 			0,

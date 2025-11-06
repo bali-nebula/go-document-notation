@@ -75,6 +75,18 @@ type ActionInductionClassLike interface {
 }
 
 /*
+AnnotationClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete annotation-like class.
+*/
+type AnnotationClassLike interface {
+	// Constructor Methods
+	Annotation(
+		any_ any,
+	) AnnotationLike
+}
+
+/*
 ArgumentClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete argument-like class.
@@ -367,18 +379,6 @@ type EntityClassLike interface {
 	Entity(
 		any_ any,
 	) EntityLike
-}
-
-/*
-ExplanationClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete explanation-like class.
-*/
-type ExplanationClassLike interface {
-	// Constructor Methods
-	Explanation(
-		any_ any,
-	) ExplanationLike
 }
 
 /*
@@ -1187,6 +1187,19 @@ type ActionInductionLike interface {
 }
 
 /*
+AnnotationLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete annotation-like class.
+*/
+type AnnotationLike interface {
+	// Principal Methods
+	GetClass() AnnotationClassLike
+
+	// Attribute Methods
+	GetAny() any
+}
+
+/*
 ArgumentLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete argument-like class.
@@ -1499,19 +1512,6 @@ by each instance of a concrete entity-like class.
 type EntityLike interface {
 	// Principal Methods
 	GetClass() EntityClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
-ExplanationLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete explanation-like class.
-*/
-type ExplanationLike interface {
-	// Principal Methods
-	GetClass() ExplanationClassLike
 
 	// Attribute Methods
 	GetAny() any

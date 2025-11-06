@@ -97,10 +97,10 @@ $Content: Component note?
 $Procedure: "{" Line* "}"
 
 $Line:
-    Explanation
+    Annotation
     Statement
 
-$Explanation:
+$Annotation:
     note
     comment
 
