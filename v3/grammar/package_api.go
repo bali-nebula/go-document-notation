@@ -783,18 +783,18 @@ type Methodical interface {
 		generics ast.GenericsLike,
 		slot_ uint,
 	)
-	PreprocessHeader(
-		header ast.HeaderLike,
+	PreprocessHeading(
+		heading ast.HeadingLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessHeader(
-		header ast.HeaderLike,
+	PostprocessHeading(
+		heading ast.HeadingLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessHeaderSlot(
-		header ast.HeaderLike,
+	ProcessHeadingSlot(
+		heading ast.HeadingLike,
 		slot_ uint,
 	)
 	PreprocessIfClause(

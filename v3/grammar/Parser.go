@@ -1233,9 +1233,9 @@ func (v *parser_) parseDocument() (
 ) {
 	var tokens = com.List[TokenLike]()
 
-	// Attempt to parse an optional Header rule.
-	var optionalHeader ast.HeaderLike
-	optionalHeader, _, ok = v.parseHeader()
+	// Attempt to parse an optional Heading rule.
+	var optionalHeading ast.HeadingLike
+	optionalHeading, _, ok = v.parseHeading()
 	if ok {
 		// No additional put backs allowed at this point.
 		tokens = nil
@@ -1262,7 +1262,7 @@ func (v *parser_) parseDocument() (
 	ok = true
 	v.remove(tokens)
 	document = ast.DocumentClass().Document(
-		optionalHeader,
+		optionalHeading,
 		component,
 	)
 	return
@@ -1763,8 +1763,8 @@ parametersLoop:
 	return
 }
 
-func (v *parser_) parseHeader() (
-	header ast.HeaderLike,
+func (v *parser_) parseHeading() (
+	heading ast.HeadingLike,
 	token TokenLike,
 	ok bool,
 ) {
@@ -1780,7 +1780,7 @@ func (v *parser_) parseHeader() (
 			return
 		} else {
 			// Found a syntax error.
-			var message = v.formatError("$Header", token)
+			var message = v.formatError("$Heading", token)
 			panic(message)
 		}
 	}
@@ -1788,10 +1788,10 @@ func (v *parser_) parseHeader() (
 		tokens.AppendValue(token)
 	}
 
-	// Found a single Header rule.
+	// Found a single Heading rule.
 	ok = true
 	v.remove(tokens)
-	header = ast.HeaderClass().Header(comment)
+	heading = ast.HeadingClass().Heading(comment)
 	return
 }
 
@@ -5413,8 +5413,8 @@ var parserClassReference_ = &parserClass_{
 	// Initialize the class constants.
 	syntax_: com.CatalogFromMap[string, string](
 		map[string]string{
-			"$Document":  `Header? Component`,
-			"$Header":    `comment`,
+			"$Document":  `Heading? Component`,
+			"$Heading":   `comment`,
 			"$Component": `Entity Generics?`,
 			"$Entity": `
     Element

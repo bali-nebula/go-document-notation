@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func HeaderClass() HeaderClassLike {
-	return headerClass()
+func HeadingClass() HeadingClassLike {
+	return headingClass()
 }
 
 // Constructor Methods
 
-func (c *headerClass_) Header(
+func (c *headingClass_) Heading(
 	comment string,
-) HeaderLike {
+) HeadingLike {
 	if uti.IsUndefined(comment) {
 		panic("The \"comment\" attribute is required by this class.")
 	}
-	var instance = &header_{
+	var instance = &heading_{
 		// Initialize the instance attributes.
 		comment_: comment,
 	}
@@ -52,13 +52,13 @@ func (c *headerClass_) Header(
 
 // Principal Methods
 
-func (v *header_) GetClass() HeaderClassLike {
-	return headerClass()
+func (v *heading_) GetClass() HeadingClassLike {
+	return headingClass()
 }
 
 // Attribute Methods
 
-func (v *header_) GetComment() string {
+func (v *heading_) GetComment() string {
 	return v.comment_
 }
 
@@ -66,23 +66,23 @@ func (v *header_) GetComment() string {
 
 // Instance Structure
 
-type header_ struct {
+type heading_ struct {
 	// Declare the instance attributes.
 	comment_ string
 }
 
 // Class Structure
 
-type headerClass_ struct {
+type headingClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func headerClass() *headerClass_ {
-	return headerClassReference_
+func headingClass() *headingClass_ {
+	return headingClassReference_
 }
 
-var headerClassReference_ = &headerClass_{
+var headingClassReference_ = &headingClass_{
 	// Initialize the class constants.
 }

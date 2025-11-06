@@ -340,7 +340,7 @@ supported by each concrete document-like class.
 type DocumentClassLike interface {
 	// Constructor Methods
 	Document(
-		optionalHeader HeaderLike,
+		optionalHeading HeadingLike,
 		component ComponentLike,
 	) DocumentLike
 }
@@ -436,15 +436,15 @@ type GenericsClassLike interface {
 }
 
 /*
-HeaderClassLike is a class interface that declares the
+HeadingClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete header-like class.
+supported by each concrete heading-like class.
 */
-type HeaderClassLike interface {
+type HeadingClassLike interface {
 	// Constructor Methods
-	Header(
+	Heading(
 		comment string,
-	) HeaderLike
+	) HeadingLike
 }
 
 /*
@@ -1474,7 +1474,7 @@ type DocumentLike interface {
 	GetClass() DocumentClassLike
 
 	// Attribute Methods
-	GetOptionalHeader() HeaderLike
+	GetOptionalHeading() HeadingLike
 	GetComponent() ComponentLike
 }
 
@@ -1576,13 +1576,13 @@ type GenericsLike interface {
 }
 
 /*
-HeaderLike is an instance interface that declares the
+HeadingLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete header-like class.
+by each instance of a concrete heading-like class.
 */
-type HeaderLike interface {
+type HeadingLike interface {
 	// Principal Methods
-	GetClass() HeaderClassLike
+	GetClass() HeadingClassLike
 
 	// Attribute Methods
 	GetComment() string

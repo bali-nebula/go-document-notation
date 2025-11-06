@@ -729,16 +729,16 @@ func (v *visitor_) visitDoClause(
 func (v *visitor_) visitDocument(
 	document ast.DocumentLike,
 ) {
-	var optionalHeader = document.GetOptionalHeader()
-	if uti.IsDefined(optionalHeader) {
-		v.processor_.PreprocessHeader(
-			optionalHeader,
+	var optionalHeading = document.GetOptionalHeading()
+	if uti.IsDefined(optionalHeading) {
+		v.processor_.PreprocessHeading(
+			optionalHeading,
 			0,
 			0,
 		)
-		v.visitHeader(optionalHeader)
-		v.processor_.PostprocessHeader(
-			optionalHeader,
+		v.visitHeading(optionalHeading)
+		v.processor_.PostprocessHeading(
+			optionalHeading,
 			0,
 			0,
 		)
@@ -1106,10 +1106,10 @@ func (v *visitor_) visitGenerics(
 	v.processor_.ProcessDelimiter(delimiter2)
 }
 
-func (v *visitor_) visitHeader(
-	header ast.HeaderLike,
+func (v *visitor_) visitHeading(
+	heading ast.HeadingLike,
 ) {
-	var comment = header.GetComment()
+	var comment = heading.GetComment()
 	v.processor_.ProcessComment(comment)
 }
 

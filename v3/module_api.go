@@ -71,7 +71,7 @@ type (
 	FlowControlClassLike      = ast.FlowControlClassLike
 	FunctionClassLike         = ast.FunctionClassLike
 	GenericsClassLike         = ast.GenericsClassLike
-	HeaderClassLike           = ast.HeaderClassLike
+	HeadingClassLike          = ast.HeadingClassLike
 	IfClauseClassLike         = ast.IfClauseClassLike
 	IndexClassLike            = ast.IndexClassLike
 	InspectClauseClassLike    = ast.InspectClauseClassLike
@@ -158,7 +158,7 @@ type (
 	FlowControlLike      = ast.FlowControlLike
 	FunctionLike         = ast.FunctionLike
 	GenericsLike         = ast.GenericsLike
-	HeaderLike           = ast.HeaderLike
+	HeadingLike          = ast.HeadingLike
 	IfClauseLike         = ast.IfClauseLike
 	IndexLike            = ast.IndexLike
 	InspectClauseLike    = ast.InspectClauseLike
@@ -587,11 +587,11 @@ func DocumentClass() DocumentClassLike {
 }
 
 func Document(
-	optionalHeader ast.HeaderLike,
+	optionalHeading ast.HeadingLike,
 	component ast.ComponentLike,
 ) DocumentLike {
 	return DocumentClass().Document(
-		optionalHeader,
+		optionalHeading,
 		component,
 	)
 }
@@ -692,14 +692,14 @@ func Generics(
 	)
 }
 
-func HeaderClass() HeaderClassLike {
-	return ast.HeaderClass()
+func HeadingClass() HeadingClassLike {
+	return ast.HeadingClass()
 }
 
-func Header(
+func Heading(
 	comment string,
-) HeaderLike {
-	return HeaderClass().Header(
+) HeadingLike {
+	return HeadingClass().Heading(
 		comment,
 	)
 }

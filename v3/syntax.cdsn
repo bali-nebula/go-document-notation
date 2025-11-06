@@ -22,9 +22,9 @@ For more information on CDSN see the wiki at:
 │                               RULE DEFINITIONS                               │
 └──────────────────────────────────────────────────────────────────────────────┘
 <!
-$Document: Header? Component
+$Document: Heading? Component
 
-$Header: comment
+$Heading: comment
 
 $Component: Entity Generics?
 

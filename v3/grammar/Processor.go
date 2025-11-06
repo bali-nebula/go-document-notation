@@ -772,22 +772,22 @@ func (v *processor_) ProcessGenericsSlot(
 ) {
 }
 
-func (v *processor_) PreprocessHeader(
-	header ast.HeaderLike,
+func (v *processor_) PreprocessHeading(
+	heading ast.HeadingLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessHeader(
-	header ast.HeaderLike,
+func (v *processor_) PostprocessHeading(
+	heading ast.HeadingLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessHeaderSlot(
-	header ast.HeaderLike,
+func (v *processor_) ProcessHeadingSlot(
+	heading ast.HeadingLike,
 	slot_ uint,
 ) {
 }

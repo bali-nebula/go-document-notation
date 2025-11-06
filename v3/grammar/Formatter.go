@@ -137,8 +137,8 @@ func (v *formatter_) ProcessGlyph(
 	v.appendString(glyph)
 }
 
-func (v *formatter_) PostprocessHeader(
-	header ast.HeaderLike,
+func (v *formatter_) PostprocessHeading(
+	heading ast.HeadingLike,
 	index_ uint,
 	count_ uint,
 ) {
