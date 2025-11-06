@@ -212,26 +212,6 @@ func (v *processor_) ProcessActionInductionSlot(
 ) {
 }
 
-func (v *processor_) PreprocessAnnotation(
-	annotation ast.AnnotationLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessAnnotation(
-	annotation ast.AnnotationLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessAnnotationSlot(
-	annotation ast.AnnotationLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessArgument(
 	argument ast.ArgumentLike,
 	index_ uint,
@@ -512,26 +492,6 @@ func (v *processor_) ProcessComponentSlot(
 ) {
 }
 
-func (v *processor_) PreprocessComposite(
-	composite ast.CompositeLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessComposite(
-	composite ast.CompositeLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessCompositeSlot(
-	composite ast.CompositeLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessConstraint(
 	constraint ast.ConstraintLike,
 	index_ uint,
@@ -548,6 +508,26 @@ func (v *processor_) PostprocessConstraint(
 
 func (v *processor_) ProcessConstraintSlot(
 	constraint ast.ConstraintLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessContent(
+	content ast.ContentLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessContent(
+	content ast.ContentLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessContentSlot(
+	content ast.ContentLike,
 	slot_ uint,
 ) {
 }
@@ -692,6 +672,26 @@ func (v *processor_) ProcessEntitySlot(
 ) {
 }
 
+func (v *processor_) PreprocessExplanation(
+	explanation ast.ExplanationLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessExplanation(
+	explanation ast.ExplanationLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessExplanationSlot(
+	explanation ast.ExplanationLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessExpression(
 	expression ast.ExpressionLike,
 	index_ uint,
@@ -768,6 +768,26 @@ func (v *processor_) PostprocessGenerics(
 
 func (v *processor_) ProcessGenericsSlot(
 	generics ast.GenericsLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessHeader(
+	header ast.HeaderLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessHeader(
+	header ast.HeaderLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessHeaderSlot(
+	header ast.HeaderLike,
 	slot_ uint,
 ) {
 }

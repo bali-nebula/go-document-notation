@@ -160,19 +160,6 @@ func (v *visitor_) visitActionInduction(
 	}
 }
 
-func (v *visitor_) visitAnnotation(
-	annotation ast.AnnotationLike,
-) {
-	// Visit the possible annotation expression types.
-	var actual = annotation.GetAny().(string)
-	switch {
-	case ScannerClass().MatchesType(actual, NoteToken):
-		v.processor_.ProcessNote(actual)
-	case ScannerClass().MatchesType(actual, CommentToken):
-		v.processor_.ProcessComment(actual)
-	}
-}
-
 func (v *visitor_) visitArgument(
 	argument ast.ArgumentLike,
 ) {
@@ -278,15 +265,15 @@ func (v *visitor_) visitAssociation(
 		2,
 	)
 
-	var composite = association.GetComposite()
-	v.processor_.PreprocessComposite(
-		composite,
+	var content = association.GetContent()
+	v.processor_.PreprocessContent(
+		content,
 		0,
 		0,
 	)
-	v.visitComposite(composite)
-	v.processor_.PostprocessComposite(
-		composite,
+	v.visitContent(content)
+	v.processor_.PostprocessContent(
+		content,
 		0,
 		0,
 	)
@@ -597,33 +584,6 @@ func (v *visitor_) visitComponent(
 	}
 }
 
-func (v *visitor_) visitComposite(
-	composite ast.CompositeLike,
-) {
-	var component = composite.GetComponent()
-	v.processor_.PreprocessComponent(
-		component,
-		0,
-		0,
-	)
-	v.visitComponent(component)
-	v.processor_.PostprocessComponent(
-		component,
-		0,
-		0,
-	)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessCompositeSlot(
-		composite,
-		1,
-	)
-
-	var optionalNote = composite.GetOptionalNote()
-	if uti.IsDefined(optionalNote) {
-		v.processor_.ProcessNote(optionalNote)
-	}
-}
-
 func (v *visitor_) visitConstraint(
 	constraint ast.ConstraintLike,
 ) {
@@ -658,6 +618,33 @@ func (v *visitor_) visitConstraint(
 			0,
 			0,
 		)
+	}
+}
+
+func (v *visitor_) visitContent(
+	content ast.ContentLike,
+) {
+	var component = content.GetComponent()
+	v.processor_.PreprocessComponent(
+		component,
+		0,
+		0,
+	)
+	v.visitComponent(component)
+	v.processor_.PostprocessComponent(
+		component,
+		0,
+		0,
+	)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessContentSlot(
+		content,
+		1,
+	)
+
+	var optionalNote = content.GetOptionalNote()
+	if uti.IsDefined(optionalNote) {
+		v.processor_.ProcessNote(optionalNote)
 	}
 }
 
@@ -729,16 +716,16 @@ func (v *visitor_) visitDoClause(
 func (v *visitor_) visitDocument(
 	document ast.DocumentLike,
 ) {
-	var optionalAnnotation = document.GetOptionalAnnotation()
-	if uti.IsDefined(optionalAnnotation) {
-		v.processor_.PreprocessAnnotation(
-			optionalAnnotation,
+	var optionalHeader = document.GetOptionalHeader()
+	if uti.IsDefined(optionalHeader) {
+		v.processor_.PreprocessHeader(
+			optionalHeader,
 			0,
 			0,
 		)
-		v.visitAnnotation(optionalAnnotation)
-		v.processor_.PostprocessAnnotation(
-			optionalAnnotation,
+		v.visitHeader(optionalHeader)
+		v.processor_.PostprocessHeader(
+			optionalHeader,
 			0,
 			0,
 		)
@@ -872,6 +859,19 @@ func (v *visitor_) visitEntity(
 			0,
 			0,
 		)
+	}
+}
+
+func (v *visitor_) visitExplanation(
+	explanation ast.ExplanationLike,
+) {
+	// Visit the possible explanation expression types.
+	var actual = explanation.GetAny().(string)
+	switch {
+	case ScannerClass().MatchesType(actual, NoteToken):
+		v.processor_.ProcessNote(actual)
+	case ScannerClass().MatchesType(actual, CommentToken):
+		v.processor_.ProcessComment(actual)
 	}
 }
 
@@ -1106,6 +1106,13 @@ func (v *visitor_) visitGenerics(
 	v.processor_.ProcessDelimiter(delimiter2)
 }
 
+func (v *visitor_) visitHeader(
+	header ast.HeaderLike,
+) {
+	var comment = header.GetComment()
+	v.processor_.ProcessComment(comment)
+}
+
 func (v *visitor_) visitIfClause(
 	ifClause ast.IfClauseLike,
 ) {
@@ -1314,22 +1321,22 @@ func (v *visitor_) visitItems(
 		1,
 	)
 
-	var compositesIndex uint
-	var composites = items.GetComposites().GetIterator()
-	var compositesCount = uint(composites.GetSize())
-	for composites.HasNext() {
-		compositesIndex++
-		var rule = composites.GetNext()
-		v.processor_.PreprocessComposite(
+	var contentsIndex uint
+	var contents = items.GetContents().GetIterator()
+	var contentsCount = uint(contents.GetSize())
+	for contents.HasNext() {
+		contentsIndex++
+		var rule = contents.GetNext()
+		v.processor_.PreprocessContent(
 			rule,
-			compositesIndex,
-			compositesCount,
+			contentsIndex,
+			contentsCount,
 		)
-		v.visitComposite(rule)
-		v.processor_.PostprocessComposite(
+		v.visitContent(rule)
+		v.processor_.PostprocessContent(
 			rule,
-			compositesIndex,
-			compositesCount,
+			contentsIndex,
+			contentsCount,
 		)
 	}
 	// Visit slot 2 between terms.
@@ -1432,14 +1439,14 @@ func (v *visitor_) visitLine(
 ) {
 	// Visit the possible line rule types.
 	switch actual := line.GetAny().(type) {
-	case ast.AnnotationLike:
-		v.processor_.PreprocessAnnotation(
+	case ast.ExplanationLike:
+		v.processor_.PreprocessExplanation(
 			actual,
 			0,
 			0,
 		)
-		v.visitAnnotation(actual)
-		v.processor_.PostprocessAnnotation(
+		v.visitExplanation(actual)
+		v.processor_.PostprocessExplanation(
 			actual,
 			0,
 			0,

@@ -75,18 +75,6 @@ type ActionInductionClassLike interface {
 }
 
 /*
-AnnotationClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete annotation-like class.
-*/
-type AnnotationClassLike interface {
-	// Constructor Methods
-	Annotation(
-		any_ any,
-	) AnnotationLike
-}
-
-/*
 ArgumentClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete argument-like class.
@@ -132,7 +120,7 @@ type AssociationClassLike interface {
 	Association(
 		primitive PrimitiveLike,
 		delimiter string,
-		composite CompositeLike,
+		content ContentLike,
 	) AssociationLike
 }
 
@@ -268,19 +256,6 @@ type ComponentClassLike interface {
 }
 
 /*
-CompositeClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete composite-like class.
-*/
-type CompositeClassLike interface {
-	// Constructor Methods
-	Composite(
-		component ComponentLike,
-		optionalNote string,
-	) CompositeLike
-}
-
-/*
 ConstraintClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete constraint-like class.
@@ -291,6 +266,19 @@ type ConstraintClassLike interface {
 		metadata MetadataLike,
 		optionalGenerics GenericsLike,
 	) ConstraintLike
+}
+
+/*
+ContentClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete content-like class.
+*/
+type ContentClassLike interface {
+	// Constructor Methods
+	Content(
+		component ComponentLike,
+		optionalNote string,
+	) ContentLike
 }
 
 /*
@@ -340,7 +328,7 @@ supported by each concrete document-like class.
 type DocumentClassLike interface {
 	// Constructor Methods
 	Document(
-		optionalAnnotation AnnotationLike,
+		optionalHeader HeaderLike,
 		component ComponentLike,
 	) DocumentLike
 }
@@ -379,6 +367,18 @@ type EntityClassLike interface {
 	Entity(
 		any_ any,
 	) EntityLike
+}
+
+/*
+ExplanationClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete explanation-like class.
+*/
+type ExplanationClassLike interface {
+	// Constructor Methods
+	Explanation(
+		any_ any,
+	) ExplanationLike
 }
 
 /*
@@ -433,6 +433,18 @@ type GenericsClassLike interface {
 		parameters com.Sequential[ParameterLike],
 		delimiter2 string,
 	) GenericsLike
+}
+
+/*
+HeaderClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete header-like class.
+*/
+type HeaderClassLike interface {
+	// Constructor Methods
+	Header(
+		comment string,
+	) HeaderLike
 }
 
 /*
@@ -523,7 +535,7 @@ type ItemsClassLike interface {
 	// Constructor Methods
 	Items(
 		delimiter1 string,
-		composites com.Sequential[CompositeLike],
+		contents com.Sequential[ContentLike],
 		delimiter2 string,
 	) ItemsLike
 }
@@ -1175,19 +1187,6 @@ type ActionInductionLike interface {
 }
 
 /*
-AnnotationLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete annotation-like class.
-*/
-type AnnotationLike interface {
-	// Principal Methods
-	GetClass() AnnotationClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
 ArgumentLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete argument-like class.
@@ -1238,7 +1237,7 @@ type AssociationLike interface {
 	// Attribute Methods
 	GetPrimitive() PrimitiveLike
 	GetDelimiter() string
-	GetComposite() CompositeLike
+	GetContent() ContentLike
 }
 
 /*
@@ -1383,20 +1382,6 @@ type ComponentLike interface {
 }
 
 /*
-CompositeLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete composite-like class.
-*/
-type CompositeLike interface {
-	// Principal Methods
-	GetClass() CompositeClassLike
-
-	// Attribute Methods
-	GetComponent() ComponentLike
-	GetOptionalNote() string
-}
-
-/*
 ConstraintLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete constraint-like class.
@@ -1408,6 +1393,20 @@ type ConstraintLike interface {
 	// Attribute Methods
 	GetMetadata() MetadataLike
 	GetOptionalGenerics() GenericsLike
+}
+
+/*
+ContentLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete content-like class.
+*/
+type ContentLike interface {
+	// Principal Methods
+	GetClass() ContentClassLike
+
+	// Attribute Methods
+	GetComponent() ComponentLike
+	GetOptionalNote() string
 }
 
 /*
@@ -1462,7 +1461,7 @@ type DocumentLike interface {
 	GetClass() DocumentClassLike
 
 	// Attribute Methods
-	GetOptionalAnnotation() AnnotationLike
+	GetOptionalHeader() HeaderLike
 	GetComponent() ComponentLike
 }
 
@@ -1500,6 +1499,19 @@ by each instance of a concrete entity-like class.
 type EntityLike interface {
 	// Principal Methods
 	GetClass() EntityClassLike
+
+	// Attribute Methods
+	GetAny() any
+}
+
+/*
+ExplanationLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete explanation-like class.
+*/
+type ExplanationLike interface {
+	// Principal Methods
+	GetClass() ExplanationClassLike
 
 	// Attribute Methods
 	GetAny() any
@@ -1561,6 +1573,19 @@ type GenericsLike interface {
 	GetDelimiter1() string
 	GetParameters() com.Sequential[ParameterLike]
 	GetDelimiter2() string
+}
+
+/*
+HeaderLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete header-like class.
+*/
+type HeaderLike interface {
+	// Principal Methods
+	GetClass() HeaderClassLike
+
+	// Attribute Methods
+	GetComment() string
 }
 
 /*
@@ -1659,7 +1684,7 @@ type ItemsLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetComposites() com.Sequential[CompositeLike]
+	GetContents() com.Sequential[ContentLike]
 	GetDelimiter2() string
 }
 

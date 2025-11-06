@@ -22,7 +22,9 @@ For more information on CDSN see the wiki at:
 │                               RULE DEFINITIONS                               │
 └──────────────────────────────────────────────────────────────────────────────┘
 <!
-$Document: Annotation? Component
+$Document: Header? Component
+
+$Header: comment
 
 $Component: Entity Generics?
 
@@ -86,19 +88,19 @@ $Collection:
 
 $Attributes: "[" Association+ "]"
 
-$Association: Primitive ":" Composite
+$Association: Primitive ":" Content
 
-$Items: "[" Composite* "]"
+$Items: "[" Content* "]"
 
-$Composite: Component note?
+$Content: Component note?
 
 $Procedure: "{" Line* "}"
 
 $Line:
-    Annotation
+    Explanation
     Statement
 
-$Annotation:
+$Explanation:
     note
     comment
 

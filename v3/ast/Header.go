@@ -22,7 +22,6 @@
 package ast
 
 import (
-	com "github.com/craterdog/go-essential-composites/v8"
 	uti "github.com/craterdog/go-essential-utilities/v8"
 )
 
@@ -30,31 +29,21 @@ import (
 
 // Access Function
 
-func ItemsClass() ItemsClassLike {
-	return itemsClass()
+func HeaderClass() HeaderClassLike {
+	return headerClass()
 }
 
 // Constructor Methods
 
-func (c *itemsClass_) Items(
-	delimiter1 string,
-	contents com.Sequential[ContentLike],
-	delimiter2 string,
-) ItemsLike {
-	if uti.IsUndefined(delimiter1) {
-		panic("The \"delimiter1\" attribute is required by this class.")
+func (c *headerClass_) Header(
+	comment string,
+) HeaderLike {
+	if uti.IsUndefined(comment) {
+		panic("The \"comment\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(contents) {
-		panic("The \"contents\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(delimiter2) {
-		panic("The \"delimiter2\" attribute is required by this class.")
-	}
-	var instance = &items_{
+	var instance = &header_{
 		// Initialize the instance attributes.
-		delimiter1_: delimiter1,
-		contents_:   contents,
-		delimiter2_: delimiter2,
+		comment_: comment,
 	}
 	return instance
 }
@@ -63,47 +52,37 @@ func (c *itemsClass_) Items(
 
 // Principal Methods
 
-func (v *items_) GetClass() ItemsClassLike {
-	return itemsClass()
+func (v *header_) GetClass() HeaderClassLike {
+	return headerClass()
 }
 
 // Attribute Methods
 
-func (v *items_) GetDelimiter1() string {
-	return v.delimiter1_
-}
-
-func (v *items_) GetContents() com.Sequential[ContentLike] {
-	return v.contents_
-}
-
-func (v *items_) GetDelimiter2() string {
-	return v.delimiter2_
+func (v *header_) GetComment() string {
+	return v.comment_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type items_ struct {
+type header_ struct {
 	// Declare the instance attributes.
-	delimiter1_ string
-	contents_   com.Sequential[ContentLike]
-	delimiter2_ string
+	comment_ string
 }
 
 // Class Structure
 
-type itemsClass_ struct {
+type headerClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func itemsClass() *itemsClass_ {
-	return itemsClassReference_
+func headerClass() *headerClass_ {
+	return headerClassReference_
 }
 
-var itemsClassReference_ = &itemsClass_{
+var headerClassReference_ = &headerClass_{
 	// Initialize the class constants.
 }

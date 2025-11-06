@@ -43,7 +43,6 @@ import (
 type (
 	AcceptClauseClassLike     = ast.AcceptClauseClassLike
 	ActionInductionClassLike  = ast.ActionInductionClassLike
-	AnnotationClassLike       = ast.AnnotationClassLike
 	ArgumentClassLike         = ast.ArgumentClassLike
 	ArithmeticClassLike       = ast.ArithmeticClassLike
 	AssignmentClassLike       = ast.AssignmentClassLike
@@ -58,8 +57,8 @@ type (
 	ComparisonClassLike       = ast.ComparisonClassLike
 	ComplementClassLike       = ast.ComplementClassLike
 	ComponentClassLike        = ast.ComponentClassLike
-	CompositeClassLike        = ast.CompositeClassLike
 	ConstraintClassLike       = ast.ConstraintClassLike
+	ContentClassLike          = ast.ContentClassLike
 	ContinueClauseClassLike   = ast.ContinueClauseClassLike
 	DiscardClauseClassLike    = ast.DiscardClauseClassLike
 	DoClauseClassLike         = ast.DoClauseClassLike
@@ -67,10 +66,12 @@ type (
 	DraftClassLike            = ast.DraftClassLike
 	ElementClassLike          = ast.ElementClassLike
 	EntityClassLike           = ast.EntityClassLike
+	ExplanationClassLike      = ast.ExplanationClassLike
 	ExpressionClassLike       = ast.ExpressionClassLike
 	FlowControlClassLike      = ast.FlowControlClassLike
 	FunctionClassLike         = ast.FunctionClassLike
 	GenericsClassLike         = ast.GenericsClassLike
+	HeaderClassLike           = ast.HeaderClassLike
 	IfClauseClassLike         = ast.IfClauseClassLike
 	IndexClassLike            = ast.IndexClassLike
 	InspectClauseClassLike    = ast.InspectClauseClassLike
@@ -129,7 +130,6 @@ type (
 type (
 	AcceptClauseLike     = ast.AcceptClauseLike
 	ActionInductionLike  = ast.ActionInductionLike
-	AnnotationLike       = ast.AnnotationLike
 	ArgumentLike         = ast.ArgumentLike
 	ArithmeticLike       = ast.ArithmeticLike
 	AssignmentLike       = ast.AssignmentLike
@@ -144,8 +144,8 @@ type (
 	ComparisonLike       = ast.ComparisonLike
 	ComplementLike       = ast.ComplementLike
 	ComponentLike        = ast.ComponentLike
-	CompositeLike        = ast.CompositeLike
 	ConstraintLike       = ast.ConstraintLike
+	ContentLike          = ast.ContentLike
 	ContinueClauseLike   = ast.ContinueClauseLike
 	DiscardClauseLike    = ast.DiscardClauseLike
 	DoClauseLike         = ast.DoClauseLike
@@ -153,10 +153,12 @@ type (
 	DraftLike            = ast.DraftLike
 	ElementLike          = ast.ElementLike
 	EntityLike           = ast.EntityLike
+	ExplanationLike      = ast.ExplanationLike
 	ExpressionLike       = ast.ExpressionLike
 	FlowControlLike      = ast.FlowControlLike
 	FunctionLike         = ast.FunctionLike
 	GenericsLike         = ast.GenericsLike
+	HeaderLike           = ast.HeaderLike
 	IfClauseLike         = ast.IfClauseLike
 	IndexLike            = ast.IndexLike
 	InspectClauseLike    = ast.InspectClauseLike
@@ -304,18 +306,6 @@ func ActionInduction(
 	)
 }
 
-func AnnotationClass() AnnotationClassLike {
-	return ast.AnnotationClass()
-}
-
-func Annotation(
-	any_ any,
-) AnnotationLike {
-	return AnnotationClass().Annotation(
-		any_,
-	)
-}
-
 func ArgumentClass() ArgumentClassLike {
 	return ast.ArgumentClass()
 }
@@ -359,12 +349,12 @@ func AssociationClass() AssociationClassLike {
 func Association(
 	primitive ast.PrimitiveLike,
 	delimiter string,
-	composite ast.CompositeLike,
+	content ast.ContentLike,
 ) AssociationLike {
 	return AssociationClass().Association(
 		primitive,
 		delimiter,
-		composite,
+		content,
 	)
 }
 
@@ -510,20 +500,6 @@ func Component(
 	)
 }
 
-func CompositeClass() CompositeClassLike {
-	return ast.CompositeClass()
-}
-
-func Composite(
-	component ast.ComponentLike,
-	optionalNote string,
-) CompositeLike {
-	return CompositeClass().Composite(
-		component,
-		optionalNote,
-	)
-}
-
 func ConstraintClass() ConstraintClassLike {
 	return ast.ConstraintClass()
 }
@@ -535,6 +511,20 @@ func Constraint(
 	return ConstraintClass().Constraint(
 		metadata,
 		optionalGenerics,
+	)
+}
+
+func ContentClass() ContentClassLike {
+	return ast.ContentClass()
+}
+
+func Content(
+	component ast.ComponentLike,
+	optionalNote string,
+) ContentLike {
+	return ContentClass().Content(
+		component,
+		optionalNote,
 	)
 }
 
@@ -585,11 +575,11 @@ func DocumentClass() DocumentClassLike {
 }
 
 func Document(
-	optionalAnnotation ast.AnnotationLike,
+	optionalHeader ast.HeaderLike,
 	component ast.ComponentLike,
 ) DocumentLike {
 	return DocumentClass().Document(
-		optionalAnnotation,
+		optionalHeader,
 		component,
 	)
 }
@@ -626,6 +616,18 @@ func Entity(
 	any_ any,
 ) EntityLike {
 	return EntityClass().Entity(
+		any_,
+	)
+}
+
+func ExplanationClass() ExplanationClassLike {
+	return ast.ExplanationClass()
+}
+
+func Explanation(
+	any_ any,
+) ExplanationLike {
+	return ExplanationClass().Explanation(
 		any_,
 	)
 }
@@ -687,6 +689,18 @@ func Generics(
 		delimiter1,
 		parameters,
 		delimiter2,
+	)
+}
+
+func HeaderClass() HeaderClassLike {
+	return ast.HeaderClass()
+}
+
+func Header(
+	comment string,
+) HeaderLike {
+	return HeaderClass().Header(
+		comment,
 	)
 }
 
@@ -782,12 +796,12 @@ func ItemsClass() ItemsClassLike {
 
 func Items(
 	delimiter1 string,
-	composites com.Sequential[ast.CompositeLike],
+	contents com.Sequential[ast.ContentLike],
 	delimiter2 string,
 ) ItemsLike {
 	return ItemsClass().Items(
 		delimiter1,
-		composites,
+		contents,
 		delimiter2,
 	)
 }

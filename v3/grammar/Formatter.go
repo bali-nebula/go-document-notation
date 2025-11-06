@@ -137,6 +137,14 @@ func (v *formatter_) ProcessGlyph(
 	v.appendString(glyph)
 }
 
+func (v *formatter_) PostprocessHeader(
+	header ast.HeaderLike,
+	index_ uint,
+	count_ uint,
+) {
+	v.appendNewline()
+}
+
 func (v *formatter_) ProcessIdentifier(
 	identifier string,
 ) {
@@ -370,8 +378,8 @@ func (v *formatter_) ProcessComplementSlot(
 	v.appendString(" ")
 }
 
-func (v *formatter_) PreprocessComposite(
-	composite ast.CompositeLike,
+func (v *formatter_) PreprocessContent(
+	content ast.ContentLike,
 	index_ uint,
 	count_ uint,
 ) {
@@ -380,13 +388,13 @@ func (v *formatter_) PreprocessComposite(
 	}
 }
 
-func (v *formatter_) ProcessCompositeSlot(
-	composite ast.CompositeLike,
+func (v *formatter_) ProcessContentSlot(
+	content ast.ContentLike,
 	slot_ uint,
 ) {
 	switch slot_ {
 	case 1:
-		if uti.IsDefined(composite.GetOptionalNote()) {
+		if uti.IsDefined(content.GetOptionalNote()) {
 			v.appendString("  ")
 		}
 	}
@@ -411,15 +419,6 @@ func (v *formatter_) ProcessDoClauseSlot(
 	slot_ uint,
 ) {
 	v.appendString(" ")
-}
-
-func (v *formatter_) ProcessDocumentSlot(
-	document ast.DocumentLike,
-	slot_ uint,
-) {
-	if uti.IsDefined(document.GetOptionalAnnotation()) {
-		v.appendNewline()
-	}
 }
 
 func (v *formatter_) PostprocessDocument(
@@ -469,8 +468,8 @@ func (v *formatter_) ProcessItemsSlot(
 		v.depth_++
 	case 2:
 		v.depth_--
-		var composites = items.GetComposites()
-		if composites.IsEmpty() {
+		var contents = items.GetContents()
+		if contents.IsEmpty() {
 			v.appendString(" ")
 		} else {
 			v.appendNewline()
@@ -491,7 +490,7 @@ func (v *formatter_) PreprocessLine(
 	count_ uint,
 ) {
 	switch line.GetAny().(type) {
-	case ast.AnnotationLike:
+	case ast.ExplanationLike:
 		if index_ > 1 {
 			v.appendString("\n")
 		}

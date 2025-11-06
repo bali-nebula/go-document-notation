@@ -391,20 +391,6 @@ type Methodical interface {
 		actionInduction ast.ActionInductionLike,
 		slot_ uint,
 	)
-	PreprocessAnnotation(
-		annotation ast.AnnotationLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessAnnotation(
-		annotation ast.AnnotationLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessAnnotationSlot(
-		annotation ast.AnnotationLike,
-		slot_ uint,
-	)
 	PreprocessArgument(
 		argument ast.ArgumentLike,
 		index_ uint,
@@ -601,20 +587,6 @@ type Methodical interface {
 		component ast.ComponentLike,
 		slot_ uint,
 	)
-	PreprocessComposite(
-		composite ast.CompositeLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessComposite(
-		composite ast.CompositeLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessCompositeSlot(
-		composite ast.CompositeLike,
-		slot_ uint,
-	)
 	PreprocessConstraint(
 		constraint ast.ConstraintLike,
 		index_ uint,
@@ -627,6 +599,20 @@ type Methodical interface {
 	)
 	ProcessConstraintSlot(
 		constraint ast.ConstraintLike,
+		slot_ uint,
+	)
+	PreprocessContent(
+		content ast.ContentLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessContent(
+		content ast.ContentLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessContentSlot(
+		content ast.ContentLike,
 		slot_ uint,
 	)
 	PreprocessContinueClause(
@@ -727,6 +713,20 @@ type Methodical interface {
 		entity ast.EntityLike,
 		slot_ uint,
 	)
+	PreprocessExplanation(
+		explanation ast.ExplanationLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessExplanation(
+		explanation ast.ExplanationLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessExplanationSlot(
+		explanation ast.ExplanationLike,
+		slot_ uint,
+	)
 	PreprocessExpression(
 		expression ast.ExpressionLike,
 		index_ uint,
@@ -781,6 +781,20 @@ type Methodical interface {
 	)
 	ProcessGenericsSlot(
 		generics ast.GenericsLike,
+		slot_ uint,
+	)
+	PreprocessHeader(
+		header ast.HeaderLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessHeader(
+		header ast.HeaderLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessHeaderSlot(
+		header ast.HeaderLike,
 		slot_ uint,
 	)
 	PreprocessIfClause(

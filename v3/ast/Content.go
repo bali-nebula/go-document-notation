@@ -29,21 +29,23 @@ import (
 
 // Access Function
 
-func AnnotationClass() AnnotationClassLike {
-	return annotationClass()
+func ContentClass() ContentClassLike {
+	return contentClass()
 }
 
 // Constructor Methods
 
-func (c *annotationClass_) Annotation(
-	any_ any,
-) AnnotationLike {
-	if uti.IsUndefined(any_) {
-		panic("The \"any\" attribute is required by this class.")
+func (c *contentClass_) Content(
+	component ComponentLike,
+	optionalNote string,
+) ContentLike {
+	if uti.IsUndefined(component) {
+		panic("The \"component\" attribute is required by this class.")
 	}
-	var instance = &annotation_{
+	var instance = &content_{
 		// Initialize the instance attributes.
-		any_: any_,
+		component_:    component,
+		optionalNote_: optionalNote,
 	}
 	return instance
 }
@@ -52,37 +54,42 @@ func (c *annotationClass_) Annotation(
 
 // Principal Methods
 
-func (v *annotation_) GetClass() AnnotationClassLike {
-	return annotationClass()
+func (v *content_) GetClass() ContentClassLike {
+	return contentClass()
 }
 
 // Attribute Methods
 
-func (v *annotation_) GetAny() any {
-	return v.any_
+func (v *content_) GetComponent() ComponentLike {
+	return v.component_
+}
+
+func (v *content_) GetOptionalNote() string {
+	return v.optionalNote_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type annotation_ struct {
+type content_ struct {
 	// Declare the instance attributes.
-	any_ any
+	component_    ComponentLike
+	optionalNote_ string
 }
 
 // Class Structure
 
-type annotationClass_ struct {
+type contentClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func annotationClass() *annotationClass_ {
-	return annotationClassReference_
+func contentClass() *contentClass_ {
+	return contentClassReference_
 }
 
-var annotationClassReference_ = &annotationClass_{
+var contentClassReference_ = &contentClass_{
 	// Initialize the class constants.
 }

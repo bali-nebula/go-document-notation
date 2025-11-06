@@ -29,23 +29,21 @@ import (
 
 // Access Function
 
-func CompositeClass() CompositeClassLike {
-	return compositeClass()
+func ExplanationClass() ExplanationClassLike {
+	return explanationClass()
 }
 
 // Constructor Methods
 
-func (c *compositeClass_) Composite(
-	component ComponentLike,
-	optionalNote string,
-) CompositeLike {
-	if uti.IsUndefined(component) {
-		panic("The \"component\" attribute is required by this class.")
+func (c *explanationClass_) Explanation(
+	any_ any,
+) ExplanationLike {
+	if uti.IsUndefined(any_) {
+		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &composite_{
+	var instance = &explanation_{
 		// Initialize the instance attributes.
-		component_:    component,
-		optionalNote_: optionalNote,
+		any_: any_,
 	}
 	return instance
 }
@@ -54,42 +52,37 @@ func (c *compositeClass_) Composite(
 
 // Principal Methods
 
-func (v *composite_) GetClass() CompositeClassLike {
-	return compositeClass()
+func (v *explanation_) GetClass() ExplanationClassLike {
+	return explanationClass()
 }
 
 // Attribute Methods
 
-func (v *composite_) GetComponent() ComponentLike {
-	return v.component_
-}
-
-func (v *composite_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *explanation_) GetAny() any {
+	return v.any_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type composite_ struct {
+type explanation_ struct {
 	// Declare the instance attributes.
-	component_    ComponentLike
-	optionalNote_ string
+	any_ any
 }
 
 // Class Structure
 
-type compositeClass_ struct {
+type explanationClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func compositeClass() *compositeClass_ {
-	return compositeClassReference_
+func explanationClass() *explanationClass_ {
+	return explanationClassReference_
 }
 
-var compositeClassReference_ = &compositeClass_{
+var explanationClassReference_ = &explanationClass_{
 	// Initialize the class constants.
 }
