@@ -376,7 +376,7 @@ const (
 	letter_         = "(?:" + lower_ + "|" + upper_ + ")"
 	minute_         = "(?:[0-5][0-9])"
 	minutes_        = "(?:(?:" + timespan_ + ")M)"
-	moment_         = "(?:<(?:" + sign_ + ")?(?:" + year_ + ")(-(?:" + month_ + ")(-(?:" + day_ + ")(T(?:" + hour_ + ")(:(?:" + minute_ + ")(:(?:" + second_ + ")(?:" + fraction_ + ")?)?)?)?)?)?>)"
+	moment_         = "(?:<(?:" + sign_ + ")?(?:" + year_ + ")-(?:" + month_ + ")-(?:" + day_ + ")(T(?:" + hour_ + ")(:(?:" + minute_ + ")(:(?:" + second_ + ")(?:" + fraction_ + ")?)?)?)?>)"
 	month_          = "(?:(0[1-9])|(1[0-2]))"
 	months_         = "(?:(?:" + timespan_ + ")M)"
 	name_           = "(?:(/(?:" + folder_ + "))+)"

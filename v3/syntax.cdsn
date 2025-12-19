@@ -343,7 +343,7 @@ $duration: "~P" (WEEKS | (YEARS? MONTHS? DAYS? ('T' HOURS? MINUTES? SECONDS?)?))
 
 $glyph: "'" (ESCAPE | ~[CONTROL]) "'"
 
-$moment: '<' SIGN? YEAR ('-' MONTH ('-' DAY ('T' HOUR (':' MINUTE (':' SECOND FRACTION?)?)?)?)?)? '>'
+$moment: '<' SIGN? YEAR '-' MONTH '-' DAY ('T' HOUR (':' MINUTE (':' SECOND FRACTION?)?)?)? '>'
 
 $name: ('/' FOLDER)+
 
