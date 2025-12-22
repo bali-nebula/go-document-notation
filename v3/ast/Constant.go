@@ -29,21 +29,21 @@ import (
 
 // Access Function
 
-func InvokeClass() InvokeClassLike {
-	return invokeClass()
+func ConstantClass() ConstantClassLike {
+	return constantClass()
 }
 
 // Constructor Methods
 
-func (c *invokeClass_) Invoke(
-	any_ any,
-) InvokeLike {
-	if uti.IsUndefined(any_) {
-		panic("The \"any\" attribute is required by this class.")
+func (c *constantClass_) Constant(
+	symbol string,
+) ConstantLike {
+	if uti.IsUndefined(symbol) {
+		panic("The \"symbol\" attribute is required by this class.")
 	}
-	var instance = &invoke_{
+	var instance = &constant_{
 		// Initialize the instance attributes.
-		any_: any_,
+		symbol_: symbol,
 	}
 	return instance
 }
@@ -52,37 +52,37 @@ func (c *invokeClass_) Invoke(
 
 // Principal Methods
 
-func (v *invoke_) GetClass() InvokeClassLike {
-	return invokeClass()
+func (v *constant_) GetClass() ConstantClassLike {
+	return constantClass()
 }
 
 // Attribute Methods
 
-func (v *invoke_) GetAny() any {
-	return v.any_
+func (v *constant_) GetSymbol() string {
+	return v.symbol_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type invoke_ struct {
+type constant_ struct {
 	// Declare the instance attributes.
-	any_ any
+	symbol_ string
 }
 
 // Class Structure
 
-type invokeClass_ struct {
+type constantClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func invokeClass() *invokeClass_ {
-	return invokeClassReference_
+func constantClass() *constantClass_ {
+	return constantClassReference_
 }
 
-var invokeClassReference_ = &invokeClass_{
+var constantClassReference_ = &constantClass_{
 	// Initialize the class constants.
 }

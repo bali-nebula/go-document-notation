@@ -301,6 +301,13 @@ func (v *formatter_) PreprocessArgument(
 	}
 }
 
+func (v *formatter_) ProcessAssignClauseSlot(
+	assignClause ast.AssignClauseLike,
+	slot_ uint,
+) {
+	v.appendString(" ")
+}
+
 func (v *formatter_) ProcessAssignmentSlot(
 	assignment ast.AssignmentLike,
 	slot_ uint,
@@ -407,15 +414,15 @@ func (v *formatter_) ProcessContinueClauseSlot(
 	v.appendString(" ")
 }
 
-func (v *formatter_) ProcessDiscardClauseSlot(
-	discardClause ast.DiscardClauseLike,
+func (v *formatter_) ProcessDefineClauseSlot(
+	defineClause ast.DefineClauseLike,
 	slot_ uint,
 ) {
 	v.appendString(" ")
 }
 
-func (v *formatter_) ProcessDoClauseSlot(
-	doClause ast.DoClauseLike,
+func (v *formatter_) ProcessDiscardClauseSlot(
+	discardClause ast.DiscardClauseLike,
 	slot_ uint,
 ) {
 	v.appendString(" ")
@@ -459,6 +466,13 @@ func (v *formatter_) PreprocessIndex(
 	}
 }
 
+func (v *formatter_) ProcessInvokeClauseSlot(
+	invokeClause ast.InvokeClauseLike,
+	slot_ uint,
+) {
+	v.appendString(" ")
+}
+
 func (v *formatter_) ProcessItemsSlot(
 	items ast.ItemsLike,
 	slot_ uint,
@@ -475,13 +489,6 @@ func (v *formatter_) ProcessItemsSlot(
 			v.appendNewline()
 		}
 	}
-}
-
-func (v *formatter_) ProcessLetClauseSlot(
-	letClause ast.LetClauseLike,
-	slot_ uint,
-) {
-	v.appendString(" ")
 }
 
 func (v *formatter_) PreprocessLine(

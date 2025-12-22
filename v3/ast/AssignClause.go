@@ -29,21 +29,36 @@ import (
 
 // Access Function
 
-func ActionInductionClass() ActionInductionClassLike {
-	return actionInductionClass()
+func AssignClauseClass() AssignClauseClassLike {
+	return assignClauseClass()
 }
 
 // Constructor Methods
 
-func (c *actionInductionClass_) ActionInduction(
-	any_ any,
-) ActionInductionLike {
-	if uti.IsUndefined(any_) {
-		panic("The \"any\" attribute is required by this class.")
+func (c *assignClauseClass_) AssignClause(
+	delimiter string,
+	recipient RecipientLike,
+	assignment AssignmentLike,
+	expression ExpressionLike,
+) AssignClauseLike {
+	if uti.IsUndefined(delimiter) {
+		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	var instance = &actionInduction_{
+	if uti.IsUndefined(recipient) {
+		panic("The \"recipient\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(assignment) {
+		panic("The \"assignment\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(expression) {
+		panic("The \"expression\" attribute is required by this class.")
+	}
+	var instance = &assignClause_{
 		// Initialize the instance attributes.
-		any_: any_,
+		delimiter_:  delimiter,
+		recipient_:  recipient,
+		assignment_: assignment,
+		expression_: expression,
 	}
 	return instance
 }
@@ -52,37 +67,52 @@ func (c *actionInductionClass_) ActionInduction(
 
 // Principal Methods
 
-func (v *actionInduction_) GetClass() ActionInductionClassLike {
-	return actionInductionClass()
+func (v *assignClause_) GetClass() AssignClauseClassLike {
+	return assignClauseClass()
 }
 
 // Attribute Methods
 
-func (v *actionInduction_) GetAny() any {
-	return v.any_
+func (v *assignClause_) GetDelimiter() string {
+	return v.delimiter_
+}
+
+func (v *assignClause_) GetRecipient() RecipientLike {
+	return v.recipient_
+}
+
+func (v *assignClause_) GetAssignment() AssignmentLike {
+	return v.assignment_
+}
+
+func (v *assignClause_) GetExpression() ExpressionLike {
+	return v.expression_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type actionInduction_ struct {
+type assignClause_ struct {
 	// Declare the instance attributes.
-	any_ any
+	delimiter_  string
+	recipient_  RecipientLike
+	assignment_ AssignmentLike
+	expression_ ExpressionLike
 }
 
 // Class Structure
 
-type actionInductionClass_ struct {
+type assignClauseClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func actionInductionClass() *actionInductionClass_ {
-	return actionInductionClassReference_
+func assignClauseClass() *assignClauseClass_ {
+	return assignClauseClassReference_
 }
 
-var actionInductionClassReference_ = &actionInductionClass_{
+var assignClauseClassReference_ = &assignClauseClass_{
 	// Initialize the class constants.
 }

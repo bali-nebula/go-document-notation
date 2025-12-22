@@ -377,20 +377,6 @@ type Methodical interface {
 		acceptClause ast.AcceptClauseLike,
 		slot_ uint,
 	)
-	PreprocessActionInduction(
-		actionInduction ast.ActionInductionLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessActionInduction(
-		actionInduction ast.ActionInductionLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessActionInductionSlot(
-		actionInduction ast.ActionInductionLike,
-		slot_ uint,
-	)
 	PreprocessAnnotation(
 		annotation ast.AnnotationLike,
 		index_ uint,
@@ -431,6 +417,20 @@ type Methodical interface {
 	)
 	ProcessArithmeticSlot(
 		arithmetic ast.ArithmeticLike,
+		slot_ uint,
+	)
+	PreprocessAssignClause(
+		assignClause ast.AssignClauseLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessAssignClause(
+		assignClause ast.AssignClauseLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessAssignClauseSlot(
+		assignClause ast.AssignClauseLike,
 		slot_ uint,
 	)
 	PreprocessAssignment(
@@ -601,6 +601,20 @@ type Methodical interface {
 		component ast.ComponentLike,
 		slot_ uint,
 	)
+	PreprocessConstant(
+		constant ast.ConstantLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessConstant(
+		constant ast.ConstantLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessConstantSlot(
+		constant ast.ConstantLike,
+		slot_ uint,
+	)
 	PreprocessConstraint(
 		constraint ast.ConstraintLike,
 		index_ uint,
@@ -643,6 +657,20 @@ type Methodical interface {
 		continueClause ast.ContinueClauseLike,
 		slot_ uint,
 	)
+	PreprocessDefineClause(
+		defineClause ast.DefineClauseLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessDefineClause(
+		defineClause ast.DefineClauseLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessDefineClauseSlot(
+		defineClause ast.DefineClauseLike,
+		slot_ uint,
+	)
 	PreprocessDiscardClause(
 		discardClause ast.DiscardClauseLike,
 		index_ uint,
@@ -655,20 +683,6 @@ type Methodical interface {
 	)
 	ProcessDiscardClauseSlot(
 		discardClause ast.DiscardClauseLike,
-		slot_ uint,
-	)
-	PreprocessDoClause(
-		doClause ast.DoClauseLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessDoClause(
-		doClause ast.DoClauseLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessDoClauseSlot(
-		doClause ast.DoClauseLike,
 		slot_ uint,
 	)
 	PreprocessDocument(
@@ -867,18 +881,32 @@ type Methodical interface {
 		inversion ast.InversionLike,
 		slot_ uint,
 	)
-	PreprocessInvoke(
-		invoke ast.InvokeLike,
+	PreprocessInvocation(
+		invocation ast.InvocationLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessInvoke(
-		invoke ast.InvokeLike,
+	PostprocessInvocation(
+		invocation ast.InvocationLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessInvokeSlot(
-		invoke ast.InvokeLike,
+	ProcessInvocationSlot(
+		invocation ast.InvocationLike,
+		slot_ uint,
+	)
+	PreprocessInvokeClause(
+		invokeClause ast.InvokeClauseLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessInvokeClause(
+		invokeClause ast.InvokeClauseLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessInvokeClauseSlot(
+		invokeClause ast.InvokeClauseLike,
 		slot_ uint,
 	)
 	PreprocessItems(
@@ -909,20 +937,6 @@ type Methodical interface {
 		left ast.LeftLike,
 		slot_ uint,
 	)
-	PreprocessLetClause(
-		letClause ast.LetClauseLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessLetClause(
-		letClause ast.LetClauseLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessLetClauseSlot(
-		letClause ast.LetClauseLike,
-		slot_ uint,
-	)
 	PreprocessLexical(
 		lexical ast.LexicalLike,
 		index_ uint,
@@ -949,6 +963,20 @@ type Methodical interface {
 	)
 	ProcessLineSlot(
 		line ast.LineLike,
+		slot_ uint,
+	)
+	PreprocessLocalTransformation(
+		localTransformation ast.LocalTransformationLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessLocalTransformation(
+		localTransformation ast.LocalTransformationLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessLocalTransformationSlot(
+		localTransformation ast.LocalTransformationLike,
 		slot_ uint,
 	)
 	PreprocessLocation(

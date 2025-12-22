@@ -29,36 +29,21 @@ import (
 
 // Access Function
 
-func LetClauseClass() LetClauseClassLike {
-	return letClauseClass()
+func InvocationClass() InvocationClassLike {
+	return invocationClass()
 }
 
 // Constructor Methods
 
-func (c *letClauseClass_) LetClause(
-	delimiter string,
-	recipient RecipientLike,
-	assignment AssignmentLike,
-	expression ExpressionLike,
-) LetClauseLike {
-	if uti.IsUndefined(delimiter) {
-		panic("The \"delimiter\" attribute is required by this class.")
+func (c *invocationClass_) Invocation(
+	any_ any,
+) InvocationLike {
+	if uti.IsUndefined(any_) {
+		panic("The \"any\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(recipient) {
-		panic("The \"recipient\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(assignment) {
-		panic("The \"assignment\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(expression) {
-		panic("The \"expression\" attribute is required by this class.")
-	}
-	var instance = &letClause_{
+	var instance = &invocation_{
 		// Initialize the instance attributes.
-		delimiter_:  delimiter,
-		recipient_:  recipient,
-		assignment_: assignment,
-		expression_: expression,
+		any_: any_,
 	}
 	return instance
 }
@@ -67,52 +52,37 @@ func (c *letClauseClass_) LetClause(
 
 // Principal Methods
 
-func (v *letClause_) GetClass() LetClauseClassLike {
-	return letClauseClass()
+func (v *invocation_) GetClass() InvocationClassLike {
+	return invocationClass()
 }
 
 // Attribute Methods
 
-func (v *letClause_) GetDelimiter() string {
-	return v.delimiter_
-}
-
-func (v *letClause_) GetRecipient() RecipientLike {
-	return v.recipient_
-}
-
-func (v *letClause_) GetAssignment() AssignmentLike {
-	return v.assignment_
-}
-
-func (v *letClause_) GetExpression() ExpressionLike {
-	return v.expression_
+func (v *invocation_) GetAny() any {
+	return v.any_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type letClause_ struct {
+type invocation_ struct {
 	// Declare the instance attributes.
-	delimiter_  string
-	recipient_  RecipientLike
-	assignment_ AssignmentLike
-	expression_ ExpressionLike
+	any_ any
 }
 
 // Class Structure
 
-type letClauseClass_ struct {
+type invocationClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func letClauseClass() *letClauseClass_ {
-	return letClauseClassReference_
+func invocationClass() *invocationClass_ {
+	return invocationClassReference_
 }
 
-var letClauseClassReference_ = &letClauseClass_{
+var invocationClassReference_ = &invocationClass_{
 	// Initialize the class constants.
 }

@@ -29,26 +29,36 @@ import (
 
 // Access Function
 
-func DoClauseClass() DoClauseClassLike {
-	return doClauseClass()
+func DefineClauseClass() DefineClauseClassLike {
+	return defineClauseClass()
 }
 
 // Constructor Methods
 
-func (c *doClauseClass_) DoClause(
-	delimiter string,
-	method MethodLike,
-) DoClauseLike {
-	if uti.IsUndefined(delimiter) {
-		panic("The \"delimiter\" attribute is required by this class.")
+func (c *defineClauseClass_) DefineClause(
+	delimiter1 string,
+	constant ConstantLike,
+	delimiter2 string,
+	expression ExpressionLike,
+) DefineClauseLike {
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(method) {
-		panic("The \"method\" attribute is required by this class.")
+	if uti.IsUndefined(constant) {
+		panic("The \"constant\" attribute is required by this class.")
 	}
-	var instance = &doClause_{
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(expression) {
+		panic("The \"expression\" attribute is required by this class.")
+	}
+	var instance = &defineClause_{
 		// Initialize the instance attributes.
-		delimiter_: delimiter,
-		method_:    method,
+		delimiter1_: delimiter1,
+		constant_:   constant,
+		delimiter2_: delimiter2,
+		expression_: expression,
 	}
 	return instance
 }
@@ -57,42 +67,52 @@ func (c *doClauseClass_) DoClause(
 
 // Principal Methods
 
-func (v *doClause_) GetClass() DoClauseClassLike {
-	return doClauseClass()
+func (v *defineClause_) GetClass() DefineClauseClassLike {
+	return defineClauseClass()
 }
 
 // Attribute Methods
 
-func (v *doClause_) GetDelimiter() string {
-	return v.delimiter_
+func (v *defineClause_) GetDelimiter1() string {
+	return v.delimiter1_
 }
 
-func (v *doClause_) GetMethod() MethodLike {
-	return v.method_
+func (v *defineClause_) GetConstant() ConstantLike {
+	return v.constant_
+}
+
+func (v *defineClause_) GetDelimiter2() string {
+	return v.delimiter2_
+}
+
+func (v *defineClause_) GetExpression() ExpressionLike {
+	return v.expression_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type doClause_ struct {
+type defineClause_ struct {
 	// Declare the instance attributes.
-	delimiter_ string
-	method_    MethodLike
+	delimiter1_ string
+	constant_   ConstantLike
+	delimiter2_ string
+	expression_ ExpressionLike
 }
 
 // Class Structure
 
-type doClauseClass_ struct {
+type defineClauseClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func doClauseClass() *doClauseClass_ {
-	return doClauseClassReference_
+func defineClauseClass() *defineClauseClass_ {
+	return defineClauseClassReference_
 }
 
-var doClauseClassReference_ = &doClauseClass_{
+var defineClauseClassReference_ = &defineClauseClass_{
 	// Initialize the class constants.
 }

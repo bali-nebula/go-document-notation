@@ -128,38 +128,6 @@ func (v *visitor_) visitAcceptClause(
 	)
 }
 
-func (v *visitor_) visitActionInduction(
-	actionInduction ast.ActionInductionLike,
-) {
-	// Visit the possible actionInduction rule types.
-	switch actual := actionInduction.GetAny().(type) {
-	case ast.DoClauseLike:
-		v.processor_.PreprocessDoClause(
-			actual,
-			0,
-			0,
-		)
-		v.visitDoClause(actual)
-		v.processor_.PostprocessDoClause(
-			actual,
-			0,
-			0,
-		)
-	case ast.LetClauseLike:
-		v.processor_.PreprocessLetClause(
-			actual,
-			0,
-			0,
-		)
-		v.visitLetClause(actual)
-		v.processor_.PostprocessLetClause(
-			actual,
-			0,
-			0,
-		)
-	}
-}
-
 func (v *visitor_) visitAnnotation(
 	annotation ast.AnnotationLike,
 ) {
@@ -224,6 +192,67 @@ func (v *visitor_) visitArithmetic(
 	case "^":
 		v.processor_.ProcessDelimiter("^")
 	}
+}
+
+func (v *visitor_) visitAssignClause(
+	assignClause ast.AssignClauseLike,
+) {
+	var delimiter = assignClause.GetDelimiter()
+	v.processor_.ProcessDelimiter(delimiter)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessAssignClauseSlot(
+		assignClause,
+		1,
+	)
+
+	var recipient = assignClause.GetRecipient()
+	v.processor_.PreprocessRecipient(
+		recipient,
+		0,
+		0,
+	)
+	v.visitRecipient(recipient)
+	v.processor_.PostprocessRecipient(
+		recipient,
+		0,
+		0,
+	)
+	// Visit slot 2 between terms.
+	v.processor_.ProcessAssignClauseSlot(
+		assignClause,
+		2,
+	)
+
+	var assignment = assignClause.GetAssignment()
+	v.processor_.PreprocessAssignment(
+		assignment,
+		0,
+		0,
+	)
+	v.visitAssignment(assignment)
+	v.processor_.PostprocessAssignment(
+		assignment,
+		0,
+		0,
+	)
+	// Visit slot 3 between terms.
+	v.processor_.ProcessAssignClauseSlot(
+		assignClause,
+		3,
+	)
+
+	var expression = assignClause.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
+		0,
+		0,
+	)
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
+		0,
+		0,
+	)
 }
 
 func (v *visitor_) visitAssignment(
@@ -597,6 +626,13 @@ func (v *visitor_) visitComponent(
 	}
 }
 
+func (v *visitor_) visitConstant(
+	constant ast.ConstantLike,
+) {
+	var symbol = constant.GetSymbol()
+	v.processor_.ProcessSymbol(symbol)
+}
+
 func (v *visitor_) visitConstraint(
 	constraint ast.ConstraintLike,
 ) {
@@ -676,6 +712,57 @@ func (v *visitor_) visitContinueClause(
 	v.processor_.ProcessDelimiter(delimiter2)
 }
 
+func (v *visitor_) visitDefineClause(
+	defineClause ast.DefineClauseLike,
+) {
+	var delimiter1 = defineClause.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessDefineClauseSlot(
+		defineClause,
+		1,
+	)
+
+	var constant = defineClause.GetConstant()
+	v.processor_.PreprocessConstant(
+		constant,
+		0,
+		0,
+	)
+	v.visitConstant(constant)
+	v.processor_.PostprocessConstant(
+		constant,
+		0,
+		0,
+	)
+	// Visit slot 2 between terms.
+	v.processor_.ProcessDefineClauseSlot(
+		defineClause,
+		2,
+	)
+
+	var delimiter2 = defineClause.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
+	// Visit slot 3 between terms.
+	v.processor_.ProcessDefineClauseSlot(
+		defineClause,
+		3,
+	)
+
+	var expression = defineClause.GetExpression()
+	v.processor_.PreprocessExpression(
+		expression,
+		0,
+		0,
+	)
+	v.visitExpression(expression)
+	v.processor_.PostprocessExpression(
+		expression,
+		0,
+		0,
+	)
+}
+
 func (v *visitor_) visitDiscardClause(
 	discardClause ast.DiscardClauseLike,
 ) {
@@ -696,31 +783,6 @@ func (v *visitor_) visitDiscardClause(
 	v.visitCitation(citation)
 	v.processor_.PostprocessCitation(
 		citation,
-		0,
-		0,
-	)
-}
-
-func (v *visitor_) visitDoClause(
-	doClause ast.DoClauseLike,
-) {
-	var delimiter = doClause.GetDelimiter()
-	v.processor_.ProcessDelimiter(delimiter)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessDoClauseSlot(
-		doClause,
-		1,
-	)
-
-	var method = doClause.GetMethod()
-	v.processor_.PreprocessMethod(
-		method,
-		0,
-		0,
-	)
-	v.visitMethod(method)
-	v.processor_.PostprocessMethod(
-		method,
 		0,
 		0,
 	)
@@ -1297,17 +1359,42 @@ func (v *visitor_) visitInversion(
 	)
 }
 
-func (v *visitor_) visitInvoke(
-	invoke ast.InvokeLike,
+func (v *visitor_) visitInvocation(
+	invocation ast.InvocationLike,
 ) {
-	// Visit the possible invoke literal values.
-	var actual = invoke.GetAny().(string)
+	// Visit the possible invocation literal values.
+	var actual = invocation.GetAny().(string)
 	switch actual {
 	case "<-":
 		v.processor_.ProcessDelimiter("<-")
 	case "<~":
 		v.processor_.ProcessDelimiter("<~")
 	}
+}
+
+func (v *visitor_) visitInvokeClause(
+	invokeClause ast.InvokeClauseLike,
+) {
+	var delimiter = invokeClause.GetDelimiter()
+	v.processor_.ProcessDelimiter(delimiter)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessInvokeClauseSlot(
+		invokeClause,
+		1,
+	)
+
+	var method = invokeClause.GetMethod()
+	v.processor_.PreprocessMethod(
+		method,
+		0,
+		0,
+	)
+	v.visitMethod(method)
+	v.processor_.PostprocessMethod(
+		method,
+		0,
+		0,
+	)
 }
 
 func (v *visitor_) visitItems(
@@ -1362,67 +1449,6 @@ func (v *visitor_) visitLeft(
 	}
 }
 
-func (v *visitor_) visitLetClause(
-	letClause ast.LetClauseLike,
-) {
-	var delimiter = letClause.GetDelimiter()
-	v.processor_.ProcessDelimiter(delimiter)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessLetClauseSlot(
-		letClause,
-		1,
-	)
-
-	var recipient = letClause.GetRecipient()
-	v.processor_.PreprocessRecipient(
-		recipient,
-		0,
-		0,
-	)
-	v.visitRecipient(recipient)
-	v.processor_.PostprocessRecipient(
-		recipient,
-		0,
-		0,
-	)
-	// Visit slot 2 between terms.
-	v.processor_.ProcessLetClauseSlot(
-		letClause,
-		2,
-	)
-
-	var assignment = letClause.GetAssignment()
-	v.processor_.PreprocessAssignment(
-		assignment,
-		0,
-		0,
-	)
-	v.visitAssignment(assignment)
-	v.processor_.PostprocessAssignment(
-		assignment,
-		0,
-		0,
-	)
-	// Visit slot 3 between terms.
-	v.processor_.ProcessLetClauseSlot(
-		letClause,
-		3,
-	)
-
-	var expression = letClause.GetExpression()
-	v.processor_.PreprocessExpression(
-		expression,
-		0,
-		0,
-	)
-	v.visitExpression(expression)
-	v.processor_.PostprocessExpression(
-		expression,
-		0,
-		0,
-	)
-}
-
 func (v *visitor_) visitLexical(
 	lexical ast.LexicalLike,
 ) {
@@ -1459,6 +1485,50 @@ func (v *visitor_) visitLine(
 		)
 		v.visitStatement(actual)
 		v.processor_.PostprocessStatement(
+			actual,
+			0,
+			0,
+		)
+	}
+}
+
+func (v *visitor_) visitLocalTransformation(
+	localTransformation ast.LocalTransformationLike,
+) {
+	// Visit the possible localTransformation rule types.
+	switch actual := localTransformation.GetAny().(type) {
+	case ast.DefineClauseLike:
+		v.processor_.PreprocessDefineClause(
+			actual,
+			0,
+			0,
+		)
+		v.visitDefineClause(actual)
+		v.processor_.PostprocessDefineClause(
+			actual,
+			0,
+			0,
+		)
+	case ast.AssignClauseLike:
+		v.processor_.PreprocessAssignClause(
+			actual,
+			0,
+			0,
+		)
+		v.visitAssignClause(actual)
+		v.processor_.PostprocessAssignClause(
+			actual,
+			0,
+			0,
+		)
+	case ast.InvokeClauseLike:
+		v.processor_.PreprocessInvokeClause(
+			actual,
+			0,
+			0,
+		)
+		v.visitInvokeClause(actual)
+		v.processor_.PostprocessInvokeClause(
 			actual,
 			0,
 			0,
@@ -1550,6 +1620,18 @@ func (v *visitor_) visitMainClause(
 			0,
 			0,
 		)
+	case ast.LocalTransformationLike:
+		v.processor_.PreprocessLocalTransformation(
+			actual,
+			0,
+			0,
+		)
+		v.visitLocalTransformation(actual)
+		v.processor_.PostprocessLocalTransformation(
+			actual,
+			0,
+			0,
+		)
 	case ast.MessageHandlingLike:
 		v.processor_.PreprocessMessageHandling(
 			actual,
@@ -1570,18 +1652,6 @@ func (v *visitor_) visitMainClause(
 		)
 		v.visitRepositoryAccess(actual)
 		v.processor_.PostprocessRepositoryAccess(
-			actual,
-			0,
-			0,
-		)
-	case ast.ActionInductionLike:
-		v.processor_.PreprocessActionInduction(
-			actual,
-			0,
-			0,
-		)
-		v.visitActionInduction(actual)
-		v.processor_.PostprocessActionInduction(
 			actual,
 			0,
 			0,
@@ -1780,15 +1850,15 @@ func (v *visitor_) visitMethod(
 		1,
 	)
 
-	var invoke = method.GetInvoke()
-	v.processor_.PreprocessInvoke(
-		invoke,
+	var invocation = method.GetInvocation()
+	v.processor_.PreprocessInvocation(
+		invocation,
 		0,
 		0,
 	)
-	v.visitInvoke(invoke)
-	v.processor_.PostprocessInvoke(
-		invoke,
+	v.visitInvocation(invocation)
+	v.processor_.PostprocessInvocation(
+		invocation,
 		0,
 		0,
 	)

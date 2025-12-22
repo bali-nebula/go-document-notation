@@ -63,18 +63,6 @@ type AcceptClauseClassLike interface {
 }
 
 /*
-ActionInductionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete action-induction-like class.
-*/
-type ActionInductionClassLike interface {
-	// Constructor Methods
-	ActionInduction(
-		any_ any,
-	) ActionInductionLike
-}
-
-/*
 AnnotationClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete annotation-like class.
@@ -108,6 +96,21 @@ type ArithmeticClassLike interface {
 	Arithmetic(
 		any_ any,
 	) ArithmeticLike
+}
+
+/*
+AssignClauseClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete assign-clause-like class.
+*/
+type AssignClauseClassLike interface {
+	// Constructor Methods
+	AssignClause(
+		delimiter string,
+		recipient RecipientLike,
+		assignment AssignmentLike,
+		expression ExpressionLike,
+	) AssignClauseLike
 }
 
 /*
@@ -268,6 +271,18 @@ type ComponentClassLike interface {
 }
 
 /*
+ConstantClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete constant-like class.
+*/
+type ConstantClassLike interface {
+	// Constructor Methods
+	Constant(
+		symbol string,
+	) ConstantLike
+}
+
+/*
 ConstraintClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete constraint-like class.
@@ -307,6 +322,21 @@ type ContinueClauseClassLike interface {
 }
 
 /*
+DefineClauseClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete define-clause-like class.
+*/
+type DefineClauseClassLike interface {
+	// Constructor Methods
+	DefineClause(
+		delimiter1 string,
+		constant ConstantLike,
+		delimiter2 string,
+		expression ExpressionLike,
+	) DefineClauseLike
+}
+
+/*
 DiscardClauseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete discard-clause-like class.
@@ -317,19 +347,6 @@ type DiscardClauseClassLike interface {
 		delimiter string,
 		citation CitationLike,
 	) DiscardClauseLike
-}
-
-/*
-DoClauseClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete do-clause-like class.
-*/
-type DoClauseClassLike interface {
-	// Constructor Methods
-	DoClause(
-		delimiter string,
-		method MethodLike,
-	) DoClauseLike
 }
 
 /*
@@ -515,15 +532,28 @@ type InversionClassLike interface {
 }
 
 /*
-InvokeClassLike is a class interface that declares the
+InvocationClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete invoke-like class.
+supported by each concrete invocation-like class.
 */
-type InvokeClassLike interface {
+type InvocationClassLike interface {
 	// Constructor Methods
-	Invoke(
+	Invocation(
 		any_ any,
-	) InvokeLike
+	) InvocationLike
+}
+
+/*
+InvokeClauseClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete invoke-clause-like class.
+*/
+type InvokeClauseClassLike interface {
+	// Constructor Methods
+	InvokeClause(
+		delimiter string,
+		method MethodLike,
+	) InvokeClauseLike
 }
 
 /*
@@ -553,21 +583,6 @@ type LeftClassLike interface {
 }
 
 /*
-LetClauseClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete let-clause-like class.
-*/
-type LetClauseClassLike interface {
-	// Constructor Methods
-	LetClause(
-		delimiter string,
-		recipient RecipientLike,
-		assignment AssignmentLike,
-		expression ExpressionLike,
-	) LetClauseLike
-}
-
-/*
 LexicalClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete lexical-like class.
@@ -589,6 +604,18 @@ type LineClassLike interface {
 	Line(
 		any_ any,
 	) LineLike
+}
+
+/*
+LocalTransformationClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete local-transformation-like class.
+*/
+type LocalTransformationClassLike interface {
+	// Constructor Methods
+	LocalTransformation(
+		any_ any,
+	) LocalTransformationLike
 }
 
 /*
@@ -701,7 +728,7 @@ type MethodClassLike interface {
 	// Constructor Methods
 	Method(
 		identifier1 string,
-		invoke InvokeLike,
+		invocation InvocationLike,
 		identifier2 string,
 		delimiter1 string,
 		arguments com.Sequential[ArgumentLike],
@@ -1174,19 +1201,6 @@ type AcceptClauseLike interface {
 }
 
 /*
-ActionInductionLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete action-induction-like class.
-*/
-type ActionInductionLike interface {
-	// Principal Methods
-	GetClass() ActionInductionClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
 AnnotationLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete annotation-like class.
@@ -1223,6 +1237,22 @@ type ArithmeticLike interface {
 
 	// Attribute Methods
 	GetAny() any
+}
+
+/*
+AssignClauseLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete assign-clause-like class.
+*/
+type AssignClauseLike interface {
+	// Principal Methods
+	GetClass() AssignClauseClassLike
+
+	// Attribute Methods
+	GetDelimiter() string
+	GetRecipient() RecipientLike
+	GetAssignment() AssignmentLike
+	GetExpression() ExpressionLike
 }
 
 /*
@@ -1395,6 +1425,19 @@ type ComponentLike interface {
 }
 
 /*
+ConstantLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete constant-like class.
+*/
+type ConstantLike interface {
+	// Principal Methods
+	GetClass() ConstantClassLike
+
+	// Attribute Methods
+	GetSymbol() string
+}
+
+/*
 ConstraintLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete constraint-like class.
@@ -1437,6 +1480,22 @@ type ContinueClauseLike interface {
 }
 
 /*
+DefineClauseLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete define-clause-like class.
+*/
+type DefineClauseLike interface {
+	// Principal Methods
+	GetClass() DefineClauseClassLike
+
+	// Attribute Methods
+	GetDelimiter1() string
+	GetConstant() ConstantLike
+	GetDelimiter2() string
+	GetExpression() ExpressionLike
+}
+
+/*
 DiscardClauseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete discard-clause-like class.
@@ -1448,20 +1507,6 @@ type DiscardClauseLike interface {
 	// Attribute Methods
 	GetDelimiter() string
 	GetCitation() CitationLike
-}
-
-/*
-DoClauseLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete do-clause-like class.
-*/
-type DoClauseLike interface {
-	// Principal Methods
-	GetClass() DoClauseClassLike
-
-	// Attribute Methods
-	GetDelimiter() string
-	GetMethod() MethodLike
 }
 
 /*
@@ -1661,16 +1706,30 @@ type InversionLike interface {
 }
 
 /*
-InvokeLike is an instance interface that declares the
+InvocationLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete invoke-like class.
+by each instance of a concrete invocation-like class.
 */
-type InvokeLike interface {
+type InvocationLike interface {
 	// Principal Methods
-	GetClass() InvokeClassLike
+	GetClass() InvocationClassLike
 
 	// Attribute Methods
 	GetAny() any
+}
+
+/*
+InvokeClauseLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete invoke-clause-like class.
+*/
+type InvokeClauseLike interface {
+	// Principal Methods
+	GetClass() InvokeClauseClassLike
+
+	// Attribute Methods
+	GetDelimiter() string
+	GetMethod() MethodLike
 }
 
 /*
@@ -1702,22 +1761,6 @@ type LeftLike interface {
 }
 
 /*
-LetClauseLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete let-clause-like class.
-*/
-type LetClauseLike interface {
-	// Principal Methods
-	GetClass() LetClauseClassLike
-
-	// Attribute Methods
-	GetDelimiter() string
-	GetRecipient() RecipientLike
-	GetAssignment() AssignmentLike
-	GetExpression() ExpressionLike
-}
-
-/*
 LexicalLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete lexical-like class.
@@ -1738,6 +1781,19 @@ by each instance of a concrete line-like class.
 type LineLike interface {
 	// Principal Methods
 	GetClass() LineClassLike
+
+	// Attribute Methods
+	GetAny() any
+}
+
+/*
+LocalTransformationLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete local-transformation-like class.
+*/
+type LocalTransformationLike interface {
+	// Principal Methods
+	GetClass() LocalTransformationClassLike
 
 	// Attribute Methods
 	GetAny() any
@@ -1863,7 +1919,7 @@ type MethodLike interface {
 
 	// Attribute Methods
 	GetIdentifier1() string
-	GetInvoke() InvokeLike
+	GetInvocation() InvocationLike
 	GetIdentifier2() string
 	GetDelimiter1() string
 	GetArguments() com.Sequential[ArgumentLike]

@@ -192,26 +192,6 @@ func (v *processor_) ProcessAcceptClauseSlot(
 ) {
 }
 
-func (v *processor_) PreprocessActionInduction(
-	actionInduction ast.ActionInductionLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessActionInduction(
-	actionInduction ast.ActionInductionLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessActionInductionSlot(
-	actionInduction ast.ActionInductionLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessAnnotation(
 	annotation ast.AnnotationLike,
 	index_ uint,
@@ -268,6 +248,26 @@ func (v *processor_) PostprocessArithmetic(
 
 func (v *processor_) ProcessArithmeticSlot(
 	arithmetic ast.ArithmeticLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessAssignClause(
+	assignClause ast.AssignClauseLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessAssignClause(
+	assignClause ast.AssignClauseLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessAssignClauseSlot(
+	assignClause ast.AssignClauseLike,
 	slot_ uint,
 ) {
 }
@@ -512,6 +512,26 @@ func (v *processor_) ProcessComponentSlot(
 ) {
 }
 
+func (v *processor_) PreprocessConstant(
+	constant ast.ConstantLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessConstant(
+	constant ast.ConstantLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessConstantSlot(
+	constant ast.ConstantLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessConstraint(
 	constraint ast.ConstraintLike,
 	index_ uint,
@@ -572,6 +592,26 @@ func (v *processor_) ProcessContinueClauseSlot(
 ) {
 }
 
+func (v *processor_) PreprocessDefineClause(
+	defineClause ast.DefineClauseLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessDefineClause(
+	defineClause ast.DefineClauseLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessDefineClauseSlot(
+	defineClause ast.DefineClauseLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessDiscardClause(
 	discardClause ast.DiscardClauseLike,
 	index_ uint,
@@ -588,26 +628,6 @@ func (v *processor_) PostprocessDiscardClause(
 
 func (v *processor_) ProcessDiscardClauseSlot(
 	discardClause ast.DiscardClauseLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessDoClause(
-	doClause ast.DoClauseLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessDoClause(
-	doClause ast.DoClauseLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessDoClauseSlot(
-	doClause ast.DoClauseLike,
 	slot_ uint,
 ) {
 }
@@ -892,22 +912,42 @@ func (v *processor_) ProcessInversionSlot(
 ) {
 }
 
-func (v *processor_) PreprocessInvoke(
-	invoke ast.InvokeLike,
+func (v *processor_) PreprocessInvocation(
+	invocation ast.InvocationLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessInvoke(
-	invoke ast.InvokeLike,
+func (v *processor_) PostprocessInvocation(
+	invocation ast.InvocationLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessInvokeSlot(
-	invoke ast.InvokeLike,
+func (v *processor_) ProcessInvocationSlot(
+	invocation ast.InvocationLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessInvokeClause(
+	invokeClause ast.InvokeClauseLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessInvokeClause(
+	invokeClause ast.InvokeClauseLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessInvokeClauseSlot(
+	invokeClause ast.InvokeClauseLike,
 	slot_ uint,
 ) {
 }
@@ -952,26 +992,6 @@ func (v *processor_) ProcessLeftSlot(
 ) {
 }
 
-func (v *processor_) PreprocessLetClause(
-	letClause ast.LetClauseLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessLetClause(
-	letClause ast.LetClauseLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessLetClauseSlot(
-	letClause ast.LetClauseLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessLexical(
 	lexical ast.LexicalLike,
 	index_ uint,
@@ -1008,6 +1028,26 @@ func (v *processor_) PostprocessLine(
 
 func (v *processor_) ProcessLineSlot(
 	line ast.LineLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessLocalTransformation(
+	localTransformation ast.LocalTransformationLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessLocalTransformation(
+	localTransformation ast.LocalTransformationLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessLocalTransformationSlot(
+	localTransformation ast.LocalTransformationLike,
 	slot_ uint,
 ) {
 }

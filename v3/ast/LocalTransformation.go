@@ -22,7 +22,6 @@
 package ast
 
 import (
-	com "github.com/craterdog/go-essential-composites/v8"
 	uti "github.com/craterdog/go-essential-utilities/v8"
 )
 
@@ -30,46 +29,21 @@ import (
 
 // Access Function
 
-func MethodClass() MethodClassLike {
-	return methodClass()
+func LocalTransformationClass() LocalTransformationClassLike {
+	return localTransformationClass()
 }
 
 // Constructor Methods
 
-func (c *methodClass_) Method(
-	identifier1 string,
-	invocation InvocationLike,
-	identifier2 string,
-	delimiter1 string,
-	arguments com.Sequential[ArgumentLike],
-	delimiter2 string,
-) MethodLike {
-	if uti.IsUndefined(identifier1) {
-		panic("The \"identifier1\" attribute is required by this class.")
+func (c *localTransformationClass_) LocalTransformation(
+	any_ any,
+) LocalTransformationLike {
+	if uti.IsUndefined(any_) {
+		panic("The \"any\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(invocation) {
-		panic("The \"invocation\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(identifier2) {
-		panic("The \"identifier2\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(delimiter1) {
-		panic("The \"delimiter1\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(arguments) {
-		panic("The \"arguments\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(delimiter2) {
-		panic("The \"delimiter2\" attribute is required by this class.")
-	}
-	var instance = &method_{
+	var instance = &localTransformation_{
 		// Initialize the instance attributes.
-		identifier1_: identifier1,
-		invocation_:  invocation,
-		identifier2_: identifier2,
-		delimiter1_:  delimiter1,
-		arguments_:   arguments,
-		delimiter2_:  delimiter2,
+		any_: any_,
 	}
 	return instance
 }
@@ -78,62 +52,37 @@ func (c *methodClass_) Method(
 
 // Principal Methods
 
-func (v *method_) GetClass() MethodClassLike {
-	return methodClass()
+func (v *localTransformation_) GetClass() LocalTransformationClassLike {
+	return localTransformationClass()
 }
 
 // Attribute Methods
 
-func (v *method_) GetIdentifier1() string {
-	return v.identifier1_
-}
-
-func (v *method_) GetInvocation() InvocationLike {
-	return v.invocation_
-}
-
-func (v *method_) GetIdentifier2() string {
-	return v.identifier2_
-}
-
-func (v *method_) GetDelimiter1() string {
-	return v.delimiter1_
-}
-
-func (v *method_) GetArguments() com.Sequential[ArgumentLike] {
-	return v.arguments_
-}
-
-func (v *method_) GetDelimiter2() string {
-	return v.delimiter2_
+func (v *localTransformation_) GetAny() any {
+	return v.any_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type method_ struct {
+type localTransformation_ struct {
 	// Declare the instance attributes.
-	identifier1_ string
-	invocation_  InvocationLike
-	identifier2_ string
-	delimiter1_  string
-	arguments_   com.Sequential[ArgumentLike]
-	delimiter2_  string
+	any_ any
 }
 
 // Class Structure
 
-type methodClass_ struct {
+type localTransformationClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func methodClass() *methodClass_ {
-	return methodClassReference_
+func localTransformationClass() *localTransformationClass_ {
+	return localTransformationClassReference_
 }
 
-var methodClassReference_ = &methodClass_{
+var localTransformationClassReference_ = &localTransformationClass_{
 	// Initialize the class constants.
 }
