@@ -3751,23 +3751,14 @@ func (v *parser_) parseRange() (
 		panic(message)
 	}
 
-	// Attempt to parse a single Primitive rule.
-	var primitive1 ast.PrimitiveLike
-	primitive1, token, ok = v.parsePrimitive()
-	switch {
-	case ok:
+	// Attempt to parse an optional Primitive rule.
+	var optionalPrimitive1 ast.PrimitiveLike
+	optionalPrimitive1, token, ok = v.parsePrimitive()
+	if ok {
 		// Found a multiexpression token.
 		if uti.IsDefined(tokens) {
 			tokens.AppendValue(token)
 		}
-	case uti.IsDefined(tokens):
-		// This is not a single Primitive rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Range", token)
-		panic(message)
 	}
 
 	// Attempt to parse a single ".." literal.
@@ -3788,23 +3779,14 @@ func (v *parser_) parseRange() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Primitive rule.
-	var primitive2 ast.PrimitiveLike
-	primitive2, token, ok = v.parsePrimitive()
-	switch {
-	case ok:
+	// Attempt to parse an optional Primitive rule.
+	var optionalPrimitive2 ast.PrimitiveLike
+	optionalPrimitive2, token, ok = v.parsePrimitive()
+	if ok {
 		// Found a multiexpression token.
 		if uti.IsDefined(tokens) {
 			tokens.AppendValue(token)
 		}
-	case uti.IsDefined(tokens):
-		// This is not a single Primitive rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Range", token)
-		panic(message)
 	}
 
 	// Attempt to parse a single Right rule.
@@ -3831,9 +3813,9 @@ func (v *parser_) parseRange() (
 	v.remove(tokens)
 	range_ = ast.RangeClass().Range(
 		left,
-		primitive1,
+		optionalPrimitive1,
 		delimiter,
-		primitive2,
+		optionalPrimitive2,
 		right,
 	)
 	return
@@ -5620,7 +5602,7 @@ var parserClassReference_ = &parserClass_{
     symbol
     tag
     version`,
-			"$Range": `Left Primitive ".." Primitive Right`,
+			"$Range": `Left Primitive? ".." Primitive? Right`,
 			"$Left": `
     "["
     "("`,

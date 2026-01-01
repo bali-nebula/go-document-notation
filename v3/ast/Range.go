@@ -37,33 +37,27 @@ func RangeClass() RangeClassLike {
 
 func (c *rangeClass_) Range(
 	left LeftLike,
-	primitive1 PrimitiveLike,
+	optionalPrimitive1 PrimitiveLike,
 	delimiter string,
-	primitive2 PrimitiveLike,
+	optionalPrimitive2 PrimitiveLike,
 	right RightLike,
 ) RangeLike {
 	if uti.IsUndefined(left) {
 		panic("The \"left\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(primitive1) {
-		panic("The \"primitive1\" attribute is required by this class.")
-	}
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
-	}
-	if uti.IsUndefined(primitive2) {
-		panic("The \"primitive2\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(right) {
 		panic("The \"right\" attribute is required by this class.")
 	}
 	var instance = &range_{
 		// Initialize the instance attributes.
-		left_:       left,
-		primitive1_: primitive1,
-		delimiter_:  delimiter,
-		primitive2_: primitive2,
-		right_:      right,
+		left_:               left,
+		optionalPrimitive1_: optionalPrimitive1,
+		delimiter_:          delimiter,
+		optionalPrimitive2_: optionalPrimitive2,
+		right_:              right,
 	}
 	return instance
 }
@@ -82,16 +76,16 @@ func (v *range_) GetLeft() LeftLike {
 	return v.left_
 }
 
-func (v *range_) GetPrimitive1() PrimitiveLike {
-	return v.primitive1_
+func (v *range_) GetOptionalPrimitive1() PrimitiveLike {
+	return v.optionalPrimitive1_
 }
 
 func (v *range_) GetDelimiter() string {
 	return v.delimiter_
 }
 
-func (v *range_) GetPrimitive2() PrimitiveLike {
-	return v.primitive2_
+func (v *range_) GetOptionalPrimitive2() PrimitiveLike {
+	return v.optionalPrimitive2_
 }
 
 func (v *range_) GetRight() RightLike {
@@ -104,11 +98,11 @@ func (v *range_) GetRight() RightLike {
 
 type range_ struct {
 	// Declare the instance attributes.
-	left_       LeftLike
-	primitive1_ PrimitiveLike
-	delimiter_  string
-	primitive2_ PrimitiveLike
-	right_      RightLike
+	left_               LeftLike
+	optionalPrimitive1_ PrimitiveLike
+	delimiter_          string
+	optionalPrimitive2_ PrimitiveLike
+	right_              RightLike
 }
 
 // Class Structure

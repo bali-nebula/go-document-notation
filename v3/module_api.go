@@ -1188,16 +1188,16 @@ func RangeClass() RangeClassLike {
 
 func Range(
 	left ast.LeftLike,
-	primitive1 ast.PrimitiveLike,
+	optionalPrimitive1 ast.PrimitiveLike,
 	delimiter string,
-	primitive2 ast.PrimitiveLike,
+	optionalPrimitive2 ast.PrimitiveLike,
 	right ast.RightLike,
 ) RangeLike {
 	return RangeClass().Range(
 		left,
-		primitive1,
+		optionalPrimitive1,
 		delimiter,
-		primitive2,
+		optionalPrimitive2,
 		right,
 	)
 }

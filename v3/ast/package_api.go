@@ -890,9 +890,9 @@ type RangeClassLike interface {
 	// Constructor Methods
 	Range(
 		left LeftLike,
-		primitive1 PrimitiveLike,
+		optionalPrimitive1 PrimitiveLike,
 		delimiter string,
-		primitive2 PrimitiveLike,
+		optionalPrimitive2 PrimitiveLike,
 		right RightLike,
 	) RangeLike
 }
@@ -2105,9 +2105,9 @@ type RangeLike interface {
 
 	// Attribute Methods
 	GetLeft() LeftLike
-	GetPrimitive1() PrimitiveLike
+	GetOptionalPrimitive1() PrimitiveLike
 	GetDelimiter() string
-	GetPrimitive2() PrimitiveLike
+	GetOptionalPrimitive2() PrimitiveLike
 	GetRight() RightLike
 }
 

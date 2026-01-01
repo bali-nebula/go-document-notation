@@ -68,7 +68,7 @@ $Sequence:
     tag
     version
 
-$Range: Left Primitive ".." Primitive Right
+$Range: Left Primitive? ".." Primitive? Right
 
 $Left:
     "["

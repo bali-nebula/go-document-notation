@@ -2411,18 +2411,20 @@ func (v *visitor_) visitRange(
 		1,
 	)
 
-	var primitive1 = range_.GetPrimitive1()
-	v.processor_.PreprocessPrimitive(
-		primitive1,
-		0,
-		0,
-	)
-	v.visitPrimitive(primitive1)
-	v.processor_.PostprocessPrimitive(
-		primitive1,
-		0,
-		0,
-	)
+	var optionalPrimitive1 = range_.GetOptionalPrimitive1()
+	if uti.IsDefined(optionalPrimitive1) {
+		v.processor_.PreprocessPrimitive(
+			optionalPrimitive1,
+			0,
+			0,
+		)
+		v.visitPrimitive(optionalPrimitive1)
+		v.processor_.PostprocessPrimitive(
+			optionalPrimitive1,
+			0,
+			0,
+		)
+	}
 	// Visit slot 2 between terms.
 	v.processor_.ProcessRangeSlot(
 		range_,
@@ -2437,18 +2439,20 @@ func (v *visitor_) visitRange(
 		3,
 	)
 
-	var primitive2 = range_.GetPrimitive2()
-	v.processor_.PreprocessPrimitive(
-		primitive2,
-		0,
-		0,
-	)
-	v.visitPrimitive(primitive2)
-	v.processor_.PostprocessPrimitive(
-		primitive2,
-		0,
-		0,
-	)
+	var optionalPrimitive2 = range_.GetOptionalPrimitive2()
+	if uti.IsDefined(optionalPrimitive2) {
+		v.processor_.PreprocessPrimitive(
+			optionalPrimitive2,
+			0,
+			0,
+		)
+		v.visitPrimitive(optionalPrimitive2)
+		v.processor_.PostprocessPrimitive(
+			optionalPrimitive2,
+			0,
+			0,
+		)
+	}
 	// Visit slot 4 between terms.
 	v.processor_.ProcessRangeSlot(
 		range_,
