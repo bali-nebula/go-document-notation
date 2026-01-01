@@ -518,6 +518,18 @@ func (v *visitor_) visitCollection(
 ) {
 	// Visit the possible collection rule types.
 	switch actual := collection.GetAny().(type) {
+	case ast.EmptyLike:
+		v.processor_.PreprocessEmpty(
+			actual,
+			0,
+			0,
+		)
+		v.visitEmpty(actual)
+		v.processor_.PostprocessEmpty(
+			actual,
+			0,
+			0,
+		)
 	case ast.AttributesLike:
 		v.processor_.PreprocessAttributes(
 			actual,
@@ -867,6 +879,13 @@ func (v *visitor_) visitElement(
 	case ScannerClass().MatchesType(actual, ResourceToken):
 		v.processor_.ProcessResource(actual)
 	}
+}
+
+func (v *visitor_) visitEmpty(
+	empty ast.EmptyLike,
+) {
+	var delimiter = empty.GetDelimiter()
+	v.processor_.ProcessDelimiter(delimiter)
 }
 
 func (v *visitor_) visitEntity(

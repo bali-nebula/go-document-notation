@@ -727,6 +727,20 @@ type Methodical interface {
 		element ast.ElementLike,
 		slot_ uint,
 	)
+	PreprocessEmpty(
+		empty ast.EmptyLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessEmpty(
+		empty ast.EmptyLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessEmptySlot(
+		empty ast.EmptyLike,
+		slot_ uint,
+	)
 	PreprocessEntity(
 		entity ast.EntityLike,
 		index_ uint,

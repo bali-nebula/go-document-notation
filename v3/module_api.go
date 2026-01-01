@@ -67,6 +67,7 @@ type (
 	DocumentClassLike            = ast.DocumentClassLike
 	DraftClassLike               = ast.DraftClassLike
 	ElementClassLike             = ast.ElementClassLike
+	EmptyClassLike               = ast.EmptyClassLike
 	EntityClassLike              = ast.EntityClassLike
 	ExpressionClassLike          = ast.ExpressionClassLike
 	FlowControlClassLike         = ast.FlowControlClassLike
@@ -156,6 +157,7 @@ type (
 	DocumentLike            = ast.DocumentLike
 	DraftLike               = ast.DraftLike
 	ElementLike             = ast.ElementLike
+	EmptyLike               = ast.EmptyLike
 	EntityLike              = ast.EntityLike
 	ExpressionLike          = ast.ExpressionLike
 	FlowControlLike         = ast.FlowControlLike
@@ -643,6 +645,18 @@ func Element(
 ) ElementLike {
 	return ElementClass().Element(
 		any_,
+	)
+}
+
+func EmptyClass() EmptyClassLike {
+	return ast.EmptyClass()
+}
+
+func Empty(
+	delimiter string,
+) EmptyLike {
+	return EmptyClass().Empty(
+		delimiter,
 	)
 }
 

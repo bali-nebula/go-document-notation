@@ -83,8 +83,11 @@ $Primitive:
     Sequence
 
 $Collection:
+    Empty
     Attributes
     Items  ! Must be after attributes.
+
+$Empty: "[:]"
 
 $Attributes: "[" Association+ "]"
 

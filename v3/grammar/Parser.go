@@ -878,6 +878,15 @@ func (v *parser_) parseCollection() (
 	token TokenLike,
 	ok bool,
 ) {
+	// Attempt to parse a single Empty Collection.
+	var empty ast.EmptyLike
+	empty, token, ok = v.parseEmpty()
+	if ok {
+		// Found a single Empty Collection.
+		collection = ast.CollectionClass().Collection(empty)
+		return
+	}
+
 	// Attempt to parse a single Attributes Collection.
 	var attributes ast.AttributesLike
 	attributes, token, ok = v.parseAttributes()
@@ -1518,6 +1527,38 @@ func (v *parser_) parseElement() (
 	}
 
 	// This is not a single Element rule.
+	return
+}
+
+func (v *parser_) parseEmpty() (
+	empty ast.EmptyLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = com.List[TokenLike]()
+
+	// Attempt to parse a single "[:]" literal.
+	var delimiter string
+	delimiter, token, ok = v.parseDelimiter("[:]")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single Empty rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Empty", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Found a single Empty rule.
+	ok = true
+	v.remove(tokens)
+	empty = ast.EmptyClass().Empty(delimiter)
 	return
 }
 
@@ -5590,8 +5631,10 @@ var parserClassReference_ = &parserClass_{
     Element
     Sequence`,
 			"$Collection": `
+    Empty
     Attributes
     Items  ! Must be after attributes.`,
+			"$Empty":       `"[:]"`,
 			"$Attributes":  `"[" Association+ "]"`,
 			"$Association": `Primitive ":" Content`,
 			"$Items":       `"[" Content* "]"`,
