@@ -208,12 +208,12 @@ func (v *parser_) parseArgument() (
 		return
 	}
 
-	// Attempt to parse a single Primitive Argument.
-	var primitive ast.PrimitiveLike
-	primitive, token, ok = v.parsePrimitive()
+	// Attempt to parse a single Literal Argument.
+	var literal ast.LiteralLike
+	literal, token, ok = v.parseLiteral()
 	if ok {
-		// Found a single Primitive Argument.
-		argument = ast.ArgumentClass().Argument(primitive)
+		// Found a single Literal Argument.
+		argument = ast.ArgumentClass().Argument(literal)
 		return
 	}
 
@@ -1091,34 +1091,40 @@ func (v *parser_) parseConstraint() (
 	token TokenLike,
 	ok bool,
 ) {
-	// Attempt to parse a single Element Constraint.
-	var element ast.ElementLike
-	element, token, ok = v.parseElement()
-	if ok {
-		// Found a single Element Constraint.
-		constraint = ast.ConstraintClass().Constraint(element)
+	var tokens = com.List[TokenLike]()
+
+	// Attempt to parse a single Literal rule.
+	var literal ast.LiteralLike
+	literal, token, ok = v.parseLiteral()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single Literal rule.
+		v.putBack(tokens)
 		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$Constraint", token)
+		panic(message)
 	}
 
-	// Attempt to parse a single Sequence Constraint.
-	var sequence ast.SequenceLike
-	sequence, token, ok = v.parseSequence()
+	// Attempt to parse an optional Generics rule.
+	var optionalGenerics ast.GenericsLike
+	optionalGenerics, _, ok = v.parseGenerics()
 	if ok {
-		// Found a single Sequence Constraint.
-		constraint = ast.ConstraintClass().Constraint(sequence)
-		return
+		// No additional put backs allowed at this point.
+		tokens = nil
 	}
 
-	// Attempt to parse a single Range Constraint.
-	var range_ ast.RangeLike
-	range_, token, ok = v.parseRange()
-	if ok {
-		// Found a single Range Constraint.
-		constraint = ast.ConstraintClass().Constraint(range_)
-		return
-	}
-
-	// This is not a single Constraint rule.
+	// Found a single Constraint rule.
+	ok = true
+	v.remove(tokens)
+	constraint = ast.ConstraintClass().Constraint(
+		literal,
+		optionalGenerics,
+	)
 	return
 }
 
@@ -2487,6 +2493,42 @@ func (v *parser_) parseLine() (
 	return
 }
 
+func (v *parser_) parseLiteral() (
+	literal ast.LiteralLike,
+	token TokenLike,
+	ok bool,
+) {
+	// Attempt to parse a single Element Literal.
+	var element ast.ElementLike
+	element, token, ok = v.parseElement()
+	if ok {
+		// Found a single Element Literal.
+		literal = ast.LiteralClass().Literal(element)
+		return
+	}
+
+	// Attempt to parse a single Sequence Literal.
+	var sequence ast.SequenceLike
+	sequence, token, ok = v.parseSequence()
+	if ok {
+		// Found a single Sequence Literal.
+		literal = ast.LiteralClass().Literal(sequence)
+		return
+	}
+
+	// Attempt to parse a single Range Literal.
+	var range_ ast.RangeLike
+	range_, token, ok = v.parseRange()
+	if ok {
+		// Found a single Range Literal.
+		literal = ast.LiteralClass().Literal(range_)
+		return
+	}
+
+	// This is not a single Literal rule.
+	return
+}
+
 func (v *parser_) parseLocalTransformation() (
 	localTransformation ast.LocalTransformationLike,
 	token TokenLike,
@@ -3389,14 +3431,6 @@ func (v *parser_) parseParameter() (
 		panic(message)
 	}
 
-	// Attempt to parse an optional Generics rule.
-	var optionalGenerics ast.GenericsLike
-	optionalGenerics, _, ok = v.parseGenerics()
-	if ok {
-		// No additional put backs allowed at this point.
-		tokens = nil
-	}
-
 	// Found a single Parameter rule.
 	ok = true
 	v.remove(tokens)
@@ -3404,7 +3438,6 @@ func (v *parser_) parseParameter() (
 		symbol,
 		delimiter,
 		constraint,
-		optionalGenerics,
 	)
 	return
 }
@@ -5542,9 +5575,10 @@ var parserClassReference_ = &parserClass_{
     Range
     Collection
     Procedure`,
-			"$Generics":  `"(" Parameter+ ")"`,
-			"$Parameter": `symbol ":" Constraint Generics?`,
-			"$Constraint": `
+			"$Generics":   `"(" Parameter+ ")"`,
+			"$Parameter":  `symbol ":" Constraint`,
+			"$Constraint": `Literal Generics?`,
+			"$Literal": `
     Element
     Sequence
     Range`,
@@ -5663,7 +5697,7 @@ var parserClassReference_ = &parserClass_{
     "<~"  ! The method is invoked asynchronously.`,
 			"$Argument": `
     Value
-    Primitive`,
+    Literal`,
 			"$SendClause":     `"send" Message "to" Bag`,
 			"$ReceiveClause":  `"receive" Recipient "from" Bag  ! Returns a message.`,
 			"$AcceptClause":   `"accept" Message "from" Bag`,

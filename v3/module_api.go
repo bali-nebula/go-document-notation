@@ -85,6 +85,7 @@ type (
 	LeftClassLike                = ast.LeftClassLike
 	LexicalClassLike             = ast.LexicalClassLike
 	LineClassLike                = ast.LineClassLike
+	LiteralClassLike             = ast.LiteralClassLike
 	LocalTransformationClassLike = ast.LocalTransformationClassLike
 	LocationClassLike            = ast.LocationClassLike
 	LogicalClassLike             = ast.LogicalClassLike
@@ -174,6 +175,7 @@ type (
 	LeftLike                = ast.LeftLike
 	LexicalLike             = ast.LexicalLike
 	LineLike                = ast.LineLike
+	LiteralLike             = ast.LiteralLike
 	LocalTransformationLike = ast.LocalTransformationLike
 	LocationLike            = ast.LocationLike
 	LogicalLike             = ast.LogicalLike
@@ -539,10 +541,12 @@ func ConstraintClass() ConstraintClassLike {
 }
 
 func Constraint(
-	any_ any,
+	literal ast.LiteralLike,
+	optionalGenerics ast.GenericsLike,
 ) ConstraintLike {
 	return ConstraintClass().Constraint(
-		any_,
+		literal,
+		optionalGenerics,
 	)
 }
 
@@ -892,6 +896,18 @@ func Line(
 	)
 }
 
+func LiteralClass() LiteralClassLike {
+	return ast.LiteralClass()
+}
+
+func Literal(
+	any_ any,
+) LiteralLike {
+	return LiteralClass().Literal(
+		any_,
+	)
+}
+
 func LocalTransformationClass() LocalTransformationClassLike {
 	return ast.LocalTransformationClass()
 }
@@ -1086,13 +1102,11 @@ func Parameter(
 	symbol string,
 	delimiter string,
 	constraint ast.ConstraintLike,
-	optionalGenerics ast.GenericsLike,
 ) ParameterLike {
 	return ParameterClass().Parameter(
 		symbol,
 		delimiter,
 		constraint,
-		optionalGenerics,
 	)
 }
 

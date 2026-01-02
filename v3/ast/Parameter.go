@@ -39,7 +39,6 @@ func (c *parameterClass_) Parameter(
 	symbol string,
 	delimiter string,
 	constraint ConstraintLike,
-	optionalGenerics GenericsLike,
 ) ParameterLike {
 	if uti.IsUndefined(symbol) {
 		panic("The \"symbol\" attribute is required by this class.")
@@ -52,10 +51,9 @@ func (c *parameterClass_) Parameter(
 	}
 	var instance = &parameter_{
 		// Initialize the instance attributes.
-		symbol_:           symbol,
-		delimiter_:        delimiter,
-		constraint_:       constraint,
-		optionalGenerics_: optionalGenerics,
+		symbol_:     symbol,
+		delimiter_:  delimiter,
+		constraint_: constraint,
 	}
 	return instance
 }
@@ -82,20 +80,15 @@ func (v *parameter_) GetConstraint() ConstraintLike {
 	return v.constraint_
 }
 
-func (v *parameter_) GetOptionalGenerics() GenericsLike {
-	return v.optionalGenerics_
-}
-
 // PROTECTED INTERFACE
 
 // Instance Structure
 
 type parameter_ struct {
 	// Declare the instance attributes.
-	symbol_           string
-	delimiter_        string
-	constraint_       ConstraintLike
-	optionalGenerics_ GenericsLike
+	symbol_     string
+	delimiter_  string
+	constraint_ ConstraintLike
 }
 
 // Class Structure

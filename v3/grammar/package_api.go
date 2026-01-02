@@ -979,6 +979,20 @@ type Methodical interface {
 		line ast.LineLike,
 		slot_ uint,
 	)
+	PreprocessLiteral(
+		literal ast.LiteralLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessLiteral(
+		literal ast.LiteralLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessLiteralSlot(
+		literal ast.LiteralLike,
+		slot_ uint,
+	)
 	PreprocessLocalTransformation(
 		localTransformation ast.LocalTransformationLike,
 		index_ uint,

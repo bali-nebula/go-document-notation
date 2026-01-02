@@ -37,9 +37,11 @@ $Entity:
 
 $Generics: "(" Parameter+ ")"
 
-$Parameter: symbol ":" Constraint Generics?
+$Parameter: symbol ":" Constraint
 
-$Constraint:
+$Constraint: Literal Generics?
+
+$Literal:
     Element
     Sequence
     Range
@@ -202,7 +204,7 @@ $Invocation:
 
 $Argument:
     Value
-    Primitive
+    Literal
 
 $SendClause: "send" Message "to" Bag
 

@@ -290,7 +290,8 @@ supported by each concrete constraint-like class.
 type ConstraintClassLike interface {
 	// Constructor Methods
 	Constraint(
-		any_ any,
+		literal LiteralLike,
+		optionalGenerics GenericsLike,
 	) ConstraintLike
 }
 
@@ -618,6 +619,18 @@ type LineClassLike interface {
 }
 
 /*
+LiteralClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete literal-like class.
+*/
+type LiteralClassLike interface {
+	// Constructor Methods
+	Literal(
+		any_ any,
+	) LiteralLike
+}
+
+/*
 LocalTransformationClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete local-transformation-like class.
@@ -799,7 +812,6 @@ type ParameterClassLike interface {
 		symbol string,
 		delimiter string,
 		constraint ConstraintLike,
-		optionalGenerics GenericsLike,
 	) ParameterLike
 }
 
@@ -1447,7 +1459,8 @@ type ConstraintLike interface {
 	GetClass() ConstraintClassLike
 
 	// Attribute Methods
-	GetAny() any
+	GetLiteral() LiteralLike
+	GetOptionalGenerics() GenericsLike
 }
 
 /*
@@ -1799,6 +1812,19 @@ type LineLike interface {
 }
 
 /*
+LiteralLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete literal-like class.
+*/
+type LiteralLike interface {
+	// Principal Methods
+	GetClass() LiteralClassLike
+
+	// Attribute Methods
+	GetAny() any
+}
+
+/*
 LocalTransformationLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete local-transformation-like class.
@@ -1995,7 +2021,6 @@ type ParameterLike interface {
 	GetSymbol() string
 	GetDelimiter() string
 	GetConstraint() ConstraintLike
-	GetOptionalGenerics() GenericsLike
 }
 
 /*

@@ -158,14 +158,14 @@ func (v *visitor_) visitArgument(
 			0,
 			0,
 		)
-	case ast.PrimitiveLike:
-		v.processor_.PreprocessPrimitive(
+	case ast.LiteralLike:
+		v.processor_.PreprocessLiteral(
 			actual,
 			0,
 			0,
 		)
-		v.visitPrimitive(actual)
-		v.processor_.PostprocessPrimitive(
+		v.visitLiteral(actual)
+		v.processor_.PostprocessLiteral(
 			actual,
 			0,
 			0,
@@ -648,41 +648,34 @@ func (v *visitor_) visitConstant(
 func (v *visitor_) visitConstraint(
 	constraint ast.ConstraintLike,
 ) {
-	// Visit the possible constraint rule types.
-	switch actual := constraint.GetAny().(type) {
-	case ast.ElementLike:
-		v.processor_.PreprocessElement(
-			actual,
+	var literal = constraint.GetLiteral()
+	v.processor_.PreprocessLiteral(
+		literal,
+		0,
+		0,
+	)
+	v.visitLiteral(literal)
+	v.processor_.PostprocessLiteral(
+		literal,
+		0,
+		0,
+	)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessConstraintSlot(
+		constraint,
+		1,
+	)
+
+	var optionalGenerics = constraint.GetOptionalGenerics()
+	if uti.IsDefined(optionalGenerics) {
+		v.processor_.PreprocessGenerics(
+			optionalGenerics,
 			0,
 			0,
 		)
-		v.visitElement(actual)
-		v.processor_.PostprocessElement(
-			actual,
-			0,
-			0,
-		)
-	case ast.SequenceLike:
-		v.processor_.PreprocessSequence(
-			actual,
-			0,
-			0,
-		)
-		v.visitSequence(actual)
-		v.processor_.PostprocessSequence(
-			actual,
-			0,
-			0,
-		)
-	case ast.RangeLike:
-		v.processor_.PreprocessRange(
-			actual,
-			0,
-			0,
-		)
-		v.visitRange(actual)
-		v.processor_.PostprocessRange(
-			actual,
+		v.visitGenerics(optionalGenerics)
+		v.processor_.PostprocessGenerics(
+			optionalGenerics,
 			0,
 			0,
 		)
@@ -1518,6 +1511,50 @@ func (v *visitor_) visitLine(
 	}
 }
 
+func (v *visitor_) visitLiteral(
+	literal ast.LiteralLike,
+) {
+	// Visit the possible literal rule types.
+	switch actual := literal.GetAny().(type) {
+	case ast.ElementLike:
+		v.processor_.PreprocessElement(
+			actual,
+			0,
+			0,
+		)
+		v.visitElement(actual)
+		v.processor_.PostprocessElement(
+			actual,
+			0,
+			0,
+		)
+	case ast.SequenceLike:
+		v.processor_.PreprocessSequence(
+			actual,
+			0,
+			0,
+		)
+		v.visitSequence(actual)
+		v.processor_.PostprocessSequence(
+			actual,
+			0,
+			0,
+		)
+	case ast.RangeLike:
+		v.processor_.PreprocessRange(
+			actual,
+			0,
+			0,
+		)
+		v.visitRange(actual)
+		v.processor_.PostprocessRange(
+			actual,
+			0,
+			0,
+		)
+	}
+}
+
 func (v *visitor_) visitLocalTransformation(
 	localTransformation ast.LocalTransformationLike,
 ) {
@@ -2187,26 +2224,6 @@ func (v *visitor_) visitParameter(
 		0,
 		0,
 	)
-	// Visit slot 3 between terms.
-	v.processor_.ProcessParameterSlot(
-		parameter,
-		3,
-	)
-
-	var optionalGenerics = parameter.GetOptionalGenerics()
-	if uti.IsDefined(optionalGenerics) {
-		v.processor_.PreprocessGenerics(
-			optionalGenerics,
-			0,
-			0,
-		)
-		v.visitGenerics(optionalGenerics)
-		v.processor_.PostprocessGenerics(
-			optionalGenerics,
-			0,
-			0,
-		)
-	}
 }
 
 func (v *visitor_) visitPrecedence(

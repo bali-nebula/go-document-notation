@@ -29,23 +29,21 @@ import (
 
 // Access Function
 
-func ConstraintClass() ConstraintClassLike {
-	return constraintClass()
+func LiteralClass() LiteralClassLike {
+	return literalClass()
 }
 
 // Constructor Methods
 
-func (c *constraintClass_) Constraint(
-	literal LiteralLike,
-	optionalGenerics GenericsLike,
-) ConstraintLike {
-	if uti.IsUndefined(literal) {
-		panic("The \"literal\" attribute is required by this class.")
+func (c *literalClass_) Literal(
+	any_ any,
+) LiteralLike {
+	if uti.IsUndefined(any_) {
+		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &constraint_{
+	var instance = &literal_{
 		// Initialize the instance attributes.
-		literal_:          literal,
-		optionalGenerics_: optionalGenerics,
+		any_: any_,
 	}
 	return instance
 }
@@ -54,42 +52,37 @@ func (c *constraintClass_) Constraint(
 
 // Principal Methods
 
-func (v *constraint_) GetClass() ConstraintClassLike {
-	return constraintClass()
+func (v *literal_) GetClass() LiteralClassLike {
+	return literalClass()
 }
 
 // Attribute Methods
 
-func (v *constraint_) GetLiteral() LiteralLike {
-	return v.literal_
-}
-
-func (v *constraint_) GetOptionalGenerics() GenericsLike {
-	return v.optionalGenerics_
+func (v *literal_) GetAny() any {
+	return v.any_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type constraint_ struct {
+type literal_ struct {
 	// Declare the instance attributes.
-	literal_          LiteralLike
-	optionalGenerics_ GenericsLike
+	any_ any
 }
 
 // Class Structure
 
-type constraintClass_ struct {
+type literalClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func constraintClass() *constraintClass_ {
-	return constraintClassReference_
+func literalClass() *literalClass_ {
+	return literalClassReference_
 }
 
-var constraintClassReference_ = &constraintClass_{
+var literalClassReference_ = &literalClass_{
 	// Initialize the class constants.
 }

@@ -1052,6 +1052,26 @@ func (v *processor_) ProcessLineSlot(
 ) {
 }
 
+func (v *processor_) PreprocessLiteral(
+	literal ast.LiteralLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessLiteral(
+	literal ast.LiteralLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessLiteralSlot(
+	literal ast.LiteralLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessLocalTransformation(
 	localTransformation ast.LocalTransformationLike,
 	index_ uint,
