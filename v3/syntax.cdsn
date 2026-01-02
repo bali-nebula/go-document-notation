@@ -91,11 +91,11 @@ $Empty: "[:]"
 
 $Attributes: "[" Association+ "]"
 
-$Association: Primitive ":" Content
+$Association: Primitive ":" Entry
 
-$Items: "[" Content* "]"
+$Items: "[" Entry* "]"
 
-$Content: Component note?
+$Entry: Component note?
 
 $Procedure: "{" Line* "}"
 

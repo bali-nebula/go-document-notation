@@ -385,28 +385,6 @@ func (v *formatter_) ProcessComplementSlot(
 	v.appendString(" ")
 }
 
-func (v *formatter_) PreprocessContent(
-	content ast.ContentLike,
-	index_ uint,
-	count_ uint,
-) {
-	if count_ > 0 {
-		v.appendNewline()
-	}
-}
-
-func (v *formatter_) ProcessContentSlot(
-	content ast.ContentLike,
-	slot_ uint,
-) {
-	switch slot_ {
-	case 1:
-		if uti.IsDefined(content.GetOptionalNote()) {
-			v.appendString("  ")
-		}
-	}
-}
-
 func (v *formatter_) ProcessContinueClauseSlot(
 	continueClause ast.ContinueClauseLike,
 	slot_ uint,
@@ -434,6 +412,28 @@ func (v *formatter_) PostprocessDocument(
 	count_ uint,
 ) {
 	v.appendNewline()
+}
+
+func (v *formatter_) PreprocessEntry(
+	entry ast.EntryLike,
+	index_ uint,
+	count_ uint,
+) {
+	if count_ > 0 {
+		v.appendNewline()
+	}
+}
+
+func (v *formatter_) ProcessEntrySlot(
+	entry ast.EntryLike,
+	slot_ uint,
+) {
+	switch slot_ {
+	case 1:
+		if uti.IsDefined(entry.GetOptionalNote()) {
+			v.appendString("  ")
+		}
+	}
 }
 
 func (v *formatter_) ProcessGenericsSlot(
@@ -482,8 +482,8 @@ func (v *formatter_) ProcessItemsSlot(
 		v.depth_++
 	case 2:
 		v.depth_--
-		var contents = items.GetContents()
-		if contents.IsEmpty() {
+		var entries = items.GetEntries()
+		if entries.IsEmpty() {
 			v.appendString(" ")
 		} else {
 			v.appendNewline()

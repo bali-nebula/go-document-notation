@@ -552,26 +552,6 @@ func (v *processor_) ProcessConstraintSlot(
 ) {
 }
 
-func (v *processor_) PreprocessContent(
-	content ast.ContentLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessContent(
-	content ast.ContentLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessContentSlot(
-	content ast.ContentLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessContinueClause(
 	continueClause ast.ContinueClauseLike,
 	index_ uint,
@@ -728,6 +708,26 @@ func (v *processor_) PostprocessEntity(
 
 func (v *processor_) ProcessEntitySlot(
 	entity ast.EntityLike,
+	slot_ uint,
+) {
+}
+
+func (v *processor_) PreprocessEntry(
+	entry ast.EntryLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessEntry(
+	entry ast.EntryLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessEntrySlot(
+	entry ast.EntryLike,
 	slot_ uint,
 ) {
 }

@@ -60,7 +60,6 @@ type (
 	ComponentClassLike           = ast.ComponentClassLike
 	ConstantClassLike            = ast.ConstantClassLike
 	ConstraintClassLike          = ast.ConstraintClassLike
-	ContentClassLike             = ast.ContentClassLike
 	ContinueClauseClassLike      = ast.ContinueClauseClassLike
 	DefineClauseClassLike        = ast.DefineClauseClassLike
 	DiscardClauseClassLike       = ast.DiscardClauseClassLike
@@ -69,6 +68,7 @@ type (
 	ElementClassLike             = ast.ElementClassLike
 	EmptyClassLike               = ast.EmptyClassLike
 	EntityClassLike              = ast.EntityClassLike
+	EntryClassLike               = ast.EntryClassLike
 	ExpressionClassLike          = ast.ExpressionClassLike
 	FlowControlClassLike         = ast.FlowControlClassLike
 	FunctionClassLike            = ast.FunctionClassLike
@@ -150,7 +150,6 @@ type (
 	ComponentLike           = ast.ComponentLike
 	ConstantLike            = ast.ConstantLike
 	ConstraintLike          = ast.ConstraintLike
-	ContentLike             = ast.ContentLike
 	ContinueClauseLike      = ast.ContinueClauseLike
 	DefineClauseLike        = ast.DefineClauseLike
 	DiscardClauseLike       = ast.DiscardClauseLike
@@ -159,6 +158,7 @@ type (
 	ElementLike             = ast.ElementLike
 	EmptyLike               = ast.EmptyLike
 	EntityLike              = ast.EntityLike
+	EntryLike               = ast.EntryLike
 	ExpressionLike          = ast.ExpressionLike
 	FlowControlLike         = ast.FlowControlLike
 	FunctionLike            = ast.FunctionLike
@@ -373,12 +373,12 @@ func AssociationClass() AssociationClassLike {
 func Association(
 	primitive ast.PrimitiveLike,
 	delimiter string,
-	content ast.ContentLike,
+	entry ast.EntryLike,
 ) AssociationLike {
 	return AssociationClass().Association(
 		primitive,
 		delimiter,
-		content,
+		entry,
 	)
 }
 
@@ -550,20 +550,6 @@ func Constraint(
 	)
 }
 
-func ContentClass() ContentClassLike {
-	return ast.ContentClass()
-}
-
-func Content(
-	component ast.ComponentLike,
-	optionalNote string,
-) ContentLike {
-	return ContentClass().Content(
-		component,
-		optionalNote,
-	)
-}
-
 func ContinueClauseClass() ContinueClauseClassLike {
 	return ast.ContinueClauseClass()
 }
@@ -669,6 +655,20 @@ func Entity(
 ) EntityLike {
 	return EntityClass().Entity(
 		any_,
+	)
+}
+
+func EntryClass() EntryClassLike {
+	return ast.EntryClass()
+}
+
+func Entry(
+	component ast.ComponentLike,
+	optionalNote string,
+) EntryLike {
+	return EntryClass().Entry(
+		component,
+		optionalNote,
 	)
 }
 
@@ -850,12 +850,12 @@ func ItemsClass() ItemsClassLike {
 
 func Items(
 	delimiter1 string,
-	contents com.Sequential[ast.ContentLike],
+	entries com.Sequential[ast.EntryLike],
 	delimiter2 string,
 ) ItemsLike {
 	return ItemsClass().Items(
 		delimiter1,
-		contents,
+		entries,
 		delimiter2,
 	)
 }

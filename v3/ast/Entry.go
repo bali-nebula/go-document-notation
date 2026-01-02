@@ -29,20 +29,20 @@ import (
 
 // Access Function
 
-func ContentClass() ContentClassLike {
-	return contentClass()
+func EntryClass() EntryClassLike {
+	return entryClass()
 }
 
 // Constructor Methods
 
-func (c *contentClass_) Content(
+func (c *entryClass_) Entry(
 	component ComponentLike,
 	optionalNote string,
-) ContentLike {
+) EntryLike {
 	if uti.IsUndefined(component) {
 		panic("The \"component\" attribute is required by this class.")
 	}
-	var instance = &content_{
+	var instance = &entry_{
 		// Initialize the instance attributes.
 		component_:    component,
 		optionalNote_: optionalNote,
@@ -54,17 +54,17 @@ func (c *contentClass_) Content(
 
 // Principal Methods
 
-func (v *content_) GetClass() ContentClassLike {
-	return contentClass()
+func (v *entry_) GetClass() EntryClassLike {
+	return entryClass()
 }
 
 // Attribute Methods
 
-func (v *content_) GetComponent() ComponentLike {
+func (v *entry_) GetComponent() ComponentLike {
 	return v.component_
 }
 
-func (v *content_) GetOptionalNote() string {
+func (v *entry_) GetOptionalNote() string {
 	return v.optionalNote_
 }
 
@@ -72,7 +72,7 @@ func (v *content_) GetOptionalNote() string {
 
 // Instance Structure
 
-type content_ struct {
+type entry_ struct {
 	// Declare the instance attributes.
 	component_    ComponentLike
 	optionalNote_ string
@@ -80,16 +80,16 @@ type content_ struct {
 
 // Class Structure
 
-type contentClass_ struct {
+type entryClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func contentClass() *contentClass_ {
-	return contentClassReference_
+func entryClass() *entryClass_ {
+	return entryClassReference_
 }
 
-var contentClassReference_ = &contentClass_{
+var entryClassReference_ = &entryClass_{
 	// Initialize the class constants.
 }

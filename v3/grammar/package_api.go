@@ -629,20 +629,6 @@ type Methodical interface {
 		constraint ast.ConstraintLike,
 		slot_ uint,
 	)
-	PreprocessContent(
-		content ast.ContentLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessContent(
-		content ast.ContentLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessContentSlot(
-		content ast.ContentLike,
-		slot_ uint,
-	)
 	PreprocessContinueClause(
 		continueClause ast.ContinueClauseLike,
 		index_ uint,
@@ -753,6 +739,20 @@ type Methodical interface {
 	)
 	ProcessEntitySlot(
 		entity ast.EntityLike,
+		slot_ uint,
+	)
+	PreprocessEntry(
+		entry ast.EntryLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessEntry(
+		entry ast.EntryLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessEntrySlot(
+		entry ast.EntryLike,
 		slot_ uint,
 	)
 	PreprocessExpression(

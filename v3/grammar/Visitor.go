@@ -307,15 +307,15 @@ func (v *visitor_) visitAssociation(
 		2,
 	)
 
-	var content = association.GetContent()
-	v.processor_.PreprocessContent(
-		content,
+	var entry = association.GetEntry()
+	v.processor_.PreprocessEntry(
+		entry,
 		0,
 		0,
 	)
-	v.visitContent(content)
-	v.processor_.PostprocessContent(
-		content,
+	v.visitEntry(entry)
+	v.processor_.PostprocessEntry(
+		entry,
 		0,
 		0,
 	)
@@ -682,33 +682,6 @@ func (v *visitor_) visitConstraint(
 	}
 }
 
-func (v *visitor_) visitContent(
-	content ast.ContentLike,
-) {
-	var component = content.GetComponent()
-	v.processor_.PreprocessComponent(
-		component,
-		0,
-		0,
-	)
-	v.visitComponent(component)
-	v.processor_.PostprocessComponent(
-		component,
-		0,
-		0,
-	)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessContentSlot(
-		content,
-		1,
-	)
-
-	var optionalNote = content.GetOptionalNote()
-	if uti.IsDefined(optionalNote) {
-		v.processor_.ProcessNote(optionalNote)
-	}
-}
-
 func (v *visitor_) visitContinueClause(
 	continueClause ast.ContinueClauseLike,
 ) {
@@ -953,6 +926,33 @@ func (v *visitor_) visitEntity(
 			0,
 			0,
 		)
+	}
+}
+
+func (v *visitor_) visitEntry(
+	entry ast.EntryLike,
+) {
+	var component = entry.GetComponent()
+	v.processor_.PreprocessComponent(
+		component,
+		0,
+		0,
+	)
+	v.visitComponent(component)
+	v.processor_.PostprocessComponent(
+		component,
+		0,
+		0,
+	)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessEntrySlot(
+		entry,
+		1,
+	)
+
+	var optionalNote = entry.GetOptionalNote()
+	if uti.IsDefined(optionalNote) {
+		v.processor_.ProcessNote(optionalNote)
 	}
 }
 
@@ -1427,22 +1427,22 @@ func (v *visitor_) visitItems(
 		1,
 	)
 
-	var contentsIndex uint
-	var contents = items.GetContents().GetIterator()
-	var contentsCount = uint(contents.GetSize())
-	for contents.HasNext() {
-		contentsIndex++
-		var rule = contents.GetNext()
-		v.processor_.PreprocessContent(
+	var entriesIndex uint
+	var entries = items.GetEntries().GetIterator()
+	var entriesCount = uint(entries.GetSize())
+	for entries.HasNext() {
+		entriesIndex++
+		var rule = entries.GetNext()
+		v.processor_.PreprocessEntry(
 			rule,
-			contentsIndex,
-			contentsCount,
+			entriesIndex,
+			entriesCount,
 		)
-		v.visitContent(rule)
-		v.processor_.PostprocessContent(
+		v.visitEntry(rule)
+		v.processor_.PostprocessEntry(
 			rule,
-			contentsIndex,
-			contentsCount,
+			entriesIndex,
+			entriesCount,
 		)
 	}
 	// Visit slot 2 between terms.

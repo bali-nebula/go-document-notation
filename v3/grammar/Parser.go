@@ -481,15 +481,15 @@ func (v *parser_) parseAssociation() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Content rule.
-	var content ast.ContentLike
-	content, token, ok = v.parseContent()
+	// Attempt to parse a single Entry rule.
+	var entry ast.EntryLike
+	entry, token, ok = v.parseEntry()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Content rule.
+		// This is not a single Entry rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -504,7 +504,7 @@ func (v *parser_) parseAssociation() (
 	association = ast.AssociationClass().Association(
 		primitive,
 		delimiter,
-		content,
+		entry,
 	)
 	return
 }
@@ -1128,51 +1128,6 @@ func (v *parser_) parseConstraint() (
 	return
 }
 
-func (v *parser_) parseContent() (
-	content ast.ContentLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = com.List[TokenLike]()
-
-	// Attempt to parse a single Component rule.
-	var component ast.ComponentLike
-	component, token, ok = v.parseComponent()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Component rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Content", token)
-		panic(message)
-	}
-
-	// Attempt to parse an optional note token.
-	var optionalNote string
-	optionalNote, token, ok = v.parseToken(NoteToken)
-	if ok {
-		if uti.IsDefined(tokens) {
-			tokens.AppendValue(token)
-		}
-	} else {
-		optionalNote = "" // Reset this to undefined.
-	}
-
-	// Found a single Content rule.
-	ok = true
-	v.remove(tokens)
-	content = ast.ContentClass().Content(
-		component,
-		optionalNote,
-	)
-	return
-}
-
 func (v *parser_) parseContinueClause() (
 	continueClause ast.ContinueClauseLike,
 	token TokenLike,
@@ -1613,6 +1568,51 @@ func (v *parser_) parseEntity() (
 	}
 
 	// This is not a single Entity rule.
+	return
+}
+
+func (v *parser_) parseEntry() (
+	entry ast.EntryLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = com.List[TokenLike]()
+
+	// Attempt to parse a single Component rule.
+	var component ast.ComponentLike
+	component, token, ok = v.parseComponent()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single Component rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$Entry", token)
+		panic(message)
+	}
+
+	// Attempt to parse an optional note token.
+	var optionalNote string
+	optionalNote, token, ok = v.parseToken(NoteToken)
+	if ok {
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	} else {
+		optionalNote = "" // Reset this to undefined.
+	}
+
+	// Found a single Entry rule.
+	ok = true
+	v.remove(tokens)
+	entry = ast.EntryClass().Entry(
+		component,
+		optionalNote,
+	)
 	return
 }
 
@@ -2365,30 +2365,30 @@ func (v *parser_) parseItems() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse multiple Content rules.
-	var contents = com.List[ast.ContentLike]()
-contentsLoop:
+	// Attempt to parse multiple Entry rules.
+	var entries = com.List[ast.EntryLike]()
+entriesLoop:
 	for count_ := 0; count_ < mat.MaxInt; count_++ {
-		var content ast.ContentLike
-		content, token, ok = v.parseContent()
+		var entry ast.EntryLike
+		entry, token, ok = v.parseEntry()
 		if !ok {
 			switch {
 			case count_ >= 0:
-				break contentsLoop
+				break entriesLoop
 			case uti.IsDefined(tokens):
-				// This is not multiple Content rules.
+				// This is not multiple Entry rules.
 				v.putBack(tokens)
 				return
 			default:
 				// Found a syntax error.
 				var message = v.formatError("$Items", token)
-				message += "0 or more Content rules are required."
+				message += "0 or more Entry rules are required."
 				panic(message)
 			}
 		}
 		// No additional put backs allowed at this point.
 		tokens = nil
-		contents.AppendValue(content)
+		entries.AppendValue(entry)
 	}
 
 	// Attempt to parse a single "]" literal.
@@ -2414,7 +2414,7 @@ contentsLoop:
 	v.remove(tokens)
 	items = ast.ItemsClass().Items(
 		delimiter1,
-		contents,
+		entries,
 		delimiter2,
 	)
 	return
@@ -5618,9 +5618,9 @@ var parserClassReference_ = &parserClass_{
     Items  ! Must be after attributes.`,
 			"$Empty":       `"[:]"`,
 			"$Attributes":  `"[" Association+ "]"`,
-			"$Association": `Primitive ":" Content`,
-			"$Items":       `"[" Content* "]"`,
-			"$Content":     `Component note?`,
+			"$Association": `Primitive ":" Entry`,
+			"$Items":       `"[" Entry* "]"`,
+			"$Entry":       `Component note?`,
 			"$Procedure":   `"{" Line* "}"`,
 			"$Line": `
     Annotation

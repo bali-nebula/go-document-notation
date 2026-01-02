@@ -135,7 +135,7 @@ type AssociationClassLike interface {
 	Association(
 		primitive PrimitiveLike,
 		delimiter string,
-		content ContentLike,
+		entry EntryLike,
 	) AssociationLike
 }
 
@@ -296,19 +296,6 @@ type ConstraintClassLike interface {
 }
 
 /*
-ContentClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete content-like class.
-*/
-type ContentClassLike interface {
-	// Constructor Methods
-	Content(
-		component ComponentLike,
-		optionalNote string,
-	) ContentLike
-}
-
-/*
 ContinueClauseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete continue-clause-like class.
@@ -408,6 +395,19 @@ type EntityClassLike interface {
 	Entity(
 		any_ any,
 	) EntityLike
+}
+
+/*
+EntryClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete entry-like class.
+*/
+type EntryClassLike interface {
+	// Constructor Methods
+	Entry(
+		component ComponentLike,
+		optionalNote string,
+	) EntryLike
 }
 
 /*
@@ -577,7 +577,7 @@ type ItemsClassLike interface {
 	// Constructor Methods
 	Items(
 		delimiter1 string,
-		contents com.Sequential[ContentLike],
+		entries com.Sequential[EntryLike],
 		delimiter2 string,
 	) ItemsLike
 }
@@ -1292,7 +1292,7 @@ type AssociationLike interface {
 	// Attribute Methods
 	GetPrimitive() PrimitiveLike
 	GetDelimiter() string
-	GetContent() ContentLike
+	GetEntry() EntryLike
 }
 
 /*
@@ -1464,20 +1464,6 @@ type ConstraintLike interface {
 }
 
 /*
-ContentLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete content-like class.
-*/
-type ContentLike interface {
-	// Principal Methods
-	GetClass() ContentClassLike
-
-	// Attribute Methods
-	GetComponent() ComponentLike
-	GetOptionalNote() string
-}
-
-/*
 ContinueClauseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete continue-clause-like class.
@@ -1585,6 +1571,20 @@ type EntityLike interface {
 
 	// Attribute Methods
 	GetAny() any
+}
+
+/*
+EntryLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete entry-like class.
+*/
+type EntryLike interface {
+	// Principal Methods
+	GetClass() EntryClassLike
+
+	// Attribute Methods
+	GetComponent() ComponentLike
+	GetOptionalNote() string
 }
 
 /*
@@ -1768,7 +1768,7 @@ type ItemsLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetContents() com.Sequential[ContentLike]
+	GetEntries() com.Sequential[EntryLike]
 	GetDelimiter2() string
 }
 
