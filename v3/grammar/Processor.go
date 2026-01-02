@@ -1212,26 +1212,6 @@ func (v *processor_) ProcessMessageHandlingSlot(
 ) {
 }
 
-func (v *processor_) PreprocessMetadata(
-	metadata ast.MetadataLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessMetadata(
-	metadata ast.MetadataLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessMetadataSlot(
-	metadata ast.MetadataLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessMethod(
 	method ast.MethodLike,
 	index_ uint,

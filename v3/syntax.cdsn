@@ -37,11 +37,9 @@ $Entity:
 
 $Generics: "(" Parameter+ ")"
 
-$Parameter: symbol ":" Constraint
+$Parameter: symbol ":" Constraint Generics?
 
-$Constraint: Metadata Generics?
-
-$Metadata:
+$Constraint:
     Element
     Sequence
     Range

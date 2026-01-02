@@ -1091,40 +1091,34 @@ func (v *parser_) parseConstraint() (
 	token TokenLike,
 	ok bool,
 ) {
-	var tokens = com.List[TokenLike]()
-
-	// Attempt to parse a single Metadata rule.
-	var metadata ast.MetadataLike
-	metadata, token, ok = v.parseMetadata()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Metadata rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Constraint", token)
-		panic(message)
-	}
-
-	// Attempt to parse an optional Generics rule.
-	var optionalGenerics ast.GenericsLike
-	optionalGenerics, _, ok = v.parseGenerics()
+	// Attempt to parse a single Element Constraint.
+	var element ast.ElementLike
+	element, token, ok = v.parseElement()
 	if ok {
-		// No additional put backs allowed at this point.
-		tokens = nil
+		// Found a single Element Constraint.
+		constraint = ast.ConstraintClass().Constraint(element)
+		return
 	}
 
-	// Found a single Constraint rule.
-	ok = true
-	v.remove(tokens)
-	constraint = ast.ConstraintClass().Constraint(
-		metadata,
-		optionalGenerics,
-	)
+	// Attempt to parse a single Sequence Constraint.
+	var sequence ast.SequenceLike
+	sequence, token, ok = v.parseSequence()
+	if ok {
+		// Found a single Sequence Constraint.
+		constraint = ast.ConstraintClass().Constraint(sequence)
+		return
+	}
+
+	// Attempt to parse a single Range Constraint.
+	var range_ ast.RangeLike
+	range_, token, ok = v.parseRange()
+	if ok {
+		// Found a single Range Constraint.
+		constraint = ast.ConstraintClass().Constraint(range_)
+		return
+	}
+
+	// This is not a single Constraint rule.
 	return
 }
 
@@ -2893,42 +2887,6 @@ func (v *parser_) parseMessageHandling() (
 	return
 }
 
-func (v *parser_) parseMetadata() (
-	metadata ast.MetadataLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single Element Metadata.
-	var element ast.ElementLike
-	element, token, ok = v.parseElement()
-	if ok {
-		// Found a single Element Metadata.
-		metadata = ast.MetadataClass().Metadata(element)
-		return
-	}
-
-	// Attempt to parse a single Sequence Metadata.
-	var sequence ast.SequenceLike
-	sequence, token, ok = v.parseSequence()
-	if ok {
-		// Found a single Sequence Metadata.
-		metadata = ast.MetadataClass().Metadata(sequence)
-		return
-	}
-
-	// Attempt to parse a single Range Metadata.
-	var range_ ast.RangeLike
-	range_, token, ok = v.parseRange()
-	if ok {
-		// Found a single Range Metadata.
-		metadata = ast.MetadataClass().Metadata(range_)
-		return
-	}
-
-	// This is not a single Metadata rule.
-	return
-}
-
 func (v *parser_) parseMethod() (
 	method ast.MethodLike,
 	token TokenLike,
@@ -3431,6 +3389,14 @@ func (v *parser_) parseParameter() (
 		panic(message)
 	}
 
+	// Attempt to parse an optional Generics rule.
+	var optionalGenerics ast.GenericsLike
+	optionalGenerics, _, ok = v.parseGenerics()
+	if ok {
+		// No additional put backs allowed at this point.
+		tokens = nil
+	}
+
 	// Found a single Parameter rule.
 	ok = true
 	v.remove(tokens)
@@ -3438,6 +3404,7 @@ func (v *parser_) parseParameter() (
 		symbol,
 		delimiter,
 		constraint,
+		optionalGenerics,
 	)
 	return
 }
@@ -5575,10 +5542,9 @@ var parserClassReference_ = &parserClass_{
     Range
     Collection
     Procedure`,
-			"$Generics":   `"(" Parameter+ ")"`,
-			"$Parameter":  `symbol ":" Constraint`,
-			"$Constraint": `Metadata Generics?`,
-			"$Metadata": `
+			"$Generics":  `"(" Parameter+ ")"`,
+			"$Parameter": `symbol ":" Constraint Generics?`,
+			"$Constraint": `
     Element
     Sequence
     Range`,

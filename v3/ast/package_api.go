@@ -290,8 +290,7 @@ supported by each concrete constraint-like class.
 type ConstraintClassLike interface {
 	// Constructor Methods
 	Constraint(
-		metadata MetadataLike,
-		optionalGenerics GenericsLike,
+		any_ any,
 	) ConstraintLike
 }
 
@@ -720,18 +719,6 @@ type MessageHandlingClassLike interface {
 }
 
 /*
-MetadataClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete metadata-like class.
-*/
-type MetadataClassLike interface {
-	// Constructor Methods
-	Metadata(
-		any_ any,
-	) MetadataLike
-}
-
-/*
 MethodClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete method-like class.
@@ -812,6 +799,7 @@ type ParameterClassLike interface {
 		symbol string,
 		delimiter string,
 		constraint ConstraintLike,
+		optionalGenerics GenericsLike,
 	) ParameterLike
 }
 
@@ -1459,8 +1447,7 @@ type ConstraintLike interface {
 	GetClass() ConstraintClassLike
 
 	// Attribute Methods
-	GetMetadata() MetadataLike
-	GetOptionalGenerics() GenericsLike
+	GetAny() any
 }
 
 /*
@@ -1921,19 +1908,6 @@ type MessageHandlingLike interface {
 }
 
 /*
-MetadataLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete metadata-like class.
-*/
-type MetadataLike interface {
-	// Principal Methods
-	GetClass() MetadataClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
 MethodLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete method-like class.
@@ -2021,6 +1995,7 @@ type ParameterLike interface {
 	GetSymbol() string
 	GetDelimiter() string
 	GetConstraint() ConstraintLike
+	GetOptionalGenerics() GenericsLike
 }
 
 /*

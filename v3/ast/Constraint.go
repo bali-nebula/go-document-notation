@@ -36,16 +36,14 @@ func ConstraintClass() ConstraintClassLike {
 // Constructor Methods
 
 func (c *constraintClass_) Constraint(
-	metadata MetadataLike,
-	optionalGenerics GenericsLike,
+	any_ any,
 ) ConstraintLike {
-	if uti.IsUndefined(metadata) {
-		panic("The \"metadata\" attribute is required by this class.")
+	if uti.IsUndefined(any_) {
+		panic("The \"any\" attribute is required by this class.")
 	}
 	var instance = &constraint_{
 		// Initialize the instance attributes.
-		metadata_:         metadata,
-		optionalGenerics_: optionalGenerics,
+		any_: any_,
 	}
 	return instance
 }
@@ -60,12 +58,8 @@ func (v *constraint_) GetClass() ConstraintClassLike {
 
 // Attribute Methods
 
-func (v *constraint_) GetMetadata() MetadataLike {
-	return v.metadata_
-}
-
-func (v *constraint_) GetOptionalGenerics() GenericsLike {
-	return v.optionalGenerics_
+func (v *constraint_) GetAny() any {
+	return v.any_
 }
 
 // PROTECTED INTERFACE
@@ -74,8 +68,7 @@ func (v *constraint_) GetOptionalGenerics() GenericsLike {
 
 type constraint_ struct {
 	// Declare the instance attributes.
-	metadata_         MetadataLike
-	optionalGenerics_ GenericsLike
+	any_ any
 }
 
 // Class Structure

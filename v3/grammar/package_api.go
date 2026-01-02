@@ -1091,20 +1091,6 @@ type Methodical interface {
 		messageHandling ast.MessageHandlingLike,
 		slot_ uint,
 	)
-	PreprocessMetadata(
-		metadata ast.MetadataLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessMetadata(
-		metadata ast.MetadataLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessMetadataSlot(
-		metadata ast.MetadataLike,
-		slot_ uint,
-	)
 	PreprocessMethod(
 		method ast.MethodLike,
 		index_ uint,

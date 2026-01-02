@@ -93,7 +93,6 @@ type (
 	MatchingClauseClassLike      = ast.MatchingClauseClassLike
 	MessageClassLike             = ast.MessageClassLike
 	MessageHandlingClassLike     = ast.MessageHandlingClassLike
-	MetadataClassLike            = ast.MetadataClassLike
 	MethodClassLike              = ast.MethodClassLike
 	NotarizeClauseClassLike      = ast.NotarizeClauseClassLike
 	NumericalClassLike           = ast.NumericalClassLike
@@ -183,7 +182,6 @@ type (
 	MatchingClauseLike      = ast.MatchingClauseLike
 	MessageLike             = ast.MessageLike
 	MessageHandlingLike     = ast.MessageHandlingLike
-	MetadataLike            = ast.MetadataLike
 	MethodLike              = ast.MethodLike
 	NotarizeClauseLike      = ast.NotarizeClauseLike
 	NumericalLike           = ast.NumericalLike
@@ -541,12 +539,10 @@ func ConstraintClass() ConstraintClassLike {
 }
 
 func Constraint(
-	metadata ast.MetadataLike,
-	optionalGenerics ast.GenericsLike,
+	any_ any,
 ) ConstraintLike {
 	return ConstraintClass().Constraint(
-		metadata,
-		optionalGenerics,
+		any_,
 	)
 }
 
@@ -1002,18 +998,6 @@ func MessageHandling(
 	)
 }
 
-func MetadataClass() MetadataClassLike {
-	return ast.MetadataClass()
-}
-
-func Metadata(
-	any_ any,
-) MetadataLike {
-	return MetadataClass().Metadata(
-		any_,
-	)
-}
-
 func MethodClass() MethodClassLike {
 	return ast.MethodClass()
 }
@@ -1102,11 +1086,13 @@ func Parameter(
 	symbol string,
 	delimiter string,
 	constraint ast.ConstraintLike,
+	optionalGenerics ast.GenericsLike,
 ) ParameterLike {
 	return ParameterClass().Parameter(
 		symbol,
 		delimiter,
 		constraint,
+		optionalGenerics,
 	)
 }
 
