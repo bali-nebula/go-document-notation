@@ -1,5 +1,5 @@
 {
-    define $pi as 3.1415
+    define $pi as 3.141592
     if true do {
     }
     while ok do {
