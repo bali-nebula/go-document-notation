@@ -377,20 +377,6 @@ type Methodical interface {
 		acceptClause ast.AcceptClauseLike,
 		slot_ uint,
 	)
-	PreprocessAnnotation(
-		annotation ast.AnnotationLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessAnnotation(
-		annotation ast.AnnotationLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessAnnotationSlot(
-		annotation ast.AnnotationLike,
-		slot_ uint,
-	)
 	PreprocessArgument(
 		argument ast.ArgumentLike,
 		index_ uint,
@@ -741,20 +727,6 @@ type Methodical interface {
 		entity ast.EntityLike,
 		slot_ uint,
 	)
-	PreprocessEntry(
-		entry ast.EntryLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessEntry(
-		entry ast.EntryLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessEntrySlot(
-		entry ast.EntryLike,
-		slot_ uint,
-	)
 	PreprocessExpression(
 		expression ast.ExpressionLike,
 		index_ uint,
@@ -809,20 +781,6 @@ type Methodical interface {
 	)
 	ProcessGenericsSlot(
 		generics ast.GenericsLike,
-		slot_ uint,
-	)
-	PreprocessHeading(
-		heading ast.HeadingLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessHeading(
-		heading ast.HeadingLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessHeadingSlot(
-		heading ast.HeadingLike,
 		slot_ uint,
 	)
 	PreprocessIfClause(
@@ -963,20 +921,6 @@ type Methodical interface {
 	)
 	ProcessLexicalSlot(
 		lexical ast.LexicalLike,
-		slot_ uint,
-	)
-	PreprocessLine(
-		line ast.LineLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessLine(
-		line ast.LineLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessLineSlot(
-		line ast.LineLike,
 		slot_ uint,
 	)
 	PreprocessLiteral(

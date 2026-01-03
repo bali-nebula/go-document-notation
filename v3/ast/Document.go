@@ -36,7 +36,7 @@ func DocumentClass() DocumentClassLike {
 // Constructor Methods
 
 func (c *documentClass_) Document(
-	optionalHeading HeadingLike,
+	optionalComment string,
 	component ComponentLike,
 ) DocumentLike {
 	if uti.IsUndefined(component) {
@@ -44,7 +44,7 @@ func (c *documentClass_) Document(
 	}
 	var instance = &document_{
 		// Initialize the instance attributes.
-		optionalHeading_: optionalHeading,
+		optionalComment_: optionalComment,
 		component_:       component,
 	}
 	return instance
@@ -60,8 +60,8 @@ func (v *document_) GetClass() DocumentClassLike {
 
 // Attribute Methods
 
-func (v *document_) GetOptionalHeading() HeadingLike {
-	return v.optionalHeading_
+func (v *document_) GetOptionalComment() string {
+	return v.optionalComment_
 }
 
 func (v *document_) GetComponent() ComponentLike {
@@ -74,7 +74,7 @@ func (v *document_) GetComponent() ComponentLike {
 
 type document_ struct {
 	// Declare the instance attributes.
-	optionalHeading_ HeadingLike
+	optionalComment_ string
 	component_       ComponentLike
 }
 

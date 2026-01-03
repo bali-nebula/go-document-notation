@@ -38,6 +38,7 @@ func ComponentClass() ComponentClassLike {
 func (c *componentClass_) Component(
 	entity EntityLike,
 	optionalGenerics GenericsLike,
+	optionalNote string,
 ) ComponentLike {
 	if uti.IsUndefined(entity) {
 		panic("The \"entity\" attribute is required by this class.")
@@ -46,6 +47,7 @@ func (c *componentClass_) Component(
 		// Initialize the instance attributes.
 		entity_:           entity,
 		optionalGenerics_: optionalGenerics,
+		optionalNote_:     optionalNote,
 	}
 	return instance
 }
@@ -68,6 +70,10 @@ func (v *component_) GetOptionalGenerics() GenericsLike {
 	return v.optionalGenerics_
 }
 
+func (v *component_) GetOptionalNote() string {
+	return v.optionalNote_
+}
+
 // PROTECTED INTERFACE
 
 // Instance Structure
@@ -76,6 +82,7 @@ type component_ struct {
 	// Declare the instance attributes.
 	entity_           EntityLike
 	optionalGenerics_ GenericsLike
+	optionalNote_     string
 }
 
 // Class Structure

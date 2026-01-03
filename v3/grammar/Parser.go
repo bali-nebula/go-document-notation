@@ -167,33 +167,6 @@ func (v *parser_) parseAcceptClause() (
 	return
 }
 
-func (v *parser_) parseAnnotation() (
-	annotation ast.AnnotationLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single note Annotation.
-	var note string
-	note, token, ok = v.parseToken(NoteToken)
-	if ok {
-		// Found a single note Annotation.
-		annotation = ast.AnnotationClass().Annotation(note)
-		return
-	}
-
-	// Attempt to parse a single comment Annotation.
-	var comment string
-	comment, token, ok = v.parseToken(CommentToken)
-	if ok {
-		// Found a single comment Annotation.
-		annotation = ast.AnnotationClass().Annotation(comment)
-		return
-	}
-
-	// This is not a single Annotation rule.
-	return
-}
-
 func (v *parser_) parseArgument() (
 	argument ast.ArgumentLike,
 	token TokenLike,
@@ -481,15 +454,15 @@ func (v *parser_) parseAssociation() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Entry rule.
-	var entry ast.EntryLike
-	entry, token, ok = v.parseEntry()
+	// Attempt to parse a single Component rule.
+	var component ast.ComponentLike
+	component, token, ok = v.parseComponent()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Entry rule.
+		// This is not a single Component rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -504,7 +477,7 @@ func (v *parser_) parseAssociation() (
 	association = ast.AssociationClass().Association(
 		primitive,
 		delimiter,
-		entry,
+		component,
 	)
 	return
 }
@@ -1044,12 +1017,24 @@ func (v *parser_) parseComponent() (
 		tokens = nil
 	}
 
+	// Attempt to parse an optional note token.
+	var optionalNote string
+	optionalNote, token, ok = v.parseToken(NoteToken)
+	if ok {
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	} else {
+		optionalNote = "" // Reset this to undefined.
+	}
+
 	// Found a single Component rule.
 	ok = true
 	v.remove(tokens)
 	component = ast.ComponentClass().Component(
 		entity,
 		optionalGenerics,
+		optionalNote,
 	)
 	return
 }
@@ -1329,12 +1314,15 @@ func (v *parser_) parseDocument() (
 ) {
 	var tokens = com.List[TokenLike]()
 
-	// Attempt to parse an optional Heading rule.
-	var optionalHeading ast.HeadingLike
-	optionalHeading, _, ok = v.parseHeading()
+	// Attempt to parse an optional comment token.
+	var optionalComment string
+	optionalComment, token, ok = v.parseToken(CommentToken)
 	if ok {
-		// No additional put backs allowed at this point.
-		tokens = nil
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	} else {
+		optionalComment = "" // Reset this to undefined.
 	}
 
 	// Attempt to parse a single Component rule.
@@ -1358,7 +1346,7 @@ func (v *parser_) parseDocument() (
 	ok = true
 	v.remove(tokens)
 	document = ast.DocumentClass().Document(
-		optionalHeading,
+		optionalComment,
 		component,
 	)
 	return
@@ -1568,51 +1556,6 @@ func (v *parser_) parseEntity() (
 	}
 
 	// This is not a single Entity rule.
-	return
-}
-
-func (v *parser_) parseEntry() (
-	entry ast.EntryLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = com.List[TokenLike]()
-
-	// Attempt to parse a single Component rule.
-	var component ast.ComponentLike
-	component, token, ok = v.parseComponent()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Component rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Entry", token)
-		panic(message)
-	}
-
-	// Attempt to parse an optional note token.
-	var optionalNote string
-	optionalNote, token, ok = v.parseToken(NoteToken)
-	if ok {
-		if uti.IsDefined(tokens) {
-			tokens.AppendValue(token)
-		}
-	} else {
-		optionalNote = "" // Reset this to undefined.
-	}
-
-	// Found a single Entry rule.
-	ok = true
-	v.remove(tokens)
-	entry = ast.EntryClass().Entry(
-		component,
-		optionalNote,
-	)
 	return
 }
 
@@ -1933,38 +1876,6 @@ parametersLoop:
 		parameters,
 		delimiter2,
 	)
-	return
-}
-
-func (v *parser_) parseHeading() (
-	heading ast.HeadingLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = com.List[TokenLike]()
-
-	// Attempt to parse a single comment token.
-	var comment string
-	comment, token, ok = v.parseToken(CommentToken)
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single comment token.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Heading", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Found a single Heading rule.
-	ok = true
-	v.remove(tokens)
-	heading = ast.HeadingClass().Heading(comment)
 	return
 }
 
@@ -2365,30 +2276,30 @@ func (v *parser_) parseItems() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse multiple Entry rules.
-	var entries = com.List[ast.EntryLike]()
-entriesLoop:
+	// Attempt to parse multiple Component rules.
+	var components = com.List[ast.ComponentLike]()
+componentsLoop:
 	for count_ := 0; count_ < mat.MaxInt; count_++ {
-		var entry ast.EntryLike
-		entry, token, ok = v.parseEntry()
+		var component ast.ComponentLike
+		component, token, ok = v.parseComponent()
 		if !ok {
 			switch {
 			case count_ >= 0:
-				break entriesLoop
+				break componentsLoop
 			case uti.IsDefined(tokens):
-				// This is not multiple Entry rules.
+				// This is not multiple Component rules.
 				v.putBack(tokens)
 				return
 			default:
 				// Found a syntax error.
 				var message = v.formatError("$Items", token)
-				message += "0 or more Entry rules are required."
+				message += "0 or more Component rules are required."
 				panic(message)
 			}
 		}
 		// No additional put backs allowed at this point.
 		tokens = nil
-		entries.AppendValue(entry)
+		components.AppendValue(component)
 	}
 
 	// Attempt to parse a single "]" literal.
@@ -2414,7 +2325,7 @@ entriesLoop:
 	v.remove(tokens)
 	items = ast.ItemsClass().Items(
 		delimiter1,
-		entries,
+		components,
 		delimiter2,
 	)
 	return
@@ -2463,33 +2374,6 @@ func (v *parser_) parseLexical() (
 	}
 
 	// This is not a single Lexical rule.
-	return
-}
-
-func (v *parser_) parseLine() (
-	line ast.LineLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single Annotation Line.
-	var annotation ast.AnnotationLike
-	annotation, token, ok = v.parseAnnotation()
-	if ok {
-		// Found a single Annotation Line.
-		line = ast.LineClass().Line(annotation)
-		return
-	}
-
-	// Attempt to parse a single Statement Line.
-	var statement ast.StatementLike
-	statement, token, ok = v.parseStatement()
-	if ok {
-		// Found a single Statement Line.
-		line = ast.LineClass().Line(statement)
-		return
-	}
-
-	// This is not a single Line rule.
 	return
 }
 
@@ -3618,30 +3502,30 @@ func (v *parser_) parseProcedure() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse multiple Line rules.
-	var lines = com.List[ast.LineLike]()
-linesLoop:
+	// Attempt to parse multiple Statement rules.
+	var statements = com.List[ast.StatementLike]()
+statementsLoop:
 	for count_ := 0; count_ < mat.MaxInt; count_++ {
-		var line ast.LineLike
-		line, token, ok = v.parseLine()
+		var statement ast.StatementLike
+		statement, token, ok = v.parseStatement()
 		if !ok {
 			switch {
 			case count_ >= 0:
-				break linesLoop
+				break statementsLoop
 			case uti.IsDefined(tokens):
-				// This is not multiple Line rules.
+				// This is not multiple Statement rules.
 				v.putBack(tokens)
 				return
 			default:
 				// Found a syntax error.
 				var message = v.formatError("$Procedure", token)
-				message += "0 or more Line rules are required."
+				message += "0 or more Statement rules are required."
 				panic(message)
 			}
 		}
 		// No additional put backs allowed at this point.
 		tokens = nil
-		lines.AppendValue(line)
+		statements.AppendValue(statement)
 	}
 
 	// Attempt to parse a single "}" literal.
@@ -3667,7 +3551,7 @@ linesLoop:
 	v.remove(tokens)
 	procedure = ast.ProcedureClass().Procedure(
 		delimiter1,
-		lines,
+		statements,
 		delimiter2,
 	)
 	return
@@ -4807,6 +4691,17 @@ func (v *parser_) parseStatement() (
 ) {
 	var tokens = com.List[TokenLike]()
 
+	// Attempt to parse an optional comment token.
+	var optionalComment string
+	optionalComment, token, ok = v.parseToken(CommentToken)
+	if ok {
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	} else {
+		optionalComment = "" // Reset this to undefined.
+	}
+
 	// Attempt to parse a single MainClause rule.
 	var mainClause ast.MainClauseLike
 	mainClause, token, ok = v.parseMainClause()
@@ -4836,6 +4731,7 @@ func (v *parser_) parseStatement() (
 	ok = true
 	v.remove(tokens)
 	statement = ast.StatementClass().Statement(
+		optionalComment,
 		mainClause,
 		optionalOnClause,
 	)
@@ -5566,9 +5462,8 @@ var parserClassReference_ = &parserClass_{
 	// Initialize the class constants.
 	syntax_: com.CatalogFromMap[string, string](
 		map[string]string{
-			"$Document":  `Heading? Component`,
-			"$Heading":   `comment`,
-			"$Component": `Entity Generics?`,
+			"$Document":  `comment? Component`,
+			"$Component": `Entity Generics? note?`,
 			"$Entity": `
     Element
     Sequence
@@ -5618,17 +5513,10 @@ var parserClassReference_ = &parserClass_{
     Items  ! Must be after attributes.`,
 			"$Empty":       `"[:]"`,
 			"$Attributes":  `"[" Association+ "]"`,
-			"$Association": `Primitive ":" Entry`,
-			"$Items":       `"[" Entry* "]"`,
-			"$Entry":       `Component note?`,
-			"$Procedure":   `"{" Line* "}"`,
-			"$Line": `
-    Annotation
-    Statement`,
-			"$Annotation": `
-    note
-    comment`,
-			"$Statement": `MainClause OnClause?`,
+			"$Association": `Primitive ":" Component`,
+			"$Items":       `"[" Component* "]"`,
+			"$Procedure":   `"{" Statement* "}"`,
+			"$Statement":   `comment? MainClause OnClause?`,
 			"$MainClause": `
     FlowControl
     LocalTransformation

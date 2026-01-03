@@ -192,26 +192,6 @@ func (v *processor_) ProcessAcceptClauseSlot(
 ) {
 }
 
-func (v *processor_) PreprocessAnnotation(
-	annotation ast.AnnotationLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessAnnotation(
-	annotation ast.AnnotationLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessAnnotationSlot(
-	annotation ast.AnnotationLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessArgument(
 	argument ast.ArgumentLike,
 	index_ uint,
@@ -712,26 +692,6 @@ func (v *processor_) ProcessEntitySlot(
 ) {
 }
 
-func (v *processor_) PreprocessEntry(
-	entry ast.EntryLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessEntry(
-	entry ast.EntryLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessEntrySlot(
-	entry ast.EntryLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessExpression(
 	expression ast.ExpressionLike,
 	index_ uint,
@@ -808,26 +768,6 @@ func (v *processor_) PostprocessGenerics(
 
 func (v *processor_) ProcessGenericsSlot(
 	generics ast.GenericsLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessHeading(
-	heading ast.HeadingLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessHeading(
-	heading ast.HeadingLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessHeadingSlot(
-	heading ast.HeadingLike,
 	slot_ uint,
 ) {
 }
@@ -1028,26 +968,6 @@ func (v *processor_) PostprocessLexical(
 
 func (v *processor_) ProcessLexicalSlot(
 	lexical ast.LexicalLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessLine(
-	line ast.LineLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessLine(
-	line ast.LineLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessLineSlot(
-	line ast.LineLike,
 	slot_ uint,
 ) {
 }

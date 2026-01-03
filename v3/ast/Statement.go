@@ -36,6 +36,7 @@ func StatementClass() StatementClassLike {
 // Constructor Methods
 
 func (c *statementClass_) Statement(
+	optionalComment string,
 	mainClause MainClauseLike,
 	optionalOnClause OnClauseLike,
 ) StatementLike {
@@ -44,6 +45,7 @@ func (c *statementClass_) Statement(
 	}
 	var instance = &statement_{
 		// Initialize the instance attributes.
+		optionalComment_:  optionalComment,
 		mainClause_:       mainClause,
 		optionalOnClause_: optionalOnClause,
 	}
@@ -60,6 +62,10 @@ func (v *statement_) GetClass() StatementClassLike {
 
 // Attribute Methods
 
+func (v *statement_) GetOptionalComment() string {
+	return v.optionalComment_
+}
+
 func (v *statement_) GetMainClause() MainClauseLike {
 	return v.mainClause_
 }
@@ -74,6 +80,7 @@ func (v *statement_) GetOptionalOnClause() OnClauseLike {
 
 type statement_ struct {
 	// Declare the instance attributes.
+	optionalComment_  string
 	mainClause_       MainClauseLike
 	optionalOnClause_ OnClauseLike
 }

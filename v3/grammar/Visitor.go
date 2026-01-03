@@ -128,19 +128,6 @@ func (v *visitor_) visitAcceptClause(
 	)
 }
 
-func (v *visitor_) visitAnnotation(
-	annotation ast.AnnotationLike,
-) {
-	// Visit the possible annotation expression types.
-	var actual = annotation.GetAny().(string)
-	switch {
-	case ScannerClass().MatchesType(actual, NoteToken):
-		v.processor_.ProcessNote(actual)
-	case ScannerClass().MatchesType(actual, CommentToken):
-		v.processor_.ProcessComment(actual)
-	}
-}
-
 func (v *visitor_) visitArgument(
 	argument ast.ArgumentLike,
 ) {
@@ -307,15 +294,15 @@ func (v *visitor_) visitAssociation(
 		2,
 	)
 
-	var entry = association.GetEntry()
-	v.processor_.PreprocessEntry(
-		entry,
+	var component = association.GetComponent()
+	v.processor_.PreprocessComponent(
+		component,
 		0,
 		0,
 	)
-	v.visitEntry(entry)
-	v.processor_.PostprocessEntry(
-		entry,
+	v.visitComponent(component)
+	v.processor_.PostprocessComponent(
+		component,
 		0,
 		0,
 	)
@@ -636,6 +623,16 @@ func (v *visitor_) visitComponent(
 			0,
 		)
 	}
+	// Visit slot 2 between terms.
+	v.processor_.ProcessComponentSlot(
+		component,
+		2,
+	)
+
+	var optionalNote = component.GetOptionalNote()
+	if uti.IsDefined(optionalNote) {
+		v.processor_.ProcessNote(optionalNote)
+	}
 }
 
 func (v *visitor_) visitConstant(
@@ -776,19 +773,9 @@ func (v *visitor_) visitDiscardClause(
 func (v *visitor_) visitDocument(
 	document ast.DocumentLike,
 ) {
-	var optionalHeading = document.GetOptionalHeading()
-	if uti.IsDefined(optionalHeading) {
-		v.processor_.PreprocessHeading(
-			optionalHeading,
-			0,
-			0,
-		)
-		v.visitHeading(optionalHeading)
-		v.processor_.PostprocessHeading(
-			optionalHeading,
-			0,
-			0,
-		)
+	var optionalComment = document.GetOptionalComment()
+	if uti.IsDefined(optionalComment) {
+		v.processor_.ProcessComment(optionalComment)
 	}
 	// Visit slot 1 between terms.
 	v.processor_.ProcessDocumentSlot(
@@ -926,33 +913,6 @@ func (v *visitor_) visitEntity(
 			0,
 			0,
 		)
-	}
-}
-
-func (v *visitor_) visitEntry(
-	entry ast.EntryLike,
-) {
-	var component = entry.GetComponent()
-	v.processor_.PreprocessComponent(
-		component,
-		0,
-		0,
-	)
-	v.visitComponent(component)
-	v.processor_.PostprocessComponent(
-		component,
-		0,
-		0,
-	)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessEntrySlot(
-		entry,
-		1,
-	)
-
-	var optionalNote = entry.GetOptionalNote()
-	if uti.IsDefined(optionalNote) {
-		v.processor_.ProcessNote(optionalNote)
 	}
 }
 
@@ -1185,13 +1145,6 @@ func (v *visitor_) visitGenerics(
 
 	var delimiter2 = generics.GetDelimiter2()
 	v.processor_.ProcessDelimiter(delimiter2)
-}
-
-func (v *visitor_) visitHeading(
-	heading ast.HeadingLike,
-) {
-	var comment = heading.GetComment()
-	v.processor_.ProcessComment(comment)
 }
 
 func (v *visitor_) visitIfClause(
@@ -1427,22 +1380,22 @@ func (v *visitor_) visitItems(
 		1,
 	)
 
-	var entriesIndex uint
-	var entries = items.GetEntries().GetIterator()
-	var entriesCount = uint(entries.GetSize())
-	for entries.HasNext() {
-		entriesIndex++
-		var rule = entries.GetNext()
-		v.processor_.PreprocessEntry(
+	var componentsIndex uint
+	var components = items.GetComponents().GetIterator()
+	var componentsCount = uint(components.GetSize())
+	for components.HasNext() {
+		componentsIndex++
+		var rule = components.GetNext()
+		v.processor_.PreprocessComponent(
 			rule,
-			entriesIndex,
-			entriesCount,
+			componentsIndex,
+			componentsCount,
 		)
-		v.visitEntry(rule)
-		v.processor_.PostprocessEntry(
+		v.visitComponent(rule)
+		v.processor_.PostprocessComponent(
 			rule,
-			entriesIndex,
-			entriesCount,
+			componentsIndex,
+			componentsCount,
 		)
 	}
 	// Visit slot 2 between terms.
@@ -1476,38 +1429,6 @@ func (v *visitor_) visitLexical(
 	switch actual {
 	case "&":
 		v.processor_.ProcessDelimiter("&")
-	}
-}
-
-func (v *visitor_) visitLine(
-	line ast.LineLike,
-) {
-	// Visit the possible line rule types.
-	switch actual := line.GetAny().(type) {
-	case ast.AnnotationLike:
-		v.processor_.PreprocessAnnotation(
-			actual,
-			0,
-			0,
-		)
-		v.visitAnnotation(actual)
-		v.processor_.PostprocessAnnotation(
-			actual,
-			0,
-			0,
-		)
-	case ast.StatementLike:
-		v.processor_.PreprocessStatement(
-			actual,
-			0,
-			0,
-		)
-		v.visitStatement(actual)
-		v.processor_.PostprocessStatement(
-			actual,
-			0,
-			0,
-		)
 	}
 }
 
@@ -2337,22 +2258,22 @@ func (v *visitor_) visitProcedure(
 		1,
 	)
 
-	var linesIndex uint
-	var lines = procedure.GetLines().GetIterator()
-	var linesCount = uint(lines.GetSize())
-	for lines.HasNext() {
-		linesIndex++
-		var rule = lines.GetNext()
-		v.processor_.PreprocessLine(
+	var statementsIndex uint
+	var statements = procedure.GetStatements().GetIterator()
+	var statementsCount = uint(statements.GetSize())
+	for statements.HasNext() {
+		statementsIndex++
+		var rule = statements.GetNext()
+		v.processor_.PreprocessStatement(
 			rule,
-			linesIndex,
-			linesCount,
+			statementsIndex,
+			statementsCount,
 		)
-		v.visitLine(rule)
-		v.processor_.PostprocessLine(
+		v.visitStatement(rule)
+		v.processor_.PostprocessStatement(
 			rule,
-			linesIndex,
-			linesCount,
+			statementsIndex,
+			statementsCount,
 		)
 	}
 	// Visit slot 2 between terms.
@@ -3166,6 +3087,16 @@ func (v *visitor_) visitSequence(
 func (v *visitor_) visitStatement(
 	statement ast.StatementLike,
 ) {
+	var optionalComment = statement.GetOptionalComment()
+	if uti.IsDefined(optionalComment) {
+		v.processor_.ProcessComment(optionalComment)
+	}
+	// Visit slot 1 between terms.
+	v.processor_.ProcessStatementSlot(
+		statement,
+		1,
+	)
+
 	var mainClause = statement.GetMainClause()
 	v.processor_.PreprocessMainClause(
 		mainClause,
@@ -3178,10 +3109,10 @@ func (v *visitor_) visitStatement(
 		0,
 		0,
 	)
-	// Visit slot 1 between terms.
+	// Visit slot 2 between terms.
 	v.processor_.ProcessStatementSlot(
 		statement,
-		1,
+		2,
 	)
 
 	var optionalOnClause = statement.GetOptionalOnClause()

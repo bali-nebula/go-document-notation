@@ -63,18 +63,6 @@ type AcceptClauseClassLike interface {
 }
 
 /*
-AnnotationClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete annotation-like class.
-*/
-type AnnotationClassLike interface {
-	// Constructor Methods
-	Annotation(
-		any_ any,
-	) AnnotationLike
-}
-
-/*
 ArgumentClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete argument-like class.
@@ -135,7 +123,7 @@ type AssociationClassLike interface {
 	Association(
 		primitive PrimitiveLike,
 		delimiter string,
-		entry EntryLike,
+		component ComponentLike,
 	) AssociationLike
 }
 
@@ -267,6 +255,7 @@ type ComponentClassLike interface {
 	Component(
 		entity EntityLike,
 		optionalGenerics GenericsLike,
+		optionalNote string,
 	) ComponentLike
 }
 
@@ -344,7 +333,7 @@ supported by each concrete document-like class.
 type DocumentClassLike interface {
 	// Constructor Methods
 	Document(
-		optionalHeading HeadingLike,
+		optionalComment string,
 		component ComponentLike,
 	) DocumentLike
 }
@@ -395,19 +384,6 @@ type EntityClassLike interface {
 	Entity(
 		any_ any,
 	) EntityLike
-}
-
-/*
-EntryClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete entry-like class.
-*/
-type EntryClassLike interface {
-	// Constructor Methods
-	Entry(
-		component ComponentLike,
-		optionalNote string,
-	) EntryLike
 }
 
 /*
@@ -462,18 +438,6 @@ type GenericsClassLike interface {
 		parameters com.Sequential[ParameterLike],
 		delimiter2 string,
 	) GenericsLike
-}
-
-/*
-HeadingClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete heading-like class.
-*/
-type HeadingClassLike interface {
-	// Constructor Methods
-	Heading(
-		comment string,
-	) HeadingLike
 }
 
 /*
@@ -577,7 +541,7 @@ type ItemsClassLike interface {
 	// Constructor Methods
 	Items(
 		delimiter1 string,
-		entries com.Sequential[EntryLike],
+		components com.Sequential[ComponentLike],
 		delimiter2 string,
 	) ItemsLike
 }
@@ -604,18 +568,6 @@ type LexicalClassLike interface {
 	Lexical(
 		any_ any,
 	) LexicalLike
-}
-
-/*
-LineClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete line-like class.
-*/
-type LineClassLike interface {
-	// Constructor Methods
-	Line(
-		any_ any,
-	) LineLike
 }
 
 /*
@@ -863,7 +815,7 @@ type ProcedureClassLike interface {
 	// Constructor Methods
 	Procedure(
 		delimiter1 string,
-		lines com.Sequential[LineLike],
+		statements com.Sequential[StatementLike],
 		delimiter2 string,
 	) ProcedureLike
 }
@@ -1092,6 +1044,7 @@ supported by each concrete statement-like class.
 type StatementClassLike interface {
 	// Constructor Methods
 	Statement(
+		optionalComment string,
 		mainClause MainClauseLike,
 		optionalOnClause OnClauseLike,
 	) StatementLike
@@ -1213,19 +1166,6 @@ type AcceptClauseLike interface {
 }
 
 /*
-AnnotationLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete annotation-like class.
-*/
-type AnnotationLike interface {
-	// Principal Methods
-	GetClass() AnnotationClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
 ArgumentLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete argument-like class.
@@ -1292,7 +1232,7 @@ type AssociationLike interface {
 	// Attribute Methods
 	GetPrimitive() PrimitiveLike
 	GetDelimiter() string
-	GetEntry() EntryLike
+	GetComponent() ComponentLike
 }
 
 /*
@@ -1434,6 +1374,7 @@ type ComponentLike interface {
 	// Attribute Methods
 	GetEntity() EntityLike
 	GetOptionalGenerics() GenericsLike
+	GetOptionalNote() string
 }
 
 /*
@@ -1517,7 +1458,7 @@ type DocumentLike interface {
 	GetClass() DocumentClassLike
 
 	// Attribute Methods
-	GetOptionalHeading() HeadingLike
+	GetOptionalComment() string
 	GetComponent() ComponentLike
 }
 
@@ -1571,20 +1512,6 @@ type EntityLike interface {
 
 	// Attribute Methods
 	GetAny() any
-}
-
-/*
-EntryLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete entry-like class.
-*/
-type EntryLike interface {
-	// Principal Methods
-	GetClass() EntryClassLike
-
-	// Attribute Methods
-	GetComponent() ComponentLike
-	GetOptionalNote() string
 }
 
 /*
@@ -1643,19 +1570,6 @@ type GenericsLike interface {
 	GetDelimiter1() string
 	GetParameters() com.Sequential[ParameterLike]
 	GetDelimiter2() string
-}
-
-/*
-HeadingLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete heading-like class.
-*/
-type HeadingLike interface {
-	// Principal Methods
-	GetClass() HeadingClassLike
-
-	// Attribute Methods
-	GetComment() string
 }
 
 /*
@@ -1768,7 +1682,7 @@ type ItemsLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetEntries() com.Sequential[EntryLike]
+	GetComponents() com.Sequential[ComponentLike]
 	GetDelimiter2() string
 }
 
@@ -1793,19 +1707,6 @@ by each instance of a concrete lexical-like class.
 type LexicalLike interface {
 	// Principal Methods
 	GetClass() LexicalClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
-LineLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete line-like class.
-*/
-type LineLike interface {
-	// Principal Methods
-	GetClass() LineClassLike
 
 	// Attribute Methods
 	GetAny() any
@@ -2076,7 +1977,7 @@ type ProcedureLike interface {
 
 	// Attribute Methods
 	GetDelimiter1() string
-	GetLines() com.Sequential[LineLike]
+	GetStatements() com.Sequential[StatementLike]
 	GetDelimiter2() string
 }
 
@@ -2322,6 +2223,7 @@ type StatementLike interface {
 	GetClass() StatementClassLike
 
 	// Attribute Methods
+	GetOptionalComment() string
 	GetMainClause() MainClauseLike
 	GetOptionalOnClause() OnClauseLike
 }

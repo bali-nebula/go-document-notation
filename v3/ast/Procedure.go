@@ -38,14 +38,14 @@ func ProcedureClass() ProcedureClassLike {
 
 func (c *procedureClass_) Procedure(
 	delimiter1 string,
-	lines com.Sequential[LineLike],
+	statements com.Sequential[StatementLike],
 	delimiter2 string,
 ) ProcedureLike {
 	if uti.IsUndefined(delimiter1) {
 		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(lines) {
-		panic("The \"lines\" attribute is required by this class.")
+	if uti.IsUndefined(statements) {
+		panic("The \"statements\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(delimiter2) {
 		panic("The \"delimiter2\" attribute is required by this class.")
@@ -53,7 +53,7 @@ func (c *procedureClass_) Procedure(
 	var instance = &procedure_{
 		// Initialize the instance attributes.
 		delimiter1_: delimiter1,
-		lines_:      lines,
+		statements_: statements,
 		delimiter2_: delimiter2,
 	}
 	return instance
@@ -73,8 +73,8 @@ func (v *procedure_) GetDelimiter1() string {
 	return v.delimiter1_
 }
 
-func (v *procedure_) GetLines() com.Sequential[LineLike] {
-	return v.lines_
+func (v *procedure_) GetStatements() com.Sequential[StatementLike] {
+	return v.statements_
 }
 
 func (v *procedure_) GetDelimiter2() string {
@@ -88,7 +88,7 @@ func (v *procedure_) GetDelimiter2() string {
 type procedure_ struct {
 	// Declare the instance attributes.
 	delimiter1_ string
-	lines_      com.Sequential[LineLike]
+	statements_ com.Sequential[StatementLike]
 	delimiter2_ string
 }
 

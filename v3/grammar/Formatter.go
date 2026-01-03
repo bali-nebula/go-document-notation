@@ -105,6 +105,7 @@ func (v *formatter_) ProcessComment(
 ) {
 	comment = v.adjustIndentation(comment)
 	v.appendString(comment)
+	v.appendNewline()
 }
 
 func (v *formatter_) ProcessDash(
@@ -135,14 +136,6 @@ func (v *formatter_) ProcessGlyph(
 	glyph string,
 ) {
 	v.appendString(glyph)
-}
-
-func (v *formatter_) PostprocessHeading(
-	heading ast.HeadingLike,
-	index_ uint,
-	count_ uint,
-) {
-	v.appendNewline()
 }
 
 func (v *formatter_) ProcessIdentifier(
@@ -414,8 +407,17 @@ func (v *formatter_) PostprocessDocument(
 	v.appendNewline()
 }
 
-func (v *formatter_) PreprocessEntry(
-	entry ast.EntryLike,
+/*
+func (v *formatter_) ProcessDocumentSlot(
+	document ast.DocumentLike,
+	slot_ uint,
+) {
+	v.appendNewline()
+}
+*/
+
+func (v *formatter_) PreprocessComponent(
+	component ast.ComponentLike,
 	index_ uint,
 	count_ uint,
 ) {
@@ -424,13 +426,13 @@ func (v *formatter_) PreprocessEntry(
 	}
 }
 
-func (v *formatter_) ProcessEntrySlot(
-	entry ast.EntryLike,
+func (v *formatter_) ProcessComponentSlot(
+	component ast.ComponentLike,
 	slot_ uint,
 ) {
 	switch slot_ {
-	case 1:
-		if uti.IsDefined(entry.GetOptionalNote()) {
+	case 2:
+		if uti.IsDefined(component.GetOptionalNote()) {
 			v.appendString("  ")
 		}
 	}
@@ -482,8 +484,8 @@ func (v *formatter_) ProcessItemsSlot(
 		v.depth_++
 	case 2:
 		v.depth_--
-		var entries = items.GetEntries()
-		if entries.IsEmpty() {
+		var components = items.GetComponents()
+		if components.IsEmpty() {
 			v.appendString(" ")
 		} else {
 			v.appendNewline()
@@ -491,16 +493,13 @@ func (v *formatter_) ProcessItemsSlot(
 	}
 }
 
-func (v *formatter_) PreprocessLine(
-	line ast.LineLike,
+func (v *formatter_) PreprocessStatement(
+	statement ast.StatementLike,
 	index_ uint,
 	count_ uint,
 ) {
-	switch line.GetAny().(type) {
-	case ast.AnnotationLike:
-		if index_ > 1 {
-			v.appendString("\n")
-		}
+	if uti.IsDefined(statement.GetOptionalComment()) && index_ > 1 {
+		v.appendString("\n")
 	}
 	v.appendNewline()
 }

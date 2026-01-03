@@ -42,7 +42,6 @@ import (
 
 type (
 	AcceptClauseClassLike        = ast.AcceptClauseClassLike
-	AnnotationClassLike          = ast.AnnotationClassLike
 	ArgumentClassLike            = ast.ArgumentClassLike
 	ArithmeticClassLike          = ast.ArithmeticClassLike
 	AssignClauseClassLike        = ast.AssignClauseClassLike
@@ -68,12 +67,10 @@ type (
 	ElementClassLike             = ast.ElementClassLike
 	EmptyClassLike               = ast.EmptyClassLike
 	EntityClassLike              = ast.EntityClassLike
-	EntryClassLike               = ast.EntryClassLike
 	ExpressionClassLike          = ast.ExpressionClassLike
 	FlowControlClassLike         = ast.FlowControlClassLike
 	FunctionClassLike            = ast.FunctionClassLike
 	GenericsClassLike            = ast.GenericsClassLike
-	HeadingClassLike             = ast.HeadingClassLike
 	IfClauseClassLike            = ast.IfClauseClassLike
 	IndexClassLike               = ast.IndexClassLike
 	InspectClauseClassLike       = ast.InspectClauseClassLike
@@ -84,7 +81,6 @@ type (
 	ItemsClassLike               = ast.ItemsClassLike
 	LeftClassLike                = ast.LeftClassLike
 	LexicalClassLike             = ast.LexicalClassLike
-	LineClassLike                = ast.LineClassLike
 	LiteralClassLike             = ast.LiteralClassLike
 	LocalTransformationClassLike = ast.LocalTransformationClassLike
 	LocationClassLike            = ast.LocationClassLike
@@ -132,7 +128,6 @@ type (
 
 type (
 	AcceptClauseLike        = ast.AcceptClauseLike
-	AnnotationLike          = ast.AnnotationLike
 	ArgumentLike            = ast.ArgumentLike
 	ArithmeticLike          = ast.ArithmeticLike
 	AssignClauseLike        = ast.AssignClauseLike
@@ -158,12 +153,10 @@ type (
 	ElementLike             = ast.ElementLike
 	EmptyLike               = ast.EmptyLike
 	EntityLike              = ast.EntityLike
-	EntryLike               = ast.EntryLike
 	ExpressionLike          = ast.ExpressionLike
 	FlowControlLike         = ast.FlowControlLike
 	FunctionLike            = ast.FunctionLike
 	GenericsLike            = ast.GenericsLike
-	HeadingLike             = ast.HeadingLike
 	IfClauseLike            = ast.IfClauseLike
 	IndexLike               = ast.IndexLike
 	InspectClauseLike       = ast.InspectClauseLike
@@ -174,7 +167,6 @@ type (
 	ItemsLike               = ast.ItemsLike
 	LeftLike                = ast.LeftLike
 	LexicalLike             = ast.LexicalLike
-	LineLike                = ast.LineLike
 	LiteralLike             = ast.LiteralLike
 	LocalTransformationLike = ast.LocalTransformationLike
 	LocationLike            = ast.LocationLike
@@ -300,18 +292,6 @@ func AcceptClause(
 	)
 }
 
-func AnnotationClass() AnnotationClassLike {
-	return ast.AnnotationClass()
-}
-
-func Annotation(
-	any_ any,
-) AnnotationLike {
-	return AnnotationClass().Annotation(
-		any_,
-	)
-}
-
 func ArgumentClass() ArgumentClassLike {
 	return ast.ArgumentClass()
 }
@@ -373,12 +353,12 @@ func AssociationClass() AssociationClassLike {
 func Association(
 	primitive ast.PrimitiveLike,
 	delimiter string,
-	entry ast.EntryLike,
+	component ast.ComponentLike,
 ) AssociationLike {
 	return AssociationClass().Association(
 		primitive,
 		delimiter,
-		entry,
+		component,
 	)
 }
 
@@ -517,10 +497,12 @@ func ComponentClass() ComponentClassLike {
 func Component(
 	entity ast.EntityLike,
 	optionalGenerics ast.GenericsLike,
+	optionalNote string,
 ) ComponentLike {
 	return ComponentClass().Component(
 		entity,
 		optionalGenerics,
+		optionalNote,
 	)
 }
 
@@ -601,11 +583,11 @@ func DocumentClass() DocumentClassLike {
 }
 
 func Document(
-	optionalHeading ast.HeadingLike,
+	optionalComment string,
 	component ast.ComponentLike,
 ) DocumentLike {
 	return DocumentClass().Document(
-		optionalHeading,
+		optionalComment,
 		component,
 	)
 }
@@ -655,20 +637,6 @@ func Entity(
 ) EntityLike {
 	return EntityClass().Entity(
 		any_,
-	)
-}
-
-func EntryClass() EntryClassLike {
-	return ast.EntryClass()
-}
-
-func Entry(
-	component ast.ComponentLike,
-	optionalNote string,
-) EntryLike {
-	return EntryClass().Entry(
-		component,
-		optionalNote,
 	)
 }
 
@@ -729,18 +697,6 @@ func Generics(
 		delimiter1,
 		parameters,
 		delimiter2,
-	)
-}
-
-func HeadingClass() HeadingClassLike {
-	return ast.HeadingClass()
-}
-
-func Heading(
-	comment string,
-) HeadingLike {
-	return HeadingClass().Heading(
-		comment,
 	)
 }
 
@@ -850,12 +806,12 @@ func ItemsClass() ItemsClassLike {
 
 func Items(
 	delimiter1 string,
-	entries com.Sequential[ast.EntryLike],
+	components com.Sequential[ast.ComponentLike],
 	delimiter2 string,
 ) ItemsLike {
 	return ItemsClass().Items(
 		delimiter1,
-		entries,
+		components,
 		delimiter2,
 	)
 }
@@ -880,18 +836,6 @@ func Lexical(
 	any_ any,
 ) LexicalLike {
 	return LexicalClass().Lexical(
-		any_,
-	)
-}
-
-func LineClass() LineClassLike {
-	return ast.LineClass()
-}
-
-func Line(
-	any_ any,
-) LineLike {
-	return LineClass().Line(
 		any_,
 	)
 }
@@ -1158,12 +1102,12 @@ func ProcedureClass() ProcedureClassLike {
 
 func Procedure(
 	delimiter1 string,
-	lines com.Sequential[ast.LineLike],
+	statements com.Sequential[ast.StatementLike],
 	delimiter2 string,
 ) ProcedureLike {
 	return ProcedureClass().Procedure(
 		delimiter1,
-		lines,
+		statements,
 		delimiter2,
 	)
 }
@@ -1413,10 +1357,12 @@ func StatementClass() StatementClassLike {
 }
 
 func Statement(
+	optionalComment string,
 	mainClause ast.MainClauseLike,
 	optionalOnClause ast.OnClauseLike,
 ) StatementLike {
 	return StatementClass().Statement(
+		optionalComment,
 		mainClause,
 		optionalOnClause,
 	)
