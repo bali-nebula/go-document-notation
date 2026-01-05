@@ -1215,14 +1215,14 @@ func (v *visitor_) visitIndex(
 			0,
 			0,
 		)
-	case ast.PrimitiveLike:
-		v.processor_.PreprocessPrimitive(
+	case ast.LiteralLike:
+		v.processor_.PreprocessLiteral(
 			actual,
 			0,
 			0,
 		)
-		v.visitPrimitive(actual)
-		v.processor_.PostprocessPrimitive(
+		v.visitLiteral(actual)
+		v.processor_.PostprocessLiteral(
 			actual,
 			0,
 			0,

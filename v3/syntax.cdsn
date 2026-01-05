@@ -169,7 +169,7 @@ $Subcomponent: identifier "[" Index+ "]"
 
 $Index:
     Value
-    Primitive
+    Literal
 
 $Value: identifier
 

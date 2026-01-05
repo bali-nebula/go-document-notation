@@ -1982,12 +1982,12 @@ func (v *parser_) parseIndex() (
 		return
 	}
 
-	// Attempt to parse a single Primitive Index.
-	var primitive ast.PrimitiveLike
-	primitive, token, ok = v.parsePrimitive()
+	// Attempt to parse a single Literal Index.
+	var literal ast.LiteralLike
+	literal, token, ok = v.parseLiteral()
 	if ok {
-		// Found a single Primitive Index.
-		index = ast.IndexClass().Index(primitive)
+		// Found a single Literal Index.
+		index = ast.IndexClass().Index(literal)
 		return
 	}
 
@@ -5568,7 +5568,7 @@ var parserClassReference_ = &parserClass_{
 			"$Subcomponent": `identifier "[" Index+ "]"`,
 			"$Index": `
     Value
-    Primitive`,
+    Literal`,
 			"$Value": `identifier`,
 			"$Assignment": `
     "?="  ! Assign a default value if not already initialized.
