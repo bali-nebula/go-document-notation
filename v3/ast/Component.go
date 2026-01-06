@@ -36,16 +36,16 @@ func ComponentClass() ComponentClassLike {
 // Constructor Methods
 
 func (c *componentClass_) Component(
-	entity EntityLike,
+	literal LiteralLike,
 	optionalGenerics GenericsLike,
 	optionalNote string,
 ) ComponentLike {
-	if uti.IsUndefined(entity) {
-		panic("The \"entity\" attribute is required by this class.")
+	if uti.IsUndefined(literal) {
+		panic("The \"literal\" attribute is required by this class.")
 	}
 	var instance = &component_{
 		// Initialize the instance attributes.
-		entity_:           entity,
+		literal_:          literal,
 		optionalGenerics_: optionalGenerics,
 		optionalNote_:     optionalNote,
 	}
@@ -62,8 +62,8 @@ func (v *component_) GetClass() ComponentClassLike {
 
 // Attribute Methods
 
-func (v *component_) GetEntity() EntityLike {
-	return v.entity_
+func (v *component_) GetLiteral() LiteralLike {
+	return v.literal_
 }
 
 func (v *component_) GetOptionalGenerics() GenericsLike {
@@ -80,7 +80,7 @@ func (v *component_) GetOptionalNote() string {
 
 type component_ struct {
 	// Declare the instance attributes.
-	entity_           EntityLike
+	literal_          LiteralLike
 	optionalGenerics_ GenericsLike
 	optionalNote_     string
 }

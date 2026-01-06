@@ -116,12 +116,6 @@ func (v *validator_) ProcessName(
 	v.validateToken(name, NameToken)
 }
 
-func (v *validator_) ProcessNarrative(
-	narrative string,
-) {
-	v.validateToken(narrative, NarrativeToken)
-}
-
 func (v *validator_) ProcessNewline(
 	newline string,
 ) {

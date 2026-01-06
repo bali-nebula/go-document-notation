@@ -68,12 +68,6 @@ func (v *formatter_) ProcessAngle(
 	v.appendString(angle)
 }
 
-func (v *formatter_) ProcessAsynchronous(
-	asynchronous string,
-) {
-	v.appendString(asynchronous)
-}
-
 func (v *formatter_) ProcessBinary(
 	binary string,
 ) {
@@ -94,24 +88,12 @@ func (v *formatter_) ProcessBytecode(
 	v.appendString(bytecode)
 }
 
-func (v *formatter_) ProcessCaret(
-	caret string,
-) {
-	v.appendString(caret)
-}
-
 func (v *formatter_) ProcessComment(
 	comment string,
 ) {
 	comment = v.adjustIndentation(comment)
 	v.appendString(comment)
 	v.appendNewline()
-}
-
-func (v *formatter_) ProcessDash(
-	dash string,
-) {
-	v.appendString(dash)
 }
 
 func (v *formatter_) ProcessDelimiter(
@@ -126,12 +108,6 @@ func (v *formatter_) ProcessDuration(
 	v.appendString(duration)
 }
 
-func (v *formatter_) ProcessEqual(
-	equal string,
-) {
-	v.appendString(equal)
-}
-
 func (v *formatter_) ProcessGlyph(
 	glyph string,
 ) {
@@ -144,28 +120,10 @@ func (v *formatter_) ProcessIdentifier(
 	v.appendString(identifier)
 }
 
-func (v *formatter_) ProcessLess(
-	less string,
-) {
-	v.appendString(less)
-}
-
-func (v *formatter_) ProcessModulo(
-	modulo string,
-) {
-	v.appendString(modulo)
-}
-
 func (v *formatter_) ProcessMoment(
 	moment string,
 ) {
 	v.appendString(moment)
-}
-
-func (v *formatter_) ProcessMore(
-	more string,
-) {
-	v.appendString(more)
 }
 
 func (v *formatter_) ProcessName(
@@ -211,12 +169,6 @@ func (v *formatter_) ProcessPercentage(
 	v.appendString(percentage)
 }
 
-func (v *formatter_) ProcessPlus(
-	plus string,
-) {
-	v.appendString(plus)
-}
-
 func (v *formatter_) ProcessProbability(
 	probability string,
 ) {
@@ -235,34 +187,16 @@ func (v *formatter_) ProcessResource(
 	v.appendString(resource)
 }
 
-func (v *formatter_) ProcessSlash(
-	slash string,
-) {
-	v.appendString(slash)
-}
-
 func (v *formatter_) ProcessSpace(
 	space string,
 ) {
 	v.appendString(space)
 }
 
-func (v *formatter_) ProcessStar(
-	star string,
-) {
-	v.appendString(star)
-}
-
 func (v *formatter_) ProcessSymbol(
 	symbol string,
 ) {
 	v.appendString(symbol)
-}
-
-func (v *formatter_) ProcessSynchronous(
-	synchronous string,
-) {
-	v.appendString(synchronous)
 }
 
 func (v *formatter_) ProcessTag(

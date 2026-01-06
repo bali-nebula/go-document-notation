@@ -253,7 +253,7 @@ supported by each concrete component-like class.
 type ComponentClassLike interface {
 	// Constructor Methods
 	Component(
-		entity EntityLike,
+		literal LiteralLike,
 		optionalGenerics GenericsLike,
 		optionalNote string,
 	) ComponentLike
@@ -279,7 +279,7 @@ supported by each concrete constraint-like class.
 type ConstraintClassLike interface {
 	// Constructor Methods
 	Constraint(
-		literal LiteralLike,
+		entity EntityLike,
 		optionalGenerics GenericsLike,
 	) ConstraintLike
 }
@@ -1372,7 +1372,7 @@ type ComponentLike interface {
 	GetClass() ComponentClassLike
 
 	// Attribute Methods
-	GetEntity() EntityLike
+	GetLiteral() LiteralLike
 	GetOptionalGenerics() GenericsLike
 	GetOptionalNote() string
 }
@@ -1400,7 +1400,7 @@ type ConstraintLike interface {
 	GetClass() ConstraintClassLike
 
 	// Attribute Methods
-	GetLiteral() LiteralLike
+	GetEntity() EntityLike
 	GetOptionalGenerics() GenericsLike
 }
 

@@ -145,14 +145,14 @@ func (v *visitor_) visitArgument(
 			0,
 			0,
 		)
-	case ast.LiteralLike:
-		v.processor_.PreprocessLiteral(
+	case ast.EntityLike:
+		v.processor_.PreprocessEntity(
 			actual,
 			0,
 			0,
 		)
-		v.visitLiteral(actual)
-		v.processor_.PostprocessLiteral(
+		v.visitEntity(actual)
+		v.processor_.PostprocessEntity(
 			actual,
 			0,
 			0,
@@ -591,15 +591,15 @@ func (v *visitor_) visitComplement(
 func (v *visitor_) visitComponent(
 	component ast.ComponentLike,
 ) {
-	var entity = component.GetEntity()
-	v.processor_.PreprocessEntity(
-		entity,
+	var literal = component.GetLiteral()
+	v.processor_.PreprocessLiteral(
+		literal,
 		0,
 		0,
 	)
-	v.visitEntity(entity)
-	v.processor_.PostprocessEntity(
-		entity,
+	v.visitLiteral(literal)
+	v.processor_.PostprocessLiteral(
+		literal,
 		0,
 		0,
 	)
@@ -645,15 +645,15 @@ func (v *visitor_) visitConstant(
 func (v *visitor_) visitConstraint(
 	constraint ast.ConstraintLike,
 ) {
-	var literal = constraint.GetLiteral()
-	v.processor_.PreprocessLiteral(
-		literal,
+	var entity = constraint.GetEntity()
+	v.processor_.PreprocessEntity(
+		entity,
 		0,
 		0,
 	)
-	v.visitLiteral(literal)
-	v.processor_.PostprocessLiteral(
-		literal,
+	v.visitEntity(entity)
+	v.processor_.PostprocessEntity(
+		entity,
 		0,
 		0,
 	)
@@ -885,30 +885,6 @@ func (v *visitor_) visitEntity(
 		)
 		v.visitRange(actual)
 		v.processor_.PostprocessRange(
-			actual,
-			0,
-			0,
-		)
-	case ast.CollectionLike:
-		v.processor_.PreprocessCollection(
-			actual,
-			0,
-			0,
-		)
-		v.visitCollection(actual)
-		v.processor_.PostprocessCollection(
-			actual,
-			0,
-			0,
-		)
-	case ast.ProcedureLike:
-		v.processor_.PreprocessProcedure(
-			actual,
-			0,
-			0,
-		)
-		v.visitProcedure(actual)
-		v.processor_.PostprocessProcedure(
 			actual,
 			0,
 			0,
@@ -1215,14 +1191,14 @@ func (v *visitor_) visitIndex(
 			0,
 			0,
 		)
-	case ast.LiteralLike:
-		v.processor_.PreprocessLiteral(
+	case ast.EntityLike:
+		v.processor_.PreprocessEntity(
 			actual,
 			0,
 			0,
 		)
-		v.visitLiteral(actual)
-		v.processor_.PostprocessLiteral(
+		v.visitEntity(actual)
+		v.processor_.PostprocessEntity(
 			actual,
 			0,
 			0,
@@ -1469,6 +1445,30 @@ func (v *visitor_) visitLiteral(
 		)
 		v.visitRange(actual)
 		v.processor_.PostprocessRange(
+			actual,
+			0,
+			0,
+		)
+	case ast.CollectionLike:
+		v.processor_.PreprocessCollection(
+			actual,
+			0,
+			0,
+		)
+		v.visitCollection(actual)
+		v.processor_.PostprocessCollection(
+			actual,
+			0,
+			0,
+		)
+	case ast.ProcedureLike:
+		v.processor_.PreprocessProcedure(
+			actual,
+			0,
+			0,
+		)
+		v.visitProcedure(actual)
+		v.processor_.PostprocessProcedure(
 			actual,
 			0,
 			0,

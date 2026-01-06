@@ -24,9 +24,9 @@ For more information on CDSN see the wiki at:
 <!
 $Document: comment? Component
 
-$Component: Entity Generics? note?
+$Component: Literal Generics? note?
 
-$Entity:
+$Literal:
     Element
     Sequence
     Range
@@ -37,9 +37,9 @@ $Generics: "(" Parameter+ ")"
 
 $Parameter: symbol ":" Constraint
 
-$Constraint: Literal Generics?
+$Constraint: Entity Generics?
 
-$Literal:
+$Entity:
     Element
     Sequence
     Range
@@ -169,7 +169,7 @@ $Subcomponent: identifier "[" Index+ "]"
 
 $Index:
     Value
-    Literal
+    Entity
 
 $Value: identifier
 
@@ -192,7 +192,7 @@ $Invocation:
 
 $Argument:
     Value
-    Literal
+    Entity
 
 $SendClause: "send" Message "to" Bag
 

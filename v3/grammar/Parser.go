@@ -181,12 +181,12 @@ func (v *parser_) parseArgument() (
 		return
 	}
 
-	// Attempt to parse a single Literal Argument.
-	var literal ast.LiteralLike
-	literal, token, ok = v.parseLiteral()
+	// Attempt to parse a single Entity Argument.
+	var entity ast.EntityLike
+	entity, token, ok = v.parseEntity()
 	if ok {
-		// Found a single Literal Argument.
-		argument = ast.ArgumentClass().Argument(literal)
+		// Found a single Entity Argument.
+		argument = ast.ArgumentClass().Argument(entity)
 		return
 	}
 
@@ -992,15 +992,15 @@ func (v *parser_) parseComponent() (
 ) {
 	var tokens = com.List[TokenLike]()
 
-	// Attempt to parse a single Entity rule.
-	var entity ast.EntityLike
-	entity, token, ok = v.parseEntity()
+	// Attempt to parse a single Literal rule.
+	var literal ast.LiteralLike
+	literal, token, ok = v.parseLiteral()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Entity rule.
+		// This is not a single Literal rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -1032,7 +1032,7 @@ func (v *parser_) parseComponent() (
 	ok = true
 	v.remove(tokens)
 	component = ast.ComponentClass().Component(
-		entity,
+		literal,
 		optionalGenerics,
 		optionalNote,
 	)
@@ -1078,15 +1078,15 @@ func (v *parser_) parseConstraint() (
 ) {
 	var tokens = com.List[TokenLike]()
 
-	// Attempt to parse a single Literal rule.
-	var literal ast.LiteralLike
-	literal, token, ok = v.parseLiteral()
+	// Attempt to parse a single Entity rule.
+	var entity ast.EntityLike
+	entity, token, ok = v.parseEntity()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Literal rule.
+		// This is not a single Entity rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -1107,7 +1107,7 @@ func (v *parser_) parseConstraint() (
 	ok = true
 	v.remove(tokens)
 	constraint = ast.ConstraintClass().Constraint(
-		literal,
+		entity,
 		optionalGenerics,
 	)
 	return
@@ -1534,24 +1534,6 @@ func (v *parser_) parseEntity() (
 	if ok {
 		// Found a single Range Entity.
 		entity = ast.EntityClass().Entity(range_)
-		return
-	}
-
-	// Attempt to parse a single Collection Entity.
-	var collection ast.CollectionLike
-	collection, token, ok = v.parseCollection()
-	if ok {
-		// Found a single Collection Entity.
-		entity = ast.EntityClass().Entity(collection)
-		return
-	}
-
-	// Attempt to parse a single Procedure Entity.
-	var procedure ast.ProcedureLike
-	procedure, token, ok = v.parseProcedure()
-	if ok {
-		// Found a single Procedure Entity.
-		entity = ast.EntityClass().Entity(procedure)
 		return
 	}
 
@@ -1982,12 +1964,12 @@ func (v *parser_) parseIndex() (
 		return
 	}
 
-	// Attempt to parse a single Literal Index.
-	var literal ast.LiteralLike
-	literal, token, ok = v.parseLiteral()
+	// Attempt to parse a single Entity Index.
+	var entity ast.EntityLike
+	entity, token, ok = v.parseEntity()
 	if ok {
-		// Found a single Literal Index.
-		index = ast.IndexClass().Index(literal)
+		// Found a single Entity Index.
+		index = ast.IndexClass().Index(entity)
 		return
 	}
 
@@ -2406,6 +2388,24 @@ func (v *parser_) parseLiteral() (
 	if ok {
 		// Found a single Range Literal.
 		literal = ast.LiteralClass().Literal(range_)
+		return
+	}
+
+	// Attempt to parse a single Collection Literal.
+	var collection ast.CollectionLike
+	collection, token, ok = v.parseCollection()
+	if ok {
+		// Found a single Collection Literal.
+		literal = ast.LiteralClass().Literal(collection)
+		return
+	}
+
+	// Attempt to parse a single Procedure Literal.
+	var procedure ast.ProcedureLike
+	procedure, token, ok = v.parseProcedure()
+	if ok {
+		// Found a single Procedure Literal.
+		literal = ast.LiteralClass().Literal(procedure)
 		return
 	}
 
@@ -5463,8 +5463,8 @@ var parserClassReference_ = &parserClass_{
 	syntax_: com.CatalogFromMap[string, string](
 		map[string]string{
 			"$Document":  `comment? Component`,
-			"$Component": `Entity Generics? note?`,
-			"$Entity": `
+			"$Component": `Literal Generics? note?`,
+			"$Literal": `
     Element
     Sequence
     Range
@@ -5472,8 +5472,8 @@ var parserClassReference_ = &parserClass_{
     Procedure`,
 			"$Generics":   `"(" Parameter+ ")"`,
 			"$Parameter":  `symbol ":" Constraint`,
-			"$Constraint": `Literal Generics?`,
-			"$Literal": `
+			"$Constraint": `Entity Generics?`,
+			"$Entity": `
     Element
     Sequence
     Range`,
@@ -5568,7 +5568,7 @@ var parserClassReference_ = &parserClass_{
 			"$Subcomponent": `identifier "[" Index+ "]"`,
 			"$Index": `
     Value
-    Literal`,
+    Entity`,
 			"$Value": `identifier`,
 			"$Assignment": `
     "?="  ! Assign a default value if not already initialized.
@@ -5585,7 +5585,7 @@ var parserClassReference_ = &parserClass_{
     "<~"  ! The method is invoked asynchronously.`,
 			"$Argument": `
     Value
-    Literal`,
+    Entity`,
 			"$SendClause":     `"send" Message "to" Bag`,
 			"$ReceiveClause":  `"receive" Recipient "from" Bag  ! Returns a message.`,
 			"$AcceptClause":   `"accept" Message "from" Bag`,

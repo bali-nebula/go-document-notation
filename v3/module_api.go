@@ -495,12 +495,12 @@ func ComponentClass() ComponentClassLike {
 }
 
 func Component(
-	entity ast.EntityLike,
+	literal ast.LiteralLike,
 	optionalGenerics ast.GenericsLike,
 	optionalNote string,
 ) ComponentLike {
 	return ComponentClass().Component(
-		entity,
+		literal,
 		optionalGenerics,
 		optionalNote,
 	)
@@ -523,11 +523,11 @@ func ConstraintClass() ConstraintClassLike {
 }
 
 func Constraint(
-	literal ast.LiteralLike,
+	entity ast.EntityLike,
 	optionalGenerics ast.GenericsLike,
 ) ConstraintLike {
 	return ConstraintClass().Constraint(
-		literal,
+		entity,
 		optionalGenerics,
 	)
 }
