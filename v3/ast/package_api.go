@@ -370,7 +370,9 @@ supported by each concrete empty-like class.
 type EmptyClassLike interface {
 	// Constructor Methods
 	Empty(
-		delimiter string,
+		delimiter1 string,
+		optionalDelimiter string,
+		delimiter2 string,
 	) EmptyLike
 }
 
@@ -1498,7 +1500,9 @@ type EmptyLike interface {
 	GetClass() EmptyClassLike
 
 	// Attribute Methods
-	GetDelimiter() string
+	GetDelimiter1() string
+	GetOptionalDelimiter() string
+	GetDelimiter2() string
 }
 
 /*

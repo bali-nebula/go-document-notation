@@ -36,14 +36,21 @@ func EmptyClass() EmptyClassLike {
 // Constructor Methods
 
 func (c *emptyClass_) Empty(
-	delimiter string,
+	delimiter1 string,
+	optionalDelimiter string,
+	delimiter2 string,
 ) EmptyLike {
-	if uti.IsUndefined(delimiter) {
-		panic("The \"delimiter\" attribute is required by this class.")
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
 	}
 	var instance = &empty_{
 		// Initialize the instance attributes.
-		delimiter_: delimiter,
+		delimiter1_:        delimiter1,
+		optionalDelimiter_: optionalDelimiter,
+		delimiter2_:        delimiter2,
 	}
 	return instance
 }
@@ -58,8 +65,16 @@ func (v *empty_) GetClass() EmptyClassLike {
 
 // Attribute Methods
 
-func (v *empty_) GetDelimiter() string {
-	return v.delimiter_
+func (v *empty_) GetDelimiter1() string {
+	return v.delimiter1_
+}
+
+func (v *empty_) GetOptionalDelimiter() string {
+	return v.optionalDelimiter_
+}
+
+func (v *empty_) GetDelimiter2() string {
+	return v.delimiter2_
 }
 
 // PROTECTED INTERFACE
@@ -68,7 +83,9 @@ func (v *empty_) GetDelimiter() string {
 
 type empty_ struct {
 	// Declare the instance attributes.
-	delimiter_ string
+	delimiter1_        string
+	optionalDelimiter_ string
+	delimiter2_        string
 }
 
 // Class Structure

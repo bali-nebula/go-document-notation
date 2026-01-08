@@ -844,8 +844,26 @@ func (v *visitor_) visitElement(
 func (v *visitor_) visitEmpty(
 	empty ast.EmptyLike,
 ) {
-	var delimiter = empty.GetDelimiter()
-	v.processor_.ProcessDelimiter(delimiter)
+	var delimiter1 = empty.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessEmptySlot(
+		empty,
+		1,
+	)
+
+	var optionalDelimiter = empty.GetOptionalDelimiter()
+	if uti.IsDefined(optionalDelimiter) {
+		v.processor_.ProcessDelimiter(optionalDelimiter)
+	}
+	// Visit slot 2 between terms.
+	v.processor_.ProcessEmptySlot(
+		empty,
+		2,
+	)
+
+	var delimiter2 = empty.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
 }
 
 func (v *visitor_) visitEntity(

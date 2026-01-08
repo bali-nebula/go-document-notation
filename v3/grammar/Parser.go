@@ -1480,9 +1480,38 @@ func (v *parser_) parseEmpty() (
 ) {
 	var tokens = com.List[TokenLike]()
 
-	// Attempt to parse a single "[:]" literal.
-	var delimiter string
-	delimiter, token, ok = v.parseDelimiter("[:]")
+	// Attempt to parse a single "[" literal.
+	var delimiter1 string
+	delimiter1, token, ok = v.parseDelimiter("[")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single Empty rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Empty", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse an optional ":" literal.
+	var optionalDelimiter string
+	optionalDelimiter, token, ok = v.parseDelimiter(":")
+	if ok {
+		if uti.IsDefined(tokens) {
+			tokens.AppendValue(token)
+		}
+	} else {
+		optionalDelimiter = "" // Reset this to undefined.
+	}
+
+	// Attempt to parse a single "]" literal.
+	var delimiter2 string
+	delimiter2, token, ok = v.parseDelimiter("]")
 	if !ok {
 		if uti.IsDefined(tokens) {
 			// This is not a single Empty rule.
@@ -1501,7 +1530,11 @@ func (v *parser_) parseEmpty() (
 	// Found a single Empty rule.
 	ok = true
 	v.remove(tokens)
-	empty = ast.EmptyClass().Empty(delimiter)
+	empty = ast.EmptyClass().Empty(
+		delimiter1,
+		optionalDelimiter,
+		delimiter2,
+	)
 	return
 }
 
@@ -2266,7 +2299,7 @@ componentsLoop:
 		component, token, ok = v.parseComponent()
 		if !ok {
 			switch {
-			case count_ >= 0:
+			case count_ >= 1:
 				break componentsLoop
 			case uti.IsDefined(tokens):
 				// This is not multiple Component rules.
@@ -2275,7 +2308,7 @@ componentsLoop:
 			default:
 				// Found a syntax error.
 				var message = v.formatError("$Items", token)
-				message += "0 or more Component rules are required."
+				message += "1 or more Component rules are required."
 				panic(message)
 			}
 		}
@@ -5511,10 +5544,10 @@ var parserClassReference_ = &parserClass_{
     Empty
     Attributes
     Items  ! Must be after attributes.`,
-			"$Empty":       `"[:]"`,
+			"$Empty":       `"[" ":"? "]"`,
 			"$Attributes":  `"[" Association+ "]"`,
 			"$Association": `Primitive ":" Component`,
-			"$Items":       `"[" Component* "]"`,
+			"$Items":       `"[" Component+ "]"`,
 			"$Procedure":   `"{" Statement* "}"`,
 			"$Statement":   `comment? MainClause OnClause?`,
 			"$MainClause": `

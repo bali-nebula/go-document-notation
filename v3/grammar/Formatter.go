@@ -312,6 +312,28 @@ func (v *formatter_) ProcessComplementSlot(
 	v.appendString(" ")
 }
 
+func (v *formatter_) PreprocessComponent(
+	component ast.ComponentLike,
+	index_ uint,
+	count_ uint,
+) {
+	if count_ > 0 {
+		v.appendNewline()
+	}
+}
+
+func (v *formatter_) ProcessComponentSlot(
+	component ast.ComponentLike,
+	slot_ uint,
+) {
+	switch slot_ {
+	case 2:
+		if uti.IsDefined(component.GetOptionalNote()) {
+			v.appendString("  ")
+		}
+	}
+}
+
 func (v *formatter_) ProcessContinueClauseSlot(
 	continueClause ast.ContinueClauseLike,
 	slot_ uint,
@@ -341,34 +363,12 @@ func (v *formatter_) PostprocessDocument(
 	v.appendNewline()
 }
 
-/*
-func (v *formatter_) ProcessDocumentSlot(
-	document ast.DocumentLike,
+func (v *formatter_) ProcessEmptySlot(
+	empty ast.EmptyLike,
 	slot_ uint,
 ) {
-	v.appendNewline()
-}
-*/
-
-func (v *formatter_) PreprocessComponent(
-	component ast.ComponentLike,
-	index_ uint,
-	count_ uint,
-) {
-	if count_ > 0 {
-		v.appendNewline()
-	}
-}
-
-func (v *formatter_) ProcessComponentSlot(
-	component ast.ComponentLike,
-	slot_ uint,
-) {
-	switch slot_ {
-	case 2:
-		if uti.IsDefined(component.GetOptionalNote()) {
-			v.appendString("  ")
-		}
+	if slot_ == 1 && uti.IsUndefined(empty.GetOptionalDelimiter()) {
+		v.appendString(" ")
 	}
 }
 
@@ -418,24 +418,8 @@ func (v *formatter_) ProcessItemsSlot(
 		v.depth_++
 	case 2:
 		v.depth_--
-		var components = items.GetComponents()
-		if components.IsEmpty() {
-			v.appendString(" ")
-		} else {
-			v.appendNewline()
-		}
+		v.appendNewline()
 	}
-}
-
-func (v *formatter_) PreprocessStatement(
-	statement ast.StatementLike,
-	index_ uint,
-	count_ uint,
-) {
-	if uti.IsDefined(statement.GetOptionalComment()) && index_ > 1 {
-		v.appendString("\n")
-	}
-	v.appendNewline()
 }
 
 func (v *formatter_) PreprocessMatchingClause(
@@ -573,6 +557,17 @@ func (v *formatter_) ProcessSendClauseSlot(
 	slot_ uint,
 ) {
 	v.appendString(" ")
+}
+
+func (v *formatter_) PreprocessStatement(
+	statement ast.StatementLike,
+	index_ uint,
+	count_ uint,
+) {
+	if uti.IsDefined(statement.GetOptionalComment()) && index_ > 1 {
+		v.appendString("\n")
+	}
+	v.appendNewline()
 }
 
 func (v *formatter_) ProcessThrowClauseSlot(

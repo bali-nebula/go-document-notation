@@ -85,13 +85,13 @@ $Collection:
     Attributes
     Items  ! Must be after attributes.
 
-$Empty: "[:]"
+$Empty: "[" ":"? "]"
 
 $Attributes: "[" Association+ "]"
 
 $Association: Primitive ":" Component
 
-$Items: "[" Component* "]"
+$Items: "[" Component+ "]"
 
 $Procedure: "{" Statement* "}"
 
