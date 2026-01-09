@@ -58,6 +58,7 @@ type (
 	ComplementClassLike          = ast.ComplementClassLike
 	ComponentClassLike           = ast.ComponentClassLike
 	ConstantClassLike            = ast.ConstantClassLike
+	ConstraintClassLike          = ast.ConstraintClassLike
 	ContinueClauseClassLike      = ast.ContinueClauseClassLike
 	DefineClauseClassLike        = ast.DefineClauseClassLike
 	DiscardClauseClassLike       = ast.DiscardClauseClassLike
@@ -68,7 +69,6 @@ type (
 	ExpressionClassLike          = ast.ExpressionClassLike
 	FlowControlClassLike         = ast.FlowControlClassLike
 	FunctionClassLike            = ast.FunctionClassLike
-	GenericsClassLike            = ast.GenericsClassLike
 	IfClauseClassLike            = ast.IfClauseClassLike
 	IndexClassLike               = ast.IndexClassLike
 	InspectClauseClassLike       = ast.InspectClauseClassLike
@@ -93,7 +93,7 @@ type (
 	NumericalClassLike           = ast.NumericalClassLike
 	OnClauseClassLike            = ast.OnClauseClassLike
 	OperatorClassLike            = ast.OperatorClassLike
-	ParameterClassLike           = ast.ParameterClassLike
+	ParametersClassLike          = ast.ParametersClassLike
 	PrecedenceClassLike          = ast.PrecedenceClassLike
 	PredicateClassLike           = ast.PredicateClassLike
 	PrimitiveClassLike           = ast.PrimitiveClassLike
@@ -142,6 +142,7 @@ type (
 	ComplementLike          = ast.ComplementLike
 	ComponentLike           = ast.ComponentLike
 	ConstantLike            = ast.ConstantLike
+	ConstraintLike          = ast.ConstraintLike
 	ContinueClauseLike      = ast.ContinueClauseLike
 	DefineClauseLike        = ast.DefineClauseLike
 	DiscardClauseLike       = ast.DiscardClauseLike
@@ -152,7 +153,6 @@ type (
 	ExpressionLike          = ast.ExpressionLike
 	FlowControlLike         = ast.FlowControlLike
 	FunctionLike            = ast.FunctionLike
-	GenericsLike            = ast.GenericsLike
 	IfClauseLike            = ast.IfClauseLike
 	IndexLike               = ast.IndexLike
 	InspectClauseLike       = ast.InspectClauseLike
@@ -177,7 +177,7 @@ type (
 	NumericalLike           = ast.NumericalLike
 	OnClauseLike            = ast.OnClauseLike
 	OperatorLike            = ast.OperatorLike
-	ParameterLike           = ast.ParameterLike
+	ParametersLike          = ast.ParametersLike
 	PrecedenceLike          = ast.PrecedenceLike
 	PredicateLike           = ast.PredicateLike
 	PrimitiveLike           = ast.PrimitiveLike
@@ -492,12 +492,12 @@ func ComponentClass() ComponentClassLike {
 
 func Component(
 	literal ast.LiteralLike,
-	optionalGenerics ast.GenericsLike,
+	optionalParameters ast.ParametersLike,
 	optionalNote string,
 ) ComponentLike {
 	return ComponentClass().Component(
 		literal,
-		optionalGenerics,
+		optionalParameters,
 		optionalNote,
 	)
 }
@@ -511,6 +511,22 @@ func Constant(
 ) ConstantLike {
 	return ConstantClass().Constant(
 		symbol,
+	)
+}
+
+func ConstraintClass() ConstraintClassLike {
+	return ast.ConstraintClass()
+}
+
+func Constraint(
+	symbol string,
+	delimiter string,
+	component ast.ComponentLike,
+) ConstraintLike {
+	return ConstraintClass().Constraint(
+		symbol,
+		delimiter,
+		component,
 	)
 }
 
@@ -654,22 +670,6 @@ func Function(
 		identifier,
 		delimiter1,
 		arguments,
-		delimiter2,
-	)
-}
-
-func GenericsClass() GenericsClassLike {
-	return ast.GenericsClass()
-}
-
-func Generics(
-	delimiter1 string,
-	parameters com.Sequential[ast.ParameterLike],
-	delimiter2 string,
-) GenericsLike {
-	return GenericsClass().Generics(
-		delimiter1,
-		parameters,
 		delimiter2,
 	)
 }
@@ -1012,19 +1012,19 @@ func Operator(
 	)
 }
 
-func ParameterClass() ParameterClassLike {
-	return ast.ParameterClass()
+func ParametersClass() ParametersClassLike {
+	return ast.ParametersClass()
 }
 
-func Parameter(
-	symbol string,
-	delimiter string,
-	component ast.ComponentLike,
-) ParameterLike {
-	return ParameterClass().Parameter(
-		symbol,
-		delimiter,
-		component,
+func Parameters(
+	delimiter1 string,
+	constraints com.Sequential[ast.ConstraintLike],
+	delimiter2 string,
+) ParametersLike {
+	return ParametersClass().Parameters(
+		delimiter1,
+		constraints,
+		delimiter2,
 	)
 }
 

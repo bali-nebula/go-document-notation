@@ -22,7 +22,6 @@
 package ast
 
 import (
-	com "github.com/craterdog/go-essential-composites/v8"
 	uti "github.com/craterdog/go-essential-utilities/v8"
 )
 
@@ -30,31 +29,31 @@ import (
 
 // Access Function
 
-func GenericsClass() GenericsClassLike {
-	return genericsClass()
+func ConstraintClass() ConstraintClassLike {
+	return constraintClass()
 }
 
 // Constructor Methods
 
-func (c *genericsClass_) Generics(
-	delimiter1 string,
-	parameters com.Sequential[ParameterLike],
-	delimiter2 string,
-) GenericsLike {
-	if uti.IsUndefined(delimiter1) {
-		panic("The \"delimiter1\" attribute is required by this class.")
+func (c *constraintClass_) Constraint(
+	symbol string,
+	delimiter string,
+	component ComponentLike,
+) ConstraintLike {
+	if uti.IsUndefined(symbol) {
+		panic("The \"symbol\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(parameters) {
-		panic("The \"parameters\" attribute is required by this class.")
+	if uti.IsUndefined(delimiter) {
+		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(delimiter2) {
-		panic("The \"delimiter2\" attribute is required by this class.")
+	if uti.IsUndefined(component) {
+		panic("The \"component\" attribute is required by this class.")
 	}
-	var instance = &generics_{
+	var instance = &constraint_{
 		// Initialize the instance attributes.
-		delimiter1_: delimiter1,
-		parameters_: parameters,
-		delimiter2_: delimiter2,
+		symbol_:    symbol,
+		delimiter_: delimiter,
+		component_: component,
 	}
 	return instance
 }
@@ -63,47 +62,47 @@ func (c *genericsClass_) Generics(
 
 // Principal Methods
 
-func (v *generics_) GetClass() GenericsClassLike {
-	return genericsClass()
+func (v *constraint_) GetClass() ConstraintClassLike {
+	return constraintClass()
 }
 
 // Attribute Methods
 
-func (v *generics_) GetDelimiter1() string {
-	return v.delimiter1_
+func (v *constraint_) GetSymbol() string {
+	return v.symbol_
 }
 
-func (v *generics_) GetParameters() com.Sequential[ParameterLike] {
-	return v.parameters_
+func (v *constraint_) GetDelimiter() string {
+	return v.delimiter_
 }
 
-func (v *generics_) GetDelimiter2() string {
-	return v.delimiter2_
+func (v *constraint_) GetComponent() ComponentLike {
+	return v.component_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type generics_ struct {
+type constraint_ struct {
 	// Declare the instance attributes.
-	delimiter1_ string
-	parameters_ com.Sequential[ParameterLike]
-	delimiter2_ string
+	symbol_    string
+	delimiter_ string
+	component_ ComponentLike
 }
 
 // Class Structure
 
-type genericsClass_ struct {
+type constraintClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func genericsClass() *genericsClass_ {
-	return genericsClassReference_
+func constraintClass() *constraintClass_ {
+	return constraintClassReference_
 }
 
-var genericsClassReference_ = &genericsClass_{
+var constraintClassReference_ = &constraintClass_{
 	// Initialize the class constants.
 }

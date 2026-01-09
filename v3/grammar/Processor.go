@@ -512,6 +512,26 @@ func (v *processor_) ProcessConstantSlot(
 ) {
 }
 
+func (v *processor_) PreprocessConstraint(
+	constraint ast.ConstraintLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessConstraint(
+	constraint ast.ConstraintLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessConstraintSlot(
+	constraint ast.ConstraintLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessContinueClause(
 	continueClause ast.ContinueClauseLike,
 	index_ uint,
@@ -708,26 +728,6 @@ func (v *processor_) PostprocessFunction(
 
 func (v *processor_) ProcessFunctionSlot(
 	function ast.FunctionLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessGenerics(
-	generics ast.GenericsLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessGenerics(
-	generics ast.GenericsLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessGenericsSlot(
-	generics ast.GenericsLike,
 	slot_ uint,
 ) {
 }
@@ -1212,22 +1212,22 @@ func (v *processor_) ProcessOperatorSlot(
 ) {
 }
 
-func (v *processor_) PreprocessParameter(
-	parameter ast.ParameterLike,
+func (v *processor_) PreprocessParameters(
+	parameters ast.ParametersLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessParameter(
-	parameter ast.ParameterLike,
+func (v *processor_) PostprocessParameters(
+	parameters ast.ParametersLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessParameterSlot(
-	parameter ast.ParameterLike,
+func (v *processor_) ProcessParametersSlot(
+	parameters ast.ParametersLike,
 	slot_ uint,
 ) {
 }

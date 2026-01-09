@@ -37,7 +37,7 @@ func ComponentClass() ComponentClassLike {
 
 func (c *componentClass_) Component(
 	literal LiteralLike,
-	optionalGenerics GenericsLike,
+	optionalParameters ParametersLike,
 	optionalNote string,
 ) ComponentLike {
 	if uti.IsUndefined(literal) {
@@ -45,9 +45,9 @@ func (c *componentClass_) Component(
 	}
 	var instance = &component_{
 		// Initialize the instance attributes.
-		literal_:          literal,
-		optionalGenerics_: optionalGenerics,
-		optionalNote_:     optionalNote,
+		literal_:            literal,
+		optionalParameters_: optionalParameters,
+		optionalNote_:       optionalNote,
 	}
 	return instance
 }
@@ -66,8 +66,8 @@ func (v *component_) GetLiteral() LiteralLike {
 	return v.literal_
 }
 
-func (v *component_) GetOptionalGenerics() GenericsLike {
-	return v.optionalGenerics_
+func (v *component_) GetOptionalParameters() ParametersLike {
+	return v.optionalParameters_
 }
 
 func (v *component_) GetOptionalNote() string {
@@ -80,9 +80,9 @@ func (v *component_) GetOptionalNote() string {
 
 type component_ struct {
 	// Declare the instance attributes.
-	literal_          LiteralLike
-	optionalGenerics_ GenericsLike
-	optionalNote_     string
+	literal_            LiteralLike
+	optionalParameters_ ParametersLike
+	optionalNote_       string
 }
 
 // Class Structure

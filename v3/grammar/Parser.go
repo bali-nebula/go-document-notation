@@ -1009,9 +1009,9 @@ func (v *parser_) parseComponent() (
 		panic(message)
 	}
 
-	// Attempt to parse an optional Generics rule.
-	var optionalGenerics ast.GenericsLike
-	optionalGenerics, _, ok = v.parseGenerics()
+	// Attempt to parse an optional Parameters rule.
+	var optionalParameters ast.ParametersLike
+	optionalParameters, _, ok = v.parseParameters()
 	if ok {
 		// No additional put backs allowed at this point.
 		tokens = nil
@@ -1033,7 +1033,7 @@ func (v *parser_) parseComponent() (
 	v.remove(tokens)
 	component = ast.ComponentClass().Component(
 		literal,
-		optionalGenerics,
+		optionalParameters,
 		optionalNote,
 	)
 	return
@@ -1068,6 +1068,77 @@ func (v *parser_) parseConstant() (
 	ok = true
 	v.remove(tokens)
 	constant = ast.ConstantClass().Constant(symbol)
+	return
+}
+
+func (v *parser_) parseConstraint() (
+	constraint ast.ConstraintLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = com.List[TokenLike]()
+
+	// Attempt to parse a single symbol token.
+	var symbol string
+	symbol, token, ok = v.parseToken(SymbolToken)
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single symbol token.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Constraint", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single ":" literal.
+	var delimiter string
+	delimiter, token, ok = v.parseDelimiter(":")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single Constraint rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Constraint", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Attempt to parse a single Component rule.
+	var component ast.ComponentLike
+	component, token, ok = v.parseComponent()
+	switch {
+	case ok:
+		// No additional put backs allowed at this point.
+		tokens = nil
+	case uti.IsDefined(tokens):
+		// This is not a single Component rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$Constraint", token)
+		panic(message)
+	}
+
+	// Found a single Constraint rule.
+	ok = true
+	v.remove(tokens)
+	constraint = ast.ConstraintClass().Constraint(
+		symbol,
+		delimiter,
+		component,
+	)
 	return
 }
 
@@ -1731,86 +1802,6 @@ argumentsLoop:
 		identifier,
 		delimiter1,
 		arguments,
-		delimiter2,
-	)
-	return
-}
-
-func (v *parser_) parseGenerics() (
-	generics ast.GenericsLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = com.List[TokenLike]()
-
-	// Attempt to parse a single "(" literal.
-	var delimiter1 string
-	delimiter1, token, ok = v.parseDelimiter("(")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single Generics rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Generics", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse multiple Parameter rules.
-	var parameters = com.List[ast.ParameterLike]()
-parametersLoop:
-	for count_ := 0; count_ < mat.MaxInt; count_++ {
-		var parameter ast.ParameterLike
-		parameter, token, ok = v.parseParameter()
-		if !ok {
-			switch {
-			case count_ >= 1:
-				break parametersLoop
-			case uti.IsDefined(tokens):
-				// This is not multiple Parameter rules.
-				v.putBack(tokens)
-				return
-			default:
-				// Found a syntax error.
-				var message = v.formatError("$Generics", token)
-				message += "1 or more Parameter rules are required."
-				panic(message)
-			}
-		}
-		// No additional put backs allowed at this point.
-		tokens = nil
-		parameters.AppendValue(parameter)
-	}
-
-	// Attempt to parse a single ")" literal.
-	var delimiter2 string
-	delimiter2, token, ok = v.parseDelimiter(")")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single Generics rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Generics", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Found a single Generics rule.
-	ok = true
-	v.remove(tokens)
-	generics = ast.GenericsClass().Generics(
-		delimiter1,
-		parameters,
 		delimiter2,
 	)
 	return
@@ -3210,24 +3201,24 @@ func (v *parser_) parseOperator() (
 	return
 }
 
-func (v *parser_) parseParameter() (
-	parameter ast.ParameterLike,
+func (v *parser_) parseParameters() (
+	parameters ast.ParametersLike,
 	token TokenLike,
 	ok bool,
 ) {
 	var tokens = com.List[TokenLike]()
 
-	// Attempt to parse a single symbol token.
-	var symbol string
-	symbol, token, ok = v.parseToken(SymbolToken)
+	// Attempt to parse a single "(" literal.
+	var delimiter1 string
+	delimiter1, token, ok = v.parseDelimiter("(")
 	if !ok {
 		if uti.IsDefined(tokens) {
-			// This is not a single symbol token.
+			// This is not a single Parameters rule.
 			v.putBack(tokens)
 			return
 		} else {
 			// Found a syntax error.
-			var message = v.formatError("$Parameter", token)
+			var message = v.formatError("$Parameters", token)
 			panic(message)
 		}
 	}
@@ -3235,48 +3226,57 @@ func (v *parser_) parseParameter() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single ":" literal.
-	var delimiter string
-	delimiter, token, ok = v.parseDelimiter(":")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single Parameter rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Parameter", token)
-			panic(message)
+	// Attempt to parse multiple Constraint rules.
+	var constraints = com.List[ast.ConstraintLike]()
+constraintsLoop:
+	for count_ := 0; count_ < mat.MaxInt; count_++ {
+		var constraint ast.ConstraintLike
+		constraint, token, ok = v.parseConstraint()
+		if !ok {
+			switch {
+			case count_ >= 1:
+				break constraintsLoop
+			case uti.IsDefined(tokens):
+				// This is not multiple Constraint rules.
+				v.putBack(tokens)
+				return
+			default:
+				// Found a syntax error.
+				var message = v.formatError("$Parameters", token)
+				message += "1 or more Constraint rules are required."
+				panic(message)
+			}
 		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse a single Component rule.
-	var component ast.ComponentLike
-	component, token, ok = v.parseComponent()
-	switch {
-	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Component rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Parameter", token)
-		panic(message)
+		constraints.AppendValue(constraint)
 	}
 
-	// Found a single Parameter rule.
+	// Attempt to parse a single ")" literal.
+	var delimiter2 string
+	delimiter2, token, ok = v.parseDelimiter(")")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single Parameters rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Parameters", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Found a single Parameters rule.
 	ok = true
 	v.remove(tokens)
-	parameter = ast.ParameterClass().Parameter(
-		symbol,
-		delimiter,
-		component,
+	parameters = ast.ParametersClass().Parameters(
+		delimiter1,
+		constraints,
+		delimiter2,
 	)
 	return
 }
@@ -5418,15 +5418,15 @@ var parserClassReference_ = &parserClass_{
 	syntax_: com.CatalogFromMap[string, string](
 		map[string]string{
 			"$Document":  `comment? Component`,
-			"$Component": `Literal Generics? note?`,
+			"$Component": `Literal Parameters? note?`,
 			"$Literal": `
     Element
     Sequence
     Range
     Collection
     Procedure`,
-			"$Generics":  `"(" Parameter+ ")"`,
-			"$Parameter": `symbol ":" Component`,
+			"$Parameters": `"(" Constraint+ ")"`,
+			"$Constraint": `symbol ":" Component`,
 			"$Element": `
     angle
     boolean

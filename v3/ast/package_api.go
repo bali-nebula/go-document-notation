@@ -254,7 +254,7 @@ type ComponentClassLike interface {
 	// Constructor Methods
 	Component(
 		literal LiteralLike,
-		optionalGenerics GenericsLike,
+		optionalParameters ParametersLike,
 		optionalNote string,
 	) ComponentLike
 }
@@ -269,6 +269,20 @@ type ConstantClassLike interface {
 	Constant(
 		symbol string,
 	) ConstantLike
+}
+
+/*
+ConstraintClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete constraint-like class.
+*/
+type ConstraintClassLike interface {
+	// Constructor Methods
+	Constraint(
+		symbol string,
+		delimiter string,
+		component ComponentLike,
+	) ConstraintLike
 }
 
 /*
@@ -401,20 +415,6 @@ type FunctionClassLike interface {
 		arguments com.Sequential[ArgumentLike],
 		delimiter2 string,
 	) FunctionLike
-}
-
-/*
-GenericsClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete generics-like class.
-*/
-type GenericsClassLike interface {
-	// Constructor Methods
-	Generics(
-		delimiter1 string,
-		parameters com.Sequential[ParameterLike],
-		delimiter2 string,
-	) GenericsLike
 }
 
 /*
@@ -731,17 +731,17 @@ type OperatorClassLike interface {
 }
 
 /*
-ParameterClassLike is a class interface that declares the
+ParametersClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete parameter-like class.
+supported by each concrete parameters-like class.
 */
-type ParameterClassLike interface {
+type ParametersClassLike interface {
 	// Constructor Methods
-	Parameter(
-		symbol string,
-		delimiter string,
-		component ComponentLike,
-	) ParameterLike
+	Parameters(
+		delimiter1 string,
+		constraints com.Sequential[ConstraintLike],
+		delimiter2 string,
+	) ParametersLike
 }
 
 /*
@@ -1350,7 +1350,7 @@ type ComponentLike interface {
 
 	// Attribute Methods
 	GetLiteral() LiteralLike
-	GetOptionalGenerics() GenericsLike
+	GetOptionalParameters() ParametersLike
 	GetOptionalNote() string
 }
 
@@ -1365,6 +1365,21 @@ type ConstantLike interface {
 
 	// Attribute Methods
 	GetSymbol() string
+}
+
+/*
+ConstraintLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete constraint-like class.
+*/
+type ConstraintLike interface {
+	// Principal Methods
+	GetClass() ConstraintClassLike
+
+	// Attribute Methods
+	GetSymbol() string
+	GetDelimiter() string
+	GetComponent() ComponentLike
 }
 
 /*
@@ -1506,21 +1521,6 @@ type FunctionLike interface {
 	GetIdentifier() string
 	GetDelimiter1() string
 	GetArguments() com.Sequential[ArgumentLike]
-	GetDelimiter2() string
-}
-
-/*
-GenericsLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete generics-like class.
-*/
-type GenericsLike interface {
-	// Principal Methods
-	GetClass() GenericsClassLike
-
-	// Attribute Methods
-	GetDelimiter1() string
-	GetParameters() com.Sequential[ParameterLike]
 	GetDelimiter2() string
 }
 
@@ -1862,18 +1862,18 @@ type OperatorLike interface {
 }
 
 /*
-ParameterLike is an instance interface that declares the
+ParametersLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete parameter-like class.
+by each instance of a concrete parameters-like class.
 */
-type ParameterLike interface {
+type ParametersLike interface {
 	// Principal Methods
-	GetClass() ParameterClassLike
+	GetClass() ParametersClassLike
 
 	// Attribute Methods
-	GetSymbol() string
-	GetDelimiter() string
-	GetComponent() ComponentLike
+	GetDelimiter1() string
+	GetConstraints() com.Sequential[ConstraintLike]
+	GetDelimiter2() string
 }
 
 /*

@@ -334,6 +334,23 @@ func (v *formatter_) ProcessComponentSlot(
 	}
 }
 
+func (v *formatter_) PreprocessConstraint(
+	constraint ast.ConstraintLike,
+	index_ uint,
+	count_ uint,
+) {
+	v.appendNewline()
+}
+
+func (v *formatter_) ProcessConstraintSlot(
+	constraint ast.ConstraintLike,
+	slot_ uint,
+) {
+	if slot_ == 2 {
+		v.appendString(" ")
+	}
+}
+
 func (v *formatter_) ProcessContinueClauseSlot(
 	continueClause ast.ContinueClauseLike,
 	slot_ uint,
@@ -384,19 +401,6 @@ func (v *formatter_) ProcessFunctionSlot(
 			v.depth_--
 			v.appendNewline()
 		}
-	}
-}
-
-func (v *formatter_) ProcessGenericsSlot(
-	generics ast.GenericsLike,
-	slot_ uint,
-) {
-	switch slot_ {
-	case 1:
-		v.depth_++
-	case 2:
-		v.depth_--
-		v.appendNewline()
 	}
 }
 
@@ -492,20 +496,16 @@ func (v *formatter_) ProcessOnClauseSlot(
 	}
 }
 
-func (v *formatter_) PreprocessParameter(
-	parameter ast.ParameterLike,
-	index_ uint,
-	count_ uint,
-) {
-	v.appendNewline()
-}
-
-func (v *formatter_) ProcessParameterSlot(
-	parameter ast.ParameterLike,
+func (v *formatter_) ProcessParametersSlot(
+	parameters ast.ParametersLike,
 	slot_ uint,
 ) {
-	if slot_ == 2 {
-		v.appendString(" ")
+	switch slot_ {
+	case 1:
+		v.depth_++
+	case 2:
+		v.depth_--
+		v.appendNewline()
 	}
 }
 

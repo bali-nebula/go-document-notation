@@ -601,6 +601,20 @@ type Methodical interface {
 		constant ast.ConstantLike,
 		slot_ uint,
 	)
+	PreprocessConstraint(
+		constraint ast.ConstraintLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessConstraint(
+		constraint ast.ConstraintLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessConstraintSlot(
+		constraint ast.ConstraintLike,
+		slot_ uint,
+	)
 	PreprocessContinueClause(
 		continueClause ast.ContinueClauseLike,
 		index_ uint,
@@ -739,20 +753,6 @@ type Methodical interface {
 	)
 	ProcessFunctionSlot(
 		function ast.FunctionLike,
-		slot_ uint,
-	)
-	PreprocessGenerics(
-		generics ast.GenericsLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessGenerics(
-		generics ast.GenericsLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessGenericsSlot(
-		generics ast.GenericsLike,
 		slot_ uint,
 	)
 	PreprocessIfClause(
@@ -1091,18 +1091,18 @@ type Methodical interface {
 		operator ast.OperatorLike,
 		slot_ uint,
 	)
-	PreprocessParameter(
-		parameter ast.ParameterLike,
+	PreprocessParameters(
+		parameters ast.ParametersLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessParameter(
-		parameter ast.ParameterLike,
+	PostprocessParameters(
+		parameters ast.ParametersLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessParameterSlot(
-		parameter ast.ParameterLike,
+	ProcessParametersSlot(
+		parameters ast.ParametersLike,
 		slot_ uint,
 	)
 	PreprocessPrecedence(

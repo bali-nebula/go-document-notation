@@ -24,7 +24,7 @@ For more information on CDSN see the wiki at:
 <!
 $Document: comment? Component
 
-$Component: Literal Generics? note?
+$Component: Literal Parameters? note?
 
 $Literal:
     Element
@@ -33,9 +33,9 @@ $Literal:
     Collection
     Procedure
 
-$Generics: "(" Parameter+ ")"
+$Parameters: "(" Constraint+ ")"
 
-$Parameter: symbol ":" Component
+$Constraint: symbol ":" Component
 
 $Element:
     angle

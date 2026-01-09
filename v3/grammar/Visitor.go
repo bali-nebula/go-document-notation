@@ -609,16 +609,16 @@ func (v *visitor_) visitComponent(
 		1,
 	)
 
-	var optionalGenerics = component.GetOptionalGenerics()
-	if uti.IsDefined(optionalGenerics) {
-		v.processor_.PreprocessGenerics(
-			optionalGenerics,
+	var optionalParameters = component.GetOptionalParameters()
+	if uti.IsDefined(optionalParameters) {
+		v.processor_.PreprocessParameters(
+			optionalParameters,
 			0,
 			0,
 		)
-		v.visitGenerics(optionalGenerics)
-		v.processor_.PostprocessGenerics(
-			optionalGenerics,
+		v.visitParameters(optionalParameters)
+		v.processor_.PostprocessParameters(
+			optionalParameters,
 			0,
 			0,
 		)
@@ -640,6 +640,39 @@ func (v *visitor_) visitConstant(
 ) {
 	var symbol = constant.GetSymbol()
 	v.processor_.ProcessSymbol(symbol)
+}
+
+func (v *visitor_) visitConstraint(
+	constraint ast.ConstraintLike,
+) {
+	var symbol = constraint.GetSymbol()
+	v.processor_.ProcessSymbol(symbol)
+	// Visit slot 1 between terms.
+	v.processor_.ProcessConstraintSlot(
+		constraint,
+		1,
+	)
+
+	var delimiter = constraint.GetDelimiter()
+	v.processor_.ProcessDelimiter(delimiter)
+	// Visit slot 2 between terms.
+	v.processor_.ProcessConstraintSlot(
+		constraint,
+		2,
+	)
+
+	var component = constraint.GetComponent()
+	v.processor_.PreprocessComponent(
+		component,
+		0,
+		0,
+	)
+	v.visitComponent(component)
+	v.processor_.PostprocessComponent(
+		component,
+		0,
+		0,
+	)
 }
 
 func (v *visitor_) visitContinueClause(
@@ -1018,45 +1051,6 @@ func (v *visitor_) visitFunction(
 	)
 
 	var delimiter2 = function.GetDelimiter2()
-	v.processor_.ProcessDelimiter(delimiter2)
-}
-
-func (v *visitor_) visitGenerics(
-	generics ast.GenericsLike,
-) {
-	var delimiter1 = generics.GetDelimiter1()
-	v.processor_.ProcessDelimiter(delimiter1)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessGenericsSlot(
-		generics,
-		1,
-	)
-
-	var parametersIndex uint
-	var parameters = generics.GetParameters().GetIterator()
-	var parametersCount = uint(parameters.GetSize())
-	for parameters.HasNext() {
-		parametersIndex++
-		var rule = parameters.GetNext()
-		v.processor_.PreprocessParameter(
-			rule,
-			parametersIndex,
-			parametersCount,
-		)
-		v.visitParameter(rule)
-		v.processor_.PostprocessParameter(
-			rule,
-			parametersIndex,
-			parametersCount,
-		)
-	}
-	// Visit slot 2 between terms.
-	v.processor_.ProcessGenericsSlot(
-		generics,
-		2,
-	)
-
-	var delimiter2 = generics.GetDelimiter2()
 	v.processor_.ProcessDelimiter(delimiter2)
 }
 
@@ -2051,37 +2045,43 @@ func (v *visitor_) visitOperator(
 	}
 }
 
-func (v *visitor_) visitParameter(
-	parameter ast.ParameterLike,
+func (v *visitor_) visitParameters(
+	parameters ast.ParametersLike,
 ) {
-	var symbol = parameter.GetSymbol()
-	v.processor_.ProcessSymbol(symbol)
+	var delimiter1 = parameters.GetDelimiter1()
+	v.processor_.ProcessDelimiter(delimiter1)
 	// Visit slot 1 between terms.
-	v.processor_.ProcessParameterSlot(
-		parameter,
+	v.processor_.ProcessParametersSlot(
+		parameters,
 		1,
 	)
 
-	var delimiter = parameter.GetDelimiter()
-	v.processor_.ProcessDelimiter(delimiter)
+	var constraintsIndex uint
+	var constraints = parameters.GetConstraints().GetIterator()
+	var constraintsCount = uint(constraints.GetSize())
+	for constraints.HasNext() {
+		constraintsIndex++
+		var rule = constraints.GetNext()
+		v.processor_.PreprocessConstraint(
+			rule,
+			constraintsIndex,
+			constraintsCount,
+		)
+		v.visitConstraint(rule)
+		v.processor_.PostprocessConstraint(
+			rule,
+			constraintsIndex,
+			constraintsCount,
+		)
+	}
 	// Visit slot 2 between terms.
-	v.processor_.ProcessParameterSlot(
-		parameter,
+	v.processor_.ProcessParametersSlot(
+		parameters,
 		2,
 	)
 
-	var component = parameter.GetComponent()
-	v.processor_.PreprocessComponent(
-		component,
-		0,
-		0,
-	)
-	v.visitComponent(component)
-	v.processor_.PostprocessComponent(
-		component,
-		0,
-		0,
-	)
+	var delimiter2 = parameters.GetDelimiter2()
+	v.processor_.ProcessDelimiter(delimiter2)
 }
 
 func (v *visitor_) visitPrecedence(
