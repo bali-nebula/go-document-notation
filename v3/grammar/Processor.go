@@ -512,26 +512,6 @@ func (v *processor_) ProcessConstantSlot(
 ) {
 }
 
-func (v *processor_) PreprocessConstraint(
-	constraint ast.ConstraintLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessConstraint(
-	constraint ast.ConstraintLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessConstraintSlot(
-	constraint ast.ConstraintLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessContinueClause(
 	continueClause ast.ContinueClauseLike,
 	index_ uint,
@@ -668,26 +648,6 @@ func (v *processor_) PostprocessEmpty(
 
 func (v *processor_) ProcessEmptySlot(
 	empty ast.EmptyLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessEntity(
-	entity ast.EntityLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessEntity(
-	entity ast.EntityLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessEntitySlot(
-	entity ast.EntityLike,
 	slot_ uint,
 ) {
 }

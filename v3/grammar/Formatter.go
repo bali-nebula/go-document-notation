@@ -223,8 +223,8 @@ func (v *formatter_) PreprocessArgument(
 	index_ uint,
 	count_ uint,
 ) {
-	if index_ > 1 {
-		v.appendString(" ")
+	if count_ > 1 {
+		v.appendNewline()
 	}
 }
 
@@ -372,6 +372,21 @@ func (v *formatter_) ProcessEmptySlot(
 	}
 }
 
+func (v *formatter_) ProcessFunctionSlot(
+	function ast.FunctionLike,
+	slot_ uint,
+) {
+	if function.GetArguments().GetSize() > 1 {
+		switch slot_ {
+		case 2:
+			v.depth_++
+		case 3:
+			v.depth_--
+			v.appendNewline()
+		}
+	}
+}
+
 func (v *formatter_) ProcessGenericsSlot(
 	generics ast.GenericsLike,
 	slot_ uint,
@@ -435,6 +450,21 @@ func (v *formatter_) ProcessMatchingClauseSlot(
 	slot_ uint,
 ) {
 	v.appendString(" ")
+}
+
+func (v *formatter_) ProcessMethodSlot(
+	method ast.MethodLike,
+	slot_ uint,
+) {
+	if method.GetArguments().GetSize() > 1 {
+		switch slot_ {
+		case 4:
+			v.depth_++
+		case 5:
+			v.depth_--
+			v.appendNewline()
+		}
+	}
 }
 
 func (v *formatter_) ProcessNotarizeClauseSlot(

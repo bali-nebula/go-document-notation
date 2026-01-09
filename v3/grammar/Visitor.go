@@ -145,14 +145,14 @@ func (v *visitor_) visitArgument(
 			0,
 			0,
 		)
-	case ast.EntityLike:
-		v.processor_.PreprocessEntity(
+	case ast.ComponentLike:
+		v.processor_.PreprocessComponent(
 			actual,
 			0,
 			0,
 		)
-		v.visitEntity(actual)
-		v.processor_.PostprocessEntity(
+		v.visitComponent(actual)
+		v.processor_.PostprocessComponent(
 			actual,
 			0,
 			0,
@@ -642,43 +642,6 @@ func (v *visitor_) visitConstant(
 	v.processor_.ProcessSymbol(symbol)
 }
 
-func (v *visitor_) visitConstraint(
-	constraint ast.ConstraintLike,
-) {
-	var entity = constraint.GetEntity()
-	v.processor_.PreprocessEntity(
-		entity,
-		0,
-		0,
-	)
-	v.visitEntity(entity)
-	v.processor_.PostprocessEntity(
-		entity,
-		0,
-		0,
-	)
-	// Visit slot 1 between terms.
-	v.processor_.ProcessConstraintSlot(
-		constraint,
-		1,
-	)
-
-	var optionalGenerics = constraint.GetOptionalGenerics()
-	if uti.IsDefined(optionalGenerics) {
-		v.processor_.PreprocessGenerics(
-			optionalGenerics,
-			0,
-			0,
-		)
-		v.visitGenerics(optionalGenerics)
-		v.processor_.PostprocessGenerics(
-			optionalGenerics,
-			0,
-			0,
-		)
-	}
-}
-
 func (v *visitor_) visitContinueClause(
 	continueClause ast.ContinueClauseLike,
 ) {
@@ -864,50 +827,6 @@ func (v *visitor_) visitEmpty(
 
 	var delimiter2 = empty.GetDelimiter2()
 	v.processor_.ProcessDelimiter(delimiter2)
-}
-
-func (v *visitor_) visitEntity(
-	entity ast.EntityLike,
-) {
-	// Visit the possible entity rule types.
-	switch actual := entity.GetAny().(type) {
-	case ast.ElementLike:
-		v.processor_.PreprocessElement(
-			actual,
-			0,
-			0,
-		)
-		v.visitElement(actual)
-		v.processor_.PostprocessElement(
-			actual,
-			0,
-			0,
-		)
-	case ast.SequenceLike:
-		v.processor_.PreprocessSequence(
-			actual,
-			0,
-			0,
-		)
-		v.visitSequence(actual)
-		v.processor_.PostprocessSequence(
-			actual,
-			0,
-			0,
-		)
-	case ast.RangeLike:
-		v.processor_.PreprocessRange(
-			actual,
-			0,
-			0,
-		)
-		v.visitRange(actual)
-		v.processor_.PostprocessRange(
-			actual,
-			0,
-			0,
-		)
-	}
 }
 
 func (v *visitor_) visitExpression(
@@ -1209,14 +1128,14 @@ func (v *visitor_) visitIndex(
 			0,
 			0,
 		)
-	case ast.EntityLike:
-		v.processor_.PreprocessEntity(
+	case ast.PrimitiveLike:
+		v.processor_.PreprocessPrimitive(
 			actual,
 			0,
 			0,
 		)
-		v.visitEntity(actual)
-		v.processor_.PostprocessEntity(
+		v.visitPrimitive(actual)
+		v.processor_.PostprocessPrimitive(
 			actual,
 			0,
 			0,
@@ -2151,15 +2070,15 @@ func (v *visitor_) visitParameter(
 		2,
 	)
 
-	var constraint = parameter.GetConstraint()
-	v.processor_.PreprocessConstraint(
-		constraint,
+	var component = parameter.GetComponent()
+	v.processor_.PreprocessComponent(
+		component,
 		0,
 		0,
 	)
-	v.visitConstraint(constraint)
-	v.processor_.PostprocessConstraint(
-		constraint,
+	v.visitComponent(component)
+	v.processor_.PostprocessComponent(
+		component,
 		0,
 		0,
 	)

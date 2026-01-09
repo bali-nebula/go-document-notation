@@ -181,12 +181,12 @@ func (v *parser_) parseArgument() (
 		return
 	}
 
-	// Attempt to parse a single Entity Argument.
-	var entity ast.EntityLike
-	entity, token, ok = v.parseEntity()
+	// Attempt to parse a single Component Argument.
+	var component ast.ComponentLike
+	component, token, ok = v.parseComponent()
 	if ok {
-		// Found a single Entity Argument.
-		argument = ast.ArgumentClass().Argument(entity)
+		// Found a single Component Argument.
+		argument = ast.ArgumentClass().Argument(component)
 		return
 	}
 
@@ -1071,48 +1071,6 @@ func (v *parser_) parseConstant() (
 	return
 }
 
-func (v *parser_) parseConstraint() (
-	constraint ast.ConstraintLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = com.List[TokenLike]()
-
-	// Attempt to parse a single Entity rule.
-	var entity ast.EntityLike
-	entity, token, ok = v.parseEntity()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Entity rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Constraint", token)
-		panic(message)
-	}
-
-	// Attempt to parse an optional Generics rule.
-	var optionalGenerics ast.GenericsLike
-	optionalGenerics, _, ok = v.parseGenerics()
-	if ok {
-		// No additional put backs allowed at this point.
-		tokens = nil
-	}
-
-	// Found a single Constraint rule.
-	ok = true
-	v.remove(tokens)
-	constraint = ast.ConstraintClass().Constraint(
-		entity,
-		optionalGenerics,
-	)
-	return
-}
-
 func (v *parser_) parseContinueClause() (
 	continueClause ast.ContinueClauseLike,
 	token TokenLike,
@@ -1535,42 +1493,6 @@ func (v *parser_) parseEmpty() (
 		optionalDelimiter,
 		delimiter2,
 	)
-	return
-}
-
-func (v *parser_) parseEntity() (
-	entity ast.EntityLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single Element Entity.
-	var element ast.ElementLike
-	element, token, ok = v.parseElement()
-	if ok {
-		// Found a single Element Entity.
-		entity = ast.EntityClass().Entity(element)
-		return
-	}
-
-	// Attempt to parse a single Sequence Entity.
-	var sequence ast.SequenceLike
-	sequence, token, ok = v.parseSequence()
-	if ok {
-		// Found a single Sequence Entity.
-		entity = ast.EntityClass().Entity(sequence)
-		return
-	}
-
-	// Attempt to parse a single Range Entity.
-	var range_ ast.RangeLike
-	range_, token, ok = v.parseRange()
-	if ok {
-		// Found a single Range Entity.
-		entity = ast.EntityClass().Entity(range_)
-		return
-	}
-
-	// This is not a single Entity rule.
 	return
 }
 
@@ -1997,12 +1919,12 @@ func (v *parser_) parseIndex() (
 		return
 	}
 
-	// Attempt to parse a single Entity Index.
-	var entity ast.EntityLike
-	entity, token, ok = v.parseEntity()
+	// Attempt to parse a single Primitive Index.
+	var primitive ast.PrimitiveLike
+	primitive, token, ok = v.parsePrimitive()
 	if ok {
-		// Found a single Entity Index.
-		index = ast.IndexClass().Index(entity)
+		// Found a single Primitive Index.
+		index = ast.IndexClass().Index(primitive)
 		return
 	}
 
@@ -3331,15 +3253,15 @@ func (v *parser_) parseParameter() (
 		tokens.AppendValue(token)
 	}
 
-	// Attempt to parse a single Constraint rule.
-	var constraint ast.ConstraintLike
-	constraint, token, ok = v.parseConstraint()
+	// Attempt to parse a single Component rule.
+	var component ast.ComponentLike
+	component, token, ok = v.parseComponent()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Constraint rule.
+		// This is not a single Component rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -3354,7 +3276,7 @@ func (v *parser_) parseParameter() (
 	parameter = ast.ParameterClass().Parameter(
 		symbol,
 		delimiter,
-		constraint,
+		component,
 	)
 	return
 }
@@ -5503,13 +5425,8 @@ var parserClassReference_ = &parserClass_{
     Range
     Collection
     Procedure`,
-			"$Generics":   `"(" Parameter+ ")"`,
-			"$Parameter":  `symbol ":" Constraint`,
-			"$Constraint": `Entity Generics?`,
-			"$Entity": `
-    Element
-    Sequence
-    Range`,
+			"$Generics":  `"(" Parameter+ ")"`,
+			"$Parameter": `symbol ":" Component`,
 			"$Element": `
     angle
     boolean
@@ -5601,7 +5518,7 @@ var parserClassReference_ = &parserClass_{
 			"$Subcomponent": `identifier "[" Index+ "]"`,
 			"$Index": `
     Value
-    Entity`,
+    Primitive`,
 			"$Value": `identifier`,
 			"$Assignment": `
     "?="  ! Assign a default value if not already initialized.
@@ -5618,7 +5535,7 @@ var parserClassReference_ = &parserClass_{
     "<~"  ! The method is invoked asynchronously.`,
 			"$Argument": `
     Value
-    Entity`,
+    Component`,
 			"$SendClause":     `"send" Message "to" Bag`,
 			"$ReceiveClause":  `"receive" Recipient "from" Bag  ! Returns a message.`,
 			"$AcceptClause":   `"accept" Message "from" Bag`,

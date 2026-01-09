@@ -58,7 +58,6 @@ type (
 	ComplementClassLike          = ast.ComplementClassLike
 	ComponentClassLike           = ast.ComponentClassLike
 	ConstantClassLike            = ast.ConstantClassLike
-	ConstraintClassLike          = ast.ConstraintClassLike
 	ContinueClauseClassLike      = ast.ContinueClauseClassLike
 	DefineClauseClassLike        = ast.DefineClauseClassLike
 	DiscardClauseClassLike       = ast.DiscardClauseClassLike
@@ -66,7 +65,6 @@ type (
 	DraftClassLike               = ast.DraftClassLike
 	ElementClassLike             = ast.ElementClassLike
 	EmptyClassLike               = ast.EmptyClassLike
-	EntityClassLike              = ast.EntityClassLike
 	ExpressionClassLike          = ast.ExpressionClassLike
 	FlowControlClassLike         = ast.FlowControlClassLike
 	FunctionClassLike            = ast.FunctionClassLike
@@ -144,7 +142,6 @@ type (
 	ComplementLike          = ast.ComplementLike
 	ComponentLike           = ast.ComponentLike
 	ConstantLike            = ast.ConstantLike
-	ConstraintLike          = ast.ConstraintLike
 	ContinueClauseLike      = ast.ContinueClauseLike
 	DefineClauseLike        = ast.DefineClauseLike
 	DiscardClauseLike       = ast.DiscardClauseLike
@@ -152,7 +149,6 @@ type (
 	DraftLike               = ast.DraftLike
 	ElementLike             = ast.ElementLike
 	EmptyLike               = ast.EmptyLike
-	EntityLike              = ast.EntityLike
 	ExpressionLike          = ast.ExpressionLike
 	FlowControlLike         = ast.FlowControlLike
 	FunctionLike            = ast.FunctionLike
@@ -518,20 +514,6 @@ func Constant(
 	)
 }
 
-func ConstraintClass() ConstraintClassLike {
-	return ast.ConstraintClass()
-}
-
-func Constraint(
-	entity ast.EntityLike,
-	optionalGenerics ast.GenericsLike,
-) ConstraintLike {
-	return ConstraintClass().Constraint(
-		entity,
-		optionalGenerics,
-	)
-}
-
 func ContinueClauseClass() ContinueClauseClassLike {
 	return ast.ContinueClauseClass()
 }
@@ -629,18 +611,6 @@ func Empty(
 		delimiter1,
 		optionalDelimiter,
 		delimiter2,
-	)
-}
-
-func EntityClass() EntityClassLike {
-	return ast.EntityClass()
-}
-
-func Entity(
-	any_ any,
-) EntityLike {
-	return EntityClass().Entity(
-		any_,
 	)
 }
 
@@ -1049,12 +1019,12 @@ func ParameterClass() ParameterClassLike {
 func Parameter(
 	symbol string,
 	delimiter string,
-	constraint ast.ConstraintLike,
+	component ast.ComponentLike,
 ) ParameterLike {
 	return ParameterClass().Parameter(
 		symbol,
 		delimiter,
-		constraint,
+		component,
 	)
 }
 

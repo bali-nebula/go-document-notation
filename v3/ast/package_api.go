@@ -272,19 +272,6 @@ type ConstantClassLike interface {
 }
 
 /*
-ConstraintClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete constraint-like class.
-*/
-type ConstraintClassLike interface {
-	// Constructor Methods
-	Constraint(
-		entity EntityLike,
-		optionalGenerics GenericsLike,
-	) ConstraintLike
-}
-
-/*
 ContinueClauseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete continue-clause-like class.
@@ -374,18 +361,6 @@ type EmptyClassLike interface {
 		optionalDelimiter string,
 		delimiter2 string,
 	) EmptyLike
-}
-
-/*
-EntityClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete entity-like class.
-*/
-type EntityClassLike interface {
-	// Constructor Methods
-	Entity(
-		any_ any,
-	) EntityLike
 }
 
 /*
@@ -765,7 +740,7 @@ type ParameterClassLike interface {
 	Parameter(
 		symbol string,
 		delimiter string,
-		constraint ConstraintLike,
+		component ComponentLike,
 	) ParameterLike
 }
 
@@ -1393,20 +1368,6 @@ type ConstantLike interface {
 }
 
 /*
-ConstraintLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete constraint-like class.
-*/
-type ConstraintLike interface {
-	// Principal Methods
-	GetClass() ConstraintClassLike
-
-	// Attribute Methods
-	GetEntity() EntityLike
-	GetOptionalGenerics() GenericsLike
-}
-
-/*
 ContinueClauseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete continue-clause-like class.
@@ -1503,19 +1464,6 @@ type EmptyLike interface {
 	GetDelimiter1() string
 	GetOptionalDelimiter() string
 	GetDelimiter2() string
-}
-
-/*
-EntityLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete entity-like class.
-*/
-type EntityLike interface {
-	// Principal Methods
-	GetClass() EntityClassLike
-
-	// Attribute Methods
-	GetAny() any
 }
 
 /*
@@ -1925,7 +1873,7 @@ type ParameterLike interface {
 	// Attribute Methods
 	GetSymbol() string
 	GetDelimiter() string
-	GetConstraint() ConstraintLike
+	GetComponent() ComponentLike
 }
 
 /*

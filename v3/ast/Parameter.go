@@ -38,7 +38,7 @@ func ParameterClass() ParameterClassLike {
 func (c *parameterClass_) Parameter(
 	symbol string,
 	delimiter string,
-	constraint ConstraintLike,
+	component ComponentLike,
 ) ParameterLike {
 	if uti.IsUndefined(symbol) {
 		panic("The \"symbol\" attribute is required by this class.")
@@ -46,14 +46,14 @@ func (c *parameterClass_) Parameter(
 	if uti.IsUndefined(delimiter) {
 		panic("The \"delimiter\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(constraint) {
-		panic("The \"constraint\" attribute is required by this class.")
+	if uti.IsUndefined(component) {
+		panic("The \"component\" attribute is required by this class.")
 	}
 	var instance = &parameter_{
 		// Initialize the instance attributes.
-		symbol_:     symbol,
-		delimiter_:  delimiter,
-		constraint_: constraint,
+		symbol_:    symbol,
+		delimiter_: delimiter,
+		component_: component,
 	}
 	return instance
 }
@@ -76,8 +76,8 @@ func (v *parameter_) GetDelimiter() string {
 	return v.delimiter_
 }
 
-func (v *parameter_) GetConstraint() ConstraintLike {
-	return v.constraint_
+func (v *parameter_) GetComponent() ComponentLike {
+	return v.component_
 }
 
 // PROTECTED INTERFACE
@@ -86,9 +86,9 @@ func (v *parameter_) GetConstraint() ConstraintLike {
 
 type parameter_ struct {
 	// Declare the instance attributes.
-	symbol_     string
-	delimiter_  string
-	constraint_ ConstraintLike
+	symbol_    string
+	delimiter_ string
+	component_ ComponentLike
 }
 
 // Class Structure
