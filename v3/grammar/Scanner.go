@@ -356,7 +356,7 @@ const (
 	bytecode_       = "(?:'>" + eol_ + "((?:" + space_ + ")*(?:" + instruction_ + "){1,12}" + eol_ + ")+(?:" + space_ + ")*<')"
 	character_      = "(?:(?:" + escape_ + ")|\\\\\"|[^\"" + control_ + "])"
 	comment_        = "(?:!>(" + any_ + "|" + eol_ + ")+?(?:" + space_ + ")*<!)"
-	day_            = "(?:([0-2][1-9])|(3[0-1]))"
+	day_            = "(?:(0[1-9])|([1-2][0-9])|(3[0-1]))"
 	days_           = "(?:(?:" + timespan_ + ")D)"
 	delimiter_      = "(?:xor|with|while|to|throw|send|select|save|san|return|retrieve|reject|receive|publish|on|notarize|not|matching|matches|loop|level|is|ior|invoke|inspect|in|if|from|each|do|discard|define|continue|checkout|break|at|assign|as|and|accept|\\}|\\||\\{|\\^|\\]|\\[|\\?=|\\.\\.|\\+=|\\+|\\*=|\\*|\\)|\\(|@|>|=|<~|<-|<|:=|:|/=|/|-=|-|&=|&|%)"
 	duration_       = "(?:~P((?:" + weeks_ + ")|((?:" + years_ + ")?(?:" + months_ + ")?(?:" + days_ + ")?(T(?:" + hours_ + ")?(?:" + minutes_ + ")?(?:" + seconds_ + ")?)?)))"
