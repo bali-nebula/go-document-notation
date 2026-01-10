@@ -1192,22 +1192,22 @@ func (v *processor_) ProcessOnClauseSlot(
 ) {
 }
 
-func (v *processor_) PreprocessOperator(
-	operator ast.OperatorLike,
+func (v *processor_) PreprocessOperation(
+	operation ast.OperationLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessOperator(
-	operator ast.OperatorLike,
+func (v *processor_) PostprocessOperation(
+	operation ast.OperationLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessOperatorSlot(
-	operator ast.OperatorLike,
+func (v *processor_) ProcessOperationSlot(
+	operation ast.OperationLike,
 	slot_ uint,
 ) {
 }

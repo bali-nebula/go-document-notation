@@ -719,15 +719,15 @@ type OnClauseClassLike interface {
 }
 
 /*
-OperatorClassLike is a class interface that declares the
+OperationClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete operator-like class.
+supported by each concrete operation-like class.
 */
-type OperatorClassLike interface {
+type OperationClassLike interface {
 	// Constructor Methods
-	Operator(
+	Operation(
 		any_ any,
-	) OperatorLike
+	) OperationLike
 }
 
 /*
@@ -766,7 +766,7 @@ supported by each concrete predicate-like class.
 type PredicateClassLike interface {
 	// Constructor Methods
 	Predicate(
-		operator OperatorLike,
+		operation OperationLike,
 		expression ExpressionLike,
 	) PredicateLike
 }
@@ -1849,13 +1849,13 @@ type OnClauseLike interface {
 }
 
 /*
-OperatorLike is an instance interface that declares the
+OperationLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete operator-like class.
+by each instance of a concrete operation-like class.
 */
-type OperatorLike interface {
+type OperationLike interface {
 	// Principal Methods
-	GetClass() OperatorClassLike
+	GetClass() OperationClassLike
 
 	// Attribute Methods
 	GetAny() any
@@ -1901,7 +1901,7 @@ type PredicateLike interface {
 	GetClass() PredicateClassLike
 
 	// Attribute Methods
-	GetOperator() OperatorLike
+	GetOperation() OperationLike
 	GetExpression() ExpressionLike
 }
 

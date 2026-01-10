@@ -1077,18 +1077,18 @@ type Methodical interface {
 		onClause ast.OnClauseLike,
 		slot_ uint,
 	)
-	PreprocessOperator(
-		operator ast.OperatorLike,
+	PreprocessOperation(
+		operation ast.OperationLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessOperator(
-		operator ast.OperatorLike,
+	PostprocessOperation(
+		operation ast.OperationLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessOperatorSlot(
-		operator ast.OperatorLike,
+	ProcessOperationSlot(
+		operation ast.OperationLike,
 		slot_ uint,
 	)
 	PreprocessParameters(

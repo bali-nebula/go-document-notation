@@ -3156,48 +3156,48 @@ matchingClausesLoop:
 	return
 }
 
-func (v *parser_) parseOperator() (
-	operator ast.OperatorLike,
+func (v *parser_) parseOperation() (
+	operation ast.OperationLike,
 	token TokenLike,
 	ok bool,
 ) {
-	// Attempt to parse a single Comparison Operator.
+	// Attempt to parse a single Comparison Operation.
 	var comparison ast.ComparisonLike
 	comparison, token, ok = v.parseComparison()
 	if ok {
-		// Found a single Comparison Operator.
-		operator = ast.OperatorClass().Operator(comparison)
+		// Found a single Comparison Operation.
+		operation = ast.OperationClass().Operation(comparison)
 		return
 	}
 
-	// Attempt to parse a single Logical Operator.
+	// Attempt to parse a single Logical Operation.
 	var logical ast.LogicalLike
 	logical, token, ok = v.parseLogical()
 	if ok {
-		// Found a single Logical Operator.
-		operator = ast.OperatorClass().Operator(logical)
+		// Found a single Logical Operation.
+		operation = ast.OperationClass().Operation(logical)
 		return
 	}
 
-	// Attempt to parse a single Arithmetic Operator.
+	// Attempt to parse a single Arithmetic Operation.
 	var arithmetic ast.ArithmeticLike
 	arithmetic, token, ok = v.parseArithmetic()
 	if ok {
-		// Found a single Arithmetic Operator.
-		operator = ast.OperatorClass().Operator(arithmetic)
+		// Found a single Arithmetic Operation.
+		operation = ast.OperationClass().Operation(arithmetic)
 		return
 	}
 
-	// Attempt to parse a single Lexical Operator.
+	// Attempt to parse a single Lexical Operation.
 	var lexical ast.LexicalLike
 	lexical, token, ok = v.parseLexical()
 	if ok {
-		// Found a single Lexical Operator.
-		operator = ast.OperatorClass().Operator(lexical)
+		// Found a single Lexical Operation.
+		operation = ast.OperationClass().Operation(lexical)
 		return
 	}
 
-	// This is not a single Operator rule.
+	// This is not a single Operation rule.
 	return
 }
 
@@ -3359,9 +3359,9 @@ func (v *parser_) parsePredicate() (
 ) {
 	var tokens = com.List[TokenLike]()
 
-	// Attempt to parse a single Operator rule.
-	var operator ast.OperatorLike
-	operator, token, ok = v.parseOperator()
+	// Attempt to parse a single Operation rule.
+	var operation ast.OperationLike
+	operation, token, ok = v.parseOperation()
 	switch {
 	case ok:
 		// Found a multiexpression token.
@@ -3369,7 +3369,7 @@ func (v *parser_) parsePredicate() (
 			tokens.AppendValue(token)
 		}
 	case uti.IsDefined(tokens):
-		// This is not a single Operator rule.
+		// This is not a single Operation rule.
 		v.putBack(tokens)
 		return
 	default:
@@ -3399,7 +3399,7 @@ func (v *parser_) parsePredicate() (
 	ok = true
 	v.remove(tokens)
 	predicate = ast.PredicateClass().Predicate(
-		operator,
+		operation,
 		expression,
 	)
 	return
@@ -5601,8 +5601,8 @@ var parserClassReference_ = &parserClass_{
     Value  ! This must be last since others also begin with an identifier.`,
 			"$Magnitude": `"|" Expression "|"`,
 			"$Function":  `identifier "(" Argument* ")"`,
-			"$Predicate": `Operator Expression`,
-			"$Operator": `
+			"$Predicate": `Operation Expression`,
+			"$Operation": `
     Comparison
     Logical
     Arithmetic

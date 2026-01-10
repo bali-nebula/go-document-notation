@@ -1989,11 +1989,11 @@ func (v *visitor_) visitOnClause(
 	}
 }
 
-func (v *visitor_) visitOperator(
-	operator ast.OperatorLike,
+func (v *visitor_) visitOperation(
+	operation ast.OperationLike,
 ) {
-	// Visit the possible operator rule types.
-	switch actual := operator.GetAny().(type) {
+	// Visit the possible operation rule types.
+	switch actual := operation.GetAny().(type) {
 	case ast.ComparisonLike:
 		v.processor_.PreprocessComparison(
 			actual,
@@ -2120,15 +2120,15 @@ func (v *visitor_) visitPrecedence(
 func (v *visitor_) visitPredicate(
 	predicate ast.PredicateLike,
 ) {
-	var operator = predicate.GetOperator()
-	v.processor_.PreprocessOperator(
-		operator,
+	var operation = predicate.GetOperation()
+	v.processor_.PreprocessOperation(
+		operation,
 		0,
 		0,
 	)
-	v.visitOperator(operator)
-	v.processor_.PostprocessOperator(
-		operator,
+	v.visitOperation(operation)
+	v.processor_.PostprocessOperation(
+		operation,
 		0,
 		0,
 	)

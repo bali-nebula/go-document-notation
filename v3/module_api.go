@@ -92,7 +92,7 @@ type (
 	NotarizeClauseClassLike      = ast.NotarizeClauseClassLike
 	NumericalClassLike           = ast.NumericalClassLike
 	OnClauseClassLike            = ast.OnClauseClassLike
-	OperatorClassLike            = ast.OperatorClassLike
+	OperationClassLike           = ast.OperationClassLike
 	ParametersClassLike          = ast.ParametersClassLike
 	PrecedenceClassLike          = ast.PrecedenceClassLike
 	PredicateClassLike           = ast.PredicateClassLike
@@ -176,7 +176,7 @@ type (
 	NotarizeClauseLike      = ast.NotarizeClauseLike
 	NumericalLike           = ast.NumericalLike
 	OnClauseLike            = ast.OnClauseLike
-	OperatorLike            = ast.OperatorLike
+	OperationLike           = ast.OperationLike
 	ParametersLike          = ast.ParametersLike
 	PrecedenceLike          = ast.PrecedenceLike
 	PredicateLike           = ast.PredicateLike
@@ -1000,14 +1000,14 @@ func OnClause(
 	)
 }
 
-func OperatorClass() OperatorClassLike {
-	return ast.OperatorClass()
+func OperationClass() OperationClassLike {
+	return ast.OperationClass()
 }
 
-func Operator(
+func Operation(
 	any_ any,
-) OperatorLike {
-	return OperatorClass().Operator(
+) OperationLike {
+	return OperationClass().Operation(
 		any_,
 	)
 }
@@ -1049,11 +1049,11 @@ func PredicateClass() PredicateClassLike {
 }
 
 func Predicate(
-	operator ast.OperatorLike,
+	operation ast.OperationLike,
 	expression ast.ExpressionLike,
 ) PredicateLike {
 	return PredicateClass().Predicate(
-		operator,
+		operation,
 		expression,
 	)
 }

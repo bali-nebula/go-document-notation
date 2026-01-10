@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func OperatorClass() OperatorClassLike {
-	return operatorClass()
+func OperationClass() OperationClassLike {
+	return operationClass()
 }
 
 // Constructor Methods
 
-func (c *operatorClass_) Operator(
+func (c *operationClass_) Operation(
 	any_ any,
-) OperatorLike {
+) OperationLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &operator_{
+	var instance = &operation_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *operatorClass_) Operator(
 
 // Principal Methods
 
-func (v *operator_) GetClass() OperatorClassLike {
-	return operatorClass()
+func (v *operation_) GetClass() OperationClassLike {
+	return operationClass()
 }
 
 // Attribute Methods
 
-func (v *operator_) GetAny() any {
+func (v *operation_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *operator_) GetAny() any {
 
 // Instance Structure
 
-type operator_ struct {
+type operation_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type operatorClass_ struct {
+type operationClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func operatorClass() *operatorClass_ {
-	return operatorClassReference_
+func operationClass() *operationClass_ {
+	return operationClassReference_
 }
 
-var operatorClassReference_ = &operatorClass_{
+var operationClassReference_ = &operationClass_{
 	// Initialize the class constants.
 }
