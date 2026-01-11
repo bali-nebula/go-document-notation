@@ -212,26 +212,6 @@ func (v *processor_) ProcessArgumentSlot(
 ) {
 }
 
-func (v *processor_) PreprocessArithmetic(
-	arithmetic ast.ArithmeticLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessArithmetic(
-	arithmetic ast.ArithmeticLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessArithmeticSlot(
-	arithmetic ast.ArithmeticLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessAssignClause(
 	assignClause ast.AssignClauseLike,
 	index_ uint,
@@ -428,46 +408,6 @@ func (v *processor_) PostprocessCollection(
 
 func (v *processor_) ProcessCollectionSlot(
 	collection ast.CollectionLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessComparison(
-	comparison ast.ComparisonLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessComparison(
-	comparison ast.ComparisonLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessComparisonSlot(
-	comparison ast.ComparisonLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessComplement(
-	complement ast.ComplementLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessComplement(
-	complement ast.ComplementLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessComplementSlot(
-	complement ast.ComplementLike,
 	slot_ uint,
 ) {
 }
@@ -792,46 +732,6 @@ func (v *processor_) ProcessInspectClauseSlot(
 ) {
 }
 
-func (v *processor_) PreprocessInverse(
-	inverse ast.InverseLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessInverse(
-	inverse ast.InverseLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessInverseSlot(
-	inverse ast.InverseLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessInversion(
-	inversion ast.InversionLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessInversion(
-	inversion ast.InversionLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessInversionSlot(
-	inversion ast.InversionLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessInvocation(
 	invocation ast.InvocationLike,
 	index_ uint,
@@ -912,26 +812,6 @@ func (v *processor_) ProcessLeftSlot(
 ) {
 }
 
-func (v *processor_) PreprocessLexical(
-	lexical ast.LexicalLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessLexical(
-	lexical ast.LexicalLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessLexicalSlot(
-	lexical ast.LexicalLike,
-	slot_ uint,
-) {
-}
-
 func (v *processor_) PreprocessLiteral(
 	literal ast.LiteralLike,
 	index_ uint,
@@ -988,26 +868,6 @@ func (v *processor_) PostprocessLocation(
 
 func (v *processor_) ProcessLocationSlot(
 	location ast.LocationLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessLogical(
-	logical ast.LogicalLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessLogical(
-	logical ast.LogicalLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessLogicalSlot(
-	logical ast.LogicalLike,
 	slot_ uint,
 ) {
 }
@@ -1132,6 +992,26 @@ func (v *processor_) ProcessMethodSlot(
 ) {
 }
 
+func (v *processor_) PreprocessModifier(
+	modifier ast.ModifierLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) PostprocessModifier(
+	modifier ast.ModifierLike,
+	index_ uint,
+	count_ uint,
+) {
+}
+
+func (v *processor_) ProcessModifierSlot(
+	modifier ast.ModifierLike,
+	slot_ uint,
+) {
+}
+
 func (v *processor_) PreprocessNotarizeClause(
 	notarizeClause ast.NotarizeClauseLike,
 	index_ uint,
@@ -1148,26 +1028,6 @@ func (v *processor_) PostprocessNotarizeClause(
 
 func (v *processor_) ProcessNotarizeClauseSlot(
 	notarizeClause ast.NotarizeClauseLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessNumerical(
-	numerical ast.NumericalLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessNumerical(
-	numerical ast.NumericalLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessNumericalSlot(
-	numerical ast.NumericalLike,
 	slot_ uint,
 ) {
 }
@@ -1392,42 +1252,22 @@ func (v *processor_) ProcessRecipientSlot(
 ) {
 }
 
-func (v *processor_) PreprocessReference(
-	reference ast.ReferenceLike,
+func (v *processor_) PreprocessRefinement(
+	refinement ast.RefinementLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) PostprocessReference(
-	reference ast.ReferenceLike,
+func (v *processor_) PostprocessRefinement(
+	refinement ast.RefinementLike,
 	index_ uint,
 	count_ uint,
 ) {
 }
 
-func (v *processor_) ProcessReferenceSlot(
-	reference ast.ReferenceLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessReferent(
-	referent ast.ReferentLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessReferent(
-	referent ast.ReferentLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessReferentSlot(
-	referent ast.ReferentLike,
+func (v *processor_) ProcessRefinementSlot(
+	refinement ast.RefinementLike,
 	slot_ uint,
 ) {
 }
@@ -1508,26 +1348,6 @@ func (v *processor_) PostprocessReturnClause(
 
 func (v *processor_) ProcessReturnClauseSlot(
 	returnClause ast.ReturnClauseLike,
-	slot_ uint,
-) {
-}
-
-func (v *processor_) PreprocessReversible(
-	reversible ast.ReversibleLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) PostprocessReversible(
-	reversible ast.ReversibleLike,
-	index_ uint,
-	count_ uint,
-) {
-}
-
-func (v *processor_) ProcessReversibleSlot(
-	reversible ast.ReversibleLike,
 	slot_ uint,
 ) {
 }

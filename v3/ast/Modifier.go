@@ -29,19 +29,19 @@ import (
 
 // Access Function
 
-func InverseClass() InverseClassLike {
-	return inverseClass()
+func ModifierClass() ModifierClassLike {
+	return modifierClass()
 }
 
 // Constructor Methods
 
-func (c *inverseClass_) Inverse(
+func (c *modifierClass_) Modifier(
 	any_ any,
-) InverseLike {
+) ModifierLike {
 	if uti.IsUndefined(any_) {
 		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &inverse_{
+	var instance = &modifier_{
 		// Initialize the instance attributes.
 		any_: any_,
 	}
@@ -52,13 +52,13 @@ func (c *inverseClass_) Inverse(
 
 // Principal Methods
 
-func (v *inverse_) GetClass() InverseClassLike {
-	return inverseClass()
+func (v *modifier_) GetClass() ModifierClassLike {
+	return modifierClass()
 }
 
 // Attribute Methods
 
-func (v *inverse_) GetAny() any {
+func (v *modifier_) GetAny() any {
 	return v.any_
 }
 
@@ -66,23 +66,23 @@ func (v *inverse_) GetAny() any {
 
 // Instance Structure
 
-type inverse_ struct {
+type modifier_ struct {
 	// Declare the instance attributes.
 	any_ any
 }
 
 // Class Structure
 
-type inverseClass_ struct {
+type modifierClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func inverseClass() *inverseClass_ {
-	return inverseClassReference_
+func modifierClass() *modifierClass_ {
+	return modifierClassReference_
 }
 
-var inverseClassReference_ = &inverseClass_{
+var modifierClassReference_ = &modifierClass_{
 	// Initialize the class constants.
 }

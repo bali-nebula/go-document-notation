@@ -305,13 +305,6 @@ func (v *formatter_) ProcessCheckoutClauseSlot(
 	}
 }
 
-func (v *formatter_) ProcessComplementSlot(
-	complement ast.ComplementLike,
-	slot_ uint,
-) {
-	v.appendString(" ")
-}
-
 func (v *formatter_) PreprocessComponent(
 	component ast.ComponentLike,
 	index_ uint,
@@ -549,6 +542,15 @@ func (v *formatter_) ProcessReceiveClauseSlot(
 	slot_ uint,
 ) {
 	v.appendString(" ")
+}
+
+func (v *formatter_) ProcessRefinementSlot(
+	refinement ast.RefinementLike,
+	slot_ uint,
+) {
+	if refinement.GetModifier().GetAny().(string) == "not" {
+		v.appendString(" ")
+	}
 }
 
 func (v *formatter_) ProcessRejectClauseSlot(

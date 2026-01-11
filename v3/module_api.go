@@ -43,7 +43,6 @@ import (
 type (
 	AcceptClauseClassLike        = ast.AcceptClauseClassLike
 	ArgumentClassLike            = ast.ArgumentClassLike
-	ArithmeticClassLike          = ast.ArithmeticClassLike
 	AssignClauseClassLike        = ast.AssignClauseClassLike
 	AssignmentClassLike          = ast.AssignmentClassLike
 	AssociationClassLike         = ast.AssociationClassLike
@@ -54,8 +53,6 @@ type (
 	CheckoutClauseClassLike      = ast.CheckoutClauseClassLike
 	CitationClassLike            = ast.CitationClassLike
 	CollectionClassLike          = ast.CollectionClassLike
-	ComparisonClassLike          = ast.ComparisonClassLike
-	ComplementClassLike          = ast.ComplementClassLike
 	ComponentClassLike           = ast.ComponentClassLike
 	ConstantClassLike            = ast.ConstantClassLike
 	ConstraintClassLike          = ast.ConstraintClassLike
@@ -72,25 +69,21 @@ type (
 	IfClauseClassLike            = ast.IfClauseClassLike
 	IndexClassLike               = ast.IndexClassLike
 	InspectClauseClassLike       = ast.InspectClauseClassLike
-	InverseClassLike             = ast.InverseClassLike
-	InversionClassLike           = ast.InversionClassLike
 	InvocationClassLike          = ast.InvocationClassLike
 	InvokeClauseClassLike        = ast.InvokeClauseClassLike
 	ItemsClassLike               = ast.ItemsClassLike
 	LeftClassLike                = ast.LeftClassLike
-	LexicalClassLike             = ast.LexicalClassLike
 	LiteralClassLike             = ast.LiteralClassLike
 	LocalTransformationClassLike = ast.LocalTransformationClassLike
 	LocationClassLike            = ast.LocationClassLike
-	LogicalClassLike             = ast.LogicalClassLike
 	MagnitudeClassLike           = ast.MagnitudeClassLike
 	MainClauseClassLike          = ast.MainClauseClassLike
 	MatchingClauseClassLike      = ast.MatchingClauseClassLike
 	MessageClassLike             = ast.MessageClassLike
 	MessageHandlingClassLike     = ast.MessageHandlingClassLike
 	MethodClassLike              = ast.MethodClassLike
+	ModifierClassLike            = ast.ModifierClassLike
 	NotarizeClauseClassLike      = ast.NotarizeClauseClassLike
-	NumericalClassLike           = ast.NumericalClassLike
 	OnClauseClassLike            = ast.OnClauseClassLike
 	OperationClassLike           = ast.OperationClassLike
 	ParametersClassLike          = ast.ParametersClassLike
@@ -102,13 +95,11 @@ type (
 	RangeClassLike               = ast.RangeClassLike
 	ReceiveClauseClassLike       = ast.ReceiveClauseClassLike
 	RecipientClassLike           = ast.RecipientClassLike
-	ReferenceClassLike           = ast.ReferenceClassLike
-	ReferentClassLike            = ast.ReferentClassLike
+	RefinementClassLike          = ast.RefinementClassLike
 	RejectClauseClassLike        = ast.RejectClauseClassLike
 	RepositoryAccessClassLike    = ast.RepositoryAccessClassLike
 	RetrieveClauseClassLike      = ast.RetrieveClauseClassLike
 	ReturnClauseClassLike        = ast.ReturnClauseClassLike
-	ReversibleClassLike          = ast.ReversibleClassLike
 	RightClassLike               = ast.RightClassLike
 	SaveClauseClassLike          = ast.SaveClauseClassLike
 	SelectClauseClassLike        = ast.SelectClauseClassLike
@@ -127,7 +118,6 @@ type (
 type (
 	AcceptClauseLike        = ast.AcceptClauseLike
 	ArgumentLike            = ast.ArgumentLike
-	ArithmeticLike          = ast.ArithmeticLike
 	AssignClauseLike        = ast.AssignClauseLike
 	AssignmentLike          = ast.AssignmentLike
 	AssociationLike         = ast.AssociationLike
@@ -138,8 +128,6 @@ type (
 	CheckoutClauseLike      = ast.CheckoutClauseLike
 	CitationLike            = ast.CitationLike
 	CollectionLike          = ast.CollectionLike
-	ComparisonLike          = ast.ComparisonLike
-	ComplementLike          = ast.ComplementLike
 	ComponentLike           = ast.ComponentLike
 	ConstantLike            = ast.ConstantLike
 	ConstraintLike          = ast.ConstraintLike
@@ -156,25 +144,21 @@ type (
 	IfClauseLike            = ast.IfClauseLike
 	IndexLike               = ast.IndexLike
 	InspectClauseLike       = ast.InspectClauseLike
-	InverseLike             = ast.InverseLike
-	InversionLike           = ast.InversionLike
 	InvocationLike          = ast.InvocationLike
 	InvokeClauseLike        = ast.InvokeClauseLike
 	ItemsLike               = ast.ItemsLike
 	LeftLike                = ast.LeftLike
-	LexicalLike             = ast.LexicalLike
 	LiteralLike             = ast.LiteralLike
 	LocalTransformationLike = ast.LocalTransformationLike
 	LocationLike            = ast.LocationLike
-	LogicalLike             = ast.LogicalLike
 	MagnitudeLike           = ast.MagnitudeLike
 	MainClauseLike          = ast.MainClauseLike
 	MatchingClauseLike      = ast.MatchingClauseLike
 	MessageLike             = ast.MessageLike
 	MessageHandlingLike     = ast.MessageHandlingLike
 	MethodLike              = ast.MethodLike
+	ModifierLike            = ast.ModifierLike
 	NotarizeClauseLike      = ast.NotarizeClauseLike
-	NumericalLike           = ast.NumericalLike
 	OnClauseLike            = ast.OnClauseLike
 	OperationLike           = ast.OperationLike
 	ParametersLike          = ast.ParametersLike
@@ -186,13 +170,11 @@ type (
 	RangeLike               = ast.RangeLike
 	ReceiveClauseLike       = ast.ReceiveClauseLike
 	RecipientLike           = ast.RecipientLike
-	ReferenceLike           = ast.ReferenceLike
-	ReferentLike            = ast.ReferentLike
+	RefinementLike          = ast.RefinementLike
 	RejectClauseLike        = ast.RejectClauseLike
 	RepositoryAccessLike    = ast.RepositoryAccessLike
 	RetrieveClauseLike      = ast.RetrieveClauseLike
 	ReturnClauseLike        = ast.ReturnClauseLike
-	ReversibleLike          = ast.ReversibleLike
 	RightLike               = ast.RightLike
 	SaveClauseLike          = ast.SaveClauseLike
 	SelectClauseLike        = ast.SelectClauseLike
@@ -296,18 +278,6 @@ func Argument(
 	any_ any,
 ) ArgumentLike {
 	return ArgumentClass().Argument(
-		any_,
-	)
-}
-
-func ArithmeticClass() ArithmeticClassLike {
-	return ast.ArithmeticClass()
-}
-
-func Arithmetic(
-	any_ any,
-) ArithmeticLike {
-	return ArithmeticClass().Arithmetic(
 		any_,
 	)
 }
@@ -457,32 +427,6 @@ func Collection(
 ) CollectionLike {
 	return CollectionClass().Collection(
 		any_,
-	)
-}
-
-func ComparisonClass() ComparisonClassLike {
-	return ast.ComparisonClass()
-}
-
-func Comparison(
-	any_ any,
-) ComparisonLike {
-	return ComparisonClass().Comparison(
-		any_,
-	)
-}
-
-func ComplementClass() ComplementClassLike {
-	return ast.ComplementClass()
-}
-
-func Complement(
-	delimiter string,
-	reversible ast.ReversibleLike,
-) ComplementLike {
-	return ComplementClass().Complement(
-		delimiter,
-		reversible,
 	)
 }
 
@@ -636,11 +580,11 @@ func ExpressionClass() ExpressionClassLike {
 
 func Expression(
 	subject ast.SubjectLike,
-	predicates com.Sequential[ast.PredicateLike],
+	optionalPredicate ast.PredicateLike,
 ) ExpressionLike {
 	return ExpressionClass().Expression(
 		subject,
-		predicates,
+		optionalPredicate,
 	)
 }
 
@@ -722,32 +666,6 @@ func InspectClause(
 	)
 }
 
-func InverseClass() InverseClassLike {
-	return ast.InverseClass()
-}
-
-func Inverse(
-	any_ any,
-) InverseLike {
-	return InverseClass().Inverse(
-		any_,
-	)
-}
-
-func InversionClass() InversionClassLike {
-	return ast.InversionClass()
-}
-
-func Inversion(
-	inverse ast.InverseLike,
-	numerical ast.NumericalLike,
-) InversionLike {
-	return InversionClass().Inversion(
-		inverse,
-		numerical,
-	)
-}
-
 func InvocationClass() InvocationClassLike {
 	return ast.InvocationClass()
 }
@@ -802,18 +720,6 @@ func Left(
 	)
 }
 
-func LexicalClass() LexicalClassLike {
-	return ast.LexicalClass()
-}
-
-func Lexical(
-	any_ any,
-) LexicalLike {
-	return LexicalClass().Lexical(
-		any_,
-	)
-}
-
 func LiteralClass() LiteralClassLike {
 	return ast.LiteralClass()
 }
@@ -847,18 +753,6 @@ func Location(
 ) LocationLike {
 	return LocationClass().Location(
 		expression,
-	)
-}
-
-func LogicalClass() LogicalClassLike {
-	return ast.LogicalClass()
-}
-
-func Logical(
-	any_ any,
-) LogicalLike {
-	return LogicalClass().Logical(
-		any_,
 	)
 }
 
@@ -954,6 +848,18 @@ func Method(
 	)
 }
 
+func ModifierClass() ModifierClassLike {
+	return ast.ModifierClass()
+}
+
+func Modifier(
+	any_ any,
+) ModifierLike {
+	return ModifierClass().Modifier(
+		any_,
+	)
+}
+
 func NotarizeClauseClass() NotarizeClauseClassLike {
 	return ast.NotarizeClauseClass()
 }
@@ -969,18 +875,6 @@ func NotarizeClause(
 		draft,
 		delimiter2,
 		location,
-	)
-}
-
-func NumericalClass() NumericalClassLike {
-	return ast.NumericalClass()
-}
-
-func Numerical(
-	any_ any,
-) NumericalLike {
-	return NumericalClass().Numerical(
-		any_,
 	)
 }
 
@@ -1150,29 +1044,17 @@ func Recipient(
 	)
 }
 
-func ReferenceClass() ReferenceClassLike {
-	return ast.ReferenceClass()
+func RefinementClass() RefinementClassLike {
+	return ast.RefinementClass()
 }
 
-func Reference(
-	any_ any,
-) ReferenceLike {
-	return ReferenceClass().Reference(
-		any_,
-	)
-}
-
-func ReferentClass() ReferentClassLike {
-	return ast.ReferentClass()
-}
-
-func Referent(
-	delimiter string,
-	reference ast.ReferenceLike,
-) ReferentLike {
-	return ReferentClass().Referent(
-		delimiter,
-		reference,
+func Refinement(
+	modifier ast.ModifierLike,
+	subject ast.SubjectLike,
+) RefinementLike {
+	return RefinementClass().Refinement(
+		modifier,
+		subject,
 	)
 }
 
@@ -1235,18 +1117,6 @@ func ReturnClause(
 	return ReturnClauseClass().ReturnClause(
 		delimiter,
 		expression,
-	)
-}
-
-func ReversibleClass() ReversibleClassLike {
-	return ast.ReversibleClass()
-}
-
-func Reversible(
-	any_ any,
-) ReversibleLike {
-	return ReversibleClass().Reversible(
-		any_,
 	)
 }
 

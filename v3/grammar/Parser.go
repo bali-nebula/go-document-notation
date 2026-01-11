@@ -194,65 +194,6 @@ func (v *parser_) parseArgument() (
 	return
 }
 
-func (v *parser_) parseArithmetic() (
-	arithmetic ast.ArithmeticLike,
-	token TokenLike,
-	ok bool,
-) {
-	var delimiter string
-
-	// Attempt to parse a single "+" delimiter.
-	delimiter, token, ok = v.parseDelimiter("+")
-	if ok {
-		// Found a single "+" delimiter.
-		arithmetic = ast.ArithmeticClass().Arithmetic(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "-" delimiter.
-	delimiter, token, ok = v.parseDelimiter("-")
-	if ok {
-		// Found a single "-" delimiter.
-		arithmetic = ast.ArithmeticClass().Arithmetic(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "*" delimiter.
-	delimiter, token, ok = v.parseDelimiter("*")
-	if ok {
-		// Found a single "*" delimiter.
-		arithmetic = ast.ArithmeticClass().Arithmetic(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "/" delimiter.
-	delimiter, token, ok = v.parseDelimiter("/")
-	if ok {
-		// Found a single "/" delimiter.
-		arithmetic = ast.ArithmeticClass().Arithmetic(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "%" delimiter.
-	delimiter, token, ok = v.parseDelimiter("%")
-	if ok {
-		// Found a single "%" delimiter.
-		arithmetic = ast.ArithmeticClass().Arithmetic(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "^" delimiter.
-	delimiter, token, ok = v.parseDelimiter("^")
-	if ok {
-		// Found a single "^" delimiter.
-		arithmetic = ast.ArithmeticClass().Arithmetic(delimiter)
-		return
-	}
-
-	// This is not a single Arithmetic rule.
-	return
-}
-
 func (v *parser_) parseAssignClause() (
 	assignClause ast.AssignClauseLike,
 	token TokenLike,
@@ -882,109 +823,6 @@ func (v *parser_) parseCollection() (
 	return
 }
 
-func (v *parser_) parseComparison() (
-	comparison ast.ComparisonLike,
-	token TokenLike,
-	ok bool,
-) {
-	var delimiter string
-
-	// Attempt to parse a single "<" delimiter.
-	delimiter, token, ok = v.parseDelimiter("<")
-	if ok {
-		// Found a single "<" delimiter.
-		comparison = ast.ComparisonClass().Comparison(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "=" delimiter.
-	delimiter, token, ok = v.parseDelimiter("=")
-	if ok {
-		// Found a single "=" delimiter.
-		comparison = ast.ComparisonClass().Comparison(delimiter)
-		return
-	}
-
-	// Attempt to parse a single ">" delimiter.
-	delimiter, token, ok = v.parseDelimiter(">")
-	if ok {
-		// Found a single ">" delimiter.
-		comparison = ast.ComparisonClass().Comparison(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "is" delimiter.
-	delimiter, token, ok = v.parseDelimiter("is")
-	if ok {
-		// Found a single "is" delimiter.
-		comparison = ast.ComparisonClass().Comparison(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "matches" delimiter.
-	delimiter, token, ok = v.parseDelimiter("matches")
-	if ok {
-		// Found a single "matches" delimiter.
-		comparison = ast.ComparisonClass().Comparison(delimiter)
-		return
-	}
-
-	// This is not a single Comparison rule.
-	return
-}
-
-func (v *parser_) parseComplement() (
-	complement ast.ComplementLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = com.List[TokenLike]()
-
-	// Attempt to parse a single "not" literal.
-	var delimiter string
-	delimiter, token, ok = v.parseDelimiter("not")
-	if !ok {
-		if uti.IsDefined(tokens) {
-			// This is not a single Complement rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Complement", token)
-			panic(message)
-		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
-	}
-
-	// Attempt to parse a single Reversible rule.
-	var reversible ast.ReversibleLike
-	reversible, token, ok = v.parseReversible()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Reversible rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Complement", token)
-		panic(message)
-	}
-
-	// Found a single Complement rule.
-	ok = true
-	v.remove(tokens)
-	complement = ast.ComplementClass().Complement(
-		delimiter,
-		reversible,
-	)
-	return
-}
-
 func (v *parser_) parseComponent() (
 	component ast.ComponentLike,
 	token TokenLike,
@@ -1591,30 +1429,12 @@ func (v *parser_) parseExpression() (
 		panic(message)
 	}
 
-	// Attempt to parse multiple Predicate rules.
-	var predicates = com.List[ast.PredicateLike]()
-predicatesLoop:
-	for count_ := 0; count_ < mat.MaxInt; count_++ {
-		var predicate ast.PredicateLike
-		predicate, token, ok = v.parsePredicate()
-		if !ok {
-			switch {
-			case count_ >= 0:
-				break predicatesLoop
-			case uti.IsDefined(tokens):
-				// This is not multiple Predicate rules.
-				v.putBack(tokens)
-				return
-			default:
-				// Found a syntax error.
-				var message = v.formatError("$Expression", token)
-				message += "0 or more Predicate rules are required."
-				panic(message)
-			}
-		}
+	// Attempt to parse an optional Predicate rule.
+	var optionalPredicate ast.PredicateLike
+	optionalPredicate, _, ok = v.parsePredicate()
+	if ok {
 		// No additional put backs allowed at this point.
 		tokens = nil
-		predicates.AppendValue(predicate)
 	}
 
 	// Found a single Expression rule.
@@ -1622,7 +1442,7 @@ predicatesLoop:
 	v.remove(tokens)
 	expression = ast.ExpressionClass().Expression(
 		subject,
-		predicates,
+		optionalPredicate,
 	)
 	return
 }
@@ -2012,94 +1832,6 @@ func (v *parser_) parseInspectClause() (
 	return
 }
 
-func (v *parser_) parseInverse() (
-	inverse ast.InverseLike,
-	token TokenLike,
-	ok bool,
-) {
-	var delimiter string
-
-	// Attempt to parse a single "-" delimiter.
-	delimiter, token, ok = v.parseDelimiter("-")
-	if ok {
-		// Found a single "-" delimiter.
-		inverse = ast.InverseClass().Inverse(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "/" delimiter.
-	delimiter, token, ok = v.parseDelimiter("/")
-	if ok {
-		// Found a single "/" delimiter.
-		inverse = ast.InverseClass().Inverse(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "*" delimiter.
-	delimiter, token, ok = v.parseDelimiter("*")
-	if ok {
-		// Found a single "*" delimiter.
-		inverse = ast.InverseClass().Inverse(delimiter)
-		return
-	}
-
-	// This is not a single Inverse rule.
-	return
-}
-
-func (v *parser_) parseInversion() (
-	inversion ast.InversionLike,
-	token TokenLike,
-	ok bool,
-) {
-	var tokens = com.List[TokenLike]()
-
-	// Attempt to parse a single Inverse rule.
-	var inverse ast.InverseLike
-	inverse, token, ok = v.parseInverse()
-	switch {
-	case ok:
-		// Found a multiexpression token.
-		if uti.IsDefined(tokens) {
-			tokens.AppendValue(token)
-		}
-	case uti.IsDefined(tokens):
-		// This is not a single Inverse rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Inversion", token)
-		panic(message)
-	}
-
-	// Attempt to parse a single Numerical rule.
-	var numerical ast.NumericalLike
-	numerical, token, ok = v.parseNumerical()
-	switch {
-	case ok:
-		// No additional put backs allowed at this point.
-		tokens = nil
-	case uti.IsDefined(tokens):
-		// This is not a single Numerical rule.
-		v.putBack(tokens)
-		return
-	default:
-		// Found a syntax error.
-		var message = v.formatError("$Inversion", token)
-		panic(message)
-	}
-
-	// Found a single Inversion rule.
-	ok = true
-	v.remove(tokens)
-	inversion = ast.InversionClass().Inversion(
-		inverse,
-		numerical,
-	)
-	return
-}
-
 func (v *parser_) parseInvocation() (
 	invocation ast.InvocationLike,
 	token TokenLike,
@@ -2286,25 +2018,6 @@ func (v *parser_) parseLeft() (
 	return
 }
 
-func (v *parser_) parseLexical() (
-	lexical ast.LexicalLike,
-	token TokenLike,
-	ok bool,
-) {
-	var delimiter string
-
-	// Attempt to parse a single "&" delimiter.
-	delimiter, token, ok = v.parseDelimiter("&")
-	if ok {
-		// Found a single "&" delimiter.
-		lexical = ast.LexicalClass().Lexical(delimiter)
-		return
-	}
-
-	// This is not a single Lexical rule.
-	return
-}
-
 func (v *parser_) parseLiteral() (
 	literal ast.LiteralLike,
 	token TokenLike,
@@ -2423,49 +2136,6 @@ func (v *parser_) parseLocation() (
 	ok = true
 	v.remove(tokens)
 	location = ast.LocationClass().Location(expression)
-	return
-}
-
-func (v *parser_) parseLogical() (
-	logical ast.LogicalLike,
-	token TokenLike,
-	ok bool,
-) {
-	var delimiter string
-
-	// Attempt to parse a single "and" delimiter.
-	delimiter, token, ok = v.parseDelimiter("and")
-	if ok {
-		// Found a single "and" delimiter.
-		logical = ast.LogicalClass().Logical(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "san" delimiter.
-	delimiter, token, ok = v.parseDelimiter("san")
-	if ok {
-		// Found a single "san" delimiter.
-		logical = ast.LogicalClass().Logical(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "ior" delimiter.
-	delimiter, token, ok = v.parseDelimiter("ior")
-	if ok {
-		// Found a single "ior" delimiter.
-		logical = ast.LogicalClass().Logical(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "xor" delimiter.
-	delimiter, token, ok = v.parseDelimiter("xor")
-	if ok {
-		// Found a single "xor" delimiter.
-		logical = ast.LogicalClass().Logical(delimiter)
-		return
-	}
-
-	// This is not a single Logical rule.
 	return
 }
 
@@ -2897,6 +2567,57 @@ argumentsLoop:
 	return
 }
 
+func (v *parser_) parseModifier() (
+	modifier ast.ModifierLike,
+	token TokenLike,
+	ok bool,
+) {
+	var delimiter string
+
+	// Attempt to parse a single "-" delimiter.
+	delimiter, token, ok = v.parseDelimiter("-")
+	if ok {
+		// Found a single "-" delimiter.
+		modifier = ast.ModifierClass().Modifier(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "/" delimiter.
+	delimiter, token, ok = v.parseDelimiter("/")
+	if ok {
+		// Found a single "/" delimiter.
+		modifier = ast.ModifierClass().Modifier(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "*" delimiter.
+	delimiter, token, ok = v.parseDelimiter("*")
+	if ok {
+		// Found a single "*" delimiter.
+		modifier = ast.ModifierClass().Modifier(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "@" delimiter.
+	delimiter, token, ok = v.parseDelimiter("@")
+	if ok {
+		// Found a single "@" delimiter.
+		modifier = ast.ModifierClass().Modifier(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "not" delimiter.
+	delimiter, token, ok = v.parseDelimiter("not")
+	if ok {
+		// Found a single "not" delimiter.
+		modifier = ast.ModifierClass().Modifier(delimiter)
+		return
+	}
+
+	// This is not a single Modifier rule.
+	return
+}
+
 func (v *parser_) parseNotarizeClause() (
 	notarizeClause ast.NotarizeClauseLike,
 	token TokenLike,
@@ -2986,96 +2707,6 @@ func (v *parser_) parseNotarizeClause() (
 	return
 }
 
-func (v *parser_) parseNumerical() (
-	numerical ast.NumericalLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single Component Numerical.
-	var component ast.ComponentLike
-	component, token, ok = v.parseComponent()
-	if ok {
-		// Found a single Component Numerical.
-		numerical = ast.NumericalClass().Numerical(component)
-		return
-	}
-
-	// Attempt to parse a single Subcomponent Numerical.
-	var subcomponent ast.SubcomponentLike
-	subcomponent, token, ok = v.parseSubcomponent()
-	if ok {
-		// Found a single Subcomponent Numerical.
-		numerical = ast.NumericalClass().Numerical(subcomponent)
-		return
-	}
-
-	// Attempt to parse a single Precedence Numerical.
-	var precedence ast.PrecedenceLike
-	precedence, token, ok = v.parsePrecedence()
-	if ok {
-		// Found a single Precedence Numerical.
-		numerical = ast.NumericalClass().Numerical(precedence)
-		return
-	}
-
-	// Attempt to parse a single Referent Numerical.
-	var referent ast.ReferentLike
-	referent, token, ok = v.parseReferent()
-	if ok {
-		// Found a single Referent Numerical.
-		numerical = ast.NumericalClass().Numerical(referent)
-		return
-	}
-
-	// Attempt to parse a single Inversion Numerical.
-	var inversion ast.InversionLike
-	inversion, token, ok = v.parseInversion()
-	if ok {
-		// Found a single Inversion Numerical.
-		numerical = ast.NumericalClass().Numerical(inversion)
-		return
-	}
-
-	// Attempt to parse a single Magnitude Numerical.
-	var magnitude ast.MagnitudeLike
-	magnitude, token, ok = v.parseMagnitude()
-	if ok {
-		// Found a single Magnitude Numerical.
-		numerical = ast.NumericalClass().Numerical(magnitude)
-		return
-	}
-
-	// Attempt to parse a single Function Numerical.
-	var function ast.FunctionLike
-	function, token, ok = v.parseFunction()
-	if ok {
-		// Found a single Function Numerical.
-		numerical = ast.NumericalClass().Numerical(function)
-		return
-	}
-
-	// Attempt to parse a single Method Numerical.
-	var method ast.MethodLike
-	method, token, ok = v.parseMethod()
-	if ok {
-		// Found a single Method Numerical.
-		numerical = ast.NumericalClass().Numerical(method)
-		return
-	}
-
-	// Attempt to parse a single Value Numerical.
-	var value ast.ValueLike
-	value, token, ok = v.parseValue()
-	if ok {
-		// Found a single Value Numerical.
-		numerical = ast.NumericalClass().Numerical(value)
-		return
-	}
-
-	// This is not a single Numerical rule.
-	return
-}
-
 func (v *parser_) parseOnClause() (
 	onClause ast.OnClauseLike,
 	token TokenLike,
@@ -3161,39 +2792,133 @@ func (v *parser_) parseOperation() (
 	token TokenLike,
 	ok bool,
 ) {
-	// Attempt to parse a single Comparison Operation.
-	var comparison ast.ComparisonLike
-	comparison, token, ok = v.parseComparison()
+	var delimiter string
+
+	// Attempt to parse a single "<" delimiter.
+	delimiter, token, ok = v.parseDelimiter("<")
 	if ok {
-		// Found a single Comparison Operation.
-		operation = ast.OperationClass().Operation(comparison)
+		// Found a single "<" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
 		return
 	}
 
-	// Attempt to parse a single Logical Operation.
-	var logical ast.LogicalLike
-	logical, token, ok = v.parseLogical()
+	// Attempt to parse a single "=" delimiter.
+	delimiter, token, ok = v.parseDelimiter("=")
 	if ok {
-		// Found a single Logical Operation.
-		operation = ast.OperationClass().Operation(logical)
+		// Found a single "=" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
 		return
 	}
 
-	// Attempt to parse a single Arithmetic Operation.
-	var arithmetic ast.ArithmeticLike
-	arithmetic, token, ok = v.parseArithmetic()
+	// Attempt to parse a single ">" delimiter.
+	delimiter, token, ok = v.parseDelimiter(">")
 	if ok {
-		// Found a single Arithmetic Operation.
-		operation = ast.OperationClass().Operation(arithmetic)
+		// Found a single ">" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
 		return
 	}
 
-	// Attempt to parse a single Lexical Operation.
-	var lexical ast.LexicalLike
-	lexical, token, ok = v.parseLexical()
+	// Attempt to parse a single "is" delimiter.
+	delimiter, token, ok = v.parseDelimiter("is")
 	if ok {
-		// Found a single Lexical Operation.
-		operation = ast.OperationClass().Operation(lexical)
+		// Found a single "is" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "matches" delimiter.
+	delimiter, token, ok = v.parseDelimiter("matches")
+	if ok {
+		// Found a single "matches" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "and" delimiter.
+	delimiter, token, ok = v.parseDelimiter("and")
+	if ok {
+		// Found a single "and" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "san" delimiter.
+	delimiter, token, ok = v.parseDelimiter("san")
+	if ok {
+		// Found a single "san" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "ior" delimiter.
+	delimiter, token, ok = v.parseDelimiter("ior")
+	if ok {
+		// Found a single "ior" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "xor" delimiter.
+	delimiter, token, ok = v.parseDelimiter("xor")
+	if ok {
+		// Found a single "xor" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "+" delimiter.
+	delimiter, token, ok = v.parseDelimiter("+")
+	if ok {
+		// Found a single "+" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "-" delimiter.
+	delimiter, token, ok = v.parseDelimiter("-")
+	if ok {
+		// Found a single "-" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "*" delimiter.
+	delimiter, token, ok = v.parseDelimiter("*")
+	if ok {
+		// Found a single "*" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "/" delimiter.
+	delimiter, token, ok = v.parseDelimiter("/")
+	if ok {
+		// Found a single "/" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "%" delimiter.
+	delimiter, token, ok = v.parseDelimiter("%")
+	if ok {
+		// Found a single "%" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "^" delimiter.
+	delimiter, token, ok = v.parseDelimiter("^")
+	if ok {
+		// Found a single "^" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "&" delimiter.
+	delimiter, token, ok = v.parseDelimiter("&")
+	if ok {
+		// Found a single "&" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
 		return
 	}
 
@@ -3776,117 +3501,55 @@ func (v *parser_) parseRecipient() (
 	return
 }
 
-func (v *parser_) parseReference() (
-	reference ast.ReferenceLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single Component Reference.
-	var component ast.ComponentLike
-	component, token, ok = v.parseComponent()
-	if ok {
-		// Found a single Component Reference.
-		reference = ast.ReferenceClass().Reference(component)
-		return
-	}
-
-	// Attempt to parse a single Subcomponent Reference.
-	var subcomponent ast.SubcomponentLike
-	subcomponent, token, ok = v.parseSubcomponent()
-	if ok {
-		// Found a single Subcomponent Reference.
-		reference = ast.ReferenceClass().Reference(subcomponent)
-		return
-	}
-
-	// Attempt to parse a single Referent Reference.
-	var referent ast.ReferentLike
-	referent, token, ok = v.parseReferent()
-	if ok {
-		// Found a single Referent Reference.
-		reference = ast.ReferenceClass().Reference(referent)
-		return
-	}
-
-	// Attempt to parse a single Function Reference.
-	var function ast.FunctionLike
-	function, token, ok = v.parseFunction()
-	if ok {
-		// Found a single Function Reference.
-		reference = ast.ReferenceClass().Reference(function)
-		return
-	}
-
-	// Attempt to parse a single Method Reference.
-	var method ast.MethodLike
-	method, token, ok = v.parseMethod()
-	if ok {
-		// Found a single Method Reference.
-		reference = ast.ReferenceClass().Reference(method)
-		return
-	}
-
-	// Attempt to parse a single Value Reference.
-	var value ast.ValueLike
-	value, token, ok = v.parseValue()
-	if ok {
-		// Found a single Value Reference.
-		reference = ast.ReferenceClass().Reference(value)
-		return
-	}
-
-	// This is not a single Reference rule.
-	return
-}
-
-func (v *parser_) parseReferent() (
-	referent ast.ReferentLike,
+func (v *parser_) parseRefinement() (
+	refinement ast.RefinementLike,
 	token TokenLike,
 	ok bool,
 ) {
 	var tokens = com.List[TokenLike]()
 
-	// Attempt to parse a single "@" literal.
-	var delimiter string
-	delimiter, token, ok = v.parseDelimiter("@")
-	if !ok {
+	// Attempt to parse a single Modifier rule.
+	var modifier ast.ModifierLike
+	modifier, token, ok = v.parseModifier()
+	switch {
+	case ok:
+		// Found a multiexpression token.
 		if uti.IsDefined(tokens) {
-			// This is not a single Referent rule.
-			v.putBack(tokens)
-			return
-		} else {
-			// Found a syntax error.
-			var message = v.formatError("$Referent", token)
-			panic(message)
+			tokens.AppendValue(token)
 		}
-	}
-	if uti.IsDefined(tokens) {
-		tokens.AppendValue(token)
+	case uti.IsDefined(tokens):
+		// This is not a single Modifier rule.
+		v.putBack(tokens)
+		return
+	default:
+		// Found a syntax error.
+		var message = v.formatError("$Refinement", token)
+		panic(message)
 	}
 
-	// Attempt to parse a single Reference rule.
-	var reference ast.ReferenceLike
-	reference, token, ok = v.parseReference()
+	// Attempt to parse a single Subject rule.
+	var subject ast.SubjectLike
+	subject, token, ok = v.parseSubject()
 	switch {
 	case ok:
 		// No additional put backs allowed at this point.
 		tokens = nil
 	case uti.IsDefined(tokens):
-		// This is not a single Reference rule.
+		// This is not a single Subject rule.
 		v.putBack(tokens)
 		return
 	default:
 		// Found a syntax error.
-		var message = v.formatError("$Referent", token)
+		var message = v.formatError("$Refinement", token)
 		panic(message)
 	}
 
-	// Found a single Referent rule.
+	// Found a single Refinement rule.
 	ok = true
 	v.remove(tokens)
-	referent = ast.ReferentClass().Referent(
-		delimiter,
-		reference,
+	refinement = ast.RefinementClass().Refinement(
+		modifier,
+		subject,
 	)
 	return
 }
@@ -4181,87 +3844,6 @@ func (v *parser_) parseReturnClause() (
 		delimiter,
 		expression,
 	)
-	return
-}
-
-func (v *parser_) parseReversible() (
-	reversible ast.ReversibleLike,
-	token TokenLike,
-	ok bool,
-) {
-	// Attempt to parse a single Component Reversible.
-	var component ast.ComponentLike
-	component, token, ok = v.parseComponent()
-	if ok {
-		// Found a single Component Reversible.
-		reversible = ast.ReversibleClass().Reversible(component)
-		return
-	}
-
-	// Attempt to parse a single Subcomponent Reversible.
-	var subcomponent ast.SubcomponentLike
-	subcomponent, token, ok = v.parseSubcomponent()
-	if ok {
-		// Found a single Subcomponent Reversible.
-		reversible = ast.ReversibleClass().Reversible(subcomponent)
-		return
-	}
-
-	// Attempt to parse a single Precedence Reversible.
-	var precedence ast.PrecedenceLike
-	precedence, token, ok = v.parsePrecedence()
-	if ok {
-		// Found a single Precedence Reversible.
-		reversible = ast.ReversibleClass().Reversible(precedence)
-		return
-	}
-
-	// Attempt to parse a single Referent Reversible.
-	var referent ast.ReferentLike
-	referent, token, ok = v.parseReferent()
-	if ok {
-		// Found a single Referent Reversible.
-		reversible = ast.ReversibleClass().Reversible(referent)
-		return
-	}
-
-	// Attempt to parse a single Complement Reversible.
-	var complement ast.ComplementLike
-	complement, token, ok = v.parseComplement()
-	if ok {
-		// Found a single Complement Reversible.
-		reversible = ast.ReversibleClass().Reversible(complement)
-		return
-	}
-
-	// Attempt to parse a single Function Reversible.
-	var function ast.FunctionLike
-	function, token, ok = v.parseFunction()
-	if ok {
-		// Found a single Function Reversible.
-		reversible = ast.ReversibleClass().Reversible(function)
-		return
-	}
-
-	// Attempt to parse a single Method Reversible.
-	var method ast.MethodLike
-	method, token, ok = v.parseMethod()
-	if ok {
-		// Found a single Method Reversible.
-		reversible = ast.ReversibleClass().Reversible(method)
-		return
-	}
-
-	// Attempt to parse a single Value Reversible.
-	var value ast.ValueLike
-	value, token, ok = v.parseValue()
-	if ok {
-		// Found a single Value Reversible.
-		reversible = ast.ReversibleClass().Reversible(value)
-		return
-	}
-
-	// This is not a single Reversible rule.
 	return
 }
 
@@ -4824,30 +4406,12 @@ func (v *parser_) parseSubject() (
 		return
 	}
 
-	// Attempt to parse a single Referent Subject.
-	var referent ast.ReferentLike
-	referent, token, ok = v.parseReferent()
+	// Attempt to parse a single Refinement Subject.
+	var refinement ast.RefinementLike
+	refinement, token, ok = v.parseRefinement()
 	if ok {
-		// Found a single Referent Subject.
-		subject = ast.SubjectClass().Subject(referent)
-		return
-	}
-
-	// Attempt to parse a single Complement Subject.
-	var complement ast.ComplementLike
-	complement, token, ok = v.parseComplement()
-	if ok {
-		// Found a single Complement Subject.
-		subject = ast.SubjectClass().Subject(complement)
-		return
-	}
-
-	// Attempt to parse a single Inversion Subject.
-	var inversion ast.InversionLike
-	inversion, token, ok = v.parseInversion()
-	if ok {
-		// Found a single Inversion Subject.
-		subject = ast.SubjectClass().Subject(inversion)
+		// Found a single Refinement Subject.
+		subject = ast.SubjectClass().Subject(refinement)
 		return
 	}
 
@@ -5553,80 +5117,44 @@ var parserClassReference_ = &parserClass_{
 			"$CheckoutClause": `"checkout" Recipient AtLevel? "from" Location  ! Returns a draft.`,
 			"$Location":       `Expression  ! The global name of a document.`,
 			"$AtLevel":        `"at" "level" Expression`,
-			"$Expression":     `Subject Predicate*`,
+			"$Expression":     `Subject Predicate?`,
 			"$Subject": `
     Component
     Subcomponent
     Precedence
-    Referent
-    Complement
-    Inversion
+    Refinement
     Magnitude
     Function
     Method
     Value  ! This must be last since others also begin with an identifier.`,
-			"$Precedence": `"(" Expression ")"`,
-			"$Referent":   `"@" Reference`,
-			"$Reference": `
-    Component
-    Subcomponent
-    Referent
-    Function
-    Method
-    Value  ! This must be last since others also begin with an identifier.`,
-			"$Complement": `"not" Reversible`,
-			"$Reversible": `
-    Component
-    Subcomponent
-    Precedence
-    Referent
-    Complement
-    Function
-    Method
-    Value  ! This must be last since others also begin with an identifier.`,
-			"$Inversion": `Inverse Numerical`,
-			"$Inverse": `
-    "-"
-    "/"
-    "*"`,
-			"$Numerical": `
-    Component
-    Subcomponent
-    Precedence
-    Referent
-    Inversion
-    Magnitude
-    Function
-    Method
-    Value  ! This must be last since others also begin with an identifier.`,
-			"$Magnitude": `"|" Expression "|"`,
-			"$Function":  `identifier "(" Argument* ")"`,
 			"$Predicate": `Operation Expression`,
 			"$Operation": `
-    Comparison
-    Logical
-    Arithmetic
-    Lexical`,
-			"$Comparison": `
     "<"
     "="
     ">"
     "is"
-    "matches"`,
-			"$Logical": `
+    "matches"
     "and"
     "san"
     "ior"
-    "xor"`,
-			"$Arithmetic": `
+    "xor"
     "+"
     "-"
     "*"
     "/"
     "%"
-    "^"`,
-			"$Lexical": `
+    "^"
     "&"`,
+			"$Precedence": `"(" Expression ")"`,
+			"$Refinement": `Modifier Subject`,
+			"$Modifier": `
+    "-"
+    "/"
+    "*"
+    "@"
+    "not"`,
+			"$Magnitude": `"|" Expression "|"`,
+			"$Function":  `identifier "(" Argument* ")"`,
 		},
 	),
 }

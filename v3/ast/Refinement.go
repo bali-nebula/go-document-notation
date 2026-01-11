@@ -29,21 +29,26 @@ import (
 
 // Access Function
 
-func ComparisonClass() ComparisonClassLike {
-	return comparisonClass()
+func RefinementClass() RefinementClassLike {
+	return refinementClass()
 }
 
 // Constructor Methods
 
-func (c *comparisonClass_) Comparison(
-	any_ any,
-) ComparisonLike {
-	if uti.IsUndefined(any_) {
-		panic("The \"any\" attribute is required by this class.")
+func (c *refinementClass_) Refinement(
+	modifier ModifierLike,
+	subject SubjectLike,
+) RefinementLike {
+	if uti.IsUndefined(modifier) {
+		panic("The \"modifier\" attribute is required by this class.")
 	}
-	var instance = &comparison_{
+	if uti.IsUndefined(subject) {
+		panic("The \"subject\" attribute is required by this class.")
+	}
+	var instance = &refinement_{
 		// Initialize the instance attributes.
-		any_: any_,
+		modifier_: modifier,
+		subject_:  subject,
 	}
 	return instance
 }
@@ -52,37 +57,42 @@ func (c *comparisonClass_) Comparison(
 
 // Principal Methods
 
-func (v *comparison_) GetClass() ComparisonClassLike {
-	return comparisonClass()
+func (v *refinement_) GetClass() RefinementClassLike {
+	return refinementClass()
 }
 
 // Attribute Methods
 
-func (v *comparison_) GetAny() any {
-	return v.any_
+func (v *refinement_) GetModifier() ModifierLike {
+	return v.modifier_
+}
+
+func (v *refinement_) GetSubject() SubjectLike {
+	return v.subject_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type comparison_ struct {
+type refinement_ struct {
 	// Declare the instance attributes.
-	any_ any
+	modifier_ ModifierLike
+	subject_  SubjectLike
 }
 
 // Class Structure
 
-type comparisonClass_ struct {
+type refinementClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func comparisonClass() *comparisonClass_ {
-	return comparisonClassReference_
+func refinementClass() *refinementClass_ {
+	return refinementClassReference_
 }
 
-var comparisonClassReference_ = &comparisonClass_{
+var refinementClassReference_ = &refinementClass_{
 	// Initialize the class constants.
 }

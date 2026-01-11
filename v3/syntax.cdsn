@@ -221,97 +221,52 @@ $Location: Expression  ! The global name of a document.
 
 $AtLevel: "at" "level" Expression
 
-$Expression: Subject Predicate*
+$Expression: Subject Predicate?
 
 $Subject:
     Component
     Subcomponent
     Precedence
-    Referent
-    Complement
-    Inversion
+    Refinement
     Magnitude
     Function
     Method
     Value  ! This must be last since others also begin with an identifier.
-
-$Precedence: "(" Expression ")"
-
-$Referent: "@" Reference
-
-$Reference:
-    Component
-    Subcomponent
-    Referent
-    Function
-    Method
-    Value  ! This must be last since others also begin with an identifier.
-
-$Complement: "not" Reversible
-
-$Reversible:
-    Component
-    Subcomponent
-    Precedence
-    Referent
-    Complement
-    Function
-    Method
-    Value  ! This must be last since others also begin with an identifier.
-
-$Inversion: Inverse Numerical
-
-$Inverse:
-    "-"
-    "/"
-    "*"
-
-$Numerical:
-    Component
-    Subcomponent
-    Precedence
-    Referent
-    Inversion
-    Magnitude
-    Function
-    Method
-    Value  ! This must be last since others also begin with an identifier.
-
-$Magnitude: "|" Expression "|"
-
-$Function: identifier "(" Argument* ")"
 
 $Predicate: Operation Expression
 
 $Operation:
-    Comparison
-    Logical
-    Arithmetic
-    Lexical
-
-$Comparison:
     "<"
     "="
     ">"
     "is"
     "matches"
-
-$Logical:
     "and"
     "san"
     "ior"
     "xor"
-
-$Arithmetic:
     "+"
     "-"
     "*"
     "/"
     "%"
     "^"
-
-$Lexical:
     "&"
+
+$Precedence: "(" Expression ")"
+
+$Refinement: Modifier Subject
+
+$Modifier:
+    "-"
+    "/"
+    "*"
+    "@"
+    "not"
+
+$Magnitude: "|" Expression "|"
+
+$Function: identifier "(" Argument* ")"
 
 !>
 ┌──────────────────────────────────────────────────────────────────────────────┐

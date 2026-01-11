@@ -75,18 +75,6 @@ type ArgumentClassLike interface {
 }
 
 /*
-ArithmeticClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete arithmetic-like class.
-*/
-type ArithmeticClassLike interface {
-	// Constructor Methods
-	Arithmetic(
-		any_ any,
-	) ArithmeticLike
-}
-
-/*
 AssignClauseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete assign-clause-like class.
@@ -218,31 +206,6 @@ type CollectionClassLike interface {
 	Collection(
 		any_ any,
 	) CollectionLike
-}
-
-/*
-ComparisonClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete comparison-like class.
-*/
-type ComparisonClassLike interface {
-	// Constructor Methods
-	Comparison(
-		any_ any,
-	) ComparisonLike
-}
-
-/*
-ComplementClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete complement-like class.
-*/
-type ComplementClassLike interface {
-	// Constructor Methods
-	Complement(
-		delimiter string,
-		reversible ReversibleLike,
-	) ComplementLike
 }
 
 /*
@@ -386,7 +349,7 @@ type ExpressionClassLike interface {
 	// Constructor Methods
 	Expression(
 		subject SubjectLike,
-		predicates com.Sequential[PredicateLike],
+		optionalPredicate PredicateLike,
 	) ExpressionLike
 }
 
@@ -460,31 +423,6 @@ type InspectClauseClassLike interface {
 }
 
 /*
-InverseClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete inverse-like class.
-*/
-type InverseClassLike interface {
-	// Constructor Methods
-	Inverse(
-		any_ any,
-	) InverseLike
-}
-
-/*
-InversionClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete inversion-like class.
-*/
-type InversionClassLike interface {
-	// Constructor Methods
-	Inversion(
-		inverse InverseLike,
-		numerical NumericalLike,
-	) InversionLike
-}
-
-/*
 InvocationClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete invocation-like class.
@@ -536,18 +474,6 @@ type LeftClassLike interface {
 }
 
 /*
-LexicalClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete lexical-like class.
-*/
-type LexicalClassLike interface {
-	// Constructor Methods
-	Lexical(
-		any_ any,
-	) LexicalLike
-}
-
-/*
 LiteralClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete literal-like class.
@@ -581,18 +507,6 @@ type LocationClassLike interface {
 	Location(
 		expression ExpressionLike,
 	) LocationLike
-}
-
-/*
-LogicalClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete logical-like class.
-*/
-type LogicalClassLike interface {
-	// Constructor Methods
-	Logical(
-		any_ any,
-	) LogicalLike
 }
 
 /*
@@ -678,6 +592,18 @@ type MethodClassLike interface {
 }
 
 /*
+ModifierClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete modifier-like class.
+*/
+type ModifierClassLike interface {
+	// Constructor Methods
+	Modifier(
+		any_ any,
+	) ModifierLike
+}
+
+/*
 NotarizeClauseClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete notarize-clause-like class.
@@ -690,18 +616,6 @@ type NotarizeClauseClassLike interface {
 		delimiter2 string,
 		location LocationLike,
 	) NotarizeClauseLike
-}
-
-/*
-NumericalClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete numerical-like class.
-*/
-type NumericalClassLike interface {
-	// Constructor Methods
-	Numerical(
-		any_ any,
-	) NumericalLike
 }
 
 /*
@@ -854,28 +768,16 @@ type RecipientClassLike interface {
 }
 
 /*
-ReferenceClassLike is a class interface that declares the
+RefinementClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
-supported by each concrete reference-like class.
+supported by each concrete refinement-like class.
 */
-type ReferenceClassLike interface {
+type RefinementClassLike interface {
 	// Constructor Methods
-	Reference(
-		any_ any,
-	) ReferenceLike
-}
-
-/*
-ReferentClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete referent-like class.
-*/
-type ReferentClassLike interface {
-	// Constructor Methods
-	Referent(
-		delimiter string,
-		reference ReferenceLike,
-	) ReferentLike
+	Refinement(
+		modifier ModifierLike,
+		subject SubjectLike,
+	) RefinementLike
 }
 
 /*
@@ -931,18 +833,6 @@ type ReturnClauseClassLike interface {
 		delimiter string,
 		expression ExpressionLike,
 	) ReturnClauseLike
-}
-
-/*
-ReversibleClassLike is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete reversible-like class.
-*/
-type ReversibleClassLike interface {
-	// Constructor Methods
-	Reversible(
-		any_ any,
-	) ReversibleLike
 }
 
 /*
@@ -1156,19 +1046,6 @@ type ArgumentLike interface {
 }
 
 /*
-ArithmeticLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete arithmetic-like class.
-*/
-type ArithmeticLike interface {
-	// Principal Methods
-	GetClass() ArithmeticClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
 AssignClauseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete assign-clause-like class.
@@ -1310,33 +1187,6 @@ type CollectionLike interface {
 
 	// Attribute Methods
 	GetAny() any
-}
-
-/*
-ComparisonLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete comparison-like class.
-*/
-type ComparisonLike interface {
-	// Principal Methods
-	GetClass() ComparisonClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
-ComplementLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete complement-like class.
-*/
-type ComplementLike interface {
-	// Principal Methods
-	GetClass() ComplementClassLike
-
-	// Attribute Methods
-	GetDelimiter() string
-	GetReversible() ReversibleLike
 }
 
 /*
@@ -1492,7 +1342,7 @@ type ExpressionLike interface {
 
 	// Attribute Methods
 	GetSubject() SubjectLike
-	GetPredicates() com.Sequential[PredicateLike]
+	GetOptionalPredicate() PredicateLike
 }
 
 /*
@@ -1570,33 +1420,6 @@ type InspectClauseLike interface {
 }
 
 /*
-InverseLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete inverse-like class.
-*/
-type InverseLike interface {
-	// Principal Methods
-	GetClass() InverseClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
-InversionLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete inversion-like class.
-*/
-type InversionLike interface {
-	// Principal Methods
-	GetClass() InversionClassLike
-
-	// Attribute Methods
-	GetInverse() InverseLike
-	GetNumerical() NumericalLike
-}
-
-/*
 InvocationLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete invocation-like class.
@@ -1652,19 +1475,6 @@ type LeftLike interface {
 }
 
 /*
-LexicalLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete lexical-like class.
-*/
-type LexicalLike interface {
-	// Principal Methods
-	GetClass() LexicalClassLike
-
-	// Attribute Methods
-	GetAny() any
-}
-
-/*
 LiteralLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete literal-like class.
@@ -1701,19 +1511,6 @@ type LocationLike interface {
 
 	// Attribute Methods
 	GetExpression() ExpressionLike
-}
-
-/*
-LogicalLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete logical-like class.
-*/
-type LogicalLike interface {
-	// Principal Methods
-	GetClass() LogicalClassLike
-
-	// Attribute Methods
-	GetAny() any
 }
 
 /*
@@ -1805,6 +1602,19 @@ type MethodLike interface {
 }
 
 /*
+ModifierLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete modifier-like class.
+*/
+type ModifierLike interface {
+	// Principal Methods
+	GetClass() ModifierClassLike
+
+	// Attribute Methods
+	GetAny() any
+}
+
+/*
 NotarizeClauseLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete notarize-clause-like class.
@@ -1818,19 +1628,6 @@ type NotarizeClauseLike interface {
 	GetDraft() DraftLike
 	GetDelimiter2() string
 	GetLocation() LocationLike
-}
-
-/*
-NumericalLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete numerical-like class.
-*/
-type NumericalLike interface {
-	// Principal Methods
-	GetClass() NumericalClassLike
-
-	// Attribute Methods
-	GetAny() any
 }
 
 /*
@@ -1994,30 +1791,17 @@ type RecipientLike interface {
 }
 
 /*
-ReferenceLike is an instance interface that declares the
+RefinementLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete reference-like class.
+by each instance of a concrete refinement-like class.
 */
-type ReferenceLike interface {
+type RefinementLike interface {
 	// Principal Methods
-	GetClass() ReferenceClassLike
+	GetClass() RefinementClassLike
 
 	// Attribute Methods
-	GetAny() any
-}
-
-/*
-ReferentLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete referent-like class.
-*/
-type ReferentLike interface {
-	// Principal Methods
-	GetClass() ReferentClassLike
-
-	// Attribute Methods
-	GetDelimiter() string
-	GetReference() ReferenceLike
+	GetModifier() ModifierLike
+	GetSubject() SubjectLike
 }
 
 /*
@@ -2077,19 +1861,6 @@ type ReturnClauseLike interface {
 	// Attribute Methods
 	GetDelimiter() string
 	GetExpression() ExpressionLike
-}
-
-/*
-ReversibleLike is an instance interface that declares the
-complete set of principal, attribute and aspect methods that must be supported
-by each instance of a concrete reversible-like class.
-*/
-type ReversibleLike interface {
-	// Principal Methods
-	GetClass() ReversibleClassLike
-
-	// Attribute Methods
-	GetAny() any
 }
 
 /*

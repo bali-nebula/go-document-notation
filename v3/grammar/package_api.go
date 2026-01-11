@@ -391,20 +391,6 @@ type Methodical interface {
 		argument ast.ArgumentLike,
 		slot_ uint,
 	)
-	PreprocessArithmetic(
-		arithmetic ast.ArithmeticLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessArithmetic(
-		arithmetic ast.ArithmeticLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessArithmeticSlot(
-		arithmetic ast.ArithmeticLike,
-		slot_ uint,
-	)
 	PreprocessAssignClause(
 		assignClause ast.AssignClauseLike,
 		index_ uint,
@@ -543,34 +529,6 @@ type Methodical interface {
 	)
 	ProcessCollectionSlot(
 		collection ast.CollectionLike,
-		slot_ uint,
-	)
-	PreprocessComparison(
-		comparison ast.ComparisonLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessComparison(
-		comparison ast.ComparisonLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessComparisonSlot(
-		comparison ast.ComparisonLike,
-		slot_ uint,
-	)
-	PreprocessComplement(
-		complement ast.ComplementLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessComplement(
-		complement ast.ComplementLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessComplementSlot(
-		complement ast.ComplementLike,
 		slot_ uint,
 	)
 	PreprocessComponent(
@@ -797,34 +755,6 @@ type Methodical interface {
 		inspectClause ast.InspectClauseLike,
 		slot_ uint,
 	)
-	PreprocessInverse(
-		inverse ast.InverseLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessInverse(
-		inverse ast.InverseLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessInverseSlot(
-		inverse ast.InverseLike,
-		slot_ uint,
-	)
-	PreprocessInversion(
-		inversion ast.InversionLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessInversion(
-		inversion ast.InversionLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessInversionSlot(
-		inversion ast.InversionLike,
-		slot_ uint,
-	)
 	PreprocessInvocation(
 		invocation ast.InvocationLike,
 		index_ uint,
@@ -881,20 +811,6 @@ type Methodical interface {
 		left ast.LeftLike,
 		slot_ uint,
 	)
-	PreprocessLexical(
-		lexical ast.LexicalLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessLexical(
-		lexical ast.LexicalLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessLexicalSlot(
-		lexical ast.LexicalLike,
-		slot_ uint,
-	)
 	PreprocessLiteral(
 		literal ast.LiteralLike,
 		index_ uint,
@@ -935,20 +851,6 @@ type Methodical interface {
 	)
 	ProcessLocationSlot(
 		location ast.LocationLike,
-		slot_ uint,
-	)
-	PreprocessLogical(
-		logical ast.LogicalLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessLogical(
-		logical ast.LogicalLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessLogicalSlot(
-		logical ast.LogicalLike,
 		slot_ uint,
 	)
 	PreprocessMagnitude(
@@ -1035,6 +937,20 @@ type Methodical interface {
 		method ast.MethodLike,
 		slot_ uint,
 	)
+	PreprocessModifier(
+		modifier ast.ModifierLike,
+		index_ uint,
+		count_ uint,
+	)
+	PostprocessModifier(
+		modifier ast.ModifierLike,
+		index_ uint,
+		count_ uint,
+	)
+	ProcessModifierSlot(
+		modifier ast.ModifierLike,
+		slot_ uint,
+	)
 	PreprocessNotarizeClause(
 		notarizeClause ast.NotarizeClauseLike,
 		index_ uint,
@@ -1047,20 +963,6 @@ type Methodical interface {
 	)
 	ProcessNotarizeClauseSlot(
 		notarizeClause ast.NotarizeClauseLike,
-		slot_ uint,
-	)
-	PreprocessNumerical(
-		numerical ast.NumericalLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessNumerical(
-		numerical ast.NumericalLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessNumericalSlot(
-		numerical ast.NumericalLike,
 		slot_ uint,
 	)
 	PreprocessOnClause(
@@ -1217,32 +1119,18 @@ type Methodical interface {
 		recipient ast.RecipientLike,
 		slot_ uint,
 	)
-	PreprocessReference(
-		reference ast.ReferenceLike,
+	PreprocessRefinement(
+		refinement ast.RefinementLike,
 		index_ uint,
 		count_ uint,
 	)
-	PostprocessReference(
-		reference ast.ReferenceLike,
+	PostprocessRefinement(
+		refinement ast.RefinementLike,
 		index_ uint,
 		count_ uint,
 	)
-	ProcessReferenceSlot(
-		reference ast.ReferenceLike,
-		slot_ uint,
-	)
-	PreprocessReferent(
-		referent ast.ReferentLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessReferent(
-		referent ast.ReferentLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessReferentSlot(
-		referent ast.ReferentLike,
+	ProcessRefinementSlot(
+		refinement ast.RefinementLike,
 		slot_ uint,
 	)
 	PreprocessRejectClause(
@@ -1299,20 +1187,6 @@ type Methodical interface {
 	)
 	ProcessReturnClauseSlot(
 		returnClause ast.ReturnClauseLike,
-		slot_ uint,
-	)
-	PreprocessReversible(
-		reversible ast.ReversibleLike,
-		index_ uint,
-		count_ uint,
-	)
-	PostprocessReversible(
-		reversible ast.ReversibleLike,
-		index_ uint,
-		count_ uint,
-	)
-	ProcessReversibleSlot(
-		reversible ast.ReversibleLike,
 		slot_ uint,
 	)
 	PreprocessRight(
