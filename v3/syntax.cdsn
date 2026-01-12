@@ -236,33 +236,33 @@ $Subject:
 $Predicate: Operation Expression
 
 $Operation:
-    "<"
-    "="
-    ">"
-    "is"
-    "matches"
-    "and"
-    "san"
-    "ior"
-    "xor"
-    "+"
-    "-"
-    "*"
-    "/"
-    "%"
-    "^"
-    "&"
+    "&"        ! Lexical Concatenation
+    "+"        ! Arithmetic Addition
+    "-"        ! Arithmetic Subtraction
+    "*"        ! Arithmetic Multiplication
+    "/"        ! Arithmetic Division
+    "%"        ! Arithmetic Remainder
+    "^"        ! Arithmetic Exponential
+    "<"        ! Comparison Less Than
+    "="        ! Comparison Equal To
+    ">"        ! Comparison More Than
+    "is"       ! Comparison Same Component
+    "matches"  ! Comparison Matches Pattern
+    "and"      ! Logical AND
+    "san"      ! Logical AND NOT
+    "ior"      ! Logical Inclusive OR
+    "xor"      ! Logical Exclusive OR
 
 $Precedence: "(" Expression ")"
 
 $Refinement: Modifier Subject
 
 $Modifier:
-    "-"
-    "/"
-    "*"
-    "@"
-    "not"
+    "@"    ! Dereferenced Value
+    "not"  ! Logical Complement
+    "-"    ! Arithmetic Inverse
+    "/"    ! Multiplicative Inverse
+    "*"    ! Complex Conjugate
 
 $Magnitude: "|" Expression "|"
 

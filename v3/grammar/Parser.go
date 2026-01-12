@@ -2574,6 +2574,22 @@ func (v *parser_) parseModifier() (
 ) {
 	var delimiter string
 
+	// Attempt to parse a single "@" delimiter.
+	delimiter, token, ok = v.parseDelimiter("@")
+	if ok {
+		// Found a single "@" delimiter.
+		modifier = ast.ModifierClass().Modifier(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "not" delimiter.
+	delimiter, token, ok = v.parseDelimiter("not")
+	if ok {
+		// Found a single "not" delimiter.
+		modifier = ast.ModifierClass().Modifier(delimiter)
+		return
+	}
+
 	// Attempt to parse a single "-" delimiter.
 	delimiter, token, ok = v.parseDelimiter("-")
 	if ok {
@@ -2594,22 +2610,6 @@ func (v *parser_) parseModifier() (
 	delimiter, token, ok = v.parseDelimiter("*")
 	if ok {
 		// Found a single "*" delimiter.
-		modifier = ast.ModifierClass().Modifier(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "@" delimiter.
-	delimiter, token, ok = v.parseDelimiter("@")
-	if ok {
-		// Found a single "@" delimiter.
-		modifier = ast.ModifierClass().Modifier(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "not" delimiter.
-	delimiter, token, ok = v.parseDelimiter("not")
-	if ok {
-		// Found a single "not" delimiter.
 		modifier = ast.ModifierClass().Modifier(delimiter)
 		return
 	}
@@ -2794,6 +2794,62 @@ func (v *parser_) parseOperation() (
 ) {
 	var delimiter string
 
+	// Attempt to parse a single "&" delimiter.
+	delimiter, token, ok = v.parseDelimiter("&")
+	if ok {
+		// Found a single "&" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "+" delimiter.
+	delimiter, token, ok = v.parseDelimiter("+")
+	if ok {
+		// Found a single "+" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "-" delimiter.
+	delimiter, token, ok = v.parseDelimiter("-")
+	if ok {
+		// Found a single "-" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "*" delimiter.
+	delimiter, token, ok = v.parseDelimiter("*")
+	if ok {
+		// Found a single "*" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "/" delimiter.
+	delimiter, token, ok = v.parseDelimiter("/")
+	if ok {
+		// Found a single "/" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "%" delimiter.
+	delimiter, token, ok = v.parseDelimiter("%")
+	if ok {
+		// Found a single "%" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
+	// Attempt to parse a single "^" delimiter.
+	delimiter, token, ok = v.parseDelimiter("^")
+	if ok {
+		// Found a single "^" delimiter.
+		operation = ast.OperationClass().Operation(delimiter)
+		return
+	}
+
 	// Attempt to parse a single "<" delimiter.
 	delimiter, token, ok = v.parseDelimiter("<")
 	if ok {
@@ -2862,62 +2918,6 @@ func (v *parser_) parseOperation() (
 	delimiter, token, ok = v.parseDelimiter("xor")
 	if ok {
 		// Found a single "xor" delimiter.
-		operation = ast.OperationClass().Operation(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "+" delimiter.
-	delimiter, token, ok = v.parseDelimiter("+")
-	if ok {
-		// Found a single "+" delimiter.
-		operation = ast.OperationClass().Operation(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "-" delimiter.
-	delimiter, token, ok = v.parseDelimiter("-")
-	if ok {
-		// Found a single "-" delimiter.
-		operation = ast.OperationClass().Operation(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "*" delimiter.
-	delimiter, token, ok = v.parseDelimiter("*")
-	if ok {
-		// Found a single "*" delimiter.
-		operation = ast.OperationClass().Operation(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "/" delimiter.
-	delimiter, token, ok = v.parseDelimiter("/")
-	if ok {
-		// Found a single "/" delimiter.
-		operation = ast.OperationClass().Operation(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "%" delimiter.
-	delimiter, token, ok = v.parseDelimiter("%")
-	if ok {
-		// Found a single "%" delimiter.
-		operation = ast.OperationClass().Operation(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "^" delimiter.
-	delimiter, token, ok = v.parseDelimiter("^")
-	if ok {
-		// Found a single "^" delimiter.
-		operation = ast.OperationClass().Operation(delimiter)
-		return
-	}
-
-	// Attempt to parse a single "&" delimiter.
-	delimiter, token, ok = v.parseDelimiter("&")
-	if ok {
-		// Found a single "&" delimiter.
 		operation = ast.OperationClass().Operation(delimiter)
 		return
 	}
@@ -5129,30 +5129,30 @@ var parserClassReference_ = &parserClass_{
     Value  ! This must be last since others also begin with an identifier.`,
 			"$Predicate": `Operation Expression`,
 			"$Operation": `
-    "<"
-    "="
-    ">"
-    "is"
-    "matches"
-    "and"
-    "san"
-    "ior"
-    "xor"
-    "+"
-    "-"
-    "*"
-    "/"
-    "%"
-    "^"
-    "&"`,
+    "&"  ! Lexical Concatenation
+    "+"  ! Arithmetic Addition
+    "-"  ! Arithmetic Subtraction
+    "*"  ! Arithmetic Multiplication
+    "/"  ! Arithmetic Division
+    "%"  ! Arithmetic Remainder
+    "^"  ! Arithmetic Exponential
+    "<"  ! Comparison Less Than
+    "="  ! Comparison Equal To
+    ">"  ! Comparison More Than
+    "is"  ! Comparison Same Component
+    "matches"  ! Comparison Matches Pattern
+    "and"  ! Logical AND
+    "san"  ! Logical AND NOT
+    "ior"  ! Logical Inclusive OR
+    "xor"  ! Logical Exclusive OR`,
 			"$Precedence": `"(" Expression ")"`,
 			"$Refinement": `Modifier Subject`,
 			"$Modifier": `
-    "-"
-    "/"
-    "*"
-    "@"
-    "not"`,
+    "@"  ! Dereferenced Value
+    "not"  ! Logical Complement
+    "-"  ! Arithmetic Inverse
+    "/"  ! Multiplicative Inverse
+    "*"  ! Complex Conjugate`,
 			"$Magnitude": `"|" Expression "|"`,
 			"$Function":  `identifier "(" Argument* ")"`,
 		},

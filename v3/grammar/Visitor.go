@@ -1642,16 +1642,16 @@ func (v *visitor_) visitModifier(
 	// Visit the possible modifier literal values.
 	var actual = modifier.GetAny().(string)
 	switch actual {
+	case "@":
+		v.processor_.ProcessDelimiter("@")
+	case "not":
+		v.processor_.ProcessDelimiter("not")
 	case "-":
 		v.processor_.ProcessDelimiter("-")
 	case "/":
 		v.processor_.ProcessDelimiter("/")
 	case "*":
 		v.processor_.ProcessDelimiter("*")
-	case "@":
-		v.processor_.ProcessDelimiter("@")
-	case "not":
-		v.processor_.ProcessDelimiter("not")
 	}
 }
 
@@ -1751,6 +1751,20 @@ func (v *visitor_) visitOperation(
 	// Visit the possible operation literal values.
 	var actual = operation.GetAny().(string)
 	switch actual {
+	case "&":
+		v.processor_.ProcessDelimiter("&")
+	case "+":
+		v.processor_.ProcessDelimiter("+")
+	case "-":
+		v.processor_.ProcessDelimiter("-")
+	case "*":
+		v.processor_.ProcessDelimiter("*")
+	case "/":
+		v.processor_.ProcessDelimiter("/")
+	case "%":
+		v.processor_.ProcessDelimiter("%")
+	case "^":
+		v.processor_.ProcessDelimiter("^")
 	case "<":
 		v.processor_.ProcessDelimiter("<")
 	case "=":
@@ -1769,20 +1783,6 @@ func (v *visitor_) visitOperation(
 		v.processor_.ProcessDelimiter("ior")
 	case "xor":
 		v.processor_.ProcessDelimiter("xor")
-	case "+":
-		v.processor_.ProcessDelimiter("+")
-	case "-":
-		v.processor_.ProcessDelimiter("-")
-	case "*":
-		v.processor_.ProcessDelimiter("*")
-	case "/":
-		v.processor_.ProcessDelimiter("/")
-	case "%":
-		v.processor_.ProcessDelimiter("%")
-	case "^":
-		v.processor_.ProcessDelimiter("^")
-	case "&":
-		v.processor_.ProcessDelimiter("&")
 	}
 }
 
